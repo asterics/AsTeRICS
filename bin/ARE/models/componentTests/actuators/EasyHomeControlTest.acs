@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\EasyHomeControlTest.acs_2017_12_14_11_43" version="20130320">
+  <components>
+    <component id="ButtonGrid.1.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="onDevice1" />
+        <property name="buttonCaption2" value="offDevice1" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>162</posX>
+        <posY>167</posY>
+      </layout>
+      <gui>
+        <posX>135</posX>
+        <posY>787</posY>
+        <width>1212</width>
+        <height>1044</height>
+      </gui>
+    </component>
+    <component id="EasyHomeControl.1" type_id="asterics.EasyHomeControl">
+      <description>EasyHome controller</description>
+      <ports />
+      <properties>
+        <property name="nameDevice1" value="1" />
+        <property name="nameDevice2" value="2" />
+        <property name="nameDevice3" value="3" />
+        <property name="nameDevice4" value="4" />
+        <property name="nameDevice5" value="5" />
+        <property name="nameDevice6" value="6" />
+        <property name="nameDevice7" value="7" />
+        <property name="nameDevice8" value="8" />
+        <property name="nameDevice9" value="9" />
+        <property name="nameDevice10" value="10" />
+        <property name="nameDevice11" value="11" />
+        <property name="nameDevice12" value="12" />
+        <property name="nameDevice13" value="13" />
+        <property name="nameDevice14" value="14" />
+        <property name="nameDevice15" value="15" />
+        <property name="numberDevice1" value="1" />
+        <property name="numberDevice2" value="2" />
+        <property name="numberDevice3" value="3" />
+        <property name="numberDevice4" value="4" />
+        <property name="numberDevice5" value="5" />
+        <property name="numberDevice6" value="6" />
+        <property name="numberDevice7" value="7" />
+        <property name="numberDevice8" value="8" />
+        <property name="numberDevice9" value="9" />
+        <property name="numberDevice10" value="10" />
+        <property name="numberDevice11" value="11" />
+        <property name="numberDevice12" value="12" />
+        <property name="numberDevice13" value="13" />
+        <property name="numberDevice14" value="14" />
+        <property name="numberDevice15" value="15" />
+      </properties>
+      <layout>
+        <posX>363</posX>
+        <posY>163</posY>
+      </layout>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="button1_onDevice1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EasyHomeControl.1" />
+          <eventPort id="onDevice1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_offDevice1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EasyHomeControl.1" />
+          <eventPort id="offDevice1" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>1938</width>
+      <height>2111</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

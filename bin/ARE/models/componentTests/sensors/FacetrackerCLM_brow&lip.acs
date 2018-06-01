@@ -1,0 +1,309 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\FacetrackerCLM_brow&amp;lip.acs_2017_12_14_11_47" version="20130320">
+  <components>
+    <component id="FacetrackerCLM.1" type_id="asterics.FacetrackerCLM">
+      <description>Facetracker plugin. Ideal in mouse control models. It also implements a blink detection system.</description>
+      <ports>
+        <outputPort portTypeID="Roll">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Pitch">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Yaw">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="PosX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="PosY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Scale">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="BrowLift">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="LipDistance">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="EyeLeft">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="EyeRight">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraSelection" value="0" />
+        <property name="cameraResolution" value="1" />
+        <property name="modelName" value="Generic" />
+        <property name="cameraDisplayUpdate" value="100" />
+      </properties>
+      <layout>
+        <posX>57</posX>
+        <posY>50</posY>
+      </layout>
+      <gui>
+        <posX>3697</posX>
+        <posY>121</posY>
+        <width>2938</width>
+        <height>4000</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="brow" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>255</posX>
+        <posY>22</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>444</posY>
+        <width>1562</width>
+        <height>556</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="lip" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>214</posX>
+        <posY>288</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>1010</posY>
+        <width>1562</width>
+        <height>556</height>
+      </gui>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="800" />
+        <property name="thresholdLow" value="750" />
+        <property name="outputHigh" value="600" />
+        <property name="outputLow" value="300" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>473</posX>
+        <posY>85</posY>
+      </layout>
+    </component>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="Gervill" />
+        <property name="channel" value="1" />
+        <property name="instrument" value="Marimba     " />
+        <property name="triggerThreshold" value="50" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="1000" />
+        <property name="toneScale" value="alltones.sc" />
+        <property name="playOnlyChangingNotes" value="true" />
+        <property name="displayGUI" value="False" />
+        <property name="displayNoteNames" value="false" />
+      </properties>
+      <layout>
+        <posX>622</posX>
+        <posY>73</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>444</posY>
+        <width>5000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="Threshold.1.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="200" />
+        <property name="thresholdLow" value="180" />
+        <property name="outputHigh" value="400" />
+        <property name="outputLow" value="350" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>468</posX>
+        <posY>264</posY>
+      </layout>
+    </component>
+    <component id="MidiPlayer.1.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="Gervill" />
+        <property name="channel" value="1" />
+        <property name="instrument" value="Marimba     " />
+        <property name="triggerThreshold" value="50" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="1000" />
+        <property name="toneScale" value="alltones.sc" />
+        <property name="playOnlyChangingNotes" value="true" />
+        <property name="displayGUI" value="False" />
+        <property name="displayNoteNames" value="false" />
+      </properties>
+      <layout>
+        <posX>619</posX>
+        <posY>256</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>444</posY>
+        <width>5000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="FacetrackerCLM.1" />
+        <port id="BrowLift" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="FacetrackerCLM.1" />
+        <port id="LipDistance" />
+      </source>
+      <target>
+        <component id="TextDisplay.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="FacetrackerCLM.1" />
+        <port id="BrowLift" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="Threshold.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Threshold.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="FacetrackerCLM.1" />
+        <port id="LipDistance" />
+      </source>
+      <target>
+        <component id="Threshold.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>2000</width>
+      <height>2889</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

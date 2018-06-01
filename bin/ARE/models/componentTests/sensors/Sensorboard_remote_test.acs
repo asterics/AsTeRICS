@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\Sensorboard_remote_test.acs_2017_12_14_11_49" version="20130320">
+  <components>
+    <component id="SensorBoard.1" type_id="asterics.SensorBoard">
+      <description>Interfaces the sensor board CIM which provides accelerometer, gyroscope, compass, IR-camera and pressure sensor</description>
+      <ports>
+        <outputPort portTypeID="accX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="accY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="accZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyroX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyroY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyroZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="compassX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="compassY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="compassZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt1X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt1Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt2X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt2Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt3X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt3Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt4X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt4Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="refreshInterval" value="50" />
+      </properties>
+      <layout>
+        <posX>3</posX>
+        <posY>40</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="PT1X" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>185</posX>
+        <posY>43</posY>
+      </layout>
+      <gui>
+        <posX>100</posX>
+        <posY>956</posY>
+        <width>4300</width>
+        <height>3200</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="PT1Y" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>297</posX>
+        <posY>43</posY>
+      </layout>
+      <gui>
+        <posX>112</posX>
+        <posY>4356</posY>
+        <width>4275</width>
+        <height>3444</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="280" />
+        <property name="threshold" value="127" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="pressure" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>300</posX>
+        <posY>235</posY>
+      </layout>
+      <gui>
+        <posX>4538</posX>
+        <posY>1444</posY>
+        <width>1900</width>
+        <height>6000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pt1X" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pt1Y" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>7188</width>
+      <height>8400</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

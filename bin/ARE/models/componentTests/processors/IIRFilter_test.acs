@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\IIRFilter_test.acs_2017_12_14_11_45" version="20130320">
+  <components>
+    <component id="IIRFilter.1" type_id="asterics.IIRFilter">
+      <description>This plugin provides various filter implementations</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="magnitude">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="passType" value="2" />
+        <property name="characteristicType" value="0" />
+        <property name="order" value="10" />
+        <property name="samplingFrequency" value="100" />
+        <property name="fc1" value="10" />
+        <property name="fc2" value="20" />
+        <property name="ripple" value="-1" />
+      </properties>
+      <layout>
+        <posX>193</posX>
+        <posY>169</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="10" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="20" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>22</posX>
+        <posY>49</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="unfiltered" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>303</posX>
+        <posY>41</posY>
+      </layout>
+      <gui>
+        <posX>715</posX>
+        <posY>1755</posY>
+        <width>3812</width>
+        <height>1667</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="filtered" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>501</posX>
+        <posY>129</posY>
+      </layout>
+      <gui>
+        <posX>715</posX>
+        <posY>3422</posY>
+        <width>3812</width>
+        <height>1667</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="passband magnitude" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>367</posX>
+        <posY>295</posY>
+      </layout>
+      <gui>
+        <posX>4528</posX>
+        <posY>1755</posY>
+        <width>2500</width>
+        <height>3333</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="IIRFilter.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="IIRFilter.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="IIRFilter.1" />
+        <port id="magnitude" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>785</posX>
+      <posY>1422</posY>
+      <width>6750</width>
+      <height>3889</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

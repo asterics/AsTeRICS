@@ -1,0 +1,689 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\eyetracking\eyex_kommunikator_deutsch.acs_2017_12_14_11_51" version="20130320">
+  <components>
+    <component id="EyeX.1" type_id="asterics.EyeX">
+      <description>interfaces to the EyeX Gaze tracking system</description>
+      <ports>
+        <inputPort portTypeID="xOffset">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="yOffset">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="gazeX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gazeY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="posX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="posY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="fixationTime">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="closeTime">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enabled" value="False" />
+        <property name="averaging" value="4" />
+        <property name="minBlinkTime" value="50" />
+        <property name="midBlinkTime" value="300" />
+        <property name="maxBlinkTime" value="1501" />
+        <property name="fixationTime" value="700" />
+        <property name="pupilPositionMode" value="0" />
+        <property name="offsetCorrectionRadius" value="150" />
+        <property name="offsetCorrectionMode" value="0" />
+      </properties>
+      <layout>
+        <posX>45</posX>
+        <posY>50</posY>
+      </layout>
+    </component>
+    <component id="OskaExternalScanning1D.1" type_id="OskaExternalScanning1D">
+      <description>Component communicating with OSKA</description>
+      <ports>
+        <inputPort portTypeID="posKey">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="action">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="keycodes">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="port" value="4546" />
+        <property name="title" value="OSKA keyboard" />
+        <property name="oskaPath" value="..\oska\start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards\writing\communicator_german.xml" />
+        <property name="highlightStyle" value="0" />
+        <property name="settingsFile" value="settings\predict_german.kst" />
+        <property name="windowDecorated" value="true" />
+        <property name="eventScanningEnabled" value="true" />
+        <property name="valueScanningEnabled" value="true" />
+        <property name="inputRange" value="0" />
+        <property name="resizeEnabled" value="True" />
+      </properties>
+      <layout>
+        <posX>788</posX>
+        <posY>42</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>0</posY>
+        <width>8300</width>
+        <height>9511</height>
+      </gui>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="True" />
+        <property name="absolutePosition" value="true" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>543</posX>
+        <posY>59</posY>
+      </layout>
+    </component>
+    <component id="Averager.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="20" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>223</posX>
+        <posY>41</posY>
+      </layout>
+    </component>
+    <component id="Averager.1.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="20" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>350</posX>
+        <posY>77</posY>
+      </layout>
+    </component>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="Gervill" />
+        <property name="channel" value="1" />
+        <property name="instrument" value="Vibraphone  " />
+        <property name="triggerThreshold" value="50" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="1000" />
+        <property name="toneScale" value="alltones.sc" />
+        <property name="playOnlyChangingNotes" value="False" />
+        <property name="displayGUI" value="False" />
+        <property name="displayNoteNames" value="false" />
+      </properties>
+      <layout>
+        <posX>357</posX>
+        <posY>239</posY>
+      </layout>
+      <gui>
+        <posX>8338</posX>
+        <posY>89</posY>
+        <width>1512</width>
+        <height>490</height>
+      </gui>
+    </component>
+    <component id="ConstantDispatcher.1" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="400" />
+        <property name="slot2" value="600" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>214</posX>
+        <posY>235</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="eye on" />
+        <property name="buttonCaption2" value="eye off" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>50</posX>
+        <posY>281</posY>
+      </layout>
+      <gui>
+        <posX>8325</posX>
+        <posY>0</posY>
+        <width>1675</width>
+        <height>778</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Menu" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>823</posX>
+        <posY>332</posY>
+      </layout>
+      <gui>
+        <posX>8325</posX>
+        <posY>8556</posY>
+        <width>1675</width>
+        <height>800</height>
+      </gui>
+    </component>
+    <component id="StringPathSelector.1" type_id="asterics.StringPathSelector">
+      <description>StringPathselector routes signal to one of four output ports</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="activePorts" value="1" />
+      </properties>
+      <layout>
+        <posX>915</posX>
+        <posY>49</posY>
+      </layout>
+    </component>
+    <component id="SpeechProcessor.1" type_id="asterics.SpeechProcessor">
+      <description>This plugin allows to genereate and recognize speech via the speech processor server application</description>
+      <ports>
+        <inputPort portTypeID="speak">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="command">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="language" value="1" />
+        <property name="recognitionConfidence" value="0.5" />
+        <property name="speechLoopDelay" value="1500" />
+        <property name="activationCommand" value="computer, listen!" />
+        <property name="deactivationCommand" value="computer, stop!" />
+        <property name="helpCommand" value="computer, help!" />
+        <property name="mode" value="1" />
+        <property name="command1" value="" />
+        <property name="command2" value="" />
+        <property name="command3" value="" />
+        <property name="command4" value="" />
+        <property name="command5" value="" />
+        <property name="command6" value="" />
+        <property name="command7" value="" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+        <property name="command11" value="" />
+        <property name="command12" value="" />
+        <property name="command13" value="" />
+        <property name="command14" value="" />
+        <property name="command15" value="" />
+        <property name="command16" value="" />
+        <property name="command17" value="" />
+        <property name="command18" value="" />
+        <property name="command19" value="" />
+        <property name="command20" value="" />
+        <property name="command21" value="" />
+        <property name="command22" value="" />
+        <property name="command23" value="" />
+        <property name="command24" value="" />
+        <property name="command25" value="" />
+      </properties>
+      <layout>
+        <posX>1074</posX>
+        <posY>201</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>552</posX>
+        <posY>250</posY>
+      </layout>
+    </component>
+    <component id="TextArea.1" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Gesprochen:" />
+        <property name="default" value="" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1076</posX>
+        <posY>44</posY>
+      </layout>
+      <gui>
+        <posX>8325</posX>
+        <posY>844</posY>
+        <width>1675</width>
+        <height>7644</height>
+      </gui>
+    </component>
+    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
+      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+      <ports>
+        <inputPort portTypeID="modelName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="model" value="pastner.acs" />
+      </properties>
+      <layout>
+        <posX>950</posX>
+        <posY>332</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.4">
+      <source>
+        <component id="EyeX.1" />
+        <port id="gazeX" />
+      </source>
+      <target>
+        <component id="Averager.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="EyeX.1" />
+        <port id="gazeY" />
+      </source>
+      <target>
+        <component id="Averager.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="ConstantDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="StringPathSelector.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="TextArea.1" />
+        <port id="appendText" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="OskaExternalScanning1D.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="StringPathSelector.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="StringPathSelector.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="SpeechProcessor.1" />
+        <port id="speak" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="blink_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="EyeX.1" />
+          <eventPort id="blink" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut1_select1">
+      <description />
+      <sources>
+        <source>
+          <component id="OskaExternalScanning1D.1" />
+          <eventPort id="eventOut2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringPathSelector.1" />
+          <eventPort id="select1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut1_select2">
+      <description />
+      <sources>
+        <source>
+          <component id="OskaExternalScanning1D.1" />
+          <eventPort id="eventOut1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringPathSelector.1" />
+          <eventPort id="select2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_activate">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EyeX.1" />
+          <eventPort id="activate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_deactivate">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EyeX.1" />
+          <eventPort id="deactivate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>8325</posX>
+      <posY>0</posY>
+      <width>1675</width>
+      <height>9578</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

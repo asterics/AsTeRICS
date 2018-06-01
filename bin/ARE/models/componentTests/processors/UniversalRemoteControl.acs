@@ -1,0 +1,863 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\UniversalRemoteControl.acs_2017_12_14_11_46" version="20130320">
+  <components>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Send IR" />
+        <property name="buttonCaption2" value="Record IR" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>927</posX>
+        <posY>398</posY>
+      </layout>
+      <gui>
+        <posX>8885</posX>
+        <posY>3010</posY>
+        <width>1062</width>
+        <height>4000</height>
+      </gui>
+    </component>
+    <component id="CellBoard.1" type_id="asterics.CellBoard">
+      <description>Adjustable matrix of button cells with scanning support</description>
+      <ports>
+        <inputPort portTypeID="row">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="column">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="cellNumber">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="xmlFile">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="actCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="scanRow">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="scanColumn">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Type" />
+        <property name="rows" value="3" />
+        <property name="columns" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="scanColor" value="10" />
+        <property name="scanMode" value="0" />
+        <property name="scanCycles" value="3" />
+        <property name="hoverTime" value="1000" />
+        <property name="hoverIndicator" value="0" />
+        <property name="hoverFrameThickness" value="4" />
+        <property name="enableEdit" value="true" />
+        <property name="enableClickSelection" value="true" />
+        <property name="commandSeparator" value="" />
+        <property name="keyboardFile" value="" />
+        <property name="ignoreKeyboardFileProperties" value="false" />
+        <property name="displayGUI" value="true" />
+        <property name="cellText1" value="TV" />
+        <property name="cellImage1" value="" />
+        <property name="actionText1" value="TV" />
+        <property name="cellText2" value="Radio" />
+        <property name="cellImage2" value="" />
+        <property name="actionText2" value="Radio" />
+        <property name="cellText3" value="BluRay Player" />
+        <property name="cellImage3" value="" />
+        <property name="actionText3" value="BluRay Player" />
+        <property name="cellText4" value="Beamer" />
+        <property name="cellImage4" value="" />
+        <property name="actionText4" value="Beamer" />
+        <property name="cellText5" value="" />
+        <property name="cellImage5" value="" />
+        <property name="actionText5" value="" />
+        <property name="cellText6" value="" />
+        <property name="cellImage6" value="" />
+        <property name="actionText6" value="" />
+        <property name="cellText7" value="" />
+        <property name="cellImage7" value="" />
+        <property name="actionText7" value="" />
+        <property name="cellText8" value="" />
+        <property name="cellImage8" value="" />
+        <property name="actionText8" value="" />
+        <property name="cellText9" value="" />
+        <property name="cellImage9" value="" />
+        <property name="actionText9" value="" />
+        <property name="cellText10" value="" />
+        <property name="cellImage10" value="" />
+        <property name="actionText10" value="" />
+        <property name="cellText11" value="" />
+        <property name="cellImage11" value="" />
+        <property name="actionText11" value="" />
+        <property name="cellText12" value="" />
+        <property name="cellImage12" value="" />
+        <property name="actionText12" value="" />
+        <property name="cellText13" value="" />
+        <property name="cellImage13" value="" />
+        <property name="actionText13" value="" />
+        <property name="cellText14" value="" />
+        <property name="cellImage14" value="" />
+        <property name="actionText14" value="" />
+        <property name="cellText15" value="" />
+        <property name="cellImage15" value="" />
+        <property name="actionText15" value="" />
+        <property name="cellText16" value="" />
+        <property name="cellImage16" value="" />
+        <property name="actionText16" value="" />
+        <property name="cellText17" value="" />
+        <property name="cellImage17" value="" />
+        <property name="actionText17" value="" />
+        <property name="cellText18" value="" />
+        <property name="cellImage18" value="" />
+        <property name="actionText18" value="" />
+        <property name="cellText19" value="" />
+        <property name="cellImage19" value="" />
+        <property name="actionText19" value="" />
+        <property name="cellText20" value="" />
+        <property name="cellImage20" value="" />
+        <property name="actionText20" value="" />
+        <property name="cellText21" value="" />
+        <property name="cellImage21" value="" />
+        <property name="actionText21" value="" />
+        <property name="cellText22" value="" />
+        <property name="cellImage22" value="" />
+        <property name="actionText22" value="" />
+        <property name="cellText23" value="" />
+        <property name="cellImage23" value="" />
+        <property name="actionText23" value="" />
+        <property name="cellText24" value="" />
+        <property name="cellImage24" value="" />
+        <property name="actionText24" value="" />
+        <property name="cellText25" value="" />
+        <property name="cellImage25" value="" />
+        <property name="actionText25" value="" />
+        <property name="cellText26" value="" />
+        <property name="cellImage26" value="" />
+        <property name="actionText26" value="" />
+        <property name="cellText27" value="" />
+        <property name="cellImage27" value="" />
+        <property name="actionText27" value="" />
+        <property name="cellText28" value="" />
+        <property name="cellImage28" value="" />
+        <property name="actionText28" value="" />
+        <property name="cellText29" value="" />
+        <property name="cellImage29" value="" />
+        <property name="actionText29" value="" />
+        <property name="cellText30" value="" />
+        <property name="cellImage30" value="" />
+        <property name="actionText30" value="" />
+        <property name="cellText31" value="" />
+        <property name="cellImage31" value="" />
+        <property name="actionText31" value="" />
+        <property name="cellText32" value="" />
+        <property name="cellImage32" value="" />
+        <property name="actionText32" value="" />
+        <property name="cellText33" value="" />
+        <property name="cellImage33" value="" />
+        <property name="actionText33" value="" />
+        <property name="cellText34" value="" />
+        <property name="cellImage34" value="" />
+        <property name="actionText34" value="" />
+        <property name="cellText35" value="" />
+        <property name="cellImage35" value="" />
+        <property name="actionText35" value="" />
+        <property name="cellText36" value="" />
+        <property name="cellImage36" value="" />
+        <property name="actionText36" value="" />
+      </properties>
+      <layout>
+        <posX>510</posX>
+        <posY>33</posY>
+      </layout>
+      <gui>
+        <posX>4447</posX>
+        <posY>3010</posY>
+        <width>1062</width>
+        <height>4000</height>
+      </gui>
+    </component>
+    <component id="CellBoard.1.1" type_id="asterics.CellBoard">
+      <description>Adjustable matrix of button cells with scanning support</description>
+      <ports>
+        <inputPort portTypeID="row">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="column">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="cellNumber">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="xmlFile">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="actCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="scanRow">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="scanColumn">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Device" />
+        <property name="rows" value="3" />
+        <property name="columns" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="scanColor" value="10" />
+        <property name="scanMode" value="0" />
+        <property name="scanCycles" value="3" />
+        <property name="hoverTime" value="1000" />
+        <property name="hoverIndicator" value="0" />
+        <property name="hoverFrameThickness" value="4" />
+        <property name="enableEdit" value="true" />
+        <property name="enableClickSelection" value="true" />
+        <property name="commandSeparator" value="" />
+        <property name="keyboardFile" value="" />
+        <property name="ignoreKeyboardFileProperties" value="false" />
+        <property name="displayGUI" value="true" />
+        <property name="cellText1" value="Sony" />
+        <property name="cellImage1" value="" />
+        <property name="actionText1" value="Sony" />
+        <property name="cellText2" value="Samsung" />
+        <property name="cellImage2" value="" />
+        <property name="actionText2" value="Samsung" />
+        <property name="cellText3" value="Toshiba" />
+        <property name="cellImage3" value="" />
+        <property name="actionText3" value="Toshiba" />
+        <property name="cellText4" value="NEC" />
+        <property name="cellImage4" value="" />
+        <property name="actionText4" value="NEC" />
+        <property name="cellText5" value="" />
+        <property name="cellImage5" value="" />
+        <property name="actionText5" value="" />
+        <property name="cellText6" value="" />
+        <property name="cellImage6" value="" />
+        <property name="actionText6" value="" />
+        <property name="cellText7" value="" />
+        <property name="cellImage7" value="" />
+        <property name="actionText7" value="" />
+        <property name="cellText8" value="" />
+        <property name="cellImage8" value="" />
+        <property name="actionText8" value="" />
+        <property name="cellText9" value="" />
+        <property name="cellImage9" value="" />
+        <property name="actionText9" value="" />
+        <property name="cellText10" value="" />
+        <property name="cellImage10" value="" />
+        <property name="actionText10" value="" />
+        <property name="cellText11" value="" />
+        <property name="cellImage11" value="" />
+        <property name="actionText11" value="" />
+        <property name="cellText12" value="" />
+        <property name="cellImage12" value="" />
+        <property name="actionText12" value="" />
+        <property name="cellText13" value="" />
+        <property name="cellImage13" value="" />
+        <property name="actionText13" value="" />
+        <property name="cellText14" value="" />
+        <property name="cellImage14" value="" />
+        <property name="actionText14" value="" />
+        <property name="cellText15" value="" />
+        <property name="cellImage15" value="" />
+        <property name="actionText15" value="" />
+        <property name="cellText16" value="" />
+        <property name="cellImage16" value="" />
+        <property name="actionText16" value="" />
+        <property name="cellText17" value="" />
+        <property name="cellImage17" value="" />
+        <property name="actionText17" value="" />
+        <property name="cellText18" value="" />
+        <property name="cellImage18" value="" />
+        <property name="actionText18" value="" />
+        <property name="cellText19" value="" />
+        <property name="cellImage19" value="" />
+        <property name="actionText19" value="" />
+        <property name="cellText20" value="" />
+        <property name="cellImage20" value="" />
+        <property name="actionText20" value="" />
+        <property name="cellText21" value="" />
+        <property name="cellImage21" value="" />
+        <property name="actionText21" value="" />
+        <property name="cellText22" value="" />
+        <property name="cellImage22" value="" />
+        <property name="actionText22" value="" />
+        <property name="cellText23" value="" />
+        <property name="cellImage23" value="" />
+        <property name="actionText23" value="" />
+        <property name="cellText24" value="" />
+        <property name="cellImage24" value="" />
+        <property name="actionText24" value="" />
+        <property name="cellText25" value="" />
+        <property name="cellImage25" value="" />
+        <property name="actionText25" value="" />
+        <property name="cellText26" value="" />
+        <property name="cellImage26" value="" />
+        <property name="actionText26" value="" />
+        <property name="cellText27" value="" />
+        <property name="cellImage27" value="" />
+        <property name="actionText27" value="" />
+        <property name="cellText28" value="" />
+        <property name="cellImage28" value="" />
+        <property name="actionText28" value="" />
+        <property name="cellText29" value="" />
+        <property name="cellImage29" value="" />
+        <property name="actionText29" value="" />
+        <property name="cellText30" value="" />
+        <property name="cellImage30" value="" />
+        <property name="actionText30" value="" />
+        <property name="cellText31" value="" />
+        <property name="cellImage31" value="" />
+        <property name="actionText31" value="" />
+        <property name="cellText32" value="" />
+        <property name="cellImage32" value="" />
+        <property name="actionText32" value="" />
+        <property name="cellText33" value="" />
+        <property name="cellImage33" value="" />
+        <property name="actionText33" value="" />
+        <property name="cellText34" value="" />
+        <property name="cellImage34" value="" />
+        <property name="actionText34" value="" />
+        <property name="cellText35" value="" />
+        <property name="cellImage35" value="" />
+        <property name="actionText35" value="" />
+        <property name="cellText36" value="" />
+        <property name="cellImage36" value="" />
+        <property name="actionText36" value="" />
+      </properties>
+      <layout>
+        <posX>509</posX>
+        <posY>226</posY>
+      </layout>
+      <gui>
+        <posX>5510</posX>
+        <posY>3010</posY>
+        <width>1062</width>
+        <height>4000</height>
+      </gui>
+    </component>
+    <component id="CellBoard.1.2" type_id="asterics.CellBoard">
+      <description>Adjustable matrix of button cells with scanning support</description>
+      <ports>
+        <inputPort portTypeID="row">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="column">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="cellNumber">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="xmlFile">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="actCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="scanRow">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="scanColumn">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Function" />
+        <property name="rows" value="3" />
+        <property name="columns" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="scanColor" value="10" />
+        <property name="scanMode" value="0" />
+        <property name="scanCycles" value="3" />
+        <property name="hoverTime" value="1000" />
+        <property name="hoverIndicator" value="0" />
+        <property name="hoverFrameThickness" value="4" />
+        <property name="enableEdit" value="true" />
+        <property name="enableClickSelection" value="true" />
+        <property name="commandSeparator" value="" />
+        <property name="keyboardFile" value="" />
+        <property name="ignoreKeyboardFileProperties" value="false" />
+        <property name="displayGUI" value="true" />
+        <property name="cellText1" value="ON" />
+        <property name="cellImage1" value="" />
+        <property name="actionText1" value="ON" />
+        <property name="cellText2" value="OFF" />
+        <property name="cellImage2" value="" />
+        <property name="actionText2" value="OFF" />
+        <property name="cellText3" value="VolumeUP" />
+        <property name="cellImage3" value="" />
+        <property name="actionText3" value="VolumeUP" />
+        <property name="cellText4" value="VolumeDOWN" />
+        <property name="cellImage4" value="" />
+        <property name="actionText4" value="VolumeDOWN" />
+        <property name="cellText5" value="Previous" />
+        <property name="cellImage5" value="" />
+        <property name="actionText5" value="Previous" />
+        <property name="cellText6" value="Next" />
+        <property name="cellImage6" value="" />
+        <property name="actionText6" value="Next" />
+        <property name="cellText7" value="Play/Pause" />
+        <property name="cellImage7" value="" />
+        <property name="actionText7" value="Play/Pause" />
+        <property name="cellText8" value="Function" />
+        <property name="cellImage8" value="" />
+        <property name="actionText8" value="Function" />
+        <property name="cellText9" value="" />
+        <property name="cellImage9" value="" />
+        <property name="actionText9" value="" />
+        <property name="cellText10" value="" />
+        <property name="cellImage10" value="" />
+        <property name="actionText10" value="" />
+        <property name="cellText11" value="" />
+        <property name="cellImage11" value="" />
+        <property name="actionText11" value="" />
+        <property name="cellText12" value="" />
+        <property name="cellImage12" value="" />
+        <property name="actionText12" value="" />
+        <property name="cellText13" value="" />
+        <property name="cellImage13" value="" />
+        <property name="actionText13" value="" />
+        <property name="cellText14" value="" />
+        <property name="cellImage14" value="" />
+        <property name="actionText14" value="" />
+        <property name="cellText15" value="" />
+        <property name="cellImage15" value="" />
+        <property name="actionText15" value="" />
+        <property name="cellText16" value="" />
+        <property name="cellImage16" value="" />
+        <property name="actionText16" value="" />
+        <property name="cellText17" value="" />
+        <property name="cellImage17" value="" />
+        <property name="actionText17" value="" />
+        <property name="cellText18" value="" />
+        <property name="cellImage18" value="" />
+        <property name="actionText18" value="" />
+        <property name="cellText19" value="" />
+        <property name="cellImage19" value="" />
+        <property name="actionText19" value="" />
+        <property name="cellText20" value="" />
+        <property name="cellImage20" value="" />
+        <property name="actionText20" value="" />
+        <property name="cellText21" value="" />
+        <property name="cellImage21" value="" />
+        <property name="actionText21" value="" />
+        <property name="cellText22" value="" />
+        <property name="cellImage22" value="" />
+        <property name="actionText22" value="" />
+        <property name="cellText23" value="" />
+        <property name="cellImage23" value="" />
+        <property name="actionText23" value="" />
+        <property name="cellText24" value="" />
+        <property name="cellImage24" value="" />
+        <property name="actionText24" value="" />
+        <property name="cellText25" value="" />
+        <property name="cellImage25" value="" />
+        <property name="actionText25" value="" />
+        <property name="cellText26" value="" />
+        <property name="cellImage26" value="" />
+        <property name="actionText26" value="" />
+        <property name="cellText27" value="" />
+        <property name="cellImage27" value="" />
+        <property name="actionText27" value="" />
+        <property name="cellText28" value="" />
+        <property name="cellImage28" value="" />
+        <property name="actionText28" value="" />
+        <property name="cellText29" value="" />
+        <property name="cellImage29" value="" />
+        <property name="actionText29" value="" />
+        <property name="cellText30" value="" />
+        <property name="cellImage30" value="" />
+        <property name="actionText30" value="" />
+        <property name="cellText31" value="" />
+        <property name="cellImage31" value="" />
+        <property name="actionText31" value="" />
+        <property name="cellText32" value="" />
+        <property name="cellImage32" value="" />
+        <property name="actionText32" value="" />
+        <property name="cellText33" value="" />
+        <property name="cellImage33" value="" />
+        <property name="actionText33" value="" />
+        <property name="cellText34" value="" />
+        <property name="cellImage34" value="" />
+        <property name="actionText34" value="" />
+        <property name="cellText35" value="" />
+        <property name="cellImage35" value="" />
+        <property name="actionText35" value="" />
+        <property name="cellText36" value="" />
+        <property name="cellImage36" value="" />
+        <property name="actionText36" value="" />
+      </properties>
+      <layout>
+        <posX>516</posX>
+        <posY>428</posY>
+      </layout>
+      <gui>
+        <posX>6572</posX>
+        <posY>3010</posY>
+        <width>1062</width>
+        <height>4000</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Type" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>667</posX>
+        <posY>50</posY>
+      </layout>
+      <gui>
+        <posX>7635</posX>
+        <posY>3010</posY>
+        <width>1250</width>
+        <height>667</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Device" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>673</posX>
+        <posY>252</posY>
+      </layout>
+      <gui>
+        <posX>7635</posX>
+        <posY>3676</posY>
+        <width>1250</width>
+        <height>667</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Function" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>674</posX>
+        <posY>439</posY>
+      </layout>
+      <gui>
+        <posX>7635</posX>
+        <posY>4343</posY>
+        <width>1250</width>
+        <height>667</height>
+      </gui>
+    </component>
+    <component id="UniversalRemoteControl.1" type_id="asterics.UniversalRemoteControl">
+      <description>record ans send IR Codes through Universal Remote Control</description>
+      <ports>
+        <inputPort portTypeID="DeviceType">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="DeviceName">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="DeviceFunction">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="IRCodeFilePath" value=".\data\processor.UniversalRemoteControl\IRCodes.csv" />
+      </properties>
+      <layout>
+        <posX>1007</posX>
+        <posY>177</posY>
+      </layout>
+    </component>
+    <component id="DialogBox.1" type_id="asterics.DialogBox">
+      <description>creates a dialog box to display information</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="info" />
+        <property name="text" value="Recording..." />
+        <property name="alwaysOnTop" value="true" />
+        <property name="messageType" value="1" />
+        <property name="buttonText1" value="" />
+        <property name="buttonText2" value="" />
+        <property name="buttonText3" value="" />
+        <property name="buttonText4" value="" />
+        <property name="buttonText5" value="" />
+      </properties>
+      <layout>
+        <posX>1095</posX>
+        <posY>401</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.3">
+      <source>
+        <component id="CellBoard.1" />
+        <port id="selectedCellText" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="CellBoard.1.2" />
+        <port id="selectedCellText" />
+      </source>
+      <target>
+        <component id="TextDisplay.1.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="CellBoard.1.1" />
+        <port id="selectedCellText" />
+      </source>
+      <target>
+        <component id="TextDisplay.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="CellBoard.1" />
+        <port id="selectedCellText" />
+      </source>
+      <target>
+        <component id="UniversalRemoteControl.1" />
+        <port id="DeviceType" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="CellBoard.1.1" />
+        <port id="selectedCellText" />
+      </source>
+      <target>
+        <component id="UniversalRemoteControl.1" />
+        <port id="DeviceName" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="CellBoard.1.2" />
+        <port id="selectedCellText" />
+      </source>
+      <target>
+        <component id="UniversalRemoteControl.1" />
+        <port id="DeviceFunction" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_SendIRCode">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="UniversalRemoteControl.1" />
+          <eventPort id="SendIRCode" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_RecordIRCode">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="UniversalRemoteControl.1" />
+          <eventPort id="RecordIRCode" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="StartRecord_displayBox">
+      <description />
+      <sources>
+        <source>
+          <component id="UniversalRemoteControl.1" />
+          <eventPort id="StartRecord" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DialogBox.1" />
+          <eventPort id="displayBox" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="StopRecord_hideBox">
+      <description />
+      <sources>
+        <source>
+          <component id="UniversalRemoteControl.1" />
+          <eventPort id="StopRecord" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DialogBox.1" />
+          <eventPort id="hideBox" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>4425</posX>
+      <posY>2556</posY>
+      <width>5562</width>
+      <height>4444</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

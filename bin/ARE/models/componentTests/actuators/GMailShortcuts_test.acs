@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\GMailShortcuts_test.acs_2017_12_14_11_43" version="20130320">
+  <components>
+    <component id="KeyCapture.1.1.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="31" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>255</posX>
+        <posY>236</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="NEW" />
+        <property name="slot2" value="" />
+        <property name="slot3" value="SENDEN" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>202</posX>
+        <posY>58</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="51" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>69</posX>
+        <posY>245</posY>
+      </layout>
+    </component>
+    <component id="GMailShortcuts.1" type_id="asterics.GMailShortcuts">
+      <description>This plugin emulates shortcuts for the GMail web client. It can be used to map any gestures to GMail shortcuts.</description>
+      <ports>
+        <inputPort portTypeID="KeyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>365</posX>
+        <posY>58</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="GMailShortcuts.1" />
+        <port id="KeyCode" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="keyPressed_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_dispatchSlot3">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9000</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

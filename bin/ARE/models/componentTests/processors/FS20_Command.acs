@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\FS20_Command.acs_2017_12_14_11_45" version="20130320">
+  <components>
+    <component id="FS20Receiver.1" type_id="asterics.FS20Receiver">
+      <description>Receiver Plugin for the FS20 Home automatisation system</description>
+      <ports>
+        <outputPort portTypeID="fs20command">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Housecode" value="11111111" />
+        <property name="Sendaddress" value="1111" />
+      </properties>
+      <layout>
+        <posX>29</posX>
+        <posY>201</posY>
+      </layout>
+    </component>
+    <component id="FS20CommandInterpreter.1" type_id="asterics.FS20CommandInterpreter">
+      <description>Plugin to interprete FS20 commandos (including housecode and sendaddress) and fireing events regarding to the command</description>
+      <ports>
+        <inputPort portTypeID="command">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="Housecode" value="11111111" />
+        <property name="Sendaddress" value="1112" />
+      </properties>
+      <layout>
+        <posX>246</posX>
+        <posY>35</posY>
+      </layout>
+    </component>
+    <component id="FS20CommandInterpreter.1.1" type_id="asterics.FS20CommandInterpreter">
+      <description>Plugin to interprete FS20 commandos (including housecode and sendaddress) and fireing events regarding to the command</description>
+      <ports>
+        <inputPort portTypeID="command">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="Housecode" value="11111111" />
+        <property name="Sendaddress" value="1113" />
+      </properties>
+      <layout>
+        <posX>249</posX>
+        <posY>200</posY>
+      </layout>
+    </component>
+    <component id="FS20CommandInterpreter.1.2" type_id="asterics.FS20CommandInterpreter">
+      <description>Plugin to interprete FS20 commandos (including housecode and sendaddress) and fireing events regarding to the command</description>
+      <ports>
+        <inputPort portTypeID="command">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="Housecode" value="11111111" />
+        <property name="Sendaddress" value="1114" />
+      </properties>
+      <layout>
+        <posX>248</posX>
+        <posY>362</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>553</posX>
+        <posY>211</posY>
+      </layout>
+      <gui>
+        <posX>288</posX>
+        <posY>822</posY>
+        <width>3200</width>
+        <height>7600</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="FS20Receiver.1" />
+        <port id="fs20command" />
+      </source>
+      <target>
+        <component id="FS20CommandInterpreter.1" />
+        <port id="command" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="FS20Receiver.1" />
+        <port id="fs20command" />
+      </source>
+      <target>
+        <component id="FS20CommandInterpreter.1.1" />
+        <port id="command" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="FS20Receiver.1" />
+        <port id="fs20command" />
+      </source>
+      <target>
+        <component id="FS20CommandInterpreter.1.2" />
+        <port id="command" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="off_eventDisplay">
+      <sources>
+        <source>
+          <component id="FS20Receiver.1" />
+          <eventPort id="off" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="onOldLevel_eventDisplay">
+      <sources>
+        <source>
+          <component id="FS20Receiver.1" />
+          <eventPort id="onOldLevel" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="off_eventDisplay">
+      <sources>
+        <source>
+          <component id="FS20CommandInterpreter.1" />
+          <eventPort id="off" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="onOldLevel_eventDisplay">
+      <sources>
+        <source>
+          <component id="FS20CommandInterpreter.1" />
+          <eventPort id="onOldLevel" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="off_eventDisplay">
+      <sources>
+        <source>
+          <component id="FS20CommandInterpreter.1.1" />
+          <eventPort id="off" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="onOldLevel_eventDisplay">
+      <sources>
+        <source>
+          <component id="FS20CommandInterpreter.1.1" />
+          <eventPort id="onOldLevel" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="off_eventDisplay">
+      <sources>
+        <source>
+          <component id="FS20CommandInterpreter.1.2" />
+          <eventPort id="off" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="onOldLevel_eventDisplay">
+      <sources>
+        <source>
+          <component id="FS20CommandInterpreter.1.2" />
+          <eventPort id="onOldLevel" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <groups />
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4188</width>
+      <height>8800</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

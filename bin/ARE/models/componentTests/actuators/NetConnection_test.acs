@@ -1,0 +1,651 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\NetConnection_test.acs_2017_12_14_11_43" version="20130320">
+  <components>
+    <component id="NetConnection.1" type_id="asterics.NetConnection">
+      <description>This component provides the interface for connecting this other application through the Internet.</description>
+      <ports>
+        <inputPort portTypeID="integerInputPort1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="integerInputPort2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="integerInputPort3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="integerInputPort4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="integerInputPort5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="doubleInputPort1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="doubleInputPort2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="doubleInputPort3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="doubleInputPort4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="doubleInputPort5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stringInputPort1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stringInputPort2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stringInputPort3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stringInputPort4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stringInputPort5">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="integerOutputPort1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="integerOutputPort2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="integerOutputPort3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="integerOutputPort4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="integerOutputPort5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="doubleOutputPort1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="doubleOutputPort2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="doubleOutputPort3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="doubleOutputPort4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="doubleOutputPort5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stringOutputPort1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stringOutputPort2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stringOutputPort3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stringOutputPort4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stringOutputPort5">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="connectionType" value="0" />
+        <property name="IP" value="localhost" />
+        <property name="port" value="21112" />
+        <property name="multisession" value="false" />
+      </properties>
+      <layout>
+        <posX>123</posX>
+        <posY>65</posY>
+      </layout>
+    </component>
+    <component id="NetConnection.1.1" type_id="asterics.NetConnection">
+      <description>This component provides the interface for connecting this other application through the Internet.</description>
+      <ports>
+        <inputPort portTypeID="integerInputPort1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="integerInputPort2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="integerInputPort3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="integerInputPort4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="integerInputPort5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="doubleInputPort1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="doubleInputPort2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="doubleInputPort3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="doubleInputPort4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="doubleInputPort5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stringInputPort1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stringInputPort2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stringInputPort3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stringInputPort4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stringInputPort5">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="integerOutputPort1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="integerOutputPort2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="integerOutputPort3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="integerOutputPort4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="integerOutputPort5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="doubleOutputPort1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="doubleOutputPort2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="doubleOutputPort3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="doubleOutputPort4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="doubleOutputPort5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stringOutputPort1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stringOutputPort2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stringOutputPort3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stringOutputPort4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stringOutputPort5">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="connectionType" value="1" />
+        <property name="IP" value="localhost" />
+        <property name="port" value="21112" />
+        <property name="multisession" value="false" />
+      </properties>
+      <layout>
+        <posX>258</posX>
+        <posY>73</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Send event" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Event 1" />
+        <property name="buttonCaption2" value="Event 2" />
+        <property name="buttonCaption3" value="Event 3" />
+        <property name="buttonCaption4" value="Event 4" />
+        <property name="buttonCaption5" value="Event 5" />
+        <property name="buttonCaption6" value="Event 6" />
+        <property name="buttonCaption7" value="Event 7" />
+        <property name="buttonCaption8" value="Event 8" />
+        <property name="buttonCaption9" value="Event 9" />
+        <property name="buttonCaption10" value="Event 10" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>7</posX>
+        <posY>285</posY>
+      </layout>
+      <gui>
+        <posX>12</posX>
+        <posY>1200</posY>
+        <width>4500</width>
+        <height>800</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Event 1" />
+        <property name="slot2" value="Event 2" />
+        <property name="slot3" value="Event 3" />
+        <property name="slot4" value="Event 4" />
+        <property name="slot5" value="Event 5" />
+        <property name="slot6" value="Event 6" />
+        <property name="slot7" value="Event 7" />
+        <property name="slot8" value="Event 8" />
+        <property name="slot9" value="Event 9" />
+        <property name="slot10" value="Event 10" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>401</posX>
+        <posY>288</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Received event:" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>570</posX>
+        <posY>289</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>578</posY>
+        <width>4500</width>
+        <height>500</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button2_inputEvent2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="NetConnection.1" />
+          <eventPort id="inputEvent2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_inputEvent3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="NetConnection.1" />
+          <eventPort id="inputEvent3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_inputEvent4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="NetConnection.1" />
+          <eventPort id="inputEvent4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_inputEvent5">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="NetConnection.1" />
+          <eventPort id="inputEvent5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_inputEvent6">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="NetConnection.1" />
+          <eventPort id="inputEvent6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button7_inputEvent7">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="NetConnection.1" />
+          <eventPort id="inputEvent7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button8_inputEvent8">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="NetConnection.1" />
+          <eventPort id="inputEvent8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button9_inputEvent9">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="NetConnection.1" />
+          <eventPort id="inputEvent9" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button10_inputEvent10">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="NetConnection.1" />
+          <eventPort id="inputEvent10" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="outputEvent1_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="NetConnection.1.1" />
+          <eventPort id="outputEvent1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="outputEvent2_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="NetConnection.1.1" />
+          <eventPort id="outputEvent2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="outputEvent3_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="NetConnection.1.1" />
+          <eventPort id="outputEvent3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="outputEvent4_dispatchSlot4">
+      <sources>
+        <source>
+          <component id="NetConnection.1.1" />
+          <eventPort id="outputEvent4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="outputEvent5_dispatchSlot5">
+      <sources>
+        <source>
+          <component id="NetConnection.1.1" />
+          <eventPort id="outputEvent5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="outputEvent6_dispatchSlot6">
+      <sources>
+        <source>
+          <component id="NetConnection.1.1" />
+          <eventPort id="outputEvent6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="outputEvent7_dispatchSlot7">
+      <sources>
+        <source>
+          <component id="NetConnection.1.1" />
+          <eventPort id="outputEvent7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="outputEvent7_dispatchSlot8">
+      <sources>
+        <source>
+          <component id="NetConnection.1.1" />
+          <eventPort id="outputEvent8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="outputEvent9_dispatchSlot9">
+      <sources>
+        <source>
+          <component id="NetConnection.1.1" />
+          <eventPort id="outputEvent9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot9" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="outputEvent10_dispatchSlot10">
+      <sources>
+        <source>
+          <component id="NetConnection.1.1" />
+          <eventPort id="outputEvent10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot10" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_inputEvent1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="NetConnection.1" />
+          <eventPort id="inputEvent1" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>5088</width>
+      <height>2311</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

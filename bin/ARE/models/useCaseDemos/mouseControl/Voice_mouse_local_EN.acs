@@ -1,0 +1,702 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\mouseControl\Voice_mouse_local_EN.acs_2017_12_14_11_53" version="20130320">
+  <modelDescription>
+    <shortDescription>Local voice mouse</shortDescription>
+    <requirements>Microsoft Speech Platform Server version 11.</requirements>
+    <description>The mouse controlled by the voice commands only.</description>
+  </modelDescription>
+  <components>
+    <component id="SpeechProcessor.1" type_id="asterics.SpeechProcessor">
+      <description>This plugin allows to genereate and recognize speech via the speech processor server application</description>
+      <ports>
+        <inputPort portTypeID="speak">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="command">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="language" value="0" />
+        <property name="recognitionConfidence" value="0.4" />
+        <property name="speechLoopDelay" value="1500" />
+        <property name="activationCommand" value="computer, listen!" />
+        <property name="deactivationCommand" value="computer, stop!" />
+        <property name="helpCommand" value="computer, help!" />
+        <property name="mode" value="0" />
+        <property name="command1" value="Up" />
+        <property name="command2" value="Down" />
+        <property name="command3" value="Left" />
+        <property name="command4" value="Right" />
+        <property name="command5" value="Stop" />
+        <property name="command6" value="Click" />
+        <property name="command7" value="Properties" />
+        <property name="command8" value="Property" />
+        <property name="command9" value="Run" />
+        <property name="command10" value="" />
+        <property name="command11" value="" />
+        <property name="command12" value="" />
+        <property name="command13" value="" />
+        <property name="command14" value="" />
+        <property name="command15" value="" />
+        <property name="command16" value="" />
+        <property name="command17" value="" />
+        <property name="command18" value="" />
+        <property name="command19" value="" />
+        <property name="command20" value="" />
+        <property name="command21" value="" />
+        <property name="command22" value="" />
+        <property name="command23" value="" />
+        <property name="command24" value="" />
+        <property name="command25" value="" />
+      </properties>
+      <layout>
+        <posX>713</posX>
+        <posY>299</posY>
+      </layout>
+    </component>
+    <component id="SignalShaper.1" type_id="asterics.SignalShaper">
+      <description>This component allow to shape signal from the lines</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="interval" value="100" />
+        <property name="numberOfLines" value="1" />
+        <property name="behaviourAfterFinish" value="2" />
+        <property name="beginValue1" value="1" />
+        <property name="endValue1" value="1" />
+        <property name="time1" value="1000" />
+        <property name="beginValue2" value="1" />
+        <property name="endValue2" value="5" />
+        <property name="time2" value="7000" />
+        <property name="beginValue3" value="0" />
+        <property name="endValue3" value="0" />
+        <property name="time3" value="0" />
+        <property name="beginValue4" value="0" />
+        <property name="endValue4" value="0" />
+        <property name="time4" value="0" />
+        <property name="beginValue5" value="0" />
+        <property name="endValue5" value="0" />
+        <property name="time5" value="0" />
+      </properties>
+      <layout>
+        <posX>38</posX>
+        <posY>87</posY>
+      </layout>
+    </component>
+    <component id="PathSelector.1" type_id="asterics.PathSelector">
+      <description>Pathselector routes signal to one of four output ports</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="activePorts" value="2" />
+      </properties>
+      <layout>
+        <posX>341</posX>
+        <posY>93</posY>
+      </layout>
+    </component>
+    <component id="PathSelector.1.1" type_id="asterics.PathSelector">
+      <description>Pathselector routes signal to one of four output ports</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="activePorts" value="2" />
+      </properties>
+      <layout>
+        <posX>925</posX>
+        <posY>117</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="2000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1024" />
+      </properties>
+      <layout>
+        <posX>1078</posX>
+        <posY>127</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="-1*a" />
+      </properties>
+      <layout>
+        <posX>563</posX>
+        <posY>107</posY>
+      </layout>
+    </component>
+    <component id="MultiSource.1" type_id="asterics.MultiSource">
+      <description>Passes signal from input ports to the one output port</description>
+      <ports>
+        <inputPort portTypeID="input1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input4">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>752</posX>
+        <posY>106</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalShaper.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="PathSelector.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="PathSelector.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MultiSource.1" />
+        <port id="input1" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="PathSelector.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="MultiSource.1" />
+        <port id="input2" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="MultiSource.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="PathSelector.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="PathSelector.1.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="PathSelector.1.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="recognizedCommand1_select1">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_select2">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_select2">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1.1" />
+          <eventPort id="select2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_select2">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1.1" />
+          <eventPort id="select2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_select1">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1.1" />
+          <eventPort id="select1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_select1">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1.1" />
+          <eventPort id="select1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_select1">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_select2">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand10_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand10_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand8_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand9_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand8_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand9_select3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_leftClick">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand8_rightClick">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand9_doubleClick">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="doubleClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_start">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="SignalShaper.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_start">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="SignalShaper.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_start">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="SignalShaper.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_start">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="SignalShaper.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand8_rightClick">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>538</width>
+      <height>3844</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

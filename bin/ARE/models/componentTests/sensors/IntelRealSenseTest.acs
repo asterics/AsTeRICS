@@ -1,0 +1,295 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\IntelRealSenseTest.acs_2017_12_14_11_48" version="20130320">
+  <components>
+    <component id="IntelRealSense.1" type_id="asterics.IntelRealSense">
+      <description>My Plugin description</description>
+      <ports>
+        <outputPort portTypeID="h">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="w">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="x">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="roll">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="yaw">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pitch">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="deviceModel" value="0" />
+        <property name="enableExpressions" value="True" />
+        <property name="displayGUI" value="True" />
+        <property name="scoreBrowRaiserLeft" value="50" />
+        <property name="scoreBrowRaiserRight" value="50" />
+        <property name="scoreBrowLowererLeft" value="50" />
+        <property name="scoreBrowLowererRight" value="50" />
+        <property name="scoreSmile" value="30" />
+        <property name="scoreKiss" value="50" />
+        <property name="scoreMouthOpen" value="50" />
+        <property name="scoreThongueOut" value="50" />
+        <property name="scoreEyesClosedLeft" value="50" />
+        <property name="scoreEyesClosedRight" value="50" />
+        <property name="scoreEyesTurnLeft" value="50" />
+        <property name="scoreEyesTurnRight" value="50" />
+        <property name="scoreEyesUp" value="50" />
+        <property name="scoreEyesDown" value="50" />
+        <property name="scorePuffLeft" value="50" />
+        <property name="scorePuffRight" value="50" />
+      </properties>
+      <layout>
+        <posX>23</posX>
+        <posY>174</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>58</posX>
+        <posY>437</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>8343</posY>
+        <width>1812</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Roll" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>226</posX>
+        <posY>174</posY>
+      </layout>
+      <gui>
+        <posX>72</posX>
+        <posY>1121</posY>
+        <width>5812</width>
+        <height>2444</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Yaw" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>360</posX>
+        <posY>186</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>3565</posY>
+        <width>5875</width>
+        <height>2444</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Pitch" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>356</posX>
+        <posY>362</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>6010</posY>
+        <width>5875</width>
+        <height>2222</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>192</posX>
+        <posY>449</posY>
+      </layout>
+      <gui>
+        <posX>1822</posX>
+        <posY>8343</posY>
+        <width>2000</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1.1.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>347</posX>
+        <posY>493</posY>
+      </layout>
+      <gui>
+        <posX>3822</posX>
+        <posY>8343</posY>
+        <width>2125</width>
+        <height>1000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="IntelRealSense.1" />
+        <port id="roll" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="IntelRealSense.1" />
+        <port id="yaw" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="IntelRealSense.1" />
+        <port id="pitch" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="smile_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="IntelRealSense.1" />
+          <eventPort id="smile" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="kiss_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="IntelRealSense.1" />
+          <eventPort id="kiss" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eyesClosedLeft_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="IntelRealSense.1" />
+          <eventPort id="eyesClosedLeft" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1.1.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6438</width>
+      <height>9667</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

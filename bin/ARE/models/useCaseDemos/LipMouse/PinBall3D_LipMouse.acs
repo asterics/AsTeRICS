@@ -1,0 +1,855 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\LipMouse\PinBall3D_LipMouse.acs_2017_12_14_11_52" version="20130320">
+  <components>
+    <component id="Keyboard.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="z" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>471</posX>
+        <posY>259</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value=" " />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>469</posX>
+        <posY>576</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>490</posX>
+        <posY>41</posY>
+      </layout>
+      <gui>
+        <posX>62</posX>
+        <posY>6000</posY>
+        <width>3612</width>
+        <height>956</height>
+      </gui>
+    </component>
+    <component id="ApplicationLauncher.1" type_id="asterics.ApplicationLauncher">
+      <description>starts external software applications via path and  filename (.exe)</description>
+      <ports>
+        <inputPort portTypeID="filename">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="arguments">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stdIn">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="stdOut">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stdErr">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="exitValue">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="executeOnPlatform" value="ALL" />
+        <property name="executionMode" value="START_APPLICATION" />
+        <property name="defaultApplication" value="&quot;C:\Program Files (x86)\Microsoft Games\Pinball\pinball.exe&quot;" />
+        <property name="arguments" value="" />
+        <property name="workingDirectory" value="." />
+        <property name="closeCmd" value="" />
+        <property name="autoLaunch" value="True" />
+        <property name="autoClose" value="true" />
+        <property name="onlyByEvent" value="false" />
+      </properties>
+      <layout>
+        <posX>596</posX>
+        <posY>42</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1.1.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="/" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>470</posX>
+        <posY>415</posY>
+      </layout>
+    </component>
+    <component id="Lipmouse.1" type_id="asterics.Lipmouse">
+      <description>Lipmouse CIM</description>
+      <ports>
+        <outputPort portTypeID="X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="uniqueID" value="not used" />
+        <property name="periodicADCUpdate" value="50" />
+        <property name="sipThreshold" value="505" />
+        <property name="sipTime" value="700" />
+        <property name="puffThreshold" value="520" />
+        <property name="puffTime" value="700" />
+      </properties>
+      <layout>
+        <posX>15</posX>
+        <posY>662</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.2.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="y" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>157</posX>
+        <posY>40</posY>
+      </layout>
+      <gui>
+        <posX>75</posX>
+        <posY>2467</posY>
+        <width>5925</width>
+        <height>1689</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="x" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>40</posX>
+        <posY>40</posY>
+      </layout>
+      <gui>
+        <posX>38</posX>
+        <posY>578</posY>
+        <width>5863</width>
+        <height>1800</height>
+      </gui>
+    </component>
+    <component id="Threshold.1.2.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="520" />
+        <property name="thresholdLow" value="520" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>242</posX>
+        <posY>258</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="pressure" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>276</posX>
+        <posY>40</posY>
+      </layout>
+      <gui>
+        <posX>75</posX>
+        <posY>4289</posY>
+        <width>5838</width>
+        <height>1644</height>
+      </gui>
+    </component>
+    <component id="Threshold.1.2.1.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="300" />
+        <property name="thresholdLow" value="300" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>247</posX>
+        <posY>410</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.2.1.1.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="200" />
+        <property name="thresholdLow" value="200" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>246</posX>
+        <posY>574</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.2.1.1.1.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="-100" />
+        <property name="thresholdLow" value="-100" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>247</posX>
+        <posY>738</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1.1.2" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="x" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>465</posX>
+        <posY>743</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.2.1.1.1.2" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="100" />
+        <property name="thresholdLow" value="100" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>251</posX>
+        <posY>895</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1.1.3" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="." />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>463</posX>
+        <posY>899</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.2.1.1.1.3" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="-100" />
+        <property name="thresholdLow" value="-100" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>250</posX>
+        <posY>1049</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1.1.4" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="{ARROWUP}" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>461</posX>
+        <posY>1050</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.6">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="Threshold.1.2.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="X" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="Y" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="Threshold.1.2.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="Y" />
+      </source>
+      <target>
+        <component id="Threshold.1.2.1.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="Y" />
+      </source>
+      <target>
+        <component id="Threshold.1.2.1.1.1.3" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="X" />
+      </source>
+      <target>
+        <component id="Threshold.1.2.1.1.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="X" />
+      </source>
+      <target>
+        <component id="Threshold.1.2.1.1.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="eventNegEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_holdKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_releaseKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_holdKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1.1" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_releaseKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1.1" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_holdKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_releaseKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_holdKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.3" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1.4" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_releaseKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.3" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1.4" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_holdKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1.2" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_releaseKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1.2" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_holdKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.2" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1.3" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_releaseKey">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.2" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1.3" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.2" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.2" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.3" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_eventDisplay">
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1.1.1.3" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <groups />
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6650</width>
+      <height>8600</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

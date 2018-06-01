@@ -1,0 +1,410 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\EventCascade_test.acs_2017_12_14_11_45" version="20130320">
+  <components>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Next Event" />
+        <property name="buttonCaption2" value="Previous Event" />
+        <property name="buttonCaption3" value="Start Cascade" />
+        <property name="buttonCaption4" value="Stop Cascade" />
+        <property name="buttonCaption5" value="Reset" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>40</posX>
+        <posY>40</posY>
+      </layout>
+      <gui>
+        <posX>225</posX>
+        <posY>800</posY>
+        <width>1600</width>
+        <height>3100</height>
+      </gui>
+    </component>
+    <component id="EventCascade.1" type_id="asterics.EventCascade">
+      <description>allows to specify a sequence of events with arbitrary delay times and loops</description>
+      <ports />
+      <properties>
+        <property name="activeTriggers" value="10" />
+        <property name="loops" value="2" />
+        <property name="autoStart" value="True" />
+        <property name="delayBeforeTrigger1" value="500" />
+        <property name="delayBeforeTrigger2" value="100" />
+        <property name="delayBeforeTrigger3" value="2500" />
+        <property name="delayBeforeTrigger4" value="100" />
+        <property name="delayBeforeTrigger5" value="50" />
+        <property name="delayBeforeTrigger6" value="50" />
+        <property name="delayBeforeTrigger7" value="2000" />
+        <property name="delayBeforeTrigger8" value="2" />
+        <property name="delayBeforeTrigger9" value="2" />
+        <property name="delayBeforeTrigger10" value="1000" />
+        <property name="delayBeforeTrigger11" value="500" />
+        <property name="delayBeforeTrigger12" value="500" />
+        <property name="delayBeforeTrigger13" value="500" />
+        <property name="delayBeforeTrigger14" value="500" />
+        <property name="delayBeforeTrigger15" value="500" />
+      </properties>
+      <layout>
+        <posX>207</posX>
+        <posY>28</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>382</posX>
+        <posY>46</posY>
+      </layout>
+      <gui>
+        <posX>1962</posX>
+        <posY>778</posY>
+        <width>2900</width>
+        <height>3100</height>
+      </gui>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="button1_nextEvent">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCascade.1" />
+          <eventPort id="nextEvent" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_previousEvent">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCascade.1" />
+          <eventPort id="previousEvent" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_startCascade">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCascade.1" />
+          <eventPort id="startCascade" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_stopCascade">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCascade.1" />
+          <eventPort id="stopCascade" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_reset">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCascade.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger1_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger2_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger3_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger4_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger5_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger6_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger7_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger8_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger9_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger10_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger11_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger11" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger12_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger12" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger13_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger13" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger14_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger14" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger15_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger15" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>5688</width>
+      <height>4200</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,866 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\LipMouse\mouthmouse_setup.acs_2017_12_14_11_52" version="20130320">
+  <components>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="bar-graph" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>175</posX>
+        <posY>498</posY>
+      </layout>
+      <gui>
+        <posX>5262</posX>
+        <posY>2667</posY>
+        <width>1250</width>
+        <height>3089</height>
+      </gui>
+    </component>
+    <component id="Lipmouse.1" type_id="asterics.Lipmouse">
+      <description>Lipmouse CIM</description>
+      <ports>
+        <outputPort portTypeID="X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="uniqueID" value="not used" />
+        <property name="periodicADCUpdate" value="50" />
+        <property name="sipThreshold" value="505" />
+        <property name="sipTime" value="700" />
+        <property name="puffThreshold" value="520" />
+        <property name="puffTime" value="700" />
+      </properties>
+      <layout>
+        <posX>32</posX>
+        <posY>119</posY>
+      </layout>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="1000" />
+      </properties>
+      <layout>
+        <posX>25</posX>
+        <posY>403</posY>
+      </layout>
+    </component>
+    <component id="DotMeter.1" type_id="asterics.DotMeter">
+      <description>DotMeter</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="xMin" value="-50" />
+        <property name="xMax" value="50" />
+        <property name="yMin" value="-50" />
+        <property name="yMax" value="50" />
+        <property name="mode" value="0" />
+        <property name="dotSize" value="20" />
+        <property name="centerLine" value="true" />
+        <property name="displayDot" value="true" />
+        <property name="displayCaptions" value="true" />
+        <property name="gridColor" value="0" />
+        <property name="dotColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="dotMeter" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>634</posX>
+        <posY>377</posY>
+      </layout>
+      <gui>
+        <posX>5250</posX>
+        <posY>644</posY>
+        <width>1238</width>
+        <height>1911</height>
+      </gui>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="False" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="4000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1080" />
+      </properties>
+      <layout>
+        <posX>625</posX>
+        <posY>182</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="490" />
+        <property name="thresholdLow" value="490" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="1" />
+      </properties>
+      <layout>
+        <posX>330</posX>
+        <posY>496</posY>
+      </layout>
+    </component>
+    <component id="AdjustmentCurve.1" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="mouthmouse_x" />
+        <property name="displayGui" value="true" />
+        <property name="inMin" value="-10" />
+        <property name="inMax" value="10" />
+        <property name="outMin" value="-10" />
+        <property name="outMax" value="10" />
+        <property name="mode" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="dotMeter" />
+      </properties>
+      <layout>
+        <posX>412</posX>
+        <posY>177</posY>
+      </layout>
+      <gui>
+        <posX>385</posX>
+        <posY>565</posY>
+        <width>2250</width>
+        <height>4222</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="enable/disable mouse" />
+        <property name="buttonCaption2" value="calibrate x/y" />
+        <property name="buttonCaption3" value="set led1" />
+        <property name="buttonCaption4" value="clear led1" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>488</posX>
+        <posY>502</posY>
+      </layout>
+      <gui>
+        <posX>5262</posX>
+        <posY>5800</posY>
+        <width>1250</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="AdjustmentCurve.1.1" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="mouthmouse_y" />
+        <property name="displayGui" value="true" />
+        <property name="inMin" value="-10" />
+        <property name="inMax" value="10" />
+        <property name="outMin" value="-10" />
+        <property name="outMax" value="10" />
+        <property name="mode" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="dotMeter" />
+      </properties>
+      <layout>
+        <posX>424</posX>
+        <posY>331</posY>
+      </layout>
+      <gui>
+        <posX>2800</posX>
+        <posY>578</posY>
+        <width>2125</width>
+        <height>4222</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>415</posX>
+        <posY>17</posY>
+      </layout>
+      <gui>
+        <posX>338</posX>
+        <posY>4867</posY>
+        <width>2325</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>544</posX>
+        <posY>24</posY>
+      </layout>
+      <gui>
+        <posX>2738</posX>
+        <posY>4844</posY>
+        <width>2325</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="Averager.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="7" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>282</posX>
+        <posY>163</posY>
+      </layout>
+    </component>
+    <component id="Averager.1.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="7" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>287</posX>
+        <posY>312</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>158</posX>
+        <posY>224</posY>
+      </layout>
+      <gui>
+        <posX>510</posX>
+        <posY>6343</posY>
+        <width>4312</width>
+        <height>1444</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.15">
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="AdjustmentCurve.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="X" />
+      </source>
+      <target>
+        <component id="Averager.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="Y" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="X" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="AdjustmentCurve.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="DotMeter.1" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="AdjustmentCurve.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="DotMeter.1" />
+        <port id="y" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="AdjustmentCurve.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="AdjustmentCurve.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="Y" />
+      </source>
+      <target>
+        <component id="Averager.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="AdjustmentCurve.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="eventNegEdge_leftClick">
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_deactivate">
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="deactivate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_toggle">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="toggle" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_calibration">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Lipmouse.1" />
+          <eventPort id="calibration" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_calibration">
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Lipmouse.1" />
+          <eventPort id="calibration" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_setLed1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Lipmouse.1" />
+          <eventPort id="setLed1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_clearLed1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Lipmouse.1" />
+          <eventPort id="clearLed1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="sip_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="sip" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="longSip_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="longSip" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="sipStart_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="sipStart" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="sipEnd_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="sipEnd" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="puff_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="puff" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="longPuff_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="longPuff" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="puffStart_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="puffStart" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="puffEnd_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="puffEnd" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1Pressed_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button1Pressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1Released_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button1Released" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2Pressed_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button2Pressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2Released_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button2Released" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3Pressed_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button3Pressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3Released_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button3Released" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>280</posX>
+      <posY>0</posY>
+      <width>6238</width>
+      <height>8133</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

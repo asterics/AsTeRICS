@@ -1,0 +1,452 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\AndroidPhoneControl_test.acs_2017_12_14_11_42" version="20130320">
+  <components>
+    <component id="EditBox.1" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Put the phone number:" />
+        <property name="default" value="" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="false" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>29</posX>
+        <posY>3</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>622</posY>
+        <width>3300</width>
+        <height>700</height>
+      </gui>
+    </component>
+    <component id="EditBox.2" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Put the SMS content:" />
+        <property name="default" value="" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="false" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>30</posX>
+        <posY>186</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>1444</posY>
+        <width>3300</width>
+        <height>700</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Send SMS" />
+        <property name="buttonCaption2" value="Make Call" />
+        <property name="buttonCaption3" value="Accept Call" />
+        <property name="buttonCaption4" value="Drop Call" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>32</posX>
+        <posY>513</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>2244</posY>
+        <width>3300</width>
+        <height>800</height>
+      </gui>
+    </component>
+    <component id="AndroidPhoneControl.1" type_id="asterics.AndroidPhoneControl">
+      <description>Control Android phone with AsTeRICS  application running</description>
+      <ports>
+        <inputPort portTypeID="PhoneID">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="SMSContent">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="RemotePhoneID">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ReceivedSMS">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ErrorNumber">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="connectionType" value="0" />
+        <property name="IP" value="localhost" />
+        <property name="port" value="21111" />
+        <property name="defaultPhoneID" value="" />
+      </properties>
+      <layout>
+        <posX>259</posX>
+        <posY>89</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Phone number:" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>464</posX>
+        <posY>19</posY>
+      </layout>
+      <gui>
+        <posX>3438</posX>
+        <posY>622</posY>
+        <width>3300</width>
+        <height>700</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="SMS content:" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>462</posX>
+        <posY>187</posY>
+      </layout>
+      <gui>
+        <posX>3450</posX>
+        <posY>1467</posY>
+        <width>3300</width>
+        <height>700</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Idle" />
+        <property name="slot2" value="Ring" />
+        <property name="slot3" value="Connected" />
+        <property name="slot4" value="New SMS" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>463</posX>
+        <posY>407</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.3" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="State:" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>642</posX>
+        <posY>497</posY>
+      </layout>
+      <gui>
+        <posX>3450</posX>
+        <posY>2267</posY>
+        <width>3300</width>
+        <height>700</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="EditBox.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="AndroidPhoneControl.1" />
+        <port id="PhoneID" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="EditBox.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="AndroidPhoneControl.1" />
+        <port id="SMSContent" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="AndroidPhoneControl.1" />
+        <port id="RemotePhoneID" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="AndroidPhoneControl.1" />
+        <port id="ReceivedSMS" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.3" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_SendSMS">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AndroidPhoneControl.1" />
+          <eventPort id="SendSMS" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_MakePhoneCall">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AndroidPhoneControl.1" />
+          <eventPort id="MakePhoneCall" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_DropPhoneCall">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AndroidPhoneControl.1" />
+          <eventPort id="DropPhoneCall" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="idleState_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="AndroidPhoneControl.1" />
+          <eventPort id="idleState" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="ringState_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="AndroidPhoneControl.1" />
+          <eventPort id="ringState" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="connectedState_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="AndroidPhoneControl.1" />
+          <eventPort id="connectedState" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="newSMS_dispatchSlot4">
+      <sources>
+        <source>
+          <component id="AndroidPhoneControl.1" />
+          <eventPort id="newSMS" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_AcceptPhoneCall">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AndroidPhoneControl.1" />
+          <eventPort id="AcceptPhoneCall" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>7362</width>
+      <height>3267</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,464 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\StringFormatter_test.acs_2017_12_14_11_46" version="20130320">
+  <components>
+    <component id="StringFormatter.1" type_id="asterics.StringFormatter">
+      <description>Uses the defined format string and converts the values of the input ports according to that format string. See Java Class Formatter.</description>
+      <ports>
+        <inputPort portTypeID="in1String">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in2String">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in3Double">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in4Integer">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setFormatStr">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="formattedStr">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="formatString" value="%1$s, %2$s, %3$4.2f, %4$d" />
+        <property name="defaultIn1String" value="" />
+        <property name="defaultIn2String" value="" />
+        <property name="defaultIn3Double" value="0" />
+        <property name="defaultIn4Integer" value="0" />
+        <property name="sendOnlyByEvent" value="False" />
+      </properties>
+      <layout>
+        <posX>312</posX>
+        <posY>186</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="200" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>63</posX>
+        <posY>589</posY>
+      </layout>
+    </component>
+    <component id="TextArea.1" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>494</posX>
+        <posY>97</posY>
+      </layout>
+      <gui>
+        <posX>1447</posX>
+        <posY>454</posY>
+        <width>3000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="y-Value of sine" />
+        <property name="slot2" value="" />
+        <property name="slot3" value="" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>61</posX>
+        <posY>88</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="2 Hz" />
+        <property name="slot2" value="" />
+        <property name="slot3" value="" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>58</posX>
+        <posY>264</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Set values" />
+        <property name="buttonCaption2" value="Change formatString" />
+        <property name="buttonCaption3" value="Send formatted String" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>342</posX>
+        <posY>409</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>444</posY>
+        <width>1375</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="ConstantDispatcher.1" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="100" />
+        <property name="slot2" value="0" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>68</posX>
+        <posY>424</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.2" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="%3$4.2f" />
+        <property name="slot2" value="" />
+        <property name="slot3" value="" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>489</posX>
+        <posY>409</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="StringFormatter.1" />
+        <port id="in3Double" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="StringFormatter.1" />
+        <port id="formattedStr" />
+      </source>
+      <target>
+        <component id="TextArea.1" />
+        <port id="setText" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="StringFormatter.1" />
+        <port id="in1String" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="StringDispatcher.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="StringFormatter.1" />
+        <port id="in2String" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="StringDispatcher.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="StringFormatter.1" />
+        <port id="setFormatStr" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="ConstantDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="StringFormatter.1" />
+        <port id="in4Integer" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.2" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_sendFormattedStr">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringFormatter.1" />
+          <eventPort id="sendFormattedStr" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4938</width>
+      <height>2556</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

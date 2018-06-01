@@ -1,0 +1,265 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\Sampler_test.acs_2017_12_14_11_46" version="20130320">
+  <components>
+    <component id="SignalShaper.1" type_id="asterics.SignalShaper">
+      <description>This component allow to shape signal from the lines</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="interval" value="20" />
+        <property name="numberOfLines" value="1" />
+        <property name="behaviourAfterFinish" value="1" />
+        <property name="beginValue1" value="0" />
+        <property name="endValue1" value="10" />
+        <property name="time1" value="3000" />
+        <property name="beginValue2" value="10" />
+        <property name="endValue2" value="0" />
+        <property name="time2" value="1000" />
+        <property name="beginValue3" value="0" />
+        <property name="endValue3" value="0" />
+        <property name="time3" value="0" />
+        <property name="beginValue4" value="0" />
+        <property name="endValue4" value="0" />
+        <property name="time4" value="0" />
+        <property name="beginValue5" value="0" />
+        <property name="endValue5" value="0" />
+        <property name="time5" value="0" />
+      </properties>
+      <layout>
+        <posX>4</posX>
+        <posY>23</posY>
+      </layout>
+    </component>
+    <component id="Sampler.1" type_id="asterics.Sampler">
+      <description>Sets the constant rate of the sampling</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="samplingRate" value="400" />
+        <property name="responseTime" value="0" />
+        <property name="sendNullSamples" value="false" />
+      </properties>
+      <layout>
+        <posX>226</posX>
+        <posY>32</posY>
+      </layout>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="500" />
+      </properties>
+      <layout>
+        <posX>14</posX>
+        <posY>224</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Input" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>152</posX>
+        <posY>265</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>867</posY>
+        <width>5900</width>
+        <height>2100</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Sampling 400 Hz" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>380</posX>
+        <posY>44</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>3133</posY>
+        <width>5900</width>
+        <height>2100</height>
+      </gui>
+    </component>
+    <component id="Sampler.2" type_id="asterics.Sampler">
+      <description>Sets the constant rate of the sampling</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="samplingRate" value="15" />
+        <property name="responseTime" value="0" />
+        <property name="sendNullSamples" value="false" />
+      </properties>
+      <layout>
+        <posX>298</posX>
+        <posY>224</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.3" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Sampling 15 Hz" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>472</posX>
+        <posY>229</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>5378</posY>
+        <width>5900</width>
+        <height>2000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalShaper.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Sampler.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="SignalShaper.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="Sampler.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="SignalShaper.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Sampler.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Sampler.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Oscilloscope.3" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="output_start">
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="SignalShaper.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6488</width>
+      <height>7400</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\multipleRemoteJoysticks_test.acs_2017_12_14_11_43" version="20130320">
+  <components>
+    <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="200" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="0.2" />
+        <property name="amplitude" value="120" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="128" />
+      </properties>
+      <layout>
+        <posX>61</posX>
+        <posY>44</posY>
+      </layout>
+    </component>
+    <component id="RemoteJoystick.1" type_id="asterics.RemoteJoystick">
+      <description>Joystick emulator, communicates via HID actuator, compatible to PS3 sixaxis / SEGA Virtua Stick </description>
+      <ports>
+        <inputPort portTypeID="joystickX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickZ">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickR">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickPov">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="refreshInterval" value="0" />
+        <property name="uniqueID" value="1" />
+      </properties>
+      <layout>
+        <posX>274</posX>
+        <posY>48</posY>
+      </layout>
+    </component>
+    <component id="RemoteJoystick.2" type_id="asterics.RemoteJoystick">
+      <description>Joystick emulator, communicates via HID actuator, compatible to PS3 sixaxis / SEGA Virtua Stick </description>
+      <ports>
+        <inputPort portTypeID="joystickX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickZ">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickR">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickPov">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="refreshInterval" value="0" />
+        <property name="uniqueID" value="2" />
+      </properties>
+      <layout>
+        <posX>295</posX>
+        <posY>263</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.1.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="100" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="0.2" />
+        <property name="amplitude" value="120" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="128" />
+      </properties>
+      <layout>
+        <posX>71</posX>
+        <posY>246</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="connect 2 HID Actuators with uniqueID 1 and 2 !" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>432</posX>
+        <posY>97</posY>
+      </layout>
+      <gui>
+        <posX>238</posX>
+        <posY>1156</posY>
+        <width>6788</width>
+        <height>444</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickX" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="SignalGenerator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.2" />
+        <port id="joystickY" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>7550</width>
+      <height>3044</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\DataType_Double2Any.acs_2017_12_14_11_45" version="20130320">
+  <components>
+    <component id="DataType.1" type_id="asterics.DataType">
+      <description>Uses the given outValue and sends it to each output port using the respective data type</description>
+      <ports>
+        <inputPort portTypeID="inByte">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inChar">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inInteger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inDouble">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inString">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inBoolean">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outByte">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outChar">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outInteger">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outDouble">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outString">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outBoolean">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="outValue" value="1.1" />
+      </properties>
+      <layout>
+        <posX>44</posX>
+        <posY>52</posY>
+      </layout>
+    </component>
+    <component id="DataType.1.1.3" type_id="asterics.DataType">
+      <description>Uses the given outValue and sends it to each output port using the respective data type</description>
+      <ports>
+        <inputPort portTypeID="inByte">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inChar">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inInteger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inDouble">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inString">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inBoolean">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outByte">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outChar">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outInteger">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outDouble">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outString">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outBoolean">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="outValue" value="1.1" />
+      </properties>
+      <layout>
+        <posX>407</posX>
+        <posY>80</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.18">
+      <source>
+        <component id="DataType.1" />
+        <port id="outDouble" />
+      </source>
+      <target>
+        <component id="DataType.1.1.3" />
+        <port id="inByte" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="DataType.1" />
+        <port id="outDouble" />
+      </source>
+      <target>
+        <component id="DataType.1.1.3" />
+        <port id="inChar" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="DataType.1" />
+        <port id="outDouble" />
+      </source>
+      <target>
+        <component id="DataType.1.1.3" />
+        <port id="inInteger" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="DataType.1" />
+        <port id="outDouble" />
+      </source>
+      <target>
+        <component id="DataType.1.1.3" />
+        <port id="inDouble" />
+      </target>
+    </channel>
+    <channel id="binding.22">
+      <source>
+        <component id="DataType.1" />
+        <port id="outDouble" />
+      </source>
+      <target>
+        <component id="DataType.1.1.3" />
+        <port id="inString" />
+      </target>
+    </channel>
+    <channel id="binding.23">
+      <source>
+        <component id="DataType.1" />
+        <port id="outDouble" />
+      </source>
+      <target>
+        <component id="DataType.1.1.3" />
+        <port id="inBoolean" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9000</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,804 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\LipMouse_Infrared.acs_2017_12_14_11_48" version="20130320">
+  <components>
+    <component id="StringAppend.1" type_id="asterics.StringAppend">
+      <description>This plugin allows assembly of a string from single characters or substrings. The current and final results are sent to output ports.</description>
+      <ports>
+        <inputPort portTypeID="inStr">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inChar">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="actResult">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="finalResult">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="autoSendAtEnter" value="false" />
+        <property name="defaultValue" value="ir " />
+      </properties>
+      <layout>
+        <posX>663</posX>
+        <posY>68</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="learn new Command" />
+        <property name="buttonCaption2" value="play Command" />
+        <property name="buttonCaption3" value="clear Command" />
+        <property name="buttonCaption4" value="clear all IR Commands" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>31</posX>
+        <posY>467</posY>
+      </layout>
+      <gui>
+        <posX>1312</posX>
+        <posY>2444</posY>
+        <width>5438</width>
+        <height>2444</height>
+      </gui>
+    </component>
+    <component id="StringPathSelector.1" type_id="asterics.StringPathSelector">
+      <description>StringPathselector routes signal to one of four output ports</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out8">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="activePorts" value="2" />
+      </properties>
+      <layout>
+        <posX>303</posX>
+        <posY>167</posY>
+      </layout>
+    </component>
+    <component id="StringAppend.1.1" type_id="asterics.StringAppend">
+      <description>This plugin allows assembly of a string from single characters or substrings. The current and final results are sent to output ports.</description>
+      <ports>
+        <inputPort portTypeID="inStr">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inChar">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="actResult">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="finalResult">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="autoSendAtEnter" value="false" />
+        <property name="defaultValue" value="ip " />
+      </properties>
+      <layout>
+        <posX>667</posX>
+        <posY>236</posY>
+      </layout>
+    </component>
+    <component id="EditBox.1" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="IR Command Name" />
+        <property name="default" value="" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="false" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>176</posX>
+        <posY>175</posY>
+      </layout>
+      <gui>
+        <posX>1312</posX>
+        <posY>1111</posY>
+        <width>5438</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="Lipmouse.1" type_id="asterics.Lipmouse">
+      <description>Lipmouse CIM</description>
+      <ports>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="uniqueID" value="not used" />
+        <property name="periodicADCUpdate" value="50" />
+        <property name="sipThreshold" value="505" />
+        <property name="sipTime" value="700" />
+        <property name="puffThreshold" value="520" />
+        <property name="puffTime" value="700" />
+      </properties>
+      <layout>
+        <posX>961</posX>
+        <posY>168</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="iw" />
+        <property name="slot2" value="" />
+        <property name="slot3" value="" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>668</posX>
+        <posY>575</posY>
+      </layout>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="1" />
+      </properties>
+      <layout>
+        <posX>33</posX>
+        <posY>681</posY>
+      </layout>
+    </component>
+    <component id="EventDelay.1" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="100" />
+      </properties>
+      <layout>
+        <posX>42</posX>
+        <posY>241</posY>
+      </layout>
+    </component>
+    <component id="TextArea.1" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>962</posX>
+        <posY>320</posY>
+      </layout>
+      <gui>
+        <posX>6938</posX>
+        <posY>1111</posY>
+        <width>938</width>
+        <height>3778</height>
+      </gui>
+    </component>
+    <component id="EventDelay.1.1" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="200" />
+      </properties>
+      <layout>
+        <posX>557</posX>
+        <posY>67</posY>
+      </layout>
+    </component>
+    <component id="EventDelay.1.1.1" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="200" />
+      </properties>
+      <layout>
+        <posX>540</posX>
+        <posY>233</posY>
+      </layout>
+    </component>
+    <component id="MultiSourceString.1" type_id="asterics.MultiSourceString">
+      <description>Passes strings from input ports to the one output port</description>
+      <ports>
+        <inputPort portTypeID="input1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input4">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>828</posX>
+        <posY>344</posY>
+      </layout>
+    </component>
+    <component id="EventDelay.1.1.2" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="200" />
+      </properties>
+      <layout>
+        <posX>177</posX>
+        <posY>682</posY>
+      </layout>
+    </component>
+    <component id="StringAppend.1.1.1" type_id="asterics.StringAppend">
+      <description>This plugin allows assembly of a string from single characters or substrings. The current and final results are sent to output ports.</description>
+      <ports>
+        <inputPort portTypeID="inStr">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inChar">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="actResult">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="finalResult">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="autoSendAtEnter" value="false" />
+        <property name="defaultValue" value="ic " />
+      </properties>
+      <layout>
+        <posX>658</posX>
+        <posY>396</posY>
+      </layout>
+    </component>
+    <component id="EventDelay.1.1.1.1" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="200" />
+      </properties>
+      <layout>
+        <posX>546</posX>
+        <posY>395</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.1">
+      <source>
+        <component id="EditBox.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="StringPathSelector.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="StringPathSelector.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="StringAppend.1.1" />
+        <port id="inStr" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="StringPathSelector.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="StringAppend.1" />
+        <port id="inStr" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="StringAppend.1.1" />
+        <port id="finalResult" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input2" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="MultiSourceString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextArea.1" />
+        <port id="appendText" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="MultiSourceString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Lipmouse.1" />
+        <port id="AtCmd" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input4" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="StringAppend.1" />
+        <port id="finalResult" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input1" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="StringAppend.1.1.1" />
+        <port id="finalResult" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input3" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="StringPathSelector.1" />
+        <port id="out3" />
+      </source>
+      <target>
+        <component id="StringAppend.1.1.1" />
+        <port id="inStr" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="output_send">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDelay.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EditBox.1" />
+          <eventPort id="send" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_input">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_input">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_select1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringPathSelector.1" />
+          <eventPort id="select1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_select2">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringPathSelector.1" />
+          <eventPort id="select2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_sendNowAndClear">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDelay.1.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringAppend.1" />
+          <eventPort id="sendNowAndClear" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_input">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_input">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1.1.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_sendNowAndClear">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDelay.1.1.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringAppend.1.1" />
+          <eventPort id="sendNowAndClear" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_select8">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringPathSelector.1" />
+          <eventPort id="select8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_input">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1.1.2" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_input">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1.1.2" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_select8">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDelay.1.1.2" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringPathSelector.1" />
+          <eventPort id="select8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_sendNowAndClear">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDelay.1.1.1.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringAppend.1.1.1" />
+          <eventPort id="sendNowAndClear" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_input">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1.1.1.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_input">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1.1.2" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_input">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_select3">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringPathSelector.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>1010</posX>
+      <posY>422</posY>
+      <width>7562</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

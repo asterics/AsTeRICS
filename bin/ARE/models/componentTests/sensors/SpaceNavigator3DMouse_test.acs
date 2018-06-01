@@ -1,0 +1,425 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\SpaceNavigator3DMouse_test.acs_2017_12_14_11_49" version="20130320">
+  <components>
+    <component id="SpaceNavigator3DMouse.1" type_id="asterics.SpaceNavigator3DMouse">
+      <description>Captures inputs from the 3D-Connexion SpaceNavigator Mouse</description>
+      <ports>
+        <outputPort portTypeID="mouseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="mouseY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="mouseZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="mouseRx">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="mouseRy">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="mouseRz">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="buttons">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="interval" value="300" />
+      </properties>
+      <layout>
+        <posX>12</posX>
+        <posY>56</posY>
+      </layout>
+    </component>
+    <component id="DoubleToString.1" type_id="asterics.DoubleToString">
+      <description>Converts double to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>176</posX>
+        <posY>36</posY>
+      </layout>
+    </component>
+    <component id="DoubleToString.2" type_id="asterics.DoubleToString">
+      <description>Converts double to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>183</posX>
+        <posY>198</posY>
+      </layout>
+    </component>
+    <component id="DoubleToString.3" type_id="asterics.DoubleToString">
+      <description>Converts double to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>185</posX>
+        <posY>360</posY>
+      </layout>
+    </component>
+    <component id="DoubleToString.4" type_id="asterics.DoubleToString">
+      <description>Converts double to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>434</posX>
+        <posY>34</posY>
+      </layout>
+    </component>
+    <component id="DoubleToString.5" type_id="asterics.DoubleToString">
+      <description>Converts double to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>436</posX>
+        <posY>206</posY>
+      </layout>
+    </component>
+    <component id="DoubleToString.6" type_id="asterics.DoubleToString">
+      <description>Converts double to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>447</posX>
+        <posY>380</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="X" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>302</posX>
+        <posY>29</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>978</posY>
+        <width>3100</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Y" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>316</posX>
+        <posY>202</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>1756</posY>
+        <width>3100</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.3" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Z" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>318</posX>
+        <posY>370</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>2511</posY>
+        <width>3100</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.4" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Rx" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>563</posX>
+        <posY>42</posY>
+      </layout>
+      <gui>
+        <posX>3275</posX>
+        <posY>978</posY>
+        <width>3100</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.5" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Ry" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>571</posX>
+        <posY>218</posY>
+      </layout>
+      <gui>
+        <posX>3288</posX>
+        <posY>1756</posY>
+        <width>3100</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.6" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Rz" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>581</posX>
+        <posY>385</posY>
+      </layout>
+      <gui>
+        <posX>3275</posX>
+        <posY>2511</posY>
+        <width>3100</width>
+        <height>600</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SpaceNavigator3DMouse.1" />
+        <port id="mouseX" />
+      </source>
+      <target>
+        <component id="DoubleToString.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="SpaceNavigator3DMouse.1" />
+        <port id="mouseY" />
+      </source>
+      <target>
+        <component id="DoubleToString.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="SpaceNavigator3DMouse.1" />
+        <port id="mouseZ" />
+      </source>
+      <target>
+        <component id="DoubleToString.3" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="SpaceNavigator3DMouse.1" />
+        <port id="mouseRx" />
+      </source>
+      <target>
+        <component id="DoubleToString.4" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="SpaceNavigator3DMouse.1" />
+        <port id="mouseRy" />
+      </source>
+      <target>
+        <component id="DoubleToString.5" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="SpaceNavigator3DMouse.1" />
+        <port id="mouseRz" />
+      </source>
+      <target>
+        <component id="DoubleToString.6" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="DoubleToString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="DoubleToString.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="DoubleToString.3" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.3" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="DoubleToString.4" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.4" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="DoubleToString.5" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.5" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="DoubleToString.6" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.6" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>7062</width>
+      <height>3533</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

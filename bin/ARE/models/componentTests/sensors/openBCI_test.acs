@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\openBCI_test.acs_2017_12_14_11_48" version="20130320">
+  <components>
+    <component id="openBCI.1" type_id="asterics.openBCI">
+      <description>This plugin receives an openBCI data stream.  8 Channels of bioelectric data can be processed.</description>
+      <ports>
+        <outputPort portTypeID="Channel1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="AccX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="AccY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="AccZ">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="ComPort" value="COM12" />
+        <property name="BaudRate" value="115200" />
+      </properties>
+      <layout>
+        <posX>72</posX>
+        <posY>77</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>239</posX>
+        <posY>0</posY>
+      </layout>
+      <gui>
+        <posX>1062</posX>
+        <posY>1222</posY>
+        <width>7500</width>
+        <height>1778</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>358</posX>
+        <posY>5</posY>
+      </layout>
+      <gui>
+        <posX>1062</posX>
+        <posY>3111</posY>
+        <width>7500</width>
+        <height>1778</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>214</posX>
+        <posY>199</posY>
+      </layout>
+      <gui>
+        <posX>1072</posX>
+        <posY>5010</posY>
+        <width>2500</width>
+        <height>2667</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>327</posX>
+        <posY>201</posY>
+      </layout>
+      <gui>
+        <posX>3635</posX>
+        <posY>5010</posY>
+        <width>2500</width>
+        <height>2667</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.1.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>446</posX>
+        <posY>202</posY>
+      </layout>
+      <gui>
+        <posX>6197</posX>
+        <posY>5010</posY>
+        <width>2500</width>
+        <height>2667</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="openBCI.1" />
+        <port id="Channel1" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="openBCI.1" />
+        <port id="Channel2" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="openBCI.1" />
+        <port id="AccX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="openBCI.1" />
+        <port id="AccY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="openBCI.1" />
+        <port id="AccZ" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>775</posX>
+      <posY>622</posY>
+      <width>8625</width>
+      <height>7333</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

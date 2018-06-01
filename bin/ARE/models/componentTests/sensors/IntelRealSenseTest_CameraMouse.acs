@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\IntelRealSenseTest_CameraMouse.acs_2017_12_14_11_48" version="20130320">
+  <modelDescription>
+    <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
+This model is described in the AsTeRICS User Manual 
+(Section 4, Step-by-Step Guide to Model Creation)</shortDescription>
+    <requirements>A webcamera has to be connected to the system.</requirements>
+    <description>The x/y position of the user's nose is calculated by the FacetrackerLK plugin.
+These positions are directly mapped to the X/Y coordinates of the local 
+computer mouse cursor. 
+Mouse clicks are created by dwell time (not moving for a defined time)
+A Slider GUI element provides adjustment of mouse speed.
+A ButtonGrid GUI elements allows to select the type of the next mouse click. </description>
+  </modelDescription>
+  <components>
+    <component id="IntelRealSense.1" type_id="asterics.IntelRealSense">
+      <description>My Plugin description</description>
+      <ports>
+        <outputPort portTypeID="h">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="w">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="x">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="roll">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="yaw">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pitch">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="deviceModel" value="0" />
+        <property name="enableExpressions" value="true" />
+        <property name="displayGUI" value="true" />
+        <property name="scoreBrowRaiserLeft" value="50" />
+        <property name="scoreBrowRaiserRight" value="50" />
+        <property name="scoreBrowLowererLeft" value="50" />
+        <property name="scoreBrowLowererRight" value="50" />
+        <property name="scoreSmile" value="50" />
+        <property name="scoreKiss" value="50" />
+        <property name="scoreMouthOpen" value="50" />
+        <property name="scoreThongueOut" value="50" />
+        <property name="scoreEyesClosedLeft" value="50" />
+        <property name="scoreEyesClosedRight" value="50" />
+        <property name="scoreEyesTurnLeft" value="50" />
+        <property name="scoreEyesTurnRight" value="50" />
+        <property name="scoreEyesUp" value="50" />
+        <property name="scoreEyesDown" value="50" />
+        <property name="scorePuffLeft" value="50" />
+        <property name="scorePuffRight" value="50" />
+      </properties>
+      <layout>
+        <posX>16</posX>
+        <posY>118</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="True" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>607</posX>
+        <posY>27</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="30*a" />
+      </properties>
+      <layout>
+        <posX>365</posX>
+        <posY>17</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="30*a" />
+      </properties>
+      <layout>
+        <posX>369</posX>
+        <posY>175</posY>
+      </layout>
+    </component>
+    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
+      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+      <ports>
+        <inputPort portTypeID="modelName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="model" value="demomenu.acs" />
+      </properties>
+      <layout>
+        <posX>806</posX>
+        <posY>368</posY>
+      </layout>
+    </component>
+    <component id="Averager.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="5" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>186</posX>
+        <posY>65</posY>
+      </layout>
+    </component>
+    <component id="Averager.1.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="5" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>184</posX>
+        <posY>253</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.6">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="IntelRealSense.1" />
+        <port id="pitch" />
+      </source>
+      <target>
+        <component id="Averager.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="IntelRealSense.1" />
+        <port id="yaw" />
+      </source>
+      <target>
+        <component id="Averager.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>true</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>7075</posX>
+      <posY>1711</posY>
+      <width>2925</width>
+      <height>1422</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

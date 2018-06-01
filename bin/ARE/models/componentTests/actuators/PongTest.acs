@@ -1,0 +1,277 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\PongTest.acs_2017_12_14_11_43" version="20130320">
+  <components>
+    <component id="Averager.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="10" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>669</posX>
+        <posY>94</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="start" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>161</posX>
+        <posY>266</posY>
+      </layout>
+      <gui>
+        <posX>2650</posX>
+        <posY>844</posY>
+        <width>1362</width>
+        <height>644</height>
+      </gui>
+    </component>
+    <component id="PongGame.2" type_id="asterics.PongGame">
+      <description>Plugin displays a pong game in the AsTeRICS GUI</description>
+      <ports>
+        <inputPort portTypeID="playerOnePos">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="playerTwoPos">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="playerOneSpeed">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="playerTwoSpeed">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="ballX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ballY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="controlMode" value="0" />
+        <property name="speedStep" value="1.5" />
+        <property name="goalsToWin" value="3" />
+        <property name="eventsToCaloryMultiplier" value="0.0" />
+        <property name="goalScoreBase" value="1000" />
+        <property name="goalTouchBase" value="10" />
+        <property name="resetWaitTime" value="2000" />
+        <property name="maxSpeed" value="15" />
+        <property name="minXSpeed" value="5" />
+        <property name="reflectionYImpulse" value="1.5" />
+        <property name="soundFilePaddleTouch" value="data/sounds/pong_2.wav" />
+        <property name="soundFileBoundsTouch" value="data/sounds/pong_1.wav" />
+        <property name="soundFileGoal" value="data/sounds/pong_3.wav" />
+        <property name="soundFileEndGame" value="data/sounds/pong_3.wav" />
+      </properties>
+      <layout>
+        <posX>405</posX>
+        <posY>89</posY>
+      </layout>
+      <gui>
+        <posX>1013</posX>
+        <posY>1644</posY>
+        <width>5200</width>
+        <height>6422</height>
+      </gui>
+    </component>
+    <component id="Slider.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="0" />
+        <property name="max" value="300" />
+        <property name="default" value="150" />
+        <property name="gain" value="0.01" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="my paddle" />
+        <property name="majorTickSpacing" value="20" />
+        <property name="minorTickSpacing" value="10" />
+        <property name="alignment" value="1" />
+        <property name="fontSize" value="14" />
+        <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>123</posX>
+        <posY>57</posY>
+      </layout>
+      <gui>
+        <posX>213</posX>
+        <posY>2600</posY>
+        <width>662</width>
+        <height>3933</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a/2-50" />
+      </properties>
+      <layout>
+        <posX>540</posX>
+        <posY>206</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.3">
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="PongGame.2" />
+        <port id="playerTwoPos" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="PongGame.2" />
+        <port id="playerOnePos" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="PongGame.2" />
+        <port id="ballY" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Averager.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_startGame">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PongGame.2" />
+          <eventPort id="startGame" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6975</width>
+      <height>8711</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

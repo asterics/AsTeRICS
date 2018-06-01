@@ -1,0 +1,448 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\MicGPI_clickerFrequency.acs_2017_12_14_11_48" version="20130320">
+  <components>
+    <component id="MicGPI.1" type_id="asterics.MicGPI">
+      <description>This plugin reads an input signal via the microphone input</description>
+      <ports>
+        <inputPort portTypeID="thresholdLow">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="thresholdHigh">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="frequency">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="samplingFrequency" value="8000" />
+        <property name="sampleSize" value="3" />
+        <property name="mode" value="1" />
+        <property name="thresholdLow" value="-30" />
+        <property name="thresholdHigh" value="30" />
+        <property name="noiseLevel" value="1.5" />
+        <property name="calculateFrequency" value="True" />
+        <property name="printSpectrum" value="True" />
+        <property name="captureDevice" value="System Default" />
+      </properties>
+      <layout>
+        <posX>11</posX>
+        <posY>84</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="1" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="0" />
+        <property name="max" value="3000" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="frequency" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>137</posX>
+        <posY>204</posY>
+      </layout>
+      <gui>
+        <posX>112</posX>
+        <posY>667</posY>
+        <width>2050</width>
+        <height>2733</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="3000" />
+        <property name="threshold" value="1500" />
+        <property name="displayThreshold" value="True" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="0" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>144</posX>
+        <posY>37</posY>
+      </layout>
+      <gui>
+        <posX>2175</posX>
+        <posY>689</posY>
+        <width>900</width>
+        <height>2711</height>
+      </gui>
+    </component>
+    <component id="Timer.1.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="500" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>422</posX>
+        <posY>220</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1.1.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="0" />
+        <property name="threshold" value="1500" />
+        <property name="threshold2" value="3000" />
+      </properties>
+      <layout>
+        <posX>297</posX>
+        <posY>221</posY>
+      </layout>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="500" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>418</posX>
+        <posY>42</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="0" />
+        <property name="threshold" value="50" />
+        <property name="threshold2" value="1500" />
+      </properties>
+      <layout>
+        <posX>284</posX>
+        <posY>34</posY>
+      </layout>
+    </component>
+    <component id="TextArea.1.1" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Actions" />
+        <property name="default" value="" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>690</posX>
+        <posY>159</posY>
+      </layout>
+      <gui>
+        <posX>3162</posX>
+        <posY>1044</posY>
+        <width>1450</width>
+        <height>1511</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="click" />
+        <property name="slot2" value="double click" />
+        <property name="slot3" value="" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>560</posX>
+        <posY>166</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.6">
+      <source>
+        <component id="MicGPI.1" />
+        <port id="frequency" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="MicGPI.1" />
+        <port id="frequency" />
+      </source>
+      <target>
+        <component id="Comparator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextArea.1.1" />
+        <port id="appendText" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="MicGPI.1" />
+        <port id="frequency" />
+      </source>
+      <target>
+        <component id="Comparator.1.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="MicGPI.1" />
+        <port id="frequency" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="periodFinished_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_start">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="Timer.1.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_start">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_stop">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_reset">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_stop">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_reset">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>88</posX>
+      <posY>156</posY>
+      <width>5238</width>
+      <height>3933</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

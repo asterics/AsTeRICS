@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\yaak_test.acs_2017_12_14_11_46" version="20130320">
+  <modelDescription>
+    <shortDescription />
+    <requirements />
+    <description>Installation:
+
+Die Apk Datei einfach auf die SDKarte kobieren und mit einem beliebigen 
+Dateimanager installieren.
+Den Ordner  yaak/sdcard/yaak direkt ins root der sd karte kopieren.
+Defaultmässig wird die Tastatur geladen 
+welche in /sdcard/yaak/default.xml definiert wurde.
+
+Die im yaak Ordner befindlichen Beispieltastaturen 
+sollten alle Funktionen zeigen um eigene Tastaturen zu entwickeln.
+
+Wurde Yaak gestartet kann man sich 
+per TCP/IP (Default Port: 4444) verbinden z.B. telnet
+
+Sendet man das Wort trigger
+ mit abschließenden Line Feed wird ein Tastendruck durchgeführt.
+
+Wird ein Button gedrückt wird der korrespondierende Action String 
+an alle verbundenen Clients gesendet. 
+
+Ich habe auch soeben das Yaak Plugin in das SVN eingecheckt.
+
+Dabei kannst du über Events die Tastatur triggern und über den 
+Output bekommst du den Action String. </description>
+  </modelDescription>
+  <components>
+    <component id="Yaak.1" type_id="asterics.Yaak">
+      <description>My Plugin description</description>
+      <ports>
+        <outputPort portTypeID="action">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="192.168.43.1" />
+        <property name="port" value="4444" />
+      </properties>
+      <layout>
+        <posX>226</posX>
+        <posY>92</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>369</posX>
+        <posY>91</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>689</posY>
+        <width>4900</width>
+        <height>900</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="trigger" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>73</posX>
+        <posY>90</posY>
+      </layout>
+      <gui>
+        <posX>1962</posX>
+        <posY>1644</posY>
+        <width>1100</width>
+        <height>1000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="Yaak.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_trigger">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Yaak.1" />
+          <eventPort id="trigger" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>5488</width>
+      <height>3000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

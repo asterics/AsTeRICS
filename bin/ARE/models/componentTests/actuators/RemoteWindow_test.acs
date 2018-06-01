@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\RemoteWindow_test.acs_2017_12_14_11_44" version="20130320">
+  <components>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="remote window controller" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="top" />
+        <property name="buttonCaption2" value="bottom" />
+        <property name="buttonCaption3" value="left" />
+        <property name="buttonCaption4" value="right" />
+        <property name="buttonCaption5" value="center" />
+        <property name="buttonCaption6" value="minimize" />
+        <property name="buttonCaption7" value="restore" />
+        <property name="buttonCaption8" value="set to toplevel" />
+        <property name="buttonCaption9" value="move to offset position" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>58</posX>
+        <posY>124</posY>
+      </layout>
+      <gui>
+        <posX>1010</posX>
+        <posY>898</posY>
+        <width>2375</width>
+        <height>4000</height>
+      </gui>
+    </component>
+    <component id="EditBox.1" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="xOffset" />
+        <property name="default" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="false" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>168</posX>
+        <posY>23</posY>
+      </layout>
+      <gui>
+        <posX>3697</posX>
+        <posY>2343</posY>
+        <width>1062</width>
+        <height>778</height>
+      </gui>
+    </component>
+    <component id="EditBox.1.1" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="yOffset" />
+        <property name="default" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="false" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>262</posX>
+        <posY>64</posY>
+      </layout>
+      <gui>
+        <posX>3697</posX>
+        <posY>3232</posY>
+        <width>1062</width>
+        <height>778</height>
+      </gui>
+    </component>
+    <component id="RemoteWindow.1" type_id="asterics.RemoteWindow">
+      <description>provides basic  Window manipulation for another active window</description>
+      <ports>
+        <inputPort portTypeID="name">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="XPos">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="YPos">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="windowName" value="Notepad" />
+        <property name="mode" value="1" />
+        <property name="xPos" value="0" />
+        <property name="yPos" value="0" />
+        <property name="autoSetPosition" value="false" />
+      </properties>
+      <layout>
+        <posX>595</posX>
+        <posY>44</posY>
+      </layout>
+    </component>
+    <component id="EditBox.1.1.1" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="remote window name (title)" />
+        <property name="default" value="Notepad" />
+        <property name="textColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="false" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>363</posX>
+        <posY>25</posY>
+      </layout>
+      <gui>
+        <posX>3447</posX>
+        <posY>1676</posY>
+        <width>1562</width>
+        <height>556</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.2">
+      <source>
+        <component id="EditBox.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="RemoteWindow.1" />
+        <port id="XPos" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="EditBox.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="RemoteWindow.1" />
+        <port id="YPos" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="EditBox.1.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="RemoteWindow.1" />
+        <port id="name" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_MoveToTop">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteWindow.1" />
+          <eventPort id="MoveToTop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_MoveToBottom">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteWindow.1" />
+          <eventPort id="MoveToBottom" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_MoveToLeft">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteWindow.1" />
+          <eventPort id="MoveToLeft" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_MoveToRight">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteWindow.1" />
+          <eventPort id="MoveToRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_Minimize">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteWindow.1" />
+          <eventPort id="Minimize" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button7_Restore">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteWindow.1" />
+          <eventPort id="Restore" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_MoveToCenter">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteWindow.1" />
+          <eventPort id="MoveToCenter" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button9_moveNow">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteWindow.1" />
+          <eventPort id="moveNow" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>885</posX>
+      <posY>267</posY>
+      <width>4688</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

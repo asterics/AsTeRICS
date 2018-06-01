@@ -1,0 +1,543 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\others\osc_in_a_loop.acs_2017_12_14_11_53" version="20130320">
+  <modelDescription>
+    <shortDescription>An example model which demonstrates the usage of the Open Sound Control (OSC) plugins.
+The OscOutClient plugin broadcast via OSC data which are received by the OscServer plugin.
+</shortDescription>
+    <requirements>Nothing, works without external soft- and hardware.</requirements>
+    <description>An example model which demonstrates the usage of the Open Sound Control (OSC) plugins.
+The OscOutClient plugin broadcast via OSC data which are received by the OscServer plugin.
+
+Nothing, works without external soft- and hardware.
+
+The SignalGenerators provide some data to the OscOutClient. 
+The OscOutClient plugin capture CH1-4 data and wraps it into one OSC message. 
+Furthermore if a String is send to the StringIN input the OscOutClient sends again one single OSC message with the string over the network.
+This OSC messages are send over the network device to the local machine port specified by the plugin properties.
+
+On the other side the OscServer listens to the, by the plugin properties specified port and receives the OSC messages.
+It disassembles the OSC message according to the set properties and forwards the data to the outputs.
+The Oscilloscopes and the TextDisplay visualize the data.
+</description>
+  </modelDescription>
+  <components>
+    <component id="OscServer.1" type_id="asterics.OscServer">
+      <description>Receives OSC messages and forward it to the ARE</description>
+      <ports>
+        <outputPort portTypeID="CH1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH9">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH10">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH11">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH12">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Port" value="57110" />
+        <property name="AddressCH1" value="/Dataxyz" />
+        <property name="ArgNrCH1" value="0" />
+        <property name="AddressCH2" value="/Dataxyz" />
+        <property name="ArgNrCH2" value="1" />
+        <property name="AddressCH3" value="/Dataxyz" />
+        <property name="ArgNrCH3" value="2" />
+        <property name="AddressCH4" value="/Channel4" />
+        <property name="ArgNrCH4" value="0" />
+        <property name="AddressCH5" value="/Channel5" />
+        <property name="ArgNrCH5" value="1" />
+        <property name="AddressCH6" value="/Channel6" />
+        <property name="ArgNrCH6" value="1" />
+        <property name="AddressCH7" value="/Channel7" />
+        <property name="ArgNrCH7" value="1" />
+        <property name="AddressCH8" value="/Channel8" />
+        <property name="ArgNrCH8" value="1" />
+        <property name="AddressCH9" value="/text" />
+        <property name="ArgNrCH9" value="0" />
+        <property name="AddressCH10" value="/Channel10" />
+        <property name="ArgNrCH10" value="1" />
+        <property name="AddressCH11" value="/Channel11" />
+        <property name="ArgNrCH11" value="1" />
+        <property name="AddressCH12" value="/Channel12" />
+        <property name="ArgNrCH12" value="1" />
+      </properties>
+      <layout>
+        <posX>9</posX>
+        <posY>6</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>156</posX>
+        <posY>2</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>733</posY>
+        <width>2912</width>
+        <height>2511</height>
+      </gui>
+    </component>
+    <component id="SignalGenerator.1.2" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="20" />
+        <property name="waveForm" value="3" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>487</posX>
+        <posY>89</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="20" />
+        <property name="waveForm" value="2" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>665</posX>
+        <posY>0</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.1.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="20" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>577</posX>
+        <posY>35</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>253</posX>
+        <posY>47</posY>
+      </layout>
+      <gui>
+        <posX>2962</posX>
+        <posY>733</posY>
+        <width>2900</width>
+        <height>2500</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>352</posX>
+        <posY>92</posY>
+      </layout>
+      <gui>
+        <posX>5888</posX>
+        <posY>733</posY>
+        <width>2812</width>
+        <height>2533</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Send text" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>584</posX>
+        <posY>220</posY>
+      </layout>
+      <gui>
+        <posX>125</posX>
+        <posY>3711</posY>
+        <width>1825</width>
+        <height>1022</height>
+      </gui>
+    </component>
+    <component id="TextSender.1" type_id="asterics.TextSender">
+      <description>Send text when gets event</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="text" value="hallo" />
+      </properties>
+      <layout>
+        <posX>672</posX>
+        <posY>181</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>150</posX>
+        <posY>173</posY>
+      </layout>
+      <gui>
+        <posX>2037</posX>
+        <posY>3556</posY>
+        <width>5938</width>
+        <height>1244</height>
+      </gui>
+    </component>
+    <component id="SignalGenerator.1.2.5" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="20" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>1612</posX>
+        <posY>926</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.1.2.6" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="20" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>1762</posX>
+        <posY>1076</posY>
+      </layout>
+    </component>
+    <component id="OscOutClient.1" type_id="asterics.OscOutClient">
+      <description>Sends data out via OSC</description>
+      <ports>
+        <inputPort portTypeID="CH1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="CH2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="CH3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="CH4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="StringIN">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="Port" value="57110" />
+        <property name="PeerAddress" value="127.0.0.1" />
+        <property name="AddressCh1" value="/Dataxyz" />
+        <property name="AddressStringCh" value="/text" />
+      </properties>
+      <layout>
+        <posX>856</posX>
+        <posY>29</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.9">
+      <source>
+        <component id="OscServer.1" />
+        <port id="CH9" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="OscServer.1" />
+        <port id="CH3" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="OscServer.1" />
+        <port id="CH2" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="OscServer.1" />
+        <port id="CH1" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="OscOutClient.1" />
+        <port id="CH1" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="SignalGenerator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="OscOutClient.1" />
+        <port id="CH2" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="SignalGenerator.1.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="OscOutClient.1" />
+        <port id="CH3" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="TextSender.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="OscOutClient.1" />
+        <port id="StringIN" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_sendText">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextSender.1" />
+          <eventPort id="sendText" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9175</width>
+      <height>5444</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

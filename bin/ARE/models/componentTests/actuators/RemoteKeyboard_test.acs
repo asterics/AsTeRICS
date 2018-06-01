@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\RemoteKeyboard_test.acs_2017_12_14_11_44" version="20130320">
+  <components>
+    <component id="DigitalIn.1" type_id="asterics.DigitalIn">
+      <description>GPIO CIM sensor for inputs</description>
+      <ports />
+      <properties>
+        <property name="activateEventIn1" value="True" />
+        <property name="activateEventIn2" value="True" />
+        <property name="activateEventIn3" value="false" />
+        <property name="activateEventIn4" value="false" />
+        <property name="activateEventIn5" value="false" />
+        <property name="activateEventIn6" value="false" />
+        <property name="periodicUpdate" value="0" />
+        <property name="uniqueID" value="" />
+      </properties>
+      <layout>
+        <posX>56</posX>
+        <posY>155</posY>
+      </layout>
+    </component>
+    <component id="RemoteKeyboard.1" type_id="asterics.RemoteKeyboard">
+      <description>Keyboard emulator for remote keyboard input via HID actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="{RIGHT}" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>248</posX>
+        <posY>35</posY>
+      </layout>
+    </component>
+    <component id="RemoteKeyboard.2" type_id="asterics.RemoteKeyboard">
+      <description>Keyboard emulator for remote keyboard input via HID actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="{UP}" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>334</posX>
+        <posY>227</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="connect HID Actuator " />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>406</posX>
+        <posY>32</posY>
+      </layout>
+      <gui>
+        <posX>162</posX>
+        <posY>933</posY>
+        <width>4000</width>
+        <height>800</height>
+      </gui>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="in1Low_holdKey">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteKeyboard.1" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_releaseKey">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteKeyboard.1" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in2Low_holdKey">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in2Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteKeyboard.2" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in2High_releaseKey">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in2High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteKeyboard.2" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>5075</width>
+      <height>2156</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

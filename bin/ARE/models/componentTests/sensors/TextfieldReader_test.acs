@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\TextfieldReader_test.acs_2017_12_14_11_49" version="20130320">
+  <components>
+    <component id="TextfieldReader.1" type_id="asterics.TextfieldReader">
+      <description>Captures key input from a text field and compares input with a set of command-words</description>
+      <ports>
+        <outputPort portTypeID="keys">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="words">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="command1" value="one" />
+        <property name="command2" value="two" />
+        <property name="command3" value="three" />
+        <property name="command4" value="four" />
+        <property name="command5" value="five" />
+        <property name="command6" value="six" />
+        <property name="command7" value="seven" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>114</posX>
+        <posY>71</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>264</posX>
+        <posY>73</posY>
+      </layout>
+      <gui>
+        <posX>25</posX>
+        <posY>667</posY>
+        <width>3000</width>
+        <height>1000</height>
+      </gui>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="recognizedCommand1_eventDisplay">
+      <sources>
+        <source>
+          <component id="TextfieldReader.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_eventDisplay">
+      <sources>
+        <source>
+          <component id="TextfieldReader.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_eventDisplay">
+      <sources>
+        <source>
+          <component id="TextfieldReader.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_eventDisplay">
+      <sources>
+        <source>
+          <component id="TextfieldReader.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_eventDisplay">
+      <sources>
+        <source>
+          <component id="TextfieldReader.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_eventDisplay">
+      <sources>
+        <source>
+          <component id="TextfieldReader.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_eventDisplay">
+      <sources>
+        <source>
+          <component id="TextfieldReader.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>3588</width>
+      <height>1911</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

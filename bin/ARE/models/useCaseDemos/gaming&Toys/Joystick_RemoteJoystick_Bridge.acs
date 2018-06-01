@@ -1,0 +1,790 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\gaming&amp;Toys\Joystick_RemoteJoystick_Bridge.acs_2017_12_14_11_51" version="20130320">
+  <modelDescription>
+    <shortDescription>This demo maps the actions of a joystick connected to the local system (e.g. the AsTeRICS Personal Platform)
+to the HID actuator joystick function.</shortDescription>
+    <requirements>A standard AT-joystick or gamepad and
+the HID actuator USB dongle have to be connnected to the system.</requirements>
+    <description>The joystick functions of the local joystick are mapped to the remote joystick.
+This demo could be used to remap buttons of the remote joystick as desired,
+e.g. to allow game control for a person how cannot use the standard button assignments.</description>
+  </modelDescription>
+  <components>
+    <component id="JoystickCapture.1" type_id="asterics.JoystickCapture">
+      <description>interfaces the first Joystick available on the system, up to 6 axis and 20 buttons can be used</description>
+      <ports>
+        <outputPort portTypeID="x">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="z">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="r">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="u">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="v">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pov">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="updatePeriod" value="20" />
+      </properties>
+      <layout>
+        <posX>40</posX>
+        <posY>40</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="X-Axis" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>211</posX>
+        <posY>20</posY>
+      </layout>
+      <gui>
+        <posX>12</posX>
+        <posY>756</posY>
+        <width>2800</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>476</posX>
+        <posY>266</posY>
+      </layout>
+      <gui>
+        <posX>62</posX>
+        <posY>4000</posY>
+        <width>3800</width>
+        <height>2900</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Y-Axis" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>350</posX>
+        <posY>14</posY>
+      </layout>
+      <gui>
+        <posX>2888</posX>
+        <posY>756</posY>
+        <width>2600</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.3" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Z-Axis" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>344</posX>
+        <posY>173</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>2222</posY>
+        <width>2800</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.4" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="R-Axis" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>206</posX>
+        <posY>162</posY>
+      </layout>
+      <gui>
+        <posX>2900</posX>
+        <posY>2267</posY>
+        <width>2600</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="8" />
+        <property name="threshold" value="0" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="direction" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>31</posX>
+        <posY>298</posY>
+      </layout>
+      <gui>
+        <posX>4025</posX>
+        <posY>3911</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="RemoteJoystick.1" type_id="asterics.RemoteJoystick">
+      <description>Joystick emulator, communicates via HID actuator, compatible to PS3 sixaxis / SEGA Virtua Stick </description>
+      <ports>
+        <inputPort portTypeID="joystickX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickZ">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickR">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickPov">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="refreshInterval" value="10" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>521</posX>
+        <posY>65</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.4">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="pov" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="r" />
+      </source>
+      <target>
+        <component id="Oscilloscope.4" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="z" />
+      </source>
+      <target>
+        <component id="Oscilloscope.3" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="y" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.0">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="x" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="y" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickY" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="x" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickX" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="z" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickZ" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="r" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickR" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="pov" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickPov" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="pressedButton1_eventDisplay">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton2_eventDisplay">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton3_eventDisplay">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton4_eventDisplay">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton5_eventDisplay">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton6_eventDisplay">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton7_eventDisplay">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton8_eventDisplay">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton9_eventDisplay">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton10_eventDisplay">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton4_pressButton1">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton4_releaseButton1">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton3_pressButton2">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton3_releaseButton2">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton2_pressButton3">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton2_releaseButton3">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton1_pressButton13">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton13" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton1_releaseButton13">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton13" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton5_pressButton5">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton5_releaseButton5">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton6_pressButton6">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton6_releaseButton6">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton7_pressButton7">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton7_releaseButton7">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton8_pressButton8">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton8_releaseButton8">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton9_pressButton9">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton9" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton9_releaseButton9">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton9" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton10_pressButton10">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton10" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton10_releaseButton10">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton10" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6088</width>
+      <height>6911</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

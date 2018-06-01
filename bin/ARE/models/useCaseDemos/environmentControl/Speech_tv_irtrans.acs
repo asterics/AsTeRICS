@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\environmentControl\Speech_tv_irtrans.acs_2017_12_14_11_50" version="20130320">
+  <modelDescription>
+    <shortDescription>Control your television by speech commands</shortDescription>
+    <requirements>1) IR-Trans device connected to the AsTeRICS platform. The IR-Trans is a learnable IR-Sender which can be remotely controlled over a network connection or USB, depending which version you buy. The AsTeRICS plugin is compatible to all versions of IR-Trans. 
+2) A microphone must be available on the system
+3) Microsoft Speech Platform Server version 11, the target language and the TTS language pack must be installed
+see http://www.microsoft.com/en-us/download/details.aspx?id=27225 and the ACS help of the Speech processor for further information
+4) The IR-Trans device must learn the commands for the used television. Detailed information about the learning process can be found in the IR-Trans manuals.
+</requirements>
+    <description>The system recognizes speech commands from the user.
+ If a command gets recognized the corresponding IR-Code will be sent by
+ the IR-Trans device to interact with a television. </description>
+  </modelDescription>
+  <components>
+    <component id="SpeechProcessor.1" type_id="asterics.SpeechProcessor">
+      <description>This plugin allows to genereate and recognize speech via the speech processor server application</description>
+      <ports>
+        <inputPort portTypeID="speak">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="command">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="language" value="0" />
+        <property name="recognitionConfidence" value="0.35" />
+        <property name="speechLoopDelay" value="1500" />
+        <property name="activationCommand" value="Asterics" />
+        <property name="deactivationCommand" value="computer, stop!" />
+        <property name="helpCommand" value="computer, help!" />
+        <property name="mode" value="2" />
+        <property name="command1" value="On" />
+        <property name="command2" value="next" />
+        <property name="command3" value="previous" />
+        <property name="command4" value="louder" />
+        <property name="command5" value="lower" />
+        <property name="command6" value="Off" />
+        <property name="command7" value="" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+        <property name="command11" value="" />
+        <property name="command12" value="" />
+        <property name="command13" value="" />
+        <property name="command14" value="" />
+        <property name="command15" value="" />
+        <property name="command16" value="" />
+        <property name="command17" value="" />
+        <property name="command18" value="" />
+        <property name="command19" value="" />
+        <property name="command20" value="" />
+        <property name="command21" value="" />
+        <property name="command22" value="" />
+        <property name="command23" value="" />
+        <property name="command24" value="" />
+        <property name="command25" value="" />
+      </properties>
+      <layout>
+        <posX>124</posX>
+        <posY>161</posY>
+      </layout>
+    </component>
+    <component id="IrTrans.1" type_id="asterics.IrTrans">
+      <description>Infrared Transmission Module, interfaces to the IrTrans device</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputResult">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="localhost" />
+        <property name="port" value="21000" />
+        <property name="prestring" value="tv," />
+        <property name="send1" value="on" />
+        <property name="send2" value="next" />
+        <property name="send3" value="previous" />
+        <property name="send4" value="louder" />
+        <property name="send5" value="lower" />
+        <property name="send6" value="" />
+        <property name="send7" value="" />
+        <property name="send8" value="" />
+        <property name="send9" value="" />
+        <property name="send10" value="" />
+        <property name="send11" value="" />
+        <property name="send12" value="" />
+        <property name="send13" value="" />
+        <property name="send14" value="" />
+        <property name="send15" value="" />
+        <property name="send16" value="" />
+        <property name="send17" value="" />
+        <property name="send18" value="" />
+        <property name="send19" value="" />
+        <property name="send20" value="" />
+        <property name="send21" value="" />
+        <property name="send22" value="" />
+        <property name="send23" value="" />
+        <property name="send24" value="" />
+      </properties>
+      <layout>
+        <posX>341</posX>
+        <posY>157</posY>
+      </layout>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="recognizedCommand1_sendprop1">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_sendprop1">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_sendprop2">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_sendprop3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_sendprop4">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_sendprop5">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop5" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>500</width>
+      <height>3933</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

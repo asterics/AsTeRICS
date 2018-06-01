@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\HoverPanel_test.acs_2017_12_14_11_48" version="20130320">
+  <components>
+    <component id="HoverPanel.1" type_id="asterics.HoverPanel">
+      <description>The HoverPanel allows interaction </description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="dataSource" value="1" />
+        <property name="caption" value="hover1" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="6" />
+        <property name="backgroundColor" value="0" />
+        <property name="activationColor" value="2" />
+        <property name="dwellTime" value="200" />
+        <property name="idleTime" value="50" />
+        <property name="opacity" value="60" />
+        <property name="stayActive" value="false" />
+      </properties>
+      <layout>
+        <posX>221</posX>
+        <posY>14</posY>
+      </layout>
+      <gui>
+        <posX>1322</posX>
+        <posY>3454</posY>
+        <width>1000</width>
+        <height>1333</height>
+      </gui>
+    </component>
+    <component id="HoverPanel.2" type_id="asterics.HoverPanel">
+      <description>The HoverPanel allows interaction </description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="dataSource" value="0" />
+        <property name="caption" value="hover2" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="6" />
+        <property name="backgroundColor" value="0" />
+        <property name="activationColor" value="2" />
+        <property name="dwellTime" value="200" />
+        <property name="idleTime" value="50" />
+        <property name="opacity" value="30" />
+        <property name="stayActive" value="false" />
+      </properties>
+      <layout>
+        <posX>209</posX>
+        <posY>180</posY>
+      </layout>
+      <gui>
+        <posX>1322</posX>
+        <posY>1343</posY>
+        <width>750</width>
+        <height>1778</height>
+      </gui>
+    </component>
+    <component id="MouseCapture.1" type_id="asterics.MouseCapture">
+      <description>Captures mouse cursor activity from local system</description>
+      <ports>
+        <outputPort portTypeID="mouseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="mouseY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="blockEvents" value="False" />
+      </properties>
+      <layout>
+        <posX>29</posX>
+        <posY>76</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseX" />
+      </source>
+      <target>
+        <component id="HoverPanel.1" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseY" />
+      </source>
+      <target>
+        <component id="HoverPanel.1" />
+        <port id="y" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseX" />
+      </source>
+      <target>
+        <component id="HoverPanel.2" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseY" />
+      </source>
+      <target>
+        <component id="HoverPanel.2" />
+        <port id="y" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>2575</posX>
+      <posY>956</posY>
+      <width>2750</width>
+      <height>2222</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

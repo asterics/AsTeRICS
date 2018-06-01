@@ -1,0 +1,674 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\WriteEDF.acs_2017_12_14_11_44" version="20130320">
+  <components>
+    <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="2" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>58</posX>
+        <posY>10</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>314</posX>
+        <posY>7</posY>
+      </layout>
+      <gui>
+        <posX>20</posX>
+        <posY>464</posY>
+        <width>4625</width>
+        <height>2444</height>
+      </gui>
+    </component>
+    <component id="SignalGenerator.2" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="5" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>56</posX>
+        <posY>153</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.3" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="10" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>56</posX>
+        <posY>291</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>314</posX>
+        <posY>152</posY>
+      </layout>
+      <gui>
+        <posX>20</posX>
+        <posY>2908</posY>
+        <width>4625</width>
+        <height>2444</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.3" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>318</posX>
+        <posY>300</posY>
+      </layout>
+      <gui>
+        <posX>20</posX>
+        <posY>5353</posY>
+        <width>4625</width>
+        <height>2444</height>
+      </gui>
+    </component>
+    <component id="SignalGenerator.4" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="50" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>54</posX>
+        <posY>436</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.5" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="10" />
+        <property name="waveForm" value="2" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="-50" />
+      </properties>
+      <layout>
+        <posX>152</posX>
+        <posY>15</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.6" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="10" />
+        <property name="waveForm" value="2" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="250" />
+        <property name="offset" value="-50" />
+      </properties>
+      <layout>
+        <posX>149</posX>
+        <posY>153</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.7" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="10" />
+        <property name="waveForm" value="3" />
+        <property name="frequency" value="2" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="-50" />
+      </properties>
+      <layout>
+        <posX>150</posX>
+        <posY>293</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.8" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="10" />
+        <property name="waveForm" value="3" />
+        <property name="frequency" value="4" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="-50" />
+      </properties>
+      <layout>
+        <posX>155</posX>
+        <posY>435</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.4" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>313</posX>
+        <posY>439</posY>
+      </layout>
+      <gui>
+        <posX>20</posX>
+        <posY>7797</posY>
+        <width>4625</width>
+        <height>2222</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.5" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>411</posX>
+        <posY>12</posY>
+      </layout>
+      <gui>
+        <posX>4645</posX>
+        <posY>464</posY>
+        <width>4375</width>
+        <height>2444</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.6" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>417</posX>
+        <posY>155</posY>
+      </layout>
+      <gui>
+        <posX>4645</posX>
+        <posY>2908</posY>
+        <width>4375</width>
+        <height>2444</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.7" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>415</posX>
+        <posY>299</posY>
+      </layout>
+      <gui>
+        <posX>4645</posX>
+        <posY>5353</posY>
+        <width>4375</width>
+        <height>2444</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.8" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>414</posX>
+        <posY>441</posY>
+      </layout>
+      <gui>
+        <posX>4645</posX>
+        <posY>7797</posY>
+        <width>4375</width>
+        <height>2222</height>
+      </gui>
+    </component>
+    <component id="WriteEDF.1" type_id="asterics.WriteEDF">
+      <description>This plugin records the incoming data into an EDF file</description>
+      <ports>
+        <inputPort portTypeID="CH1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="CH2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="CH3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="CH4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="CH5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="CH6">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="CH7">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="CH8">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="patientID" value="undefined" />
+        <property name="FileName" value="diff_hz_ampli" />
+        <property name="reSampling" value="False" />
+        <property name="SamplingRateCH1" value="500" />
+        <property name="SamplingRateCH2" value="200" />
+        <property name="SamplingRateCH3" value="100" />
+        <property name="SamplingRateCH4" value="20" />
+        <property name="SamplingRateCH5" value="100" />
+        <property name="SamplingRateCH6" value="100" />
+        <property name="SamplingRateCH7" value="100" />
+        <property name="SamplingRateCH8" value="100" />
+        <property name="PhysicalMinimumCH1" value="-100" />
+        <property name="PhysicalMinimumCH2" value="-100" />
+        <property name="PhysicalMinimumCH3" value="-100" />
+        <property name="PhysicalMinimumCH4" value="-100" />
+        <property name="PhysicalMinimumCH5" value="-50" />
+        <property name="PhysicalMinimumCH6" value="-50" />
+        <property name="PhysicalMinimumCH7" value="-50" />
+        <property name="PhysicalMinimumCH8" value="-50" />
+        <property name="PhysicalMaximumCH1" value="100" />
+        <property name="PhysicalMaximumCH2" value="100" />
+        <property name="PhysicalMaximumCH3" value="100" />
+        <property name="PhysicalMaximumCH4" value="100" />
+        <property name="PhysicalMaximumCH5" value="50" />
+        <property name="PhysicalMaximumCH6" value="50" />
+        <property name="PhysicalMaximumCH7" value="50" />
+        <property name="PhysicalMaximumCH8" value="50" />
+        <property name="DigitalMinimumCH1" value="-32768" />
+        <property name="DigitalMinimumCH2" value="-32768" />
+        <property name="DigitalMinimumCH3" value="-32768" />
+        <property name="DigitalMinimumCH4" value="-32768" />
+        <property name="DigitalMinimumCH5" value="-32768" />
+        <property name="DigitalMinimumCH6" value="-32768" />
+        <property name="DigitalMinimumCH7" value="-32768" />
+        <property name="DigitalMinimumCH8" value="-32768" />
+        <property name="DigitalMaximumCH1" value="32767" />
+        <property name="DigitalMaximumCH2" value="32767" />
+        <property name="DigitalMaximumCH3" value="32767" />
+        <property name="DigitalMaximumCH4" value="32767" />
+        <property name="DigitalMaximumCH5" value="32767" />
+        <property name="DigitalMaximumCH6" value="32767" />
+        <property name="DigitalMaximumCH7" value="32767" />
+        <property name="DigitalMaximumCH8" value="32767" />
+      </properties>
+      <layout>
+        <posX>545</posX>
+        <posY>150</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="SignalGenerator.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="SignalGenerator.3" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.3" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="SignalGenerator.5" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.5" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="SignalGenerator.4" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.4" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="SignalGenerator.8" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.8" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="SignalGenerator.7" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.7" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="SignalGenerator.6" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.6" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="WriteEDF.1" />
+        <port id="CH1" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="SignalGenerator.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="WriteEDF.1" />
+        <port id="CH2" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="SignalGenerator.3" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="WriteEDF.1" />
+        <port id="CH3" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="SignalGenerator.4" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="WriteEDF.1" />
+        <port id="CH4" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="SignalGenerator.5" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="WriteEDF.1" />
+        <port id="CH5" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="SignalGenerator.6" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="WriteEDF.1" />
+        <port id="CH6" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="SignalGenerator.7" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="WriteEDF.1" />
+        <port id="CH7" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="SignalGenerator.8" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="WriteEDF.1" />
+        <port id="CH8" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9538</width>
+      <height>10000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

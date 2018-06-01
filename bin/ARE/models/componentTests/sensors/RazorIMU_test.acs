@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\RazorIMU_test.acs_2017_12_14_11_48" version="20130320">
+  <components>
+    <component id="RazorIMU.1" type_id="asterics.RazorIMU">
+      <description>9 Degree-of-Freedom Razor Inertial Measurement Unit</description>
+      <ports>
+        <outputPort portTypeID="pitch">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="yaw">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="roll">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="comPort" value="COM7" />
+        <property name="baudRate" value="57600" />
+        <property name="operationMode" value="PitchYawRoll" />
+      </properties>
+      <layout>
+        <posX>48</posX>
+        <posY>95</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Pitch" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>226</posX>
+        <posY>61</posY>
+      </layout>
+      <gui>
+        <posX>88</posX>
+        <posY>889</posY>
+        <width>1300</width>
+        <height>4100</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.2" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Yaw" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>343</posX>
+        <posY>76</posY>
+      </layout>
+      <gui>
+        <posX>1488</posX>
+        <posY>889</posY>
+        <width>1200</width>
+        <height>4100</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.3" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Roll" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>473</posX>
+        <posY>93</posY>
+      </layout>
+      <gui>
+        <posX>2788</posX>
+        <posY>889</posY>
+        <width>1200</width>
+        <height>4100</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="RazorIMU.1" />
+        <port id="pitch" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="RazorIMU.1" />
+        <port id="yaw" />
+      </source>
+      <target>
+        <component id="BarDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="RazorIMU.1" />
+        <port id="roll" />
+      </source>
+      <target>
+        <component id="BarDisplay.3" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4550</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

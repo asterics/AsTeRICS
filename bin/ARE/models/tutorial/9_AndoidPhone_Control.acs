@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\tutorial\9_AndoidPhone_Control.acs_2017_12_14_11_50" version="20130320">
+  <components>
+    <component id="OskaInternalScanning.1" type_id="OskaInternalScanning">
+      <description>Component communicating with OSKA</description>
+      <ports>
+        <outputPort portTypeID="action">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="keycodes">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="port" value="4546" />
+        <property name="title" value="OSKA keyboard" />
+        <property name="oskaPath" value="..\oska\start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards\phoneControl\phone_android_menu.xml" />
+        <property name="scanSpeed" value="5" />
+        <property name="highlightStyle" value="0" />
+        <property name="settingsFile" value="settings\internalscanning.kst" />
+        <property name="windowDecorated" value="true" />
+        <property name="resizeEnabled" value="false" />
+      </properties>
+      <layout>
+        <posX>117</posX>
+        <posY>92</posY>
+      </layout>
+      <gui>
+        <posX>625</posX>
+        <posY>44</posY>
+        <width>4938</width>
+        <height>5333</height>
+      </gui>
+    </component>
+    <component id="AndroidPhoneControl.1" type_id="asterics.AndroidPhoneControl">
+      <description>Control Android phone with AsTeRICS  application running</description>
+      <ports>
+        <inputPort portTypeID="PhoneID">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="SMSContent">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="RemotePhoneID">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ReceivedSMS">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ErrorNumber">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="connectionType" value="1" />
+        <property name="IP" value="192.168.1.120" />
+        <property name="port" value="21111" />
+        <property name="defaultPhoneID" value="" />
+      </properties>
+      <layout>
+        <posX>256</posX>
+        <posY>92</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="OskaInternalScanning.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="AndroidPhoneControl.1" />
+        <port id="action" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>488</width>
+      <height>5422</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

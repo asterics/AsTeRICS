@@ -1,0 +1,453 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\environmentControl\Oska_webcam_irtrans.acs_2017_12_14_11_50" version="20130320">
+  <modelDescription>
+    <shortDescription>Infrared Remote Control functions via OSKA and head-mouse + Sip/Puff sensor.
+</shortDescription>
+    <requirements>The IRTrans universal IR remote control module (USB-, Lan-, or WiFi version) 
+has to be connected to the system, the driver has to be installed.
+An Arduino Uno microcontroller with Arduino CIM firmware has to be connected to an USB port, 
+a Sip/Puff Sensor has to be connected to ADC0 of the Arduino.
+A Webcam has to be connected to another USB port.</requirements>
+    <description>This model can be used to control a music player of HiFi station via the universal
+infrared module IRTrans. and head tracking and the OSKA on-screen keyboard. 
+
+The Mouse cursor movement can be controlled by head movements.
+Selections can be made by blowing into  a Sip/Puff sensor.
+The utilized OSKA grid is "aat_hifi-xml".
+
+Following commands are emitted by the OSKA grid and have to be trained 
+and stored into the IRTrans Database under a remote control named "asterics",
+using the IrTrans "GUIclient" tool:
+ 
+rc_operate (for on/off)
+rc_function (for changing the input source from MP3 to CD, tuner or external)
+rc_volume_up (for increasing the volume)
+rc_volume_down (for decreasing the volume)
+rc_previous (for selecting the previous track)
+rc_next (for selecting the next track)
+rc_play (for play / pause)
+rc_stop</description>
+  </modelDescription>
+  <components>
+    <component id="IrTrans.1" type_id="asterics.IrTrans">
+      <description>IR Transmission Module</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputResult">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="localhost" />
+        <property name="port" value="21000" />
+        <property name="prestring" value="snd" />
+        <property name="send1" value="" />
+        <property name="send2" value="" />
+        <property name="send3" value="" />
+        <property name="send4" value="" />
+        <property name="send5" value="" />
+        <property name="send6" value="" />
+        <property name="send7" value="" />
+        <property name="send8" value="" />
+        <property name="send9" value="" />
+        <property name="send10" value="" />
+        <property name="send11" value="" />
+        <property name="send12" value="" />
+        <property name="send13" value="" />
+        <property name="send14" value="" />
+        <property name="send15" value="" />
+        <property name="send16" value="" />
+        <property name="send17" value="" />
+        <property name="send18" value="" />
+        <property name="send19" value="" />
+        <property name="send20" value="" />
+        <property name="send21" value="" />
+        <property name="send22" value="" />
+        <property name="send23" value="" />
+        <property name="send24" value="" />
+      </properties>
+      <layout>
+        <posX>673</posX>
+        <posY>359</posY>
+      </layout>
+    </component>
+    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
+      <description>Webcamera-based face tracking sensor</description>
+      <ports>
+        <outputPort portTypeID="noseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="noseY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraSelection" value="0" />
+        <property name="cameraResolution" value="1" />
+        <property name="cameraDisplayUpdate" value="100" />
+        <property name="cameraProfile" value="" />
+      </properties>
+      <layout>
+        <posX>53</posX>
+        <posY>33</posY>
+      </layout>
+      <gui>
+        <posX>8362</posX>
+        <posY>0</posY>
+        <width>1638</width>
+        <height>2756</height>
+      </gui>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="2000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1024" />
+      </properties>
+      <layout>
+        <posX>578</posX>
+        <posY>3</posY>
+      </layout>
+    </component>
+    <component id="Arduino.1" type_id="asterics.Arduino">
+      <description>Arduino Microcontroller CIM</description>
+      <ports>
+        <inputPort portTypeID="pwm3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pwm5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pwm6">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="A0">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A5">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="uniqueID" value="not used" />
+        <property name="periodicADCUpdate" value="100" />
+        <property name="pin2Mode" value="0" />
+        <property name="pin3Mode" value="0" />
+        <property name="pin4Mode" value="0" />
+        <property name="pin5Mode" value="0" />
+        <property name="pin6Mode" value="0" />
+        <property name="pin7Mode" value="0" />
+        <property name="pin8Mode" value="0" />
+        <property name="pin9Mode" value="0" />
+        <property name="pin10Mode" value="0" />
+        <property name="pin11Mode" value="0" />
+        <property name="pin12Mode" value="0" />
+        <property name="pin13Mode" value="0" />
+      </properties>
+      <layout>
+        <posX>43</posX>
+        <posY>327</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>416</posX>
+        <posY>139</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>711</posY>
+        <width>3000</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>271</posX>
+        <posY>129</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>2311</posY>
+        <width>3000</width>
+        <height>1200</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="bar-graph" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>218</posX>
+        <posY>282</posY>
+      </layout>
+      <gui>
+        <posX>3100</posX>
+        <posY>756</posY>
+        <width>800</width>
+        <height>2800</height>
+      </gui>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="600" />
+        <property name="thresholdLow" value="590" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="0" />
+      </properties>
+      <layout>
+        <posX>229</posX>
+        <posY>449</posY>
+      </layout>
+    </component>
+    <component id="OskaExternalScanning2D.1" type_id="OskaExternalScanning2D">
+      <description>Component communicating with OSKA</description>
+      <ports>
+        <inputPort portTypeID="posColumn">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="posRow">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="action">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="keycodes">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="port" value="4546" />
+        <property name="title" value="OSKA keyboard" />
+        <property name="oskaPath" value="..\oska\start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards\homeControl\aat_hifi.xml" />
+        <property name="highlightStyle" value="0" />
+        <property name="highlightResetPosition" value="0" />
+        <property name="settingsFile" value="settings\default.kst" />
+        <property name="windowDecorated" value="true" />
+        <property name="eventScanningEnabled" value="true" />
+        <property name="valueScanningEnabled" value="true" />
+        <property name="inputRange" value="0" />
+        <property name="resizeEnabled" value="false" />
+      </properties>
+      <layout>
+        <posX>502</posX>
+        <posY>357</posY>
+      </layout>
+      <gui>
+        <posX>3038</posX>
+        <posY>4600</posY>
+        <width>3975</width>
+        <height>4133</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.1">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseX" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A0" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A0" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="OskaExternalScanning2D.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="IrTrans.1" />
+        <port id="action" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="eventPosEdge_leftClick">
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4488</width>
+      <height>3711</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

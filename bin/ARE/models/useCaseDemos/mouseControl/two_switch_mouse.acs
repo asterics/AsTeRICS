@@ -1,0 +1,1077 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\mouseControl\two_switch_mouse.acs_2017_12_14_11_53" version="20130320">
+  <modelDescription>
+    <shortDescription>Local mouse control with 1 switch</shortDescription>
+    <requirements>Switch button connected to In1 of the DigitalIn CIM</requirements>
+    <description>The model automatically switches through 5 cursor actions:
+left, down, right, up and click. The current action is displayed as cursor icon.
+(the click-action is displayed as a cross, 
+cursor movement is displayed as 4 different arrows)
+A button press selects the current action. 
+</description>
+  </modelDescription>
+  <components>
+    <component id="DigitalIn.1" type_id="asterics.DigitalIn">
+      <description>GPIO CIM sensor for inputs</description>
+      <ports />
+      <properties>
+        <property name="activateEventIn1" value="True" />
+        <property name="activateEventIn2" value="True" />
+        <property name="activateEventIn3" value="False" />
+        <property name="activateEventIn4" value="False" />
+        <property name="activateEventIn5" value="False" />
+        <property name="activateEventIn6" value="False" />
+        <property name="periodicUpdate" value="0" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>43</posX>
+        <posY>70</posY>
+      </layout>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="3" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="3000" />
+        <property name="resolution" value="30" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="True" />
+      </properties>
+      <layout>
+        <posX>274</posX>
+        <posY>98</posY>
+      </layout>
+    </component>
+    <component id="EventBlock.1.1" type_id="asterics.EventBlock">
+      <description>Pass or block event</description>
+      <ports />
+      <properties>
+        <property name="block" value="False" />
+        <property name="blockAfterEvent" value="False" />
+      </properties>
+      <layout>
+        <posX>57</posX>
+        <posY>351</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*(0.005+c/1000)-b*(0.005+c/1000)" />
+      </properties>
+      <layout>
+        <posX>855</posX>
+        <posY>42</posY>
+      </layout>
+    </component>
+    <component id="Slider.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="-4" />
+        <property name="max" value="10" />
+        <property name="default" value="4" />
+        <property name="gain" value="0.01" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="X-Speed" />
+        <property name="majorTickSpacing" value="2" />
+        <property name="minorTickSpacing" value="1" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>678</posX>
+        <posY>115</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>600</posY>
+        <width>4000</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*(0.005+c/1000)-b*(0.005+c/1000)" />
+      </properties>
+      <layout>
+        <posX>858</posX>
+        <posY>194</posY>
+      </layout>
+    </component>
+    <component id="Slider.1.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="-4" />
+        <property name="max" value="10" />
+        <property name="default" value="4" />
+        <property name="gain" value="0.01" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="Y-Speed" />
+        <property name="majorTickSpacing" value="2" />
+        <property name="minorTickSpacing" value="1" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>686</posX>
+        <posY>288</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>1622</posY>
+        <width>4000</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>1083</posX>
+        <posY>142</posY>
+      </layout>
+    </component>
+    <component id="EventBlock.1" type_id="asterics.EventBlock">
+      <description>Pass or block event</description>
+      <ports />
+      <properties>
+        <property name="block" value="false" />
+        <property name="blockAfterEvent" value="false" />
+      </properties>
+      <layout>
+        <posX>481</posX>
+        <posY>312</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="double" />
+        <property name="buttonCaption2" value="right" />
+        <property name="buttonCaption3" value="drag" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>820</posX>
+        <posY>513</posY>
+      </layout>
+      <gui>
+        <posX>4062</posX>
+        <posY>622</posY>
+        <width>1700</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="@MOUSE:nextclick,double" />
+        <property name="slot2" value="@MOUSE:nextclick,right" />
+        <property name="slot3" value="@MOUSE:nextclick,drag" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>981</posX>
+        <posY>500</posY>
+      </layout>
+    </component>
+    <component id="WavefilePlayer.1" type_id="asterics.WavefilePlayer">
+      <description>Plays .Wav - soundfiles on event or filename reception. </description>
+      <ports>
+        <inputPort portTypeID="wavefileName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="data\sounds\10.wav" />
+      </properties>
+      <layout>
+        <posX>1110</posX>
+        <posY>529</posY>
+      </layout>
+    </component>
+    <component id="MouseCapture.1" type_id="asterics.MouseCapture">
+      <description>Captures mouse cursor activity from local system</description>
+      <ports>
+        <outputPort portTypeID="mouseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="mouseY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="blockEvents" value="True" />
+      </properties>
+      <layout>
+        <posX>188</posX>
+        <posY>564</posY>
+      </layout>
+    </component>
+    <component id="EventCascade.1" type_id="asterics.EventCascade">
+      <description>allows to specify a sequence of events with arbitrary delay times and loops</description>
+      <ports />
+      <properties>
+        <property name="activeTriggers" value="5" />
+        <property name="loops" value="2" />
+        <property name="autoStart" value="False" />
+        <property name="delayBeforeTrigger1" value="800" />
+        <property name="delayBeforeTrigger2" value="800" />
+        <property name="delayBeforeTrigger3" value="800" />
+        <property name="delayBeforeTrigger4" value="800" />
+        <property name="delayBeforeTrigger5" value="800" />
+        <property name="delayBeforeTrigger6" value="800" />
+        <property name="delayBeforeTrigger7" value="800" />
+        <property name="delayBeforeTrigger8" value="800" />
+        <property name="delayBeforeTrigger9" value="500" />
+        <property name="delayBeforeTrigger10" value="500" />
+        <property name="delayBeforeTrigger11" value="500" />
+        <property name="delayBeforeTrigger12" value="500" />
+        <property name="delayBeforeTrigger13" value="500" />
+        <property name="delayBeforeTrigger14" value="500" />
+        <property name="delayBeforeTrigger15" value="500" />
+      </properties>
+      <layout>
+        <posX>296</posX>
+        <posY>299</posY>
+      </layout>
+    </component>
+    <component id="MouseCursorIcon.1" type_id="asterics.MouseCursorIcon">
+      <description>sets different cursor icnos for the local mouse cursor</description>
+      <ports>
+        <inputPort portTypeID="iconName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="icon1name" value="right_large_white" />
+        <property name="icon2name" value="down_large_white" />
+        <property name="icon3name" value="left_large_white" />
+        <property name="icon4name" value="up_large_white" />
+        <property name="icon5name" value="cross_large_white" />
+        <property name="icon6name" value="arrow" />
+        <property name="icon7name" value="arrow" />
+        <property name="icon8name" value="arrow" />
+        <property name="icon9name" value="arrow" />
+      </properties>
+      <layout>
+        <posX>585</posX>
+        <posY>576</posY>
+      </layout>
+    </component>
+    <component id="PathSelector.1" type_id="asterics.PathSelector">
+      <description>Pathselector routes signal to one of four output ports</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="activePorts" value="3" />
+      </properties>
+      <layout>
+        <posX>426</posX>
+        <posY>98</posY>
+      </layout>
+    </component>
+    <component id="Timer.2" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="32" />
+        <property name="resolution" value="1" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="True" />
+      </properties>
+      <layout>
+        <posX>156</posX>
+        <posY>2</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.11">
+      <source>
+        <component id="PathSelector.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="PathSelector.1" />
+        <port id="out4" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inC" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Slider.1.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inC" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="PathSelector.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="PathSelector.1" />
+        <port id="out3" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="action" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="Timer.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="PathSelector.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="in1High_stop">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_reset">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_Start">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_Start">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_Start">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="rightButtonReleased_stop">
+      <sources>
+        <source>
+          <component id="MouseCapture.1" />
+          <eventPort id="leftButtonReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="rightButtonReleased_reset">
+      <sources>
+        <source>
+          <component id="MouseCapture.1" />
+          <eventPort id="leftButtonReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger1_select1">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger2_select2">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger3_select3">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger4_select4">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathSelector.1" />
+          <eventPort id="select4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger1_setIcon1">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger2_setIcon2">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger3_setIcon3">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger4_setIcon4">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger1_setIcon5">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger1_pass">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="pass" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="rightButtonPressed_input">
+      <sources>
+        <source>
+          <component id="MouseCapture.1" />
+          <eventPort id="leftButtonPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_leftClick">
+      <sources>
+        <source>
+          <component id="EventBlock.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger2_pass">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1.1" />
+          <eventPort id="pass" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger1_block">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1.1" />
+          <eventPort id="block" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger2_block">
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="block" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="rightButtonPressed_input">
+      <sources>
+        <source>
+          <component id="MouseCapture.1" />
+          <eventPort id="leftButtonPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_start">
+      <sources>
+        <source>
+          <component id="EventBlock.1.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_input">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_input">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_nextEvent">
+      <description />
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in2Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCascade.1" />
+          <eventPort id="nextEvent" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="rightButtonPressed_nextEvent">
+      <description />
+      <sources>
+        <source>
+          <component id="MouseCapture.1" />
+          <eventPort id="rightButtonPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCascade.1" />
+          <eventPort id="nextEvent" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_nextEvent">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCascade.1" />
+          <eventPort id="nextEvent" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6375</width>
+      <height>4333</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\IRTrans_test.acs_2017_12_14_11_43" version="20130320">
+  <components>
+    <component id="Keyboard.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Stop" />
+        <property name="buttonCaption2" value="Forward" />
+        <property name="buttonCaption3" value="Back" />
+        <property name="buttonCaption4" value="Left" />
+        <property name="buttonCaption5" value="Right" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>40</posX>
+        <posY>40</posY>
+      </layout>
+      <gui>
+        <posX>88</posX>
+        <posY>622</posY>
+        <width>900</width>
+        <height>2500</height>
+      </gui>
+    </component>
+    <component id="IrTrans.1" type_id="asterics.IrTrans">
+      <description>Infrared Transmission Module, interfaces to the IrTrans device</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputResult">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="192.168.2.6" />
+        <property name="port" value="21000" />
+        <property name="prestring" value="snd robo," />
+        <property name="send1" value="stop" />
+        <property name="send2" value="gofwd" />
+        <property name="send3" value="goback" />
+        <property name="send4" value="left" />
+        <property name="send5" value="right" />
+        <property name="send6" value="turnleft" />
+        <property name="send7" value="turnright" />
+        <property name="send8" value="stepfwd" />
+        <property name="send9" value="stepback" />
+        <property name="send10" value="dance" />
+        <property name="send11" value="" />
+        <property name="send12" value="" />
+        <property name="send13" value="" />
+        <property name="send14" value="" />
+        <property name="send15" value="" />
+        <property name="send16" value="" />
+        <property name="send17" value="" />
+        <property name="send18" value="" />
+        <property name="send19" value="" />
+        <property name="send20" value="" />
+        <property name="send21" value="" />
+        <property name="send22" value="" />
+        <property name="send23" value="" />
+        <property name="send24" value="" />
+      </properties>
+      <layout>
+        <posX>289</posX>
+        <posY>68</posY>
+      </layout>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="button1_sendprop1">
+      <sources>
+        <source>
+          <component id="Keyboard.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_sendprop2">
+      <sources>
+        <source>
+          <component id="Keyboard.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_sendprop3">
+      <sources>
+        <source>
+          <component id="Keyboard.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_sendprop4">
+      <sources>
+        <source>
+          <component id="Keyboard.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_sendprop5">
+      <sources>
+        <source>
+          <component id="Keyboard.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop5" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>1488</width>
+      <height>3400</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

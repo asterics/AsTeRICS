@@ -1,0 +1,815 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\gaming&amp;Toys\PS3_ModNation_Wii.acs_2017_12_14_11_51" version="20130320">
+  <components>
+    <component id="WiiMote.1" type_id="asterics.WiiMote">
+      <description>Interfaces to the WiiMote via Bluetooth HID and provides data from Wiimote and Nunchuck controller</description>
+      <ports>
+        <outputPort portTypeID="pitch">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="roll">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="point1X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="point1Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="point2X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="point2Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="nunX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="nunY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="battery">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="updatePeriod" value="5" />
+      </properties>
+      <layout>
+        <posX>66</posX>
+        <posY>220</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="256" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="0" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>967</posX>
+        <posY>159</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>778</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="Averager.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="1" />
+        <property name="mode" value="1" />
+      </properties>
+      <layout>
+        <posX>405</posX>
+        <posY>218</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="256" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="0" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1013</posX>
+        <posY>574</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>3800</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="Averager.1.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="60" />
+        <property name="mode" value="1" />
+      </properties>
+      <layout>
+        <posX>289</posX>
+        <posY>464</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(((a/80)*128) + 128)" />
+      </properties>
+      <layout>
+        <posX>617</posX>
+        <posY>224</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="((a/80)*128) + 128" />
+      </properties>
+      <layout>
+        <posX>494</posX>
+        <posY>485</posY>
+      </layout>
+    </component>
+    <component id="RemoteJoystick.1" type_id="asterics.RemoteJoystick">
+      <description>Joystick emulator, communicates via HID actuator, compatible to PS3 sixaxis / SEGA Virtua Stick </description>
+      <ports>
+        <inputPort portTypeID="joystickX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickZ">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickR">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickPov">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="refreshInterval" value="0" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>884</posX>
+        <posY>335</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="3" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="0" />
+        <property name="threshold" value="160" />
+        <property name="threshold2" value="10" />
+      </properties>
+      <layout>
+        <posX>660</posX>
+        <posY>585</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="5" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="0" />
+        <property name="threshold" value="80" />
+        <property name="threshold2" value="10" />
+      </properties>
+      <layout>
+        <posX>657</posX>
+        <posY>756</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>982</posX>
+        <posY>770</posY>
+      </layout>
+      <gui>
+        <posX>1225</posX>
+        <posY>867</posY>
+        <width>3000</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1.2" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="256" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="0" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>223</posX>
+        <posY>46</posY>
+      </layout>
+      <gui>
+        <posX>4688</posX>
+        <posY>3778</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1.2.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="256" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="0" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>353</posX>
+        <posY>48</posY>
+      </layout>
+      <gui>
+        <posX>3525</posX>
+        <posY>3800</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1.2.2" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="256" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="0" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>506</posX>
+        <posY>34</posY>
+      </layout>
+      <gui>
+        <posX>2362</posX>
+        <posY>3844</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1.2.1.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="256" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="0" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>646</posX>
+        <posY>43</posY>
+      </layout>
+      <gui>
+        <posX>1162</posX>
+        <posY>3822</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1.3" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="-80" />
+        <property name="max" value="80" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="0" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>87</posX>
+        <posY>596</posY>
+      </layout>
+      <gui>
+        <posX>4425</posX>
+        <posY>644</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="WiiMote.1" />
+        <port id="pitch" />
+      </source>
+      <target>
+        <component id="Averager.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Comparator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="WiiMote.1" />
+        <port id="roll" />
+      </source>
+      <target>
+        <component id="Averager.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickX" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="BarDisplay.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Comparator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="WiiMote.1" />
+        <port id="point1X" />
+      </source>
+      <target>
+        <component id="BarDisplay.1.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="WiiMote.1" />
+        <port id="point1Y" />
+      </source>
+      <target>
+        <component id="BarDisplay.1.2.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="WiiMote.1" />
+        <port id="point2X" />
+      </source>
+      <target>
+        <component id="BarDisplay.1.2.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="WiiMote.1" />
+        <port id="point2Y" />
+      </source>
+      <target>
+        <component id="BarDisplay.1.2.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="WiiMote.1" />
+        <port id="pitch" />
+      </source>
+      <target>
+        <component id="BarDisplay.1.3" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="pressed1_pressButton8">
+      <sources>
+        <source>
+          <component id="WiiMote.1" />
+          <eventPort id="pressed1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="released1_releaseButton8">
+      <sources>
+        <source>
+          <component id="WiiMote.1" />
+          <eventPort id="released1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedA_pressButton2">
+      <sources>
+        <source>
+          <component id="WiiMote.1" />
+          <eventPort id="pressedA" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedA_releaseButton2">
+      <sources>
+        <source>
+          <component id="WiiMote.1" />
+          <eventPort id="releasedA" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedB_pressButton3">
+      <sources>
+        <source>
+          <component id="WiiMote.1" />
+          <eventPort id="pressedB" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedB_releaseButton3">
+      <sources>
+        <source>
+          <component id="WiiMote.1" />
+          <eventPort id="releasedB" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_eventDisplay">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionFalse_eventDisplay">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionFalse" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_eventDisplay">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionFalse_eventDisplay">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionFalse" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_pressButton8">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionFalse_releaseButton8">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionFalse" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_pressButton7">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionFalse_releaseButton7">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionFalse" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton7" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6312</width>
+      <height>7311</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

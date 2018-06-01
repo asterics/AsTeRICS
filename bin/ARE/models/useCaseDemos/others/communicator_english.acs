@@ -1,0 +1,299 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\others\communicator_english.acs_2017_12_14_11_53" version="20130320">
+  <modelDescription>
+    <shortDescription>Camera controlled mouse for writing with OSKA</shortDescription>
+    <requirements>Webcam connected.
+Optionally two switches connected to In1, In2 and In5 of the DigitalIn CIM.</requirements>
+    <description>The Head Pose is translated to mouse X/Y positions (direct, absolute positioning).
+Mouse clicks can be perfromed by dwell time, GUI buttons allow to select
+the next click type.
+Alternatively, switch1 and switch2 control left and right mouse buttons.
+Switch5 activates and deactivates the camera mouse.
+The camera mouse sensitivity and the dwell time can be selected via a GUI sliders.
+OSKA and Notepad are automatically started for the writing task.</description>
+  </modelDescription>
+  <components>
+    <component id="OskaExternalScanning2D.1" type_id="OskaExternalScanning2D">
+      <description>Component communicating with OSKA</description>
+      <ports>
+        <inputPort portTypeID="posColumn">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="posRow">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="action">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="keycodes">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="port" value="4546" />
+        <property name="title" value="OSKA keyboard" />
+        <property name="oskaPath" value="..\oska\start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards\writing\communicator_german.xml" />
+        <property name="highlightStyle" value="0" />
+        <property name="highlightResetPosition" value="0" />
+        <property name="settingsFile" value="settings\default.kst" />
+        <property name="windowDecorated" value="true" />
+        <property name="eventScanningEnabled" value="true" />
+        <property name="valueScanningEnabled" value="true" />
+        <property name="inputRange" value="0" />
+        <property name="resizeEnabled" value="false" />
+      </properties>
+      <layout>
+        <posX>54</posX>
+        <posY>104</posY>
+      </layout>
+      <gui>
+        <posX>1700</posX>
+        <posY>5200</posY>
+        <width>5500</width>
+        <height>4800</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="speak this" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>374</posX>
+        <posY>74</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>733</posY>
+        <width>4500</width>
+        <height>1100</height>
+      </gui>
+    </component>
+    <component id="SpeechProcessor.1" type_id="asterics.SpeechProcessor">
+      <description>This plugin allows to genereate and recognize speech via the speech processor server application</description>
+      <ports>
+        <inputPort portTypeID="speak">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="command">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="language" value="0" />
+        <property name="recognitionConfidence" value="0.5" />
+        <property name="speechLoopDelay" value="1500" />
+        <property name="activationCommand" value="computer, listen!" />
+        <property name="deactivationCommand" value="computer, stop!" />
+        <property name="helpCommand" value="computer, help!" />
+        <property name="mode" value="1" />
+        <property name="command1" value="hello" />
+        <property name="command2" value="" />
+        <property name="command3" value="" />
+        <property name="command4" value="" />
+        <property name="command5" value="" />
+        <property name="command6" value="" />
+        <property name="command7" value="" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+        <property name="command11" value="" />
+        <property name="command12" value="" />
+        <property name="command13" value="" />
+        <property name="command14" value="" />
+        <property name="command15" value="" />
+        <property name="command16" value="" />
+        <property name="command17" value="" />
+        <property name="command18" value="" />
+        <property name="command19" value="" />
+        <property name="command20" value="" />
+        <property name="command21" value="" />
+        <property name="command22" value="" />
+        <property name="command23" value="" />
+        <property name="command24" value="" />
+        <property name="command25" value="" />
+      </properties>
+      <layout>
+        <posX>535</posX>
+        <posY>143</posY>
+      </layout>
+    </component>
+    <component id="StringPathSelector.1" type_id="asterics.StringPathSelector">
+      <description>StringPathselector routes signal to one of four output ports</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="activePorts" value="1" />
+      </properties>
+      <layout>
+        <posX>194</posX>
+        <posY>102</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="throw away this" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>369</posX>
+        <posY>238</posY>
+      </layout>
+      <gui>
+        <posX>4525</posX>
+        <posY>733</posY>
+        <width>4400</width>
+        <height>1100</height>
+      </gui>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="1" />
+      </properties>
+      <layout>
+        <posX>13</posX>
+        <posY>313</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.25">
+      <source>
+        <component id="OskaExternalScanning2D.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="StringPathSelector.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.26">
+      <source>
+        <component id="StringPathSelector.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="SpeechProcessor.1" />
+        <port id="speak" />
+      </target>
+    </channel>
+    <channel id="binding.27">
+      <source>
+        <component id="StringPathSelector.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.28">
+      <source>
+        <component id="StringPathSelector.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="TextDisplay.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="eventOut1_select1">
+      <sources>
+        <source>
+          <component id="OskaExternalScanning2D.1" />
+          <eventPort id="eventOut1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringPathSelector.1" />
+          <eventPort id="select1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut2_select2">
+      <sources>
+        <source>
+          <component id="OskaExternalScanning2D.1" />
+          <eventPort id="eventOut2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringPathSelector.1" />
+          <eventPort id="select2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_select2">
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringPathSelector.1" />
+          <eventPort id="select2" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9488</width>
+      <height>2000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

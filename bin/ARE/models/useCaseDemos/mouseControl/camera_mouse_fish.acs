@@ -1,0 +1,594 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\mouseControl\camera_mouse_fish.acs_2017_12_14_11_52" version="20130320">
+  <modelDescription>
+    <shortDescription>Webcam Mouse with click functionality. A short period between opening 
+and closing the mouth triggers a left mouse click, a long period triggers a right 
+click</shortDescription>
+    <requirements>Webcam</requirements>
+    <description>Description of the Mouse clicking: When the threshold-trigger will be fired, 
+the event will be bebounced, because there might be several events very 
+closed to each other.
+The first event starts the timer, the second event stops it. If the second event arrives
+before the timer has finished, the left click will be tirggered, otherwise the right one.
+The EventDelay component take care that the event block is active before the
+event arrives.</description>
+  </modelDescription>
+  <components>
+    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
+      <description>Webcamera-based face tracking sensor</description>
+      <ports>
+        <outputPort portTypeID="noseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="noseY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraSelection" value="1" />
+        <property name="cameraResolution" value="3" />
+        <property name="cameraDisplayUpdate" value="100" />
+        <property name="cameraProfile" value="" />
+      </properties>
+      <layout>
+        <posX>52</posX>
+        <posY>41</posY>
+      </layout>
+      <gui>
+        <posX>8050</posX>
+        <posY>0</posY>
+        <width>1950</width>
+        <height>2822</height>
+      </gui>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="1920" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1080" />
+      </properties>
+      <layout>
+        <posX>1561</posX>
+        <posY>128</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="b-a" />
+      </properties>
+      <layout>
+        <posX>243</posX>
+        <posY>293</posY>
+      </layout>
+    </component>
+    <component id="Differentiate.1" type_id="asterics.Differentiate">
+      <description>Differentiate (subtract last input value from input value)</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="resetValue" value="0" />
+      </properties>
+      <layout>
+        <posX>422</posX>
+        <posY>303</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="15" />
+        <property name="thresholdLow" value="15" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>581</posX>
+        <posY>244</posY>
+      </layout>
+    </component>
+    <component id="Averager.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="5" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>334</posX>
+        <posY>3</posY>
+      </layout>
+    </component>
+    <component id="Averager.2" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="5" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>333</posX>
+        <posY>155</posY>
+      </layout>
+    </component>
+    <component id="EventDelay.1" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="100" />
+      </properties>
+      <layout>
+        <posX>1230</posX>
+        <posY>459</posY>
+      </layout>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="1500" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>1222</posX>
+        <posY>245</posY>
+      </layout>
+    </component>
+    <component id="EventBlock.1" type_id="asterics.EventBlock">
+      <description>Pass or block event</description>
+      <ports />
+      <properties>
+        <property name="block" value="false" />
+        <property name="blockAfterEvent" value="false" />
+      </properties>
+      <layout>
+        <posX>1420</posX>
+        <posY>304</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>595</posX>
+        <posY>460</posY>
+      </layout>
+      <gui>
+        <posX>25</posX>
+        <posY>644</posY>
+        <width>5300</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="EventFlipFlop.1" type_id="asterics.EventFlipFlop">
+      <description>Event Flip-flop: First event-in fires event-out1, second event-in fires event-out2, etc.</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>1053</posX>
+        <posY>246</posY>
+      </layout>
+    </component>
+    <component id="Debounce-EventBlock" type_id="asterics.EventBlock">
+      <description>Pass or block event</description>
+      <ports />
+      <properties>
+        <property name="block" value="false" />
+        <property name="blockAfterEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>923</posX>
+        <posY>245</posY>
+      </layout>
+    </component>
+    <component id="Debounce-Timer" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="50" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>769</posX>
+        <posY>227</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.6">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseX" />
+      </source>
+      <target>
+        <component id="Averager.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="Averager.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="chinY" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Differentiate.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Differentiate.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="Averager.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="Differentiate.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="periodFinished_rightClick">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_block">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="block" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_input">
+      <sources>
+        <source>
+          <component id="EventDelay.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_leftClick">
+      <sources>
+        <source>
+          <component id="EventBlock.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_start">
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out2_stop">
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out2_pass">
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="pass" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out2_input">
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_input">
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Debounce-EventBlock" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_event-in">
+      <sources>
+        <source>
+          <component id="Debounce-EventBlock" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_start">
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Debounce-Timer" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_pass">
+      <sources>
+        <source>
+          <component id="Debounce-Timer" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Debounce-EventBlock" />
+          <eventPort id="pass" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_reset">
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>5888</width>
+      <height>2911</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

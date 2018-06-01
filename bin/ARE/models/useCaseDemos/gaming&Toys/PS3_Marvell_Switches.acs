@@ -1,0 +1,1379 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\gaming&amp;Toys\PS3_Marvell_Switches.acs_2017_12_14_11_51" version="20130320">
+  <modelDescription>
+    <shortDescription>PS3 control for the pinball game Marvell</shortDescription>
+    <requirements>GPIO with switches 1-4 connected 
+HID actuator with PS3 Joystick firmware</requirements>
+    <description>OSKA provides basic PS3-controller emulation
+Switch1 and Switch2 control the pinball bars.
+Swtich3  and Switch4 start / resume  the game.</description>
+  </modelDescription>
+  <components>
+    <component id="EventDispatcher.2" type_id="asterics.EventDispatcher">
+      <description>Translates incoming command strings into events</description>
+      <ports>
+        <inputPort portTypeID="cmd">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="command1" value="up" />
+        <property name="command2" value="down" />
+        <property name="command3" value="left" />
+        <property name="command4" value="right" />
+        <property name="command5" value="select" />
+        <property name="command6" value="start" />
+        <property name="command7" value="" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+      </properties>
+      <layout>
+        <posX>184</posX>
+        <posY>265</posY>
+      </layout>
+    </component>
+    <component id="ConstantDispatcher.1" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="0" />
+        <property name="slot2" value="128" />
+        <property name="slot3" value="255" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>544</posX>
+        <posY>255</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>730</posX>
+        <posY>97</posY>
+      </layout>
+      <gui>
+        <posX>25</posX>
+        <posY>711</posY>
+        <width>3800</width>
+        <height>2900</height>
+      </gui>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>Timer</description>
+      <ports>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="250" />
+        <property name="resolution" value="20" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>375</posX>
+        <posY>14</posY>
+      </layout>
+    </component>
+    <component id="ConstantDispatcher.2" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="0" />
+        <property name="slot2" value="128" />
+        <property name="slot3" value="255" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>548</posX>
+        <posY>419</posY>
+      </layout>
+    </component>
+    <component id="EventDispatcher.1" type_id="asterics.EventDispatcher">
+      <description>Translates incoming command strings into events</description>
+      <ports>
+        <inputPort portTypeID="cmd">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="command1" value="square" />
+        <property name="command2" value="cross" />
+        <property name="command3" value="circle" />
+        <property name="command4" value="triangle" />
+        <property name="command5" value="l1" />
+        <property name="command6" value="r1" />
+        <property name="command7" value="l2" />
+        <property name="command8" value="r2" />
+        <property name="command9" value="ps-short" />
+        <property name="command10" value="ps-long" />
+      </properties>
+      <layout>
+        <posX>187</posX>
+        <posY>76</posY>
+      </layout>
+    </component>
+    <component id="Timer.3" type_id="asterics.Timer">
+      <description>Timer</description>
+      <ports>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="120" />
+        <property name="resolution" value="20" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>375</posX>
+        <posY>232</posY>
+      </layout>
+    </component>
+    <component id="RemoteJoystick.1" type_id="asterics.RemoteJoystick">
+      <description>Joystick emulator, communicates via HID actuator, compatible to PS3 sixaxis / SEGA Virtua Stick </description>
+      <ports>
+        <inputPort portTypeID="joystickX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickZ">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickR">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickPov">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="refreshInterval" value="0" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>748</posX>
+        <posY>304</posY>
+      </layout>
+    </component>
+    <component id="Timer.2" type_id="asterics.Timer">
+      <description>Timer</description>
+      <ports>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="2000" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>540</posX>
+        <posY>22</posY>
+      </layout>
+    </component>
+    <component id="DigitalIn.1" type_id="asterics.DigitalIn">
+      <description>GPIO CIM sensor for inputs</description>
+      <ports />
+      <properties>
+        <property name="activateEventIn1" value="True" />
+        <property name="activateEventIn2" value="True" />
+        <property name="activateEventIn3" value="True" />
+        <property name="activateEventIn4" value="True" />
+        <property name="activateEventIn5" value="false" />
+        <property name="activateEventIn6" value="false" />
+        <property name="periodicUpdate" value="0" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>66</posX>
+        <posY>433</posY>
+      </layout>
+    </component>
+    <component id="OskaExternalScanning2D.1" type_id="OskaExternalScanning2D">
+      <description>Component communicating with OSKA</description>
+      <ports>
+        <inputPort portTypeID="posColumn">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="posRow">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="action">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="keycodes">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="port" value="4546" />
+        <property name="title" value="OSKA keyboard" />
+        <property name="oskaPath" value="..\oska\start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards\ps3\ps3control_buttons.xml" />
+        <property name="highlightStyle" value="0" />
+        <property name="highlightResetPosition" value="0" />
+        <property name="settingsFile" value="settings\default.kst" />
+        <property name="windowDecorated" value="true" />
+        <property name="eventScanningEnabled" value="true" />
+        <property name="valueScanningEnabled" value="true" />
+        <property name="inputRange" value="0" />
+        <property name="resizeEnabled" value="false" />
+      </properties>
+      <layout>
+        <posX>32</posX>
+        <posY>203</posY>
+      </layout>
+      <gui>
+        <posX>3312</posX>
+        <posY>3978</posY>
+        <width>3800</width>
+        <height>4300</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.5">
+      <source>
+        <component id="ConstantDispatcher.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickY" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="ConstantDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickX" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="OskaExternalScanning2D.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="EventDispatcher.1" />
+        <port id="cmd" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="OskaExternalScanning2D.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="EventDispatcher.2" />
+        <port id="cmd" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="recognizedCommand1_pressButton1">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_pressButton2">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_pressButton3">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_pressButton4">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton3">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton2">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton1">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton4">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton5">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton6">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton7">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton8">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand8_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_pressButton5">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_pressButton6">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_pressButton7">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand8_pressButton8">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand10_pressButton13">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton13" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand9_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.2" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand9_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton13">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton13" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton13">
+      <sources>
+        <source>
+          <component id="Timer.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton13" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_eventDisplay">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_eventDisplay">
+      <sources>
+        <source>
+          <component id="Timer.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand10_pressButton13">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton13" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.3" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.3" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.3" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.3" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="Timer.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="Timer.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.2" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.2" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.2" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_start">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_pressButton9">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton9" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_pressButton10">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton10" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton9">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton9" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton10">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton10" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_pressButton5">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_releaseButton5">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in2Low_pressButton6">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in2Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in2High_releaseButton6">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in2High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in4Low_pressButton2">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in4Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in4High_releaseButton2">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in4High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in3Low_pressButton3">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in3Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in3High_releaseButton3">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in3High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand8_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand9_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand10_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_eventDisplay">
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4388</width>
+      <height>3800</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

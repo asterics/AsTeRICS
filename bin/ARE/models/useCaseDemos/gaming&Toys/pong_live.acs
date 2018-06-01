@@ -1,0 +1,1355 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\gaming&amp;Toys\pong_live.acs_2017_12_14_11_51" version="20130320">
+  <components>
+    <component id="Arduino.1" type_id="asterics.Arduino">
+      <description>Arduino Microcontroller CIM</description>
+      <ports>
+        <inputPort portTypeID="pwm3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pwm5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pwm6">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="A0">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A5">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="uniqueID" value="not used" />
+        <property name="periodicADCUpdate" value="50" />
+        <property name="pin2Mode" value="2" />
+        <property name="pin3Mode" value="2" />
+        <property name="pin4Mode" value="0" />
+        <property name="pin5Mode" value="0" />
+        <property name="pin6Mode" value="0" />
+        <property name="pin7Mode" value="0" />
+        <property name="pin8Mode" value="2" />
+        <property name="pin9Mode" value="2" />
+        <property name="pin10Mode" value="2" />
+        <property name="pin11Mode" value="0" />
+        <property name="pin12Mode" value="0" />
+        <property name="pin13Mode" value="0" />
+      </properties>
+      <layout>
+        <posX>16</posX>
+        <posY>147</posY>
+      </layout>
+    </component>
+    <component id="EventCounter.1" type_id="asterics.EventCounter">
+      <description>Two-direction event counter</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="minValue" value="0" />
+        <property name="maxValue" value="1000" />
+        <property name="initialValue" value="0" />
+        <property name="wrapAround" value="false" />
+        <property name="sendInitialValue" value="false" />
+        <property name="autoSend" value="true" />
+      </properties>
+      <layout>
+        <posX>295</posX>
+        <posY>31</posY>
+      </layout>
+    </component>
+    <component id="PongGame.1" type_id="asterics.PongGame">
+      <description>Plugin displays a pong game in the AsTeRICS GUI</description>
+      <ports>
+        <inputPort portTypeID="playerOnePos">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="playerTwoPos">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="playerOneSpeed">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="playerTwoSpeed">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="ballX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ballY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="controlMode" value="0" />
+        <property name="speedStep" value="0.02" />
+        <property name="goalsToWin" value="3" />
+        <property name="eventsToCaloryMultiplier" value="2.5" />
+        <property name="goalScoreBase" value="1000" />
+        <property name="goalTouchBase" value="20" />
+        <property name="resetWaitTime" value="2000" />
+        <property name="maxSpeed" value="10" />
+        <property name="minXSpeed" value="2" />
+        <property name="reflectionYImpulse" value="0.5" />
+        <property name="soundFilePaddleTouch" value="data/sounds/pong_2.wav" />
+        <property name="soundFileBoundsTouch" value="data/sounds/pong_1.wav" />
+        <property name="soundFileGoal" value="data/sounds/pong_3.wav" />
+        <property name="soundFileEndGame" value="data/sounds/applause.wav" />
+      </properties>
+      <layout>
+        <posX>163</posX>
+        <posY>43</posY>
+      </layout>
+      <gui>
+        <posX>1262</posX>
+        <posY>44</posY>
+        <width>7412</width>
+        <height>9289</height>
+      </gui>
+    </component>
+    <component id="PeakDetector.1" type_id="asterics.PeakDetector">
+      <description>Peak detection for incoming signal</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="top">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="bottom">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="comparePeaks" value="5" />
+        <property name="validTopPercentage" value="100" />
+        <property name="validBottomPercentage" value="0" />
+        <property name="timeMode" value="1" />
+      </properties>
+      <layout>
+        <posX>402</posX>
+        <posY>233</posY>
+      </layout>
+    </component>
+    <component id="IntToString.1" type_id="asterics.IntToString">
+      <description>Converts int to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hexadecimalOutput" value="false" />
+      </properties>
+      <layout>
+        <posX>416</posX>
+        <posY>31</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Player1 Turns" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>535</posX>
+        <posY>33</posY>
+      </layout>
+      <gui>
+        <posX>88</posX>
+        <posY>7867</posY>
+        <width>1100</width>
+        <height>688</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="1" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="480" />
+        <property name="max" value="540" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="pulse Player1" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>288</posX>
+        <posY>243</posY>
+      </layout>
+      <gui>
+        <posX>75</posX>
+        <posY>2289</posY>
+        <width>1100</width>
+        <height>1911</height>
+      </gui>
+    </component>
+    <component id="EventCounter.1.1" type_id="asterics.EventCounter">
+      <description>Two-direction event counter</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="minValue" value="0" />
+        <property name="maxValue" value="1000" />
+        <property name="initialValue" value="0" />
+        <property name="wrapAround" value="false" />
+        <property name="sendInitialValue" value="false" />
+        <property name="autoSend" value="true" />
+      </properties>
+      <layout>
+        <posX>694</posX>
+        <posY>36</posY>
+      </layout>
+    </component>
+    <component id="IntToString.1.1" type_id="asterics.IntToString">
+      <description>Converts int to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hexadecimalOutput" value="false" />
+      </properties>
+      <layout>
+        <posX>816</posX>
+        <posY>36</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Player2 Turns" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>940</posX>
+        <posY>41</posY>
+      </layout>
+      <gui>
+        <posX>8738</posX>
+        <posY>7911</posY>
+        <width>1100</width>
+        <height>688</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Pulse Player1" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>818</posX>
+        <posY>233</posY>
+      </layout>
+      <gui>
+        <posX>75</posX>
+        <posY>4311</posY>
+        <width>1100</width>
+        <height>1067</height>
+      </gui>
+    </component>
+    <component id="Averager.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="4" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>171</posX>
+        <posY>225</posY>
+      </layout>
+    </component>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="LoopBe Internal MIDI" />
+        <property name="channel" value="1" />
+        <property name="instrument" value="1 Acoustic Grand Piano" />
+        <property name="triggerThreshold" value="50" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="1000" />
+        <property name="toneScale" value="alltones.sc" />
+        <property name="playOnlyChangingNotes" value="False" />
+        <property name="displayGUI" value="False" />
+        <property name="displayNoteNames" value="false" />
+      </properties>
+      <layout>
+        <posX>825</posX>
+        <posY>389</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>0</posY>
+        <width>1112</width>
+        <height>867</height>
+      </gui>
+    </component>
+    <component id="IntToString.2" type_id="asterics.IntToString">
+      <description>Converts int to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hexadecimalOutput" value="false" />
+      </properties>
+      <layout>
+        <posX>686</posX>
+        <posY>240</posY>
+      </layout>
+    </component>
+    <component id="PeakDetector.1.1" type_id="asterics.PeakDetector">
+      <description>Peak detection for incoming signal</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="top">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="bottom">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="comparePeaks" value="5" />
+        <property name="validTopPercentage" value="100" />
+        <property name="validBottomPercentage" value="0" />
+        <property name="timeMode" value="1" />
+      </properties>
+      <layout>
+        <posX>421</posX>
+        <posY>507</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="1" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="480" />
+        <property name="max" value="540" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="pulse Player2" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>307</posX>
+        <posY>517</posY>
+      </layout>
+      <gui>
+        <posX>8762</posX>
+        <posY>2222</posY>
+        <width>1100</width>
+        <height>1933</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.2.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Pulse Player2" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>812</posX>
+        <posY>544</posY>
+      </layout>
+      <gui>
+        <posX>8762</posX>
+        <posY>4311</posY>
+        <width>1075</width>
+        <height>1022</height>
+      </gui>
+    </component>
+    <component id="Averager.1.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="4" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>190</posX>
+        <posY>499</posY>
+      </layout>
+    </component>
+    <component id="MidiPlayer.1.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="LoopBe Internal MIDI" />
+        <property name="channel" value="2" />
+        <property name="instrument" value="2 Bright Acoustic Piano" />
+        <property name="triggerThreshold" value="50" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="1000" />
+        <property name="toneScale" value="alltones.sc" />
+        <property name="playOnlyChangingNotes" value="False" />
+        <property name="displayGUI" value="False" />
+        <property name="displayNoteNames" value="false" />
+      </properties>
+      <layout>
+        <posX>805</posX>
+        <posY>732</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>956</posY>
+        <width>1112</width>
+        <height>733</height>
+      </gui>
+    </component>
+    <component id="IntToString.2.1" type_id="asterics.IntToString">
+      <description>Converts int to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hexadecimalOutput" value="false" />
+      </properties>
+      <layout>
+        <posX>682</posX>
+        <posY>553</posY>
+      </layout>
+    </component>
+    <component id="ConstantDispatcher.1" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="300" />
+        <property name="slot2" value="0" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>693</posX>
+        <posY>388</posY>
+      </layout>
+    </component>
+    <component id="ConstantDispatcher.1.1" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="400" />
+        <property name="slot2" value="0" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>680</posX>
+        <posY>725</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="1" />
+        <property name="threshold" value="30" />
+        <property name="threshold2" value="180" />
+      </properties>
+      <layout>
+        <posX>546</posX>
+        <posY>247</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="1" />
+        <property name="threshold" value="30" />
+        <property name="threshold2" value="180" />
+      </properties>
+      <layout>
+        <posX>561</posX>
+        <posY>530</posY>
+      </layout>
+    </component>
+    <component id="Benchmark.1" type_id="asterics.Benchmark">
+      <description>Measures incoming data or events per time</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="dataCount">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="eventCount">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="time" value="500" />
+      </properties>
+      <layout>
+        <posX>91</posX>
+        <posY>961</posY>
+      </layout>
+    </component>
+    <component id="Averager.2" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="5" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>210</posX>
+        <posY>950</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*5" />
+      </properties>
+      <layout>
+        <posX>336</posX>
+        <posY>950</posY>
+      </layout>
+    </component>
+    <component id="IntToString.3" type_id="asterics.IntToString">
+      <description>Converts int to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hexadecimalOutput" value="false" />
+      </properties>
+      <layout>
+        <posX>583</posX>
+        <posY>958</posY>
+      </layout>
+    </component>
+    <component id="StringExpander.1" type_id="asterics.StringExpander">
+      <description>Adds the preString and postString strings to the incoming string and sends the new string to the output port.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="preString">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="postString">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="preString" value="@FS20:11111111_1115_" />
+        <property name="postString" value="" />
+        <property name="trim" value="false" />
+      </properties>
+      <layout>
+        <posX>713</posX>
+        <posY>956</posY>
+      </layout>
+    </component>
+    <component id="FS20Sender.1" type_id="asterics.FS20Sender">
+      <description>Sends FS20 commands</description>
+      <ports>
+        <inputPort portTypeID="Housecode">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Address">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Housecode" value="11111111" />
+        <property name="Address" value="1111" />
+      </properties>
+      <layout>
+        <posX>843</posX>
+        <posY>938</posY>
+      </layout>
+    </component>
+    <component id="Comparator.2" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="0" />
+        <property name="threshold" value="0" />
+        <property name="threshold2" value="16" />
+      </properties>
+      <layout>
+        <posX>458</posX>
+        <posY>958</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Go!" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>9</posX>
+        <posY>10</posY>
+      </layout>
+      <gui>
+        <posX>8975</posX>
+        <posY>111</posY>
+        <width>662</width>
+        <height>756</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.7">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A1" />
+      </source>
+      <target>
+        <component id="PongGame.1" />
+        <port id="playerTwoPos" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="PeakDetector.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="IntToString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="EventCounter.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="IntToString.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A0" />
+      </source>
+      <target>
+        <component id="PongGame.1" />
+        <port id="playerOnePos" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="IntToString.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="EventCounter.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="IntToString.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A2" />
+      </source>
+      <target>
+        <component id="Averager.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.22">
+      <source>
+        <component id="ConstantDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.24">
+      <source>
+        <component id="Comparator.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="IntToString.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.23">
+      <source>
+        <component id="IntToString.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="PeakDetector.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="ConstantDispatcher.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="IntToString.2.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.2.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="PeakDetector.1.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="Comparator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A3" />
+      </source>
+      <target>
+        <component id="Averager.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.25">
+      <source>
+        <component id="PeakDetector.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="Comparator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.26">
+      <source>
+        <component id="Comparator.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="IntToString.2.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.27">
+      <source>
+        <component id="Benchmark.1" />
+        <port id="eventCount" />
+      </source>
+      <target>
+        <component id="Averager.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.28">
+      <source>
+        <component id="Averager.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.30">
+      <source>
+        <component id="Comparator.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="IntToString.3" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.31">
+      <source>
+        <component id="IntToString.3" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="StringExpander.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.32">
+      <source>
+        <component id="StringExpander.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="FS20Sender.1" />
+        <port id="Action" />
+      </target>
+    </channel>
+    <channel id="binding.33">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Comparator.2" />
+        <port id="inA" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="pin7ChangedHighToLow_playerOneMovement">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin8ChangedLowToHigh" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PongGame.1" />
+          <eventPort id="playerOneMovement" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin7ChangedHighToLow_increase">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin8ChangedLowToHigh" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="increase" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin9ChangedLowToHigh_playerTwoMovement">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin9ChangedLowToHigh" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PongGame.1" />
+          <eventPort id="playerTwoMovement" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin8ChangedLowToHigh_increase">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin9ChangedLowToHigh" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1.1" />
+          <eventPort id="increase" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="gameOver_setPin10">
+      <sources>
+        <source>
+          <component id="PongGame.1" />
+          <eventPort id="gameOver" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Arduino.1" />
+          <eventPort id="setPin10" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin10ChangedHighToLow_startGame">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin10ChangedHighToLow" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PongGame.1" />
+          <eventPort id="startGame" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin8ChangedHighToLow_eventIncrease">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin8ChangedHighToLow" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Benchmark.1" />
+          <eventPort id="eventIncrease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin9ChangedHighToLow_eventIncrease">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin9ChangedHighToLow" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Benchmark.1" />
+          <eventPort id="eventIncrease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_startGame">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PongGame.1" />
+          <eventPort id="startGame" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>10000</width>
+      <height>9333</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
