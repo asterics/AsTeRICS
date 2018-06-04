@@ -1,0 +1,17 @@
+.bash {
+    background-color: rgb(95%,95%,95%);
+    color: rgb(30%,30%,30%);
+    width: 50%;
+}
+
+.powershell {
+    background-color: rgb(21, 21, 177);
+    color: rgb(100%,100%,100%);
+    width: 50%;
+}
+
+.winterm {
+    background-color: rgb(0%,0%,0%);
+    color: rgb(100%,100%,100%);
+    width: 50%;
+}

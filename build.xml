@@ -38,6 +38,10 @@
             <fileset dir="${src.dir}/asterics-microcontroller-arduino/custom/bin/ARE/web/webapps/asterics-microcontroller-arduino/"/>
         </copy>
 
+		<copy todir="${web.docroot}/webapps/asterics-smarthome-knx/" failonerror="true">
+            <fileset dir="${src.dir}/asterics-smarthome-knx/custom/bin/ARE/web/webapps/asterics-smarthome-knx/"/>
+        </copy>		
+		
 		<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
 		<subant target="copyHelpFilesNoInitGitSubmodules" failonerror="true">
 			<fileset dir="${WebACS.bin}" includes="**/build.xml"></fileset>

@@ -1,0 +1,421 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="G:\asterics\asterics-smarthome-knx\custom\bin\ARE\web\webapps\asterics-smarthome-knx\models\KNX.acs_2018_5_15_7_32" version="20130320">
+  <modelDescription>
+    <shortDescription>KNX Demo application
+This model controls the lightning of the KNX Gamma Trainingskit.</shortDescription>
+    <requirements>A KNX infrastructure.
+A little knowlege about KNX.</requirements>
+    <description>This is an example model showing how to interface a KNX infrastructure. 
+It shows three different possibilities to do this. The easiest way is to use the sliders,
+which are intended to be used to interface dimming actuators. The slider always sends
+integer values to the groupaddress specified by the plugin properties.
+The second way to send data to a KNX group address is by the 6 event listeners. 
+Each of them can be configured individually by the plugin properties. 
+The most universal way to send KNX commands is to use the
+command input of the KNX plugin. It expects a special formatted string and parses
+the dedicated keywords and format to a KNX command. The string can be assembled
+individually with other string formatting plugins.
+</description>
+  </modelDescription>
+  <components>
+    <component id="ButtonGrid.2" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Light A1 on" />
+        <property name="buttonCaption2" value="Light A1 off" />
+        <property name="buttonCaption3" value="Blinds up" />
+        <property name="buttonCaption4" value="Blinds down" />
+        <property name="buttonCaption5" value="Light dimming up" />
+        <property name="buttonCaption6" value="Light dimming down" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>470</posX>
+        <posY>77</posY>
+      </layout>
+      <gui>
+        <posX>135</posX>
+        <posY>1676</posY>
+        <width>5062</width>
+        <height>4444</height>
+      </gui>
+    </component>
+    <component id="TextSender.1" type_id="asterics.TextSender">
+      <description>Send text when gets event</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="text" value="@KNX:1/1/104#int#250" />
+      </properties>
+      <layout>
+        <posX>310</posX>
+        <posY>76</posY>
+      </layout>
+    </component>
+    <component id="Knx.1" type_id="asterics.Knx">
+      <description>Enables the ARE to communicate with a KNX network</description>
+      <ports>
+        <inputPort portTypeID="actionString">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider6">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="data1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="data2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="data3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="data4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="data5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="data6">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="localIP" value="172.22.0.124" />
+        <property name="KNXNetIP" value="172.22.10.62" />
+        <property name="NAT" value="true" />
+        <property name="groupAddress1" value="0/0/1" />
+        <property name="dataValue1" value="on" />
+        <property name="DPTEvent1" value="Switch[off,on] (1.001)" />
+        <property name="groupAddress2" value="0/0/1" />
+        <property name="dataValue2" value="off" />
+        <property name="DPTEvent2" value="Switch[off,on] (1.001)" />
+        <property name="groupAddress3" value="0/2/0" />
+        <property name="dataValue3" value="up" />
+        <property name="DPTEvent3" value="Up/Down[up,down] (1.008)" />
+        <property name="groupAddress4" value="0/2/0" />
+        <property name="dataValue4" value="down" />
+        <property name="DPTEvent4" value="Up/Down[up,down] (1.008)" />
+        <property name="groupAddress5" value="0/1/1" />
+        <property name="dataValue5" value="increase 7" />
+        <property name="DPTEvent5" value="Dimming[decrease 7,increase 7] (3.007)" />
+        <property name="groupAddress6" value="0/1/1" />
+        <property name="dataValue6" value="decrease 7" />
+        <property name="DPTEvent6" value="Dimming[decrease 7,increase 7] (3.007)" />
+        <property name="groupAddressSlider1" value="" />
+        <property name="DPTSlider1" value="Scaling[0,100] (5.001)" />
+        <property name="groupAddressSlider2" value="" />
+        <property name="DPTSlider2" value="" />
+        <property name="groupAddressSlider3" value="" />
+        <property name="DPTSlider3" value="" />
+        <property name="groupAddressSlider4" value="" />
+        <property name="DPTSlider4" value="" />
+        <property name="groupAddressSlider5" value="" />
+        <property name="DPTSlider5" value="" />
+        <property name="groupAddressSlider6" value="" />
+        <property name="DPTSlider6" value="" />
+        <property name="groupAddressTrigger1" value="" />
+        <property name="groupAddressTrigger2" value="" />
+        <property name="groupAddressTrigger3" value="" />
+        <property name="groupAddressTrigger4" value="" />
+        <property name="groupAddressTrigger5" value="" />
+        <property name="groupAddressTrigger6" value="" />
+        <property name="groupAddressOutput1" value="" />
+        <property name="DPTOutput1" value="" />
+        <property name="groupAddressOutput2" value="" />
+        <property name="DPTOutput2" value="" />
+        <property name="groupAddressOutput3" value="" />
+        <property name="DPTOutput3" value="" />
+        <property name="groupAddressOutput4" value="" />
+        <property name="DPTOutput4" value="" />
+        <property name="groupAddressOutput5" value="" />
+        <property name="DPTOutput5" value="" />
+        <property name="groupAddressOutput6" value="" />
+        <property name="DPTOutput6" value="" />
+      </properties>
+      <layout>
+        <posX>601</posX>
+        <posY>37</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>734</posX>
+        <posY>77</posY>
+      </layout>
+      <gui>
+        <posX>135</posX>
+        <posY>6232</posY>
+        <width>5062</width>
+        <height>1667</height>
+      </gui>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="button10_sendText">
+      <sources>
+        <source>
+          <component id="ButtonGrid.2" />
+          <eventPort id="button9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextSender.1" />
+          <eventPort id="sendText" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_send1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.2" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Knx.1" />
+          <eventPort id="send1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_send2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.2" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Knx.1" />
+          <eventPort id="send2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_send3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.2" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Knx.1" />
+          <eventPort id="send3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_send4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.2" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Knx.1" />
+          <eventPort id="send4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_send5">
+      <sources>
+        <source>
+          <component id="ButtonGrid.2" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Knx.1" />
+          <eventPort id="send5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_send6">
+      <sources>
+        <source>
+          <component id="ButtonGrid.2" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Knx.1" />
+          <eventPort id="send6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event_out_1_eventDisplay">
+      <sources>
+        <source>
+          <component id="Knx.1" />
+          <eventPort id="event_out_1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event_out_2_eventDisplay">
+      <sources>
+        <source>
+          <component id="Knx.1" />
+          <eventPort id="event_out_2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event_out_3_eventDisplay">
+      <sources>
+        <source>
+          <component id="Knx.1" />
+          <eventPort id="event_out_3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event_out_4_eventDisplay">
+      <sources>
+        <source>
+          <component id="Knx.1" />
+          <eventPort id="event_out_4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event_out_5_eventDisplay">
+      <sources>
+        <source>
+          <component id="Knx.1" />
+          <eventPort id="event_out_5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event_out_6_eventDisplay">
+      <sources>
+        <source>
+          <component id="Knx.1" />
+          <eventPort id="event_out_6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>5762</width>
+      <height>8000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
