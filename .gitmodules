@@ -21,3 +21,6 @@
 [submodule "src/asterics-microcontroller-arduino"]
 	path = src/asterics-microcontroller-arduino
 	url = https://github.com/asterics/asterics-microcontroller-arduino.git
+[submodule "src/asterics-smarthome-knx"]
+	path = src/asterics-smarthome-knx
+	url = https://github.com/asterics/asterics-smarthome-knx.git
