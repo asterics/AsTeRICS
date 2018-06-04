@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<GroupAddress-Export xmlns="http://knx.org/xml/ga-export/01">
+  <GroupRange Name="KNX Demo" RangeStart="1" RangeEnd="2047">
+    <GroupRange Name="Light A1" RangeStart="1" RangeEnd="255">
+      <GroupAddress Name="Light A1 switch" Address="0/0/1" DPTs="DPST-1-1" />
+      <GroupAddress Name="Light A1 state" Address="0/0/2" DPTs="DPST-1-1" />
+    </GroupRange>
+    <GroupRange Name="Light A3" RangeStart="256" RangeEnd="511">
+      <GroupAddress Name="Light A3 switch" Address="0/1/0" DPTs="DPST-1-1" />
+      <GroupAddress Name="Light A3 dimming relative" Address="0/1/1" DPTs="DPST-3-7" />
+      <GroupAddress Name="Light A3 Status" Address="0/1/2" DPTs="DPST-5-1" />
+      <GroupAddress Name="Light A3 dimming absolute" Address="0/1/3" DPTs="DPST-5-1" />
+    </GroupRange>
+    <GroupRange Name="Shutters" RangeStart="512" RangeEnd="767">
+      <GroupAddress Name="Shutter Up/Down" Address="0/2/0" DPTs="DPST-1-8" />
+      <GroupAddress Name="Slats adjustment" Address="0/2/1" DPTs="DPST-1-9" />
+      <GroupAddress Name="Shutter position" Address="0/2/2" DPTs="DPST-5-1" />
+    </GroupRange>
+  </GroupRange>
+</GroupAddress-Export>

@@ -1,0 +1,246 @@
+<!-- this is an example for an AsTeRICS demo solution startpage. Please edit it for your needs. -->
+<!DOCTYPE html>
+<html>
+  	<head>
+		<!-- Initial setup
+		================================================== -->
+		<!-- Browser compatiblity, sf. https://stackoverflow.com/questions/6771258/what-does-meta-http-equiv-x-ua-compatible-content-ie-edge-do -->
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<!-- Character set encoding -->
+		<meta charset='utf-8'>
+
+		<!-- Ensure proper rendering (#responsive) -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<!-- Stylesheets
+		================================================== -->
+		<!-- Adapt/add styles if necessary -->
+		<link rel="stylesheet" type="text/css" href="styles/main.css">
+
+		<!-- bootstrap 3 (#responsive) supports also IE8-9 -->
+		<!-- bootstrap 4 (#responsive) from http://getbootstrap.com -->
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+		<link rel="stylesheet" href="styles/bootstrap.min.css">
+
+		<!-- Modal styleheet -->
+		<link rel="stylesheet" href="styles/modal.css">
+
+	    <!-- provided from AsTeRICS 3.0 -->
+	  	<script type="text/javascript" src="../startpage/clientExample/javascript/jquery-3.2.1.min.js"></script>
+	    <script src="../startpage/clientExample/javascript/JSmap.js"></script>
+	    <script src="../startpage/clientExample/javascript/areCommunicator.js"></script>
+		<!-- provided by this repository, should be part of the framework later -->
+		<script src="../startpage/lib/webAppUtils.js"></script>
+		<script src="../startpage/lib/modelManipulation.js"></script>
+	
+	    <!--[if lt IE 9]>
+	    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	    <![endif]-->
+	
+		<script type="text/javascript">
+			//Set the base URI of the running ARE instance.     
+			//You could also make this configurable by the user.
+			setBaseURI("http://localhost:8081/rest/");
+	
+			var modelFilePathOnWebserver='webapps/asterics-smarthome-knx/models/KNX.acs';
+	
+			//Defines model function for page load to update the input widgets with property values of the currently deployed model. 
+			window.onload=updateWidgetsFromDeployedModel;		
+		</script>
+	
+	
+
+		<title>AsTeRICS KNX Demo</title>
+	</head>
+
+	<body>
+
+		<h1>AsTeRICS KNX Demo</h1>
+
+
+		<!-- Navigation Bar
+		================================================== -->
+		<nav id="navigation-bar-wrapper" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+			<a class="navbar-brand" href="#">AsTeRICS KNX Demo</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation-bar-content" aria-controls="navigation-bar-content" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- FIXME: Navigation bar covers headings of page references -->
+			<div id="navigation-bar-content" class="collapse navbar-collapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<!-- sr-only class is visible to screen reader only (#accessibility) -->
+						<a class="nav-link" href="#objective">Objective<span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="#description">Description</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="#requirements">Requirements</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="#demos">Demo</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="#additional_material">Additional Material</a>
+					</li>
+				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<input class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="text">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
+			</div>
+		</nav>
+
+		<!-- Main Content
+		================================================== -->
+		<main role="main">
+
+			<!-- Main jumbotron for a primary marketing message or call to action -->
+			<div class="jumbotron">
+				<div class="container">
+					<h1 class="display-3">AsTeRICS KNX Demo</h1>
+					<p>This demo shows how a KNX system can be integrated into AsTeRICS.
+					</p><a class="btn btn-primary btn-lg" href="https://github.com/asterics/AsTeRICS" role="button">Learn more »</a>
+				</div>
+			</div>
+
+
+			<!-- Sections -->
+			<!-- TODO: Adapt as needed -->
+			<div class="container">
+
+				<!-- Section 1 -->
+				<div class="col" id="objective">
+					<h2>Objective</h2>
+					<p>This example contains the most important functions, like
+					<ul>
+						<li>Switching (On/Off)</li>
+						<li>Blinds (Up/Down)</li>
+						<li>Dimming (relative)</li>
+						<!--<li>Dimming absolute</li> -->
+					</ul>
+					<span class="sr-only">(current)</span></p>
+				</div><hr>
+
+				<!-- Section 2 -->
+				<div class="col" id="description">
+					<h2>Description</h2>
+					<p>This demo is based on the smart home kit hardware of the UAS Technikum Wien. The purpose of this Smart Home Kit is to simulate a Smart Home with different devices and technologies.
+						There are two rooms in the demo case. Heating, cooling, lighting and
+						shading are controlled by KNX components. The air ventilation system on the top is controlled by a
+						Wago PLC. On the right upper side a Raspberry Pi 3 is mounted.</p>
+					<!--  Please mark the respective areas of the image: What is heating, cooling, lighting, ... -->
+					<!--  Please add a link to the system architecture schematic file and the group addresses export from the configuration SW -->
+					<img class="svgmodal" src="img/shk_front.jpg" width="40%" alt="Smart Home Kit - Demo Case"/>
+					<p>
+					<p>
+					The KNX system is connected to the local network via LAN. The whole setup is illustrated in the following image:</p>
+					
+					<img class="svgmodal" src="img/knx_setup.png" width="90%" alt="Smart Home Kit - KNX Setup"/>
+					<p></p>
+				</div><hr>
+
+				<!-- Section 3 -->
+				<div class="col" id="requirements">
+					<h2>Requirements</h2>
+					<p>For this demo you need
+						<ul>
+							<li><a href="https://github.com/asterics/AsTeRICS/releases/tag/v3.0" target="_blank">AsTeRICS 3.0</a> installed and ARE running</li>
+							<li>OS: Windows, Linux (incl. RPi), Mac OSX</li>
+							<li>A little knowledge on KNX</li>
+							<li>A KNX system and a list of the group addresses </li>
+						</ul>
+						<hr>
+					</p>
+				</div>
+
+				<!-- Section 4 -->
+				<div class="col" id="demos">
+					<h2>Start Demo</h2>
+
+					To run this demonstration, the IP address of the KNX/IP Router and the group addresses have to be adapted below:
+				</div>
+					
+				<div class="col" id="configuration">
+					<h3>IP settings</h3>
+					<p><label for="localIP" title="Local IP address of your Computer: ">Local IP address of your Computer: </label>
+					<input id="localIP" type="text" placeholder="192.168.1.17" value="" data-asterics-model-binding-1='{"componentKey": "Knx.1","propertyKey": "localIP"}'></p>
+					<p><label for="knxIP" title="IP address of the KNX/IP Router: ">IP address of the KNX/IP Router: </label>
+					<input id="knxIP" type="text" placeholder="192.168.1.2" value="" data-asterics-model-binding-1='{"componentKey": "Knx.1","propertyKey": "KNXNetIP"}'></p>
+					<h3>Group addresses</h3>
+					<p><label for="Switch_GroupAddress" title="Group address for Switching: ">Group address for Switching: </label>
+					<input id="Switch_GroupAddress" type="text" placeholder="0/0/1" value="" data-asterics-model-binding-1='{"componentKey": "Knx.1","propertyKey": "groupAddress1"}' data-asterics-model-binding-2='{"componentKey": "Knx.1","propertyKey": "groupAddress2"}'></p>
+					<p><label for="Blind_GroupAddress" title="Group address for Shutters:">Group address for Shutters: </label>
+					<input id="Blind_GroupAddress" type="text" placeholder="0/2/0" value="" data-asterics-model-binding-1='{"componentKey": "Knx.1","propertyKey": "groupAddress3"}' data-asterics-model-binding-2='{"componentKey": "Knx.1","propertyKey": "groupAddress4"}'></p>
+					<p><label for="DimmRel_GroupAddres" title="Group address for Dimming (relative)">Group address for Dimming (relative):</label>
+					<input id="DimmRela_GroupAddres" type="text" placeholder="0/1/1" data-asterics-model-binding-1='{"componentKey": "Knx.1","propertyKey": "groupAddress5"}' data-asterics-model-binding-2='{"componentKey": "Knx.1","propertyKey": "groupAddress6"}'></p>
+
+					<p>
+					<button onclick="applySettingsInXMLModelAndStart(modelFilePathOnWebserver)" title="Description: Applies all settings and starts the model" class="button"> Start Model </button>
+					<button onclick="saveSettingsAsAutostartModel(modelFilePathOnWebserver)" title="Description: Applies all settings and sets the model as autostart model" class="button"> Save Settings as Autostart </button>	
+					<p>  
+					A ETS Group Address export is shown <a target="_blank" href="img/GroupAddressExport.xml">here.</a>
+					
+					</div>
+					<hr>
+		     	<!-- Section 4 -->
+				<div class="col" id="moreinfo">
+					<h2>More information</h2>
+					The screenshots below show the properties of the KNX plugin which are actually used to configure the system. For more details about their meaning, see the <a target="_blank" href="http://asterics.github.io/AsTeRICS/webapps/WebACS/help/index.html?plugins&actuators/Knx.htm">KNX plugin help</a>.
+					<!-- <p><p><img class="svgmodal" src="img/knx_ip.png" width="70%" alt="IP settings"/> -->
+					<p><p><img class="svgmodal" src="img/knx_groupaddresses.png" width="50%" alt="edit group addresses"/>					
+				</div><hr>
+
+				<!-- Section 5 -->
+				<div class="col" id="additional_material">
+					<h2>Additional Material</h2>
+					<div class="col" id="majorplugins">
+						<h3>Major Plugins</h3>
+						<ul>
+							<li><a target="_blank" href="http://asterics.github.io/AsTeRICS/webapps/WebACS/help/index.html?plugins&actuators/Knx.htm">KNX</a></li>
+						</ul>
+					</div>
+
+					<div class="col" id="editmodel">
+						<h3>Edit Model</h3>
+						<a target="_blank" href="http://asterics.github.io/AsTeRICS/webapps/WebACS/?areBaseURI=http://localhost:8081&openFile=http://asterics.github.io/AsTeRICS/webapps/asterics-smarthome-knx/models/KNX.acs">Open in WebACS</a>
+					</div>
+
+					<div class="col" id="sourcerepository">
+						<h3>Source Repository</h3>
+						<p>Fork and modify this <a target="_blank" href="https://github.com/asterics/asterics-smarthome-knx">repository</a>.</p>
+					</div>
+				</div>
+
+			</div>
+
+		</main>
+
+	</body>
+
+
+	<!--  Are these scripts still necessary?? They produce a load error, if you check the browser console -->
+	<!-- Placed at the end, so the page loads faster -->
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+	<script src="lib/popper.min.js"></script>
+		<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+	<script src="lib/bootstrap.min.js"></script>
+
+	<!-- Modal image
+	================================================== -->
+	<!-- Modal image container -->
+	<div id="modalwrapper" class="modal">
+			<span class="close" onclick="document.getElementById('modalwrapper').style.display='none'">&times;</span>
+			<img class="modal-content" id="modalimage">
+			<div id="caption"></div>
+	</div>
+	<!-- Modal image action script -->
+	<script src="lib/modal.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+</html>
