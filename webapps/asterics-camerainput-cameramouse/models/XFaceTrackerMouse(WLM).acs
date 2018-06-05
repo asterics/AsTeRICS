@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\P4All\asterics-camerainput-cameramouse\custom\bin\ARE\web\webapps\asterics-camerainput-cameramouse\models\XFaceTrackerMouse(WLM).acs_2018_5_14_16_40" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\mad\dev\asterics-solutions\sub\asterics-camerainput-cameramouse\custom\bin\ARE\web\webapps\asterics-camerainput-cameramouse\models\XFaceTrackerMouse(WLM).acs_2018_5_31_22_47" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 
@@ -354,7 +354,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="cellText5" value="Keyboard on/off" />
         <property name="cellImage5" value="" />
         <property name="actionText5" value="" />
-        <property name="cellText6" value="Editor on/off" />
+        <property name="cellText6" value="&lt;--- ---&gt;" />
         <property name="cellImage6" value="" />
         <property name="actionText6" value="" />
         <property name="cellText7" value="Settings" />
@@ -544,51 +544,13 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <posY>213</posY>
       </layout>
     </component>
-    <component id="Launch-Custom" type_id="asterics.ApplicationLauncher">
-      <description>starts external software applications via path and  filename (.exe)</description>
-      <ports>
-        <inputPort portTypeID="filename">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="arguments">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="stdIn">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="stdOut">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="stdErr">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="exitValue">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="executeOnPlatform" value="WINDOWS" />
-        <property name="executionMode" value="START_APPLICATION" />
-        <property name="defaultApplication" value="c:\windows\notepad.exe" />
-        <property name="arguments" value="" />
-        <property name="workingDirectory" value="." />
-        <property name="closeCmd" value="" />
-        <property name="autoLaunch" value="false" />
-        <property name="autoClose" value="False" />
-        <property name="onlyByEvent" value="false" />
-      </properties>
-      <layout>
-        <posX>1321</posX>
-        <posY>391</posY>
-      </layout>
-    </component>
     <component id="Toggle-Custom" type_id="asterics.EventFlipFlop">
       <description>Event Flip-flop: First event-in fires event-out1, second event-in fires event-out2, etc.</description>
       <ports />
       <properties />
       <layout>
         <posX>1198</posX>
-        <posY>392</posY>
+        <posY>399</posY>
       </layout>
     </component>
     <component id="IntegrateX" type_id="asterics.Integrate">
@@ -1123,6 +1085,27 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <height>333</height>
       </gui>
     </component>
+    <component id="AREWindow.1" type_id="asterics.AREWindow">
+      <description>provides basic ARE Window manipulation</description>
+      <ports>
+        <inputPort portTypeID="xPos">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="yPos">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="xPos" value="0" />
+        <property name="yPos" value="0" />
+        <property name="autoSetPosition" value="false" />
+        <property name="allowWindowModification" value="true" />
+      </properties>
+      <layout>
+        <posX>1371</posX>
+        <posY>398</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.6">
@@ -1628,36 +1611,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="event-out1_launchNow">
-      <description />
-      <sources>
-        <source>
-          <component id="Toggle-Custom" />
-          <eventPort id="event-out1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Launch-Custom" />
-          <eventPort id="launchNow" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="event-out2_closeNow">
-      <description />
-      <sources>
-        <source>
-          <component id="Toggle-Custom" />
-          <eventPort id="event-out2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Launch-Custom" />
-          <eventPort id="closeNow" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="conditionTrue_dispatchSlot1">
       <description />
       <sources>
@@ -1955,6 +1908,36 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <target>
           <component id="Mouse.1" />
           <eventPort id="toggle" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_moveToLeft">
+      <description />
+      <sources>
+        <source>
+          <component id="Toggle-Custom" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AREWindow.1" />
+          <eventPort id="moveToLeft" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out2_moveToRight">
+      <description />
+      <sources>
+        <source>
+          <component id="Toggle-Custom" />
+          <eventPort id="event-out2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AREWindow.1" />
+          <eventPort id="moveToRight" />
         </target>
       </targets>
     </eventChannel>
