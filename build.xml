@@ -2,7 +2,6 @@
 <project name="asterics" basedir="." default="buildAllNoClean">
 	<property name="debug" value="true"/>
 	<property name="runtime" location="bin/ARE"/>
-	<property name="ACS.bin" location="bin/ACS"/>	
 	<property name="web.docroot" location="${runtime}/web/"/>
 	<property name="WebACS.bin" location="${web.docroot}/webapps/WebACS"/>
 
@@ -13,7 +12,6 @@
 	</target>
 	
 	<target name="cleanHelpFiles" description="Cleans the help_files folders in the help folders">
-		<delete dir="${ACS.bin}/help/help_files/"/>
 				<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
 		<subant target="cleanHelpFiles" failonerror="true">
 			<fileset dir="ARE" includes="build.xml"></fileset>
@@ -21,14 +19,14 @@
 	</target>
 
 	<!-- Build the whole AsTeRICS framework including ACS and help specific tasks  -->
-	<target name="buildAllNoClean" depends="copyHelpFilesACS" description="Build the whole project without prior cleaning">
+	<target name="buildAllNoClean" description="Build the whole project without prior cleaning">
 		<subant target="buildAllNoClean">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
 		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
 	
-	<target name="buildAll" depends="copyHelpFilesACS" description="Build the whole project with prior cleaning">
+	<target name="buildAll" description="Build the whole project with prior cleaning">
 		<subant target="buildAll">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
@@ -41,28 +39,8 @@
 		</subant>
 		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
-	
-	<target name="copyHelpFilesACS" depends="initGitSubmodules" description="Copy all help files to the legacy ACS.">
-		<!-- copy help files for C# ACS help on ${web.docroot}/help/ -->
-		<mkdir dir="${ACS.bin}/help/help_files"/>
-		<copy todir="${ACS.bin}/help/help_files/ARE/" failonerror="true">
-		    <fileset dir="Documentation/ACS-Help/HTML/ARE"/>
-		</copy>		
-		<copy todir="${ACS.bin}/help/help_files/ACS/" failonerror="true">
-		    <fileset dir="Documentation/ACS-Help/HTML/ACS"/>
-		</copy>
-		<copy todir="${ACS.bin}/help/help_files/Plugins/" failonerror="true">
-		    <fileset dir="Documentation/ACS-Help/HTML/Plugins"/>
-		</copy>
-		<copy todir="${ACS.bin}/help/help_files/" failonerror="true">
-		    <fileset file="${ACS.bin}/defaultComponentCollection.abd"/>
-		</copy>		
-		<copy tofile="${ACS.bin}/help/help_files/helpPaths-local.json" failonerror="true">
-		    <fileset dir="Documentation/ACS-Help/HTML/" includes="helpPaths-local.ACS.json"/>
-		</copy>		
-	</target>
-	
-	<target name="copyHelpFiles" depends="copyHelpFilesACS" description="Copy all help files to the webserver document root help path, the WebACS/help/ and the legacy ACS/help.">
+		
+	<target name="copyHelpFiles" description="Copy all help files to the webserver document root help path, the WebACS/help/ and the legacy ACS/help.">
 		<!-- copy help files of ARE and WebACS help system -->		
 		<subant target="copyHelpFiles" failonerror="true">
 			<fileset dir="ARE" includes="build.xml"></fileset>
