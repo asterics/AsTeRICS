@@ -2547,53 +2547,35 @@ namespace Asterics.ACS {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Help_Click(object sender, RoutedEventArgs e) {
-            if (File.Exists(@"ACS_Help.chm")) {
-                logger.Log(LogLevel.Debug, "Help file (.chm) found!");
-                if (sender is RibbonButton) {
-                    System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.TableOfContents);
-                } else {
-                    if (focusedComponent != null) {
-                        System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.KeywordIndex, focusedComponent.type_id);
-                    } else {
-                        if (selectedComponentList.Count == 0) {
-                            System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.TableOfContents);
-                        } else {
-                            System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.KeywordIndex, selectedComponentList.First.Value.type_id);
-                        }
-                    }
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            String htmlHelpPath = @"help/index.html";
+            if (sender is RibbonButton)
+            {
+                OpenBrowserHelp(htmlHelpPath, "");
+            }
+            else
+            {
+                if (focusedComponent != null)
+                {
+                    ACS2.componentTypesComponentType comp = (ACS2.componentTypesComponentType)componentList[focusedComponent.type_id];
+                    String id = focusedComponent.type_id;
+                    if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length - 9); // eleminiate prefix
+                    OpenBrowserHelp(htmlHelpPath, "?plugins&" + comp.type.Value + "s/" + "/" + id + ".htm");
                 }
-            } else {
-                String htmlHelpPath = @"help/index.html";
-                logger.Log(LogLevel.Debug, "Help file (.chm) does not exist - searching for "+htmlHelpPath);
-                if (File.Exists(htmlHelpPath)) {
-                    logger.Log(LogLevel.Debug, htmlHelpPath+" found!");
-                    String browserPath = GetStandardBrowserPath();
-                    if (string.IsNullOrEmpty(browserPath)) {
-                        logger.Log(LogLevel.Debug, "No standard browser found for launching help!");
-                    } else {
-                        if (sender is RibbonButton) {
-                            OpenBrowserHelp(htmlHelpPath,"");
-                        } else {
-                            if (focusedComponent != null) {
-                                ACS2.componentTypesComponentType comp = (ACS2.componentTypesComponentType)componentList[focusedComponent.type_id];
-                                String id = focusedComponent.type_id;
-                                if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length-9); // eleminiate prefix
-                                OpenBrowserHelp(htmlHelpPath, "?plugins&" + comp.type.Value + "s/" + "/" + id + ".htm");
-                            } else {
-                                if (selectedComponentList.Count == 0) {
-                                    OpenBrowserHelp(htmlHelpPath,"");
-                                } else {
-                                    ACS2.componentTypesComponentType comp = (ACS2.componentTypesComponentType)componentList[selectedComponentList.First.Value.type_id];
-                                    String id = selectedComponentList.First.Value.type_id;
-                                    if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length-9); // eleminiate prefix
-                                    OpenBrowserHelp(htmlHelpPath, "?plugins&" + comp.type.Value + "s/" + "/" + id + ".htm");
-                                }
-                            }
-                        }
+                else
+                {
+                    if (selectedComponentList.Count == 0)
+                    {
+                        OpenBrowserHelp(htmlHelpPath, "");
                     }
-                } else {
-                    logger.Log(LogLevel.Debug, "No help files found!");
+                    else
+                    {
+                        ACS2.componentTypesComponentType comp = (ACS2.componentTypesComponentType)componentList[selectedComponentList.First.Value.type_id];
+                        String id = selectedComponentList.First.Value.type_id;
+                        if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length - 9); // eleminiate prefix
+                        OpenBrowserHelp(htmlHelpPath, "?plugins&" + comp.type.Value + "s/" + "/" + id + ".htm");
+                    }
                 }
             }
         }
@@ -2604,7 +2586,7 @@ namespace Asterics.ACS {
             //If the ACS is connected to the ARE, open the hosted version of the help system, otherwise the local file.
             try
             {
-                if (areStatus.Status == AREStatus.ConnectionStatus.Connected)
+                if (areStatus.Status != AREStatus.ConnectionStatus.Disconnected)
                 {
                     String absoluteURL = "http://" + AREHost + ":" + AREWebserverPort + "/" + relativeHelpPath + queryString;
                     logger.Log(LogLevel.Debug, "ACS is connected, so starting help of ARE with URL " + absoluteURL);
