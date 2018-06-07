@@ -1275,6 +1275,15 @@ namespace Asterics.ACS.Properties {
         }
         
         /// <summary>
+        /// Looks up a localized string similar to 'ErrorHeader'.
+        /// </summary>
+        public static string ErrorHeader {
+            get {
+                return ResourceManager.GetString(ResourceNames.ErrorHeader, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Looks up a localized string similar to 'Model is empty, no upload will be done'.
         /// </summary>
         public static string EmptyModel {
@@ -1966,7 +1975,18 @@ namespace Asterics.ACS.Properties {
                 return ResourceManager.GetString(ResourceNames.OkButton, _resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        /// Looks up a localized string similar to 'OpenHelpError'.
+        /// </summary>
+        public static string OpenHelpError
+        {
+            get
+            {
+                return ResourceManager.GetString(ResourceNames.OpenHelpError, _resourceCulture);
+            }
+        }
+
         /// <summary>
         /// Looks up a localized string similar to 'Open Model'.
         /// </summary>
@@ -4443,7 +4463,12 @@ namespace Asterics.ACS.Properties {
             /// Stores the resource name 'EditModelNameWindow'.
             /// </summary>
             public const string EditModelNameWindow = "EditModelNameWindow";
-            
+
+            /// <summary>
+            /// Stores the resource name 'ErrorHeader'.
+            /// </summary>
+            public const string ErrorHeader = "ErrorHeader";
+
             /// <summary>
             /// Stores the resource name 'EmptyModel'.
             /// </summary>
@@ -4828,6 +4853,11 @@ namespace Asterics.ACS.Properties {
             /// Stores the resource name 'OkButton'.
             /// </summary>
             public const string OkButton = "OkButton";
+
+            /// <summary>
+            /// Stores the resource name 'OpenHelpError'.
+            /// </summary>
+            public const string OpenHelpError = "OpenHelpError";
             
             /// <summary>
             /// Stores the resource name 'OpenSchemaButton'.
