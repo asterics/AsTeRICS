@@ -1325,4 +1325,10 @@
   <data name="SearchComponent" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="OpenHelpError" xml:space="preserve">
+    <value>Error opening Help! Please check the command to open the browser in 'asterics.ini' -> 'helpBrowserCommand'.</value>
+  </data>
+  <data name="ErrorHeader" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>

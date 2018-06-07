@@ -1245,4 +1245,10 @@
   <data name="MidiToneCreatorRibbonButtonToolTip" xml:space="preserve">
     <value>Miditone Creator</value>
   </data>
+  <data name="OpenHelpError" xml:space="preserve">
+    <value>¡Error al abrir el ayuda! Por favor controlar el comando para abrir el browser en 'asterics.ini' -> 'helpBrowserCommand'.</value>
+  </data>
+  <data name="ErrorHeader" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>
