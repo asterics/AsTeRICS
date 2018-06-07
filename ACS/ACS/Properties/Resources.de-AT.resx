@@ -1251,4 +1251,10 @@
   <data name="SearchComponent1" xml:space="preserve">
     <value>Suche</value>
   </data>
+  <data name="OpenHelpError" xml:space="preserve">
+    <value>Fehler beim Öffnen der Hilfe! Bitte kontrollieren Sie den Befehl zum Öffnen des Browsers in 'asterics.ini' -> 'helpBrowserCommand'.</value>
+  </data>
+  <data name="ErrorHeader" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
 </root>

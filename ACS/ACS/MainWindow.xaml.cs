@@ -2602,19 +2602,27 @@ namespace Asterics.ACS {
         {
             String browserPath = GetStandardBrowserPath();
             //If the ACS is connected to the ARE, open the hosted version of the help system, otherwise the local file.
-            if (areStatus.Status == AREStatus.ConnectionStatus.Connected)
+            try
             {
-                String absoluteURL="http://"+AREHost+":"+AREWebserverPort + "/" + relativeHelpPath+queryString;
-                logger.Log(LogLevel.Debug, "ACS is connected, so starting help of ARE with URL "+absoluteURL);
-                Process.Start(browserPath, absoluteURL);
-            }
-            else
+                if (areStatus.Status == AREStatus.ConnectionStatus.Connected)
+                {
+                    String absoluteURL = "http://" + AREHost + ":" + AREWebserverPort + "/" + relativeHelpPath + queryString;
+                    logger.Log(LogLevel.Debug, "ACS is connected, so starting help of ARE with URL " + absoluteURL);
+                    Process.Start(browserPath, absoluteURL);
+                }
+                else
+                {
+                    String baseURL = ini.IniReadValue("Options", "acsOnlineHelpBaseURL");
+                    String absoluteURL = baseURL + relativeHelpPath + queryString;
+                    logger.Log(LogLevel.Debug, "ACS is not connected, so starting online help with URL " + absoluteURL);
+                    Process.Start(browserPath, absoluteURL);
+                }
+            } catch (Exception ex)
             {
-                String baseURL = ini.IniReadValue("Options", "acsOnlineHelpBaseURL");
-                String absoluteURL = baseURL + relativeHelpPath + queryString;
-                logger.Log(LogLevel.Debug, "ACS is not connected, so starting online help with URL " + absoluteURL);
-                Process.Start(browserPath, absoluteURL);
+                MessageBox.Show(Properties.Resources.OpenHelpError, Properties.Resources.ErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                traceSource.TraceEvent(TraceEventType.Error, 3, ex.Message);
             }
+            
         }
 
         /// <summary>
