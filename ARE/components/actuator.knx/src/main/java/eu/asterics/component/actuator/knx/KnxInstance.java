@@ -190,7 +190,8 @@ public class KnxInstance extends AbstractRuntimeComponentInstance {
     private IRuntimeOutputPort opData6 = new DefaultRuntimeOutputPort();
 
     private double in1 = 0, in2 = 0, in3 = 0, in4 = 0, in5 = 0, in6 = 0;
-
+    
+    
     /**
      * The class constructor.
      */
@@ -696,42 +697,84 @@ public class KnxInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveData(byte[] data) {
             in1 = ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider1, propertyToDPTid(propDPTSlider1), Double.toString(in1));
-        }
+            String DPTid = propertyToDPTid(propDPTSlider1);
+            String DPTval = null;
+            if(DPTDataTypeIsInt(DPTid)){
+            	DPTval = Integer.toString((int) in1);
+            }else{
+            	DPTval = Double.toString(in1);
+            }
+            sendKNX(propGroupAddressSlider1, DPTid, DPTval);
+        } 
     };
     private final IRuntimeInputPort ipSlider2 = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
             in2 = ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider2, propertyToDPTid(propDPTSlider2), Double.toString(in2));
+            String DPTid = propertyToDPTid(propDPTSlider2);
+            String DPTval = null;
+            if(DPTDataTypeIsInt(DPTid)){
+            	DPTval = Integer.toString((int) in2);
+            }else{
+            	DPTval = Double.toString(in2);
+            }
+            sendKNX(propGroupAddressSlider2, DPTid, DPTval);
         }
     };
     private final IRuntimeInputPort ipSlider3 = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
             in3 = ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider3, propertyToDPTid(propDPTSlider3), Double.toString(in3));
+            String DPTid = propertyToDPTid(propDPTSlider3);
+            String DPTval = null;
+            if(DPTDataTypeIsInt(DPTid)){
+            	DPTval = Integer.toString((int) in3);
+            }else{
+            	DPTval = Double.toString(in3);
+            }
+            sendKNX(propGroupAddressSlider3, DPTid, DPTval);
         }
     };
     private final IRuntimeInputPort ipSlider4 = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
             in4 = ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider4, propertyToDPTid(propDPTSlider4), Double.toString(in4));
+            String DPTid = propertyToDPTid(propDPTSlider4);
+            String DPTval = null;
+            if(DPTDataTypeIsInt(DPTid)){
+            	DPTval = Integer.toString((int) in4);
+            }else{
+            	DPTval = Double.toString(in4);
+            }
+            sendKNX(propGroupAddressSlider4, DPTid, DPTval);
         }
     };
     private final IRuntimeInputPort ipSlider5 = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
             in5 = ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider5, propertyToDPTid(propDPTSlider5), Double.toString(in5));
+            String DPTid = propertyToDPTid(propDPTSlider5);
+            String DPTval = null;
+            if(DPTDataTypeIsInt(DPTid)){
+            	DPTval = Integer.toString((int) in5);
+            }else{
+            	DPTval = Double.toString(in5);
+            }
+            sendKNX(propGroupAddressSlider5, DPTid, DPTval);
         }
     };
     private final IRuntimeInputPort ipSlider6 = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
             in6 = ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider6, propertyToDPTid(propDPTSlider6), Double.toString(in6));
+            String DPTid = propertyToDPTid(propDPTSlider6);
+            String DPTval = null;
+            if(DPTDataTypeIsInt(DPTid)){
+            	DPTval = Integer.toString((int) in6);
+            }else{
+            	DPTval = Double.toString(in6);
+            }
+            sendKNX(propGroupAddressSlider6, DPTid, DPTval);
         }
     };
 
@@ -1072,4 +1115,148 @@ public class KnxInstance extends AbstractRuntimeComponentInstance {
             AstericsErrorHandling.instance.getLogger().severe("KNX connection not open");
         }
     }
+    
+    /**
+     * Checks if the DPT type needs the data formatted as integer or double id
+     * 
+     * @param DPTid	DPT id as String
+     *           
+     * @return DPT 	true when DPT type should be formatted as int
+     * 				false when DPT type should be formatted as double
+     */
+	private boolean DPTDataTypeIsInt(String DPTid) {
+		switch(DPTid){
+		//DPT needs int
+            case "5.010":
+            case "5.001":
+            case "5.004":
+            case "5.005":
+            case "5.006":
+            case "7.001":
+            case "7.002":
+            case "7.003":
+            case "7.004":
+            case "7.005":
+            case "7.006":
+            case "7.007":
+            case "7.010":
+            case "7.011":
+            case "7.012":
+            case "7.013":
+            case "9.001":
+            case "9.002":
+            case "9.003":
+            case "9.006":
+            case "9.007":
+            case "9.008":
+            case "9.010":
+            case "9.011":
+            case "9.020":
+            case "9.021":
+            case "9.022":             	
+            case "9.023":
+            case "9.024":
+            case "9.025":
+            case "12.001":
+            case "13.001":
+            case "13.002":
+            case "13.010":
+            case "13.011":
+            case "13.012":
+            case "13.014":
+            case "13.015":	
+            case "13.100":
+            case "18.001":
+            	return true;
+            //DPT needs double
+            case "9.026":
+            case "9.027":
+            case "9.028":
+            case "9.029":
+            case "14.000":
+            case "14.001":
+            case "14.002":
+            case "14.003":
+            case "14.004":
+            case "14.005":
+            case "14.006":
+            case "14.007":
+            case "14.008":
+            case "14.009":
+            case "14.010":
+            case "14.011":
+            case "14.012":
+            case "14.013":
+            case "14.014":
+            case "14.015":
+            case "14.016":
+            case "14.017":
+            case "14.018":
+            case "14.019":
+            case "14.020":
+            case "14.021":
+            case "14.022":
+            case "14.023":
+            case "14.024":
+            case "14.025":
+            case "14.026":
+            case "14.027":
+            case "14.028":
+            case "14.029":
+            case "14.030":
+            case "14.031":
+            case "14.032":
+            case "14.033":
+            case "14.034":
+            case "14.035":
+            case "14.036":
+            case "14.037":
+            case "14.038":
+            case "14.039":
+            case "14.040":
+            case "14.041":
+            case "14.042":
+            case "14.043":
+            case "14.044":
+            case "14.045":
+            case "14.046":
+            case "14.047":
+            case "14.048":
+            case "14.049":
+            case "14.050":
+            case "14.051":
+            case "14.052":
+            case "14.053":
+            case "14.054":
+            case "14.055":
+            case "14.056":
+            case "14.057":
+            case "14.058":
+            case "14.059":
+            case "14.060":
+            case "14.061":
+            case "14.062":
+            case "14.063":
+            case "14.064":
+            case "14.065":
+            case "14.066":
+            case "14.067":
+            case "14.068":
+            case "14.069":
+            case "14.070":
+            case "14.071":
+            case "14.072":
+            case "14.073":
+            case "14.074":
+            case "14.075":
+            case "14.076":
+            case "14.077":
+            case "14.078":
+            case "14.079":
+            	return false;
+            default:
+            	//others not implemented yet (Date, Time, ...) -> everything is converted into double
+            	return false;
+        }
+	}
 }
