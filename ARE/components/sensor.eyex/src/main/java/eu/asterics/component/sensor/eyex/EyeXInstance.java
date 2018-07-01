@@ -206,6 +206,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         if ("calibrateCurrentProfile".equalsIgnoreCase(eventPortID)) {
             return elpCalibrateCurrentProfile;
         }
+        if ("resetOffset".equalsIgnoreCase(eventPortID)) {
+            return elpResetOffset;
+        }
         if ("createAndCalibrateGuestProfile".equalsIgnoreCase(eventPortID)) {
             return elpCreateGuestProfile;
         }
@@ -435,6 +438,15 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         @Override
         public void receiveEvent(String data) {
             bridge.recalibrate(false);
+        }
+    };
+
+    final IRuntimeEventListenerPort elpResetOffset = new IRuntimeEventListenerPort() {
+
+        @Override
+        public void receiveEvent(String data) {
+            offsetX=0;
+            offsetY=0;
         }
     };
 

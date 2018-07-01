@@ -60,6 +60,9 @@
 			<eventListenerPort id="calibrateCurrentProfile">
 				<description>calibrates the current profile</description>
 			</eventListenerPort>
+			<eventListenerPort id="resetOffset">
+				<description>reset the x and y offset input port values to 0</description>
+			</eventListenerPort>
 			<eventListenerPort id="switchToOffsetCorrectionSpots">
 				<description>enables setting of offset correction spots</description>
 			</eventListenerPort>

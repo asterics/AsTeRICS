@@ -10412,7 +10412,11 @@
 			<outputPort id="receivedBytes">
 				<description>received bytes from the serial port</description>
 				<dataType>byte</dataType>
-			</outputPort>			
+			</outputPort>
+			<outputPort id="opPortStatus">
+				<description>output port for status messages</description>
+				<dataType>string</dataType>
+			</outputPort>
         </ports>
 		<events>
 
@@ -10440,8 +10444,12 @@
 			<property name="sendBytesBufferSize"
 				type="integer"
 				value="1"
-				description="Wait for the given number of bytes before sending them to the serial port."/>                							
-        </properties>
+				description="Wait for the given number of bytes before sending them to the serial port."/>
+			<property name="cimId"
+					  type="string"
+					  value=""
+					  description="CIMId of the device to connect to in HEX format with prefix '0x'. For example '0xa401' for FLipMouse."/>
+		</properties>
     </componentType>
 
 
@@ -13914,6 +13922,9 @@
 			</eventListenerPort>
 			<eventListenerPort id="calibrateCurrentProfile">
 				<description>calibrates the current profile</description>
+			</eventListenerPort>
+			<eventListenerPort id="resetOffset">
+				<description>reset the x and y offset input port values to 0</description>
 			</eventListenerPort>
 			<eventListenerPort id="switchToOffsetCorrectionSpots">
 				<description>enables setting of offset correction spots</description>
