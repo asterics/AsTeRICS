@@ -29,6 +29,10 @@
 		<copy todir="${web.docroot}/webapps/asterics-camerainput-cameramouse" failonerror="true">
 		    <fileset dir="${src.dir}/asterics-camerainput-cameramouse/custom/bin/ARE/web/webapps/asterics-camerainput-cameramouse"/>
 		</copy>
+		
+		<copy todir="${web.docroot}/webapps/asterics-camerainput-eyecontrol" failonerror="true">
+		    <fileset dir="${src.dir}/asterics-camerainput-eyecontrol/custom/bin/ARE/web/webapps/asterics-camerainput-eyecontrol"/>
+		</copy>		
 
 		<copy todir="${web.docroot}/webapps/asterics-networkio-websocket" failonerror="true">
 		    <fileset dir="${src.dir}/asterics-networkio-websocket/custom/bin/ARE/web/webapps/asterics-networkio-websocket"/>

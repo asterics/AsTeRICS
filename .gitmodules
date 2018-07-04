@@ -24,3 +24,6 @@
 [submodule "src/asterics-smarthome-knx"]
 	path = src/asterics-smarthome-knx
 	url = https://github.com/asterics/asterics-smarthome-knx.git
+[submodule "src/asterics-camerainput-eyecontrol"]
+	path = src/asterics-camerainput-eyecontrol
+	url = https://github.com/asterics/asterics-camerainput-eyecontrol.git
