@@ -85,10 +85,33 @@ public class DefaultBundleModelParser {
     private Logger logger = null;
 
     private DocumentBuilder builder;
+    private ModelValidator modelValidator;
 
     // private ModelValidator modelValidator;
     private DefaultBundleModelParser() {
         logger = AstericsErrorHandling.instance.getLogger();
+        this.modelValidator=ModelValidator.getInstance();
+    }
+ 
+    /**
+     * Is used to create {@link DefaultBundleModelParser} with custom
+     * ModelValidator.
+     * 
+     * @param modelValidator
+     */    
+    private DefaultBundleModelParser(ModelValidator modelValidator) {
+        logger = AstericsErrorHandling.instance.getLogger();
+        this.modelValidator=modelValidator;       
+    }
+    /**
+     * Create {@link DefaultBundleModelParser} instance with custom
+     * ModelValidator instance.
+     * 
+     * @param modelValidator
+     * @return
+     */
+    public static DefaultBundleModelParser create(ModelValidator modelValidator) {
+        return new DefaultBundleModelParser(modelValidator);
     }
 
     public static final DefaultBundleModelParser instance = new DefaultBundleModelParser();
