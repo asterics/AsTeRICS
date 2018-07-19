@@ -1,10 +1,14 @@
 package eu.asterics.component.actuator.fS20Sender;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
 public class PCSDeviceIntegrationTester {
 
     private static PCSDevice device;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException, IOException {
         setup();
         for(int i=0; i<100; i++) {
             device.send(1111, 1111, 28);
@@ -22,7 +26,7 @@ public class PCSDeviceIntegrationTester {
         device.close();
     }
 
-    private static void setup() {
+    private static void setup() throws InterruptedException, ExecutionException, TimeoutException, IOException {
         device = new PCSDevice();
         device.open();
     }
