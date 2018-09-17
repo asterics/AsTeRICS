@@ -55,9 +55,9 @@ public class ThresholdInstance extends AbstractRuntimeComponentInstance {
     final private String TRESHOLD_LOW_VALUE_PROPERTY_KEY = "thresholdLow";
 
     final private String OPERATION_MODE_PROPERTY_KEY = "operationMode";
-    final private int OPERATION_MODE_BINARY = 1;
-    final private int OPERATION_MODE_CUTOFF = 2;
-    final private int OPERATION_MODE_DEADZONE = 3;
+    final private int OPERATION_MODE_BINARY = 0;
+    final private int OPERATION_MODE_CUTOFF = 1;
+    final private int OPERATION_MODE_DEADZONE = 2;
 
     final private String EVENT_CONDITION_PROPERTY_KEY = "eventCondition";
     final private int EVENT_CONDITION_POS_EDGE = 0;
@@ -76,7 +76,7 @@ public class ThresholdInstance extends AbstractRuntimeComponentInstance {
     double propThresholdLow;
     double propOutputHigh;
     double propOutputLow;
-    int propOperationMode = 2;
+    int propOperationMode = 0;
     int propEventCondition = 0;
 
     // internal variables
@@ -193,16 +193,7 @@ public class ThresholdInstance extends AbstractRuntimeComponentInstance {
         } else if (OUT_LOW_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
             return propOutputLow;
         } else if (OPERATION_MODE_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
-            switch (propOperationMode) {
-            case OPERATION_MODE_BINARY:
-                return "binary";
-            case OPERATION_MODE_CUTOFF:
-                return "cutoff";
-            case OPERATION_MODE_DEADZONE:
-                return "deadzone";
-            default:
-                return null;
-            }
+        	return propOperationMode;
         } else if (EVENT_CONDITION_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
             return propEventCondition;
         } else {
@@ -246,20 +237,17 @@ public class ThresholdInstance extends AbstractRuntimeComponentInstance {
             }
 
             else if (OPERATION_MODE_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
-                final Object oldValue = getRuntimePropertyValue(OPERATION_MODE_PROPERTY_KEY);
+                final Object oldValue = propOperationMode;
 
-                if (newValue.equals("binary")) {
-                    propOperationMode = OPERATION_MODE_BINARY;
-                } else if (newValue.equals("cutoff")) {
-                    propOperationMode = OPERATION_MODE_CUTOFF;
-                } else if (newValue.equals("deadzone")) {
-                    propOperationMode = OPERATION_MODE_DEADZONE;
-                } else {
-                    propOperationMode = 0;
+                propOperationMode = Integer.parseInt(newValue.toString());
+                if ((propOperationMode < OPERATION_MODE_BINARY)
+                        || (propOperationMode > OPERATION_MODE_DEADZONE)) {
+                    AstericsErrorHandling.instance.reportInfo(this,
+                            "Property value out of range for " + propertyName + ": " + newValue);
                 }
                 return oldValue;
             } else if (EVENT_CONDITION_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
-                final Object oldValue = propOutputHigh;
+                final Object oldValue = propEventCondition;
 
                 propEventCondition = Integer.parseInt(newValue.toString());
                 if ((propEventCondition < EVENT_CONDITION_POS_EDGE)
@@ -403,8 +391,8 @@ public class ThresholdInstance extends AbstractRuntimeComponentInstance {
                 }
                 break;
             default:
-                AstericsErrorHandling.instance.reportError(this,
-                        "Threshold component operated with non-existant event condition");
+                AstericsErrorHandling.instance.reportDebugInfo(this,
+                		"Threshold component operated with non-existant event condition");
             }
         }
     }
@@ -430,7 +418,7 @@ public class ThresholdInstance extends AbstractRuntimeComponentInstance {
             belowThreshold = processInputDeadzone(in);
             break;
         default:
-            AstericsErrorHandling.instance.reportError(this,
+            AstericsErrorHandling.instance.reportDebugInfo(this,
                     "Threshold component operated in non-existant operation mode");
         }
 
