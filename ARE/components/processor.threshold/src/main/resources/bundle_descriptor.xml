@@ -45,8 +45,8 @@
                       value="0"
                       description="output on value-port if false"/>
             <property name="operationMode"
-                      type="string"
-                      value="binary"
+                      type="integer"
+                      value="0"
                       combobox="binary//cutoff//deadzone"                      
                       description="binary outputs output_high when above and output_low when below threshold, cutoff outputs output_high when above threshold and the actual signal below threshold, deadzone outputs output_low when below threshold and actual signal when above threshold"/>
             <property name="eventCondition"
