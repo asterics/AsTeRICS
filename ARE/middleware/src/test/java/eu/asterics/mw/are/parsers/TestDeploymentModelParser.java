@@ -25,22 +25,26 @@
 
 package eu.asterics.mw.are.parsers;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
+import eu.asterics.mw.services.ResourceRegistry;
 import junit.framework.TestCase;
 
 /**
- * User: Nearchos Paspallis Date: 1/5/11 Time: 2:42 PM
+ * User: Martin Deinhofer Date: 19.07.2018
  */
 public class TestDeploymentModelParser extends TestCase {
-    public void testParser() throws FileNotFoundException, ParseException, BundleManagementException {
-        final InputStream inputStream = new FileInputStream(
-                "middleware\\src\\test\\resources\\models\\test_deployment_model.xml");
-        DefaultDeploymentModelParser.instance.parseModel(inputStream);
-        System.out.println("test");
+    public void testParser() throws ParseException, BundleManagementException, IOException {
+        ResourceRegistry.getInstance().setOSGIMode(false);
+        final InputStream inputStream = new FileInputStream("middleware/src/test/resources/models/ImageDemo.acs");
+        ModelValidator modelValidator = new ModelValidator(new File("middleware/src/main/resources/schemas/bundle_model.xsd").toURI().toURL(),
+                new File("middleware/src/main/resources/schemas/deployment_model.xsd").toURI().toURL());
+        DefaultDeploymentModelParser deploymentModelParser = DefaultDeploymentModelParser.create(modelValidator);
+        deploymentModelParser.parseModel(inputStream);
     }
 }
