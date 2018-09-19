@@ -36,7 +36,6 @@ mv AsTeRICS/CIMs/EOG_CIM/EOG_CIM/Debug/EOG_CIM.hex AsTeRICS/CIMs/EOG_CIM/
 mv AsTeRICS/CIMs/HID_actuator/Mouse_Keyboard_Joystick/*.hex AsTeRICS/CIMs/HID_actuator
 
 # copy files
-cp AsTeRICS/Documentation/ACS-Help/HTML/ACS_Help.chm AsTeRICS/ACS/
 cp AsTeRICS/CIMs/Arduino/driver/*.inf AsTeRICS/CIMs/Arduino
 cp AsTeRICS/CIMs/Sensorboard/driver/serial_install.exe AsTeRICS/CIMs/Sensorboard
 cp AsTeRICS/CIMs/Sensorboard/firmware/sensorboard.hex AsTeRICS/CIMs/Sensorboard
