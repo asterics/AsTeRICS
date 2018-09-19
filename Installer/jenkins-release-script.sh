@@ -6,7 +6,8 @@
 # *) the InnoSetup tool (iscc.exe, download from http://www.jrsoftware.org/isinfo.php)
 # *) Git Versioning tool and git bash
 #    (git.exe, bash.exe download from http://git-scm.com/, add e.g. "C:\Program Files\Git\bin" to PATH)
-#    NOTE: Windows 10 seems to have an built in 
+#    NOTE: Windows 10 seems to have an built in "bash" command, so the git bash has to be renamed in the
+#		   ProgramFiles/bin folder to another name, e.g. git-bash.exe
 # *) Apache Ant build system (http://ant.apache.org/)
 # --------------------------------------------------------
 # run in jenkins with command:
@@ -104,7 +105,7 @@ cp -rf AsTeRICS-release-dependencies/java Installer/java
 cd Installer
 iscc setup.iss
 cd ..
-mv Installer/setup.exe .
+mv Installer/mysetup.exe .
 
 # cleanup
 rm -rf AsTeRICS
