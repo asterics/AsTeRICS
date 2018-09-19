@@ -12,16 +12,18 @@
 # bash -ex jenkins-release-script.sh
 # --------------------------------------------------------
 
+# build release with ant
+ant buildAll-release
+
 # copy everything except AsTeRICS folder to AsTeRICS subfolder
 rm -rf AsTeRICS
 mkdir AsTeRICS
 shopt -s extglob
 cp -r !(AsTeRICS) AsTeRICS
 
-# build release with ant
-cd AsTeRICS
-ant buildAll-release
-cd ..
+# remove folders that will be overwritten by mv
+rm -r AsTeRICS/ACS
+rm -r AsTeRICS/ARE
 
 # move files
 mv AsTeRICS/bin/ACS AsTeRICS/ACS
@@ -67,8 +69,6 @@ rm -r AsTeRICS/NativeASAPIlibraries
 rm -r AsTeRICS/BNCIevaluationSuite
 rm -r AsTeRICS/Android/AsTeRICSPhoneServer
 rm AsTeRICS/ReadMe.md
-rm -r AsTeRICS/ACS
-rm -r AsTeRICS/ARE
 rm -rf AsTeRICS/bin/ARE/javacv-*-linux.jar
 rm -rf AsTeRICS/bin/ARE/javacv-*-macosx.jar
 rm AsTeRICS/*.xml
