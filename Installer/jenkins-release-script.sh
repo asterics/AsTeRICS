@@ -19,6 +19,7 @@ ant buildAll-release
 
 # copy everything except AsTeRICS folder to AsTeRICS subfolder
 rm -rf AsTeRICS
+rm -rf Installer/java
 mkdir AsTeRICS
 shopt -s extglob
 cp -r !(AsTeRICS) AsTeRICS
@@ -86,6 +87,7 @@ rm -r AsTeRICS/CIMs/Sensorboard/driver
 rm -r AsTeRICS/CIMs/Sensorboard/firmware
 rm -r AsTeRICS/CIMs/Sensorboard/GL850PCB
 rm -r AsTeRICS/CIMs/Sensorboard/WiiCamPCB
+rm -rf AsTeRICS/AsTeRICS-release-dependencies
 
 # copy dependencies
 if [ -d  ./AsTeRICS-release-dependencies ]; then 
@@ -99,7 +101,7 @@ fi
 cp -f AsTeRICS-release-dependencies/teensy.exe AsTeRICS\CIMs\HID_actuator
 cp -f AsTeRICS-release-dependencies/vcredist_x86.exe Installer
 cp -f AsTeRICS-release-dependencies/dotNetFx40_setup.exe Installer
-cp -rf AsTeRICS-release-dependencies/java Installer/java
+cp -rf AsTeRICS-release-dependencies/java Installer/
 
 # make installer
 cd Installer
@@ -109,3 +111,4 @@ mv Installer/mysetup.exe .
 
 # cleanup
 rm -rf AsTeRICS
+rm -rf Installer/java
