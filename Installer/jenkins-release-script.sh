@@ -68,10 +68,9 @@ rm -r AsTeRICS/NativeASAPIlibraries
 rm -r AsTeRICS/BNCIevaluationSuite
 rm -r AsTeRICS/Android/AsTeRICSPhoneServer
 rm AsTeRICS/ReadMe.md
-rm -rf AsTeRICS/bin/ARE/javacv-*-linux.jar
-rm -rf AsTeRICS/bin/ARE/javacv-*-macosx.jar
+rm -rf AsTeRICS/ARE/javacv-*-linux.jar
+rm -rf AsTeRICS/ARE/javacv-*-macosx.jar
 rm AsTeRICS/*.xml
-rm AsTeRICS/.*.yml
 rm AsTeRICS/Documentation/ModelGuides/*.doc
 rm AsTeRICS/Documentation/DIYGuides/*.doc
 rm AsTeRICS/Documentation/*.doc
@@ -96,10 +95,10 @@ else
     git clone https://github.com/asterics/AsTeRICS-release-dependencies.git
 fi
 
-cp AsTeRICS-release-dependencies/teensy.exe AsTeRICS\CIMs\HID_actuator
-cp AsTeRICS-release-dependencies/vcredist_x86.exe Installer
-cp AsTeRICS-release-dependencies/dotNetFx40_setup.exe Installer
-cp -r AsTeRICS-release-dependencies/java Installer/java
+cp -f AsTeRICS-release-dependencies/teensy.exe AsTeRICS\CIMs\HID_actuator
+cp -f AsTeRICS-release-dependencies/vcredist_x86.exe Installer
+cp -f AsTeRICS-release-dependencies/dotNetFx40_setup.exe Installer
+cp -rf AsTeRICS-release-dependencies/java Installer/java
 
 # make installer
 cd Installer
