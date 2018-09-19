@@ -20,6 +20,7 @@ ant buildAll-release
 # copy everything except AsTeRICS folder to AsTeRICS subfolder
 rm -rf AsTeRICS
 rm -rf Installer/java
+rm -f ./mysetup.exe
 mkdir AsTeRICS
 shopt -s extglob
 cp -r !(AsTeRICS) AsTeRICS
@@ -27,7 +28,6 @@ cp -r !(AsTeRICS) AsTeRICS
 # remove folders that will be overwritten by mv
 rm -r AsTeRICS/ACS
 rm -r AsTeRICS/ARE
-rm -f ./mysetup.exe
 
 # move files
 mv AsTeRICS/bin/ACS AsTeRICS/ACS
