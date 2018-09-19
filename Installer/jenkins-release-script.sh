@@ -6,6 +6,7 @@
 # *) the InnoSetup tool (iscc.exe, download from http://www.jrsoftware.org/isinfo.php)
 # *) Git Versioning tool and git bash
 #    (git.exe, bash.exe download from http://git-scm.com/, add e.g. "C:\Program Files\Git\bin" to PATH)
+#    NOTE: Windows 10 seems to have an built in 
 # *) Apache Ant build system (http://ant.apache.org/)
 # --------------------------------------------------------
 # run in jenkins with command:
@@ -63,7 +64,6 @@ rm -r AsTeRICS/CIMs/HID_actuator/Tools
 rm -r AsTeRICS/Tests
 rm -r AsTeRICS/CIMs/HID_actuator/USB_Specifications
 
-rm AsTeRICS/CIMs/Arduino/build/Makefile
 rm -r AsTeRICS/NativeASAPIlibraries
 rm -r AsTeRICS/BNCIevaluationSuite
 rm -r AsTeRICS/Android/AsTeRICSPhoneServer
