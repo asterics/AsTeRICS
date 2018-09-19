@@ -18,6 +18,11 @@ mkdir AsTeRICS
 shopt -s extglob
 cp -r !(AsTeRICS) AsTeRICS
 
+# build release with ant
+cd AsTeRICS
+ant buildAll-release
+cd ..
+
 # move files
 mv AsTeRICS/bin/ACS AsTeRICS/ACS
 mv AsTeRICS/bin/ARE AsTeRICS/ARE
