@@ -2,7 +2,7 @@
 # bash script for building an AsTeRICS release with a
 # jenkins builder on a windows machine.
 # --------------------------------------------------------
-# The following is needed on PATH on the windows machine:
+# The following is needed on global PATH on the windows machine:
 # *) the InnoSetup tool (iscc.exe, download from http://www.jrsoftware.org/isinfo.php)
 # *) Git Versioning tool and git bash
 #    (git.exe, bash.exe download from http://git-scm.com/, add e.g. "C:\Program Files\Git\bin" to PATH)
