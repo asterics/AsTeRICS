@@ -27,6 +27,7 @@ cp -r !(AsTeRICS) AsTeRICS
 # remove folders that will be overwritten by mv
 rm -r AsTeRICS/ACS
 rm -r AsTeRICS/ARE
+rm -f ./mysetup.exe
 
 # move files
 mv AsTeRICS/bin/ACS AsTeRICS/ACS
