@@ -20,7 +20,7 @@ ant buildAll-release
 # copy everything except AsTeRICS folder to AsTeRICS subfolder
 rm -rf AsTeRICS
 rm -rf Installer/java
-rm -f ./mysetup.exe
+rm -f ./*.exe
 mkdir AsTeRICS
 shopt -s extglob
 cp -r !(AsTeRICS) AsTeRICS
