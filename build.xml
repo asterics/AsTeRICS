@@ -1,5 +1,6 @@
 <!-- This is the bootstrap build file for the whole AsTeRICS framework -->
 <project name="asterics" basedir="." default="buildAllNoClean">
+	<property environment="env"/>
 	<property name="debug" value="true"/>
 	<property name="runtime" location="bin/ARE"/>
 	<property name="web.docroot" location="${runtime}/web/"/>
@@ -33,7 +34,7 @@
 		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
 
-	<target name="buildAll-release" depends="clean, copyHelpFiles" description="Build the whole project with prior cleaning and no debug information. Other steps for a release might be done as well.">
+	<target name="buildAll-release" depends="replaceVersion, clean, copyHelpFiles" description="Build the whole project with prior cleaning and no debug information. Other steps for a release might be done as well.">
 		<subant target="buildAll-release">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
@@ -106,6 +107,22 @@
 			<fileset dir="." includes="**/build.xml"></fileset>
 		</subant>
 	</target>
+	
+	<!-- helper target to rename license files, unfortunately it is not a rename but a move -->
+	<target name="replaceVersion">
+		<getversionnumber text="${env.VERSION}" property="app_version_number" />
+		<replace file="./Installer/setup.iss" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
+		<replace file="./Installer/asterics-are/package/linux/control" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
+	</target>
+	
+	<scriptdef name="getversionnumber" language="javascript">
+     <attribute name="text" />
+     <attribute name="property" />
+     <![CDATA[
+       var text = attributes.get("text");
+       project.setProperty(attributes.get("property"), text.match(/(\d+\.\d+\.\d+)/)[1]);
+     ]]>
+	</scriptdef>
 	
 	<import file="imported.xml"/>
 	<include file="included.xml"/>
