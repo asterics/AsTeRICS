@@ -1,5 +1,5 @@
 Package: asterics-are
-Version: 3.0
+Version: #{APPLICATION_VERSION_NUMBER}#
 Section: unknown
 Maintainer: Asterics Foundation
 Priority: optional
