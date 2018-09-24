@@ -108,7 +108,7 @@ cp -rf AsTeRICS-release-dependencies/java Installer/
 cd Installer
 iscc setup.iss
 cd ..
-mv Installer/mysetup.exe .
+mv Installer/mysetup.exe ./Setup_AsTeRICS_$VERSION.exe
 
 # cleanup
 rm -rf AsTeRICS
