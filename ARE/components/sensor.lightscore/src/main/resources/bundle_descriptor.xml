@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Lightscore"
+                   canonical_name="eu.asterics.component.sensor.lightscore.LightscoreInstance">
+        <type subtype="Sensor Modules">sensor</type>
+
+        <singleton>false</singleton>
+        <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+        <ports>
+        
+			<inputPort id="led1">
+				<description>set light intensity for led1</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="led2">
+				<description>set light intensity for led2</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="led3">
+				<description>set light intensity for led3</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			
+			<outputPort id="red">
+				<description>red light intensity</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="green">
+				<description>green light intensity</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="blue">
+				<description>blue light intensity</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="white">
+				<description>white light intensity</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="accX">
+				<description>acceleration x axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="accY">
+				<description>acceleration Y axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="accZ">
+				<description>acceleration Z axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="magX">
+				<description>magnetometer x axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="magY">
+				<description>magnetometer Y axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="magZ">
+				<description>magnetometer Z axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="gyrX">
+				<description>gyroscope x axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="gyrY">
+				<description>gyroscope y axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="gyrZ">
+				<description>gyroscope z axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="yaw">
+				<description>yaw in euler degrees</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="pitch">
+				<description>pitch in euler degrees</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="roll">
+				<description>roll in euler degrees</description>
+				<dataType>double</dataType>
+			</outputPort>
+        </ports>
+		<events>
+			<eventListenerPort id="start">
+				<description>start data output</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stop data output</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="autostart"
+				type="boolean"
+				value="false"
+				description="autostart data output"/>
+			<property name="id"
+				type="string"
+				value="none"
+				description="id string of lightscores sensor"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

@@ -1,0 +1,1086 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\lightscore_midi.acs_2018_10_27_21_20" version="20130320">
+  <components>
+    <component id="Lightscore.1" type_id="asterics.Lightscore">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="led1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="led2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="led3">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="red">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="green">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="blue">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="white">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="accX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="accY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="accZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="magX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="magY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="magZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyrX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyrY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyrZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="yaw">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pitch">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="roll">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="autostart" value="false" />
+        <property name="id" value="none" />
+      </properties>
+      <layout>
+        <posX>16</posX>
+        <posY>175</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="A-Major" />
+        <property name="slot2" value="A-Minor" />
+        <property name="slot3" value="D-Mixolydian" />
+        <property name="slot4" value="harmonic_dual40-103" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>383</posX>
+        <posY>700</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="False" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Change Instrument" />
+        <property name="buttonCaption2" value="Change Tonescale" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>89</posX>
+        <posY>656</posY>
+      </layout>
+      <gui>
+        <posX>562</posX>
+        <posY>4444</posY>
+        <width>4375</width>
+        <height>1556</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Glockenspiel" />
+        <property name="slot2" value="Vibraphone" />
+        <property name="slot3" value="Crystal" />
+        <property name="slot4" value="Recorder" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>383</posX>
+        <posY>527</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="Glockenspiel" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>505</posX>
+        <posY>528</posY>
+      </layout>
+      <gui>
+        <posX>5062</posX>
+        <posY>4444</posY>
+        <width>4188</width>
+        <height>667</height>
+      </gui>
+    </component>
+    <component id="Threshold.1.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="-500" />
+        <property name="thresholdLow" value="-500" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="0" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>262</posX>
+        <posY>704</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="500" />
+        <property name="thresholdLow" value="500" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="0" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>262</posX>
+        <posY>523</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1.1.1.1.3" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="5" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-10" />
+        <property name="max" value="10" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Yaw (toneheight control)" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>384</posX>
+        <posY>370</posY>
+      </layout>
+      <gui>
+        <posX>250</posX>
+        <posY>1000</posY>
+        <width>3000</width>
+        <height>1556</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.1.1.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="5" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-10" />
+        <property name="max" value="10" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Pitch (volume control)" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>250</posX>
+        <posY>32</posY>
+      </layout>
+      <gui>
+        <posX>3312</posX>
+        <posY>1000</posY>
+        <width>3000</width>
+        <height>1556</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.1.1.2.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="5" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-10" />
+        <property name="max" value="10" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="GyrY (triggers)" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>133</posX>
+        <posY>33</posY>
+      </layout>
+      <gui>
+        <posX>6375</posX>
+        <posY>1000</posY>
+        <width>3000</width>
+        <height>1556</height>
+      </gui>
+    </component>
+    <component id="DotMeter.1" type_id="asterics.DotMeter">
+      <description>DotMeter</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="xMin" value="0" />
+        <property name="xMax" value="1000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1000" />
+        <property name="mode" value="1" />
+        <property name="dotSize" value="80" />
+        <property name="centerLine" value="False" />
+        <property name="displayDot" value="true" />
+        <property name="displayCaptions" value="true" />
+        <property name="gridColor" value="0" />
+        <property name="dotColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="instrument change" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>741</posX>
+        <posY>531</posY>
+      </layout>
+      <gui>
+        <posX>6500</posX>
+        <posY>2667</posY>
+        <width>1312</width>
+        <height>1556</height>
+      </gui>
+    </component>
+    <component id="AdjustmentCurve.1" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="swapyaw" />
+        <property name="displayGui" value="true" />
+        <property name="inMin" value="-180" />
+        <property name="inMax" value="180" />
+        <property name="outMin" value="-180" />
+        <property name="outMax" value="180" />
+        <property name="mode" value="1" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="toneheight mapper" />
+      </properties>
+      <layout>
+        <posX>260</posX>
+        <posY>364</posY>
+      </layout>
+      <gui>
+        <posX>250</posX>
+        <posY>2667</posY>
+        <width>3000</width>
+        <height>1556</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="A-Major" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>505</posX>
+        <posY>698</posY>
+      </layout>
+      <gui>
+        <posX>5062</posX>
+        <posY>5333</posY>
+        <width>4188</width>
+        <height>667</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="-a/20" />
+      </properties>
+      <layout>
+        <posX>375</posX>
+        <posY>210</posY>
+      </layout>
+    </component>
+    <component id="Integrate.1" type_id="asterics.Integrate">
+      <description>Integration with upper and lower bounds and reset</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="resetValue" value="80" />
+        <property name="upperLimit" value="127" />
+        <property name="lowerLimit" value="0" />
+        <property name="wrapAround" value="false" />
+      </properties>
+      <layout>
+        <posX>489</posX>
+        <posY>214</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="127" />
+        <property name="threshold" value="20" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="True" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="volume" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>614</posX>
+        <posY>100</posY>
+      </layout>
+      <gui>
+        <posX>3312</posX>
+        <posY>2667</posY>
+        <width>3000</width>
+        <height>1556</height>
+      </gui>
+    </component>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="LoopBe Internal MIDI" />
+        <property name="channel" value="0" />
+        <property name="instrument" value="1 Acoustic Grand Piano" />
+        <property name="triggerThreshold" value="10" />
+        <property name="triggerMax" value="127" />
+        <property name="pitchMin" value="-90" />
+        <property name="pitchMax" value="90" />
+        <property name="toneScale" value="A-Major.sc" />
+        <property name="playOnlyChangingNotes" value="true" />
+        <property name="displayGUI" value="true" />
+        <property name="displayNoteNames" value="false" />
+      </properties>
+      <layout>
+        <posX>799</posX>
+        <posY>289</posY>
+      </layout>
+      <gui>
+        <posX>562</posX>
+        <posY>6222</posY>
+        <width>8125</width>
+        <height>1111</height>
+      </gui>
+    </component>
+    <component id="Deadzone.1" type_id="asterics.Deadzone">
+      <description>Defines active/passive Zone for x/y values</description>
+      <ports>
+        <inputPort portTypeID="inX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="radius">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="xCenter" value="0" />
+        <property name="yCenter" value="0" />
+        <property name="radius" value="50" />
+        <property name="mode" value="2" />
+      </properties>
+      <layout>
+        <posX>261</posX>
+        <posY>201</posY>
+      </layout>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="400" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>624</posX>
+        <posY>530</posY>
+      </layout>
+    </component>
+    <component id="Timer.1.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="400" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>625</posX>
+        <posY>698</posY>
+      </layout>
+    </component>
+    <component id="DotMeter.1.1" type_id="asterics.DotMeter">
+      <description>DotMeter</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="xMin" value="0" />
+        <property name="xMax" value="1000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1000" />
+        <property name="mode" value="1" />
+        <property name="dotSize" value="80" />
+        <property name="centerLine" value="False" />
+        <property name="displayDot" value="true" />
+        <property name="displayCaptions" value="true" />
+        <property name="gridColor" value="0" />
+        <property name="dotColor" value="1" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="tonescale change" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>746</posX>
+        <posY>697</posY>
+      </layout>
+      <gui>
+        <posX>7938</posX>
+        <posY>2667</posY>
+        <width>1312</width>
+        <height>1556</height>
+      </gui>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="100" />
+      </properties>
+      <layout>
+        <posX>860</posX>
+        <posY>579</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.10">
+      <source>
+        <component id="Lightscore.1" />
+        <port id="gyrY" />
+      </source>
+      <target>
+        <component id="Threshold.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="StringDispatcher.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="scale" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="instrument" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="StringDispatcher.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="Lightscore.1" />
+        <port id="gyrY" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="AdjustmentCurve.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.1.1.3" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Lightscore.1" />
+        <port id="pitch" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.1.1.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="Lightscore.1" />
+        <port id="gyrY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.1.1.2.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="Deadzone.1" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="Integrate.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="trigger" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="Lightscore.1" />
+        <port id="yaw" />
+      </source>
+      <target>
+        <component id="AdjustmentCurve.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="Integrate.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Integrate.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="Lightscore.1" />
+        <port id="pitch" />
+      </source>
+      <target>
+        <component id="Deadzone.1" />
+        <port id="inX" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="AdjustmentCurve.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_dispatchNextSlot">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchNextSlot" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_dispatchNextSlot">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchNextSlot" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_dispatchNextSlot">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchNextSlot" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_dispatchNextSlot">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchNextSlot" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_dotOn">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DotMeter.1" />
+          <eventPort id="dotOn" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_start">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_dotOff">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DotMeter.1" />
+          <eventPort id="dotOff" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_start">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_dotOn">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DotMeter.1.1" />
+          <eventPort id="dotOn" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_dotOff">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DotMeter.1.1" />
+          <eventPort id="dotOff" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_dotOff">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DotMeter.1" />
+          <eventPort id="dotOff" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_dotOff">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DotMeter.1.1" />
+          <eventPort id="dotOff" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>210</posX>
+      <posY>244</posY>
+      <width>9750</width>
+      <height>7444</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
