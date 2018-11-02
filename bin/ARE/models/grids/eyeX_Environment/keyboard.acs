@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ARE\grids\eyeX_Environment\keyboard.acs_2017_12_14_11_55" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\grids\eyeX_Environment\keyboard.acs_2018_7_18_16_16" version="20130320">
   <components>
     <component id="EyeX.1" type_id="asterics.EyeX">
       <description>interfaces to the EyeX Gaze tracking system</description>
@@ -266,6 +266,9 @@
         <outputPort portTypeID="out5">
           <properties />
         </outputPort>
+        <outputPort portTypeID="out6">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="activePorts" value="1" />
@@ -381,7 +384,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="grids/eyeX_Environment/eyeX_Environment.acs" />
+        <property name="model" value="grids/eyeX_Environment/eyeX_Environment_english.acs" />
       </properties>
       <layout>
         <posX>666</posX>
