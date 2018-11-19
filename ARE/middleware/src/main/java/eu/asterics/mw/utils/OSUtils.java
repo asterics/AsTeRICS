@@ -195,7 +195,7 @@ public class OSUtils {
 
                 Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(arguments);
                 while (m.find()) {
-                    String token = m.group(1).replace("\"", "");
+                    String token = m.group(1);
                     command.add(token);
                     logger.fine("adding argument: " + token);
                 }
