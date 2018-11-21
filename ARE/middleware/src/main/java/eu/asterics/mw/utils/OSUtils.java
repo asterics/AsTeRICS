@@ -32,6 +32,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -153,74 +154,94 @@ public class OSUtils {
      * @throws IOException
      */
     public static Process startApplication(String applicationPathAndArguments, String workingDirectory, OS_NAMES executeOnPlatform) throws IOException {
-        if (executeOnPlatform != null && getOsName().equalsIgnoreCase(executeOnPlatform.toString()) || executeOnPlatform.equals(OS_NAMES.ALL)) {
-            if (applicationPathAndArguments == null) {
-                return null;
-            }
-            applicationPathAndArguments = applicationPathAndArguments.trim();
-            if ("".equals(applicationPathAndArguments)) {
-                return null;
-            }
-
-            try {
-                List<String> command = new ArrayList<String>();
-
-                int cmdEndIndex = 0;
-                // if cmd starts with quotes, extract the cmd with quotes.
-                if (applicationPathAndArguments.indexOf("\"") == 0) {
-                    cmdEndIndex = applicationPathAndArguments.substring(1).indexOf('"');
-                    if (cmdEndIndex > -1) {
-                        cmdEndIndex = cmdEndIndex + 2;
-                    }
-                } else {
-                    // a cmd without quotes is split by a space or can be without arguments.
-                    cmdEndIndex = applicationPathAndArguments.indexOf(" ");
-                }
-                //if the cmdEndIndex < 0, we did not find a space or endQuote, so treat the whole string as command.
-                if (cmdEndIndex < 0) {
-                    logger.warning("Only command, no arguments: " + applicationPathAndArguments);
-                    cmdEndIndex=applicationPathAndArguments.length();                 
-                }
-                // cmdEndIndex++;
-                String cmdString = applicationPathAndArguments.substring(0, cmdEndIndex);
-                // The command can be an absolute path, so ensure that it has proper system separators (\ or \\ or /)
-                command.add(FilenameUtils.separatorsToSystem(cmdString));
-
-                String arguments = "";
-                try {
-                    arguments = applicationPathAndArguments.substring(cmdEndIndex + 1);
-                } catch (IndexOutOfBoundsException e) {
-                    logger.fine("No cmd arguments found.");
-                }
-
-                Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(arguments);
-                while (m.find()) {
-                    String token = m.group(1);
-                    command.add(token);
-                    logger.fine("adding argument: " + token);
-                }
-
-                if (command.size() == 0) {
-                    logger.warning("Could not find command string in: " + applicationPathAndArguments);
-                    return null;
-                }
-
-                ProcessBuilder builder = new ProcessBuilder(command);
-                if (workingDirectory != null && !"".equals(workingDirectory)) {
-                    workingDirectory = FilenameUtils.separatorsToSystem(workingDirectory);
-                    // File workingDirFile=ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.getInstance().getAREBaseURI(),workingDirectory);
-                    File workingDirFile = new File(workingDirectory);
-                    logger.fine("Setting workingDirectory to: " + workingDirFile);
-                    builder.directory(workingDirFile);
-                }
-
-                logger.fine("Finally constructed command: " + command);
-                return builder.start();
-            } catch (Exception e) {
-                throw new RuntimeException("Could not construct command string: " + e.getMessage());
-            }
+        if (!isCurrentOS(executeOnPlatform) || applicationPathAndArguments == null || "".equals(applicationPathAndArguments.trim())) {
+            return null;
         }
-        return null;
+        applicationPathAndArguments = applicationPathAndArguments.trim();
+
+        try {
+            List<String> command = new ArrayList<>();
+
+            int cmdEndIndex = 0;
+            // if cmd starts with quotes, extract the cmd with quotes.
+            if (applicationPathAndArguments.indexOf("\"") == 0) {
+                cmdEndIndex = applicationPathAndArguments.substring(1).indexOf('"');
+                if (cmdEndIndex > -1) {
+                    cmdEndIndex = cmdEndIndex + 2;
+                }
+            } else {
+                // a cmd without quotes is split by a space or can be without arguments.
+                cmdEndIndex = applicationPathAndArguments.indexOf(" ");
+            }
+            //if the cmdEndIndex < 0, we did not find a space or endQuote, so treat the whole string as command.
+            if (cmdEndIndex < 0) {
+                logger.warning("Only command, no arguments: " + applicationPathAndArguments);
+                cmdEndIndex=applicationPathAndArguments.length();
+            }
+            // cmdEndIndex++;
+            String cmdString = applicationPathAndArguments.substring(0, cmdEndIndex);
+            // The command can be an absolute path, so ensure that it has proper system separators (\ or \\ or /)
+            command.add(FilenameUtils.separatorsToSystem(cmdString));
+
+            String arguments = "";
+            try {
+                arguments = applicationPathAndArguments.substring(cmdEndIndex + 1);
+            } catch (IndexOutOfBoundsException e) {
+                logger.fine("No cmd arguments found.");
+            }
+
+            Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(arguments);
+            while (m.find()) {
+                String token = m.group(1);
+                command.add(token);
+                logger.fine("adding argument: " + token);
+            }
+
+            return startApplication(command, workingDirectory);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not construct command string: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Starts the given application using commandAndArgumentList and the given workingDirectory
+     *
+     * @param commandAndArgumentList list of strings where first element is the command to execute and the remaining ones
+     *                               are arguments to pass to the command
+     * @param workingDirectory
+     * @return
+     * @throws IOException
+     */
+    private static Process startApplication(List<String> commandAndArgumentList, String workingDirectory) throws IOException {
+        try {
+            if (commandAndArgumentList.isEmpty()) {
+                logger.warning("Could not find command string in: " + commandAndArgumentList);
+                return null;
+            }
+
+            ProcessBuilder builder = new ProcessBuilder(commandAndArgumentList);
+            if (workingDirectory != null && !"".equals(workingDirectory)) {
+                workingDirectory = FilenameUtils.separatorsToSystem(workingDirectory);
+                // File workingDirFile=ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.getInstance().getAREBaseURI(),workingDirectory);
+                File workingDirFile = new File(workingDirectory);
+                logger.fine("Setting workingDirectory to: " + workingDirFile);
+                builder.directory(workingDirFile);
+            }
+
+            logger.fine("Finally constructed command: " + commandAndArgumentList);
+            return builder.start();
+        } catch (Exception e) {
+            throw new RuntimeException("Could not construct command string: " + e.getMessage());
+        }
+    }
+
+    /**
+     * returns true if the given osName matches the current operating system or is OS_NAMES.ALL
+     * @param osName
+     * @return
+     */
+    private static boolean isCurrentOS(OS_NAMES osName) {
+        return osName != null && getOsName().equalsIgnoreCase(osName.toString()) || osName != null && osName.equals(OS_NAMES.ALL);
     }
 
     /**
@@ -233,21 +254,22 @@ public class OSUtils {
      * @throws IOException
      */
     public static Process openURL(String urlToOpen, OS_NAMES executeOnPlatform) throws IOException {
-        if (executeOnPlatform != null && getOsName().equalsIgnoreCase(executeOnPlatform.toString()) || executeOnPlatform.equals(OS_NAMES.ALL)) {
-            String browserStartCmd = AREProperties.instance.getProperty(ARE_OPEN_URL_CMD_KEY_PREFIX + getOsName());
-
-            urlToOpen = urlToOpen.trim();
-            urlToOpen = urlToOpen.replaceAll("^\"|\"$", ""); // remove quotes
-            if(!urlToOpen.startsWith("http")) {
-                urlToOpen = "http://" + urlToOpen;
-            }
-            if(isWindows()) {
-                urlToOpen="\"" + urlToOpen + "\"";
-			}
-
-            return startApplication(browserStartCmd, urlToOpen, null, executeOnPlatform);
+        if (!isCurrentOS(executeOnPlatform)) {
+            return null;
         }
-        return null;
+        String browserStartCmd = AREProperties.instance.getProperty(ARE_OPEN_URL_CMD_KEY_PREFIX + getOsName());
+
+        urlToOpen = urlToOpen.trim();
+        urlToOpen = urlToOpen.replaceAll("^\"|\"$", ""); // remove quotes
+        if(!urlToOpen.startsWith("http")) {
+            urlToOpen = "http://" + urlToOpen;
+        }
+        if(isWindows()) {
+            urlToOpen="\"" + urlToOpen + "\"";
+        }
+
+        List<String> commandList = Arrays.asList(browserStartCmd.trim(), urlToOpen);
+        return startApplication(commandList, null);
     }
 
 }
