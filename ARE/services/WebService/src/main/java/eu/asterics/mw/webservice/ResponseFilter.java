@@ -48,7 +48,7 @@ public class ResponseFilter implements ContainerResponseFilter {
     public static final String ARE_REST_ALLOWED_ORIGINS = "ARE.REST.allowed.origins";
 
     static {
-        AREProperties.instance.setDefaultPropertyValue(ARE_REST_ALLOWED_ORIGINS, "localhost,asterics.github.io,asterics-foundation.org", "Origins that are allowed to access the ARE REST API. Separate with comma (',').");
+        AREProperties.instance.setDefaultPropertyValue(ARE_REST_ALLOWED_ORIGINS, "localhost,127.0.0.1,asterics.github.io,asterics-foundation.org", "Origins that are allowed to access the ARE REST API. Separate with comma (',').");
     }
 
     @Override
