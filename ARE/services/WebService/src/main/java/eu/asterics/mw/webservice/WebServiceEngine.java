@@ -97,6 +97,7 @@ public class WebServiceEngine {
 
         // REST SERVER CONFIGURATION
         rc.registerClasses(RestServer.class, SseResource.class, SseFeature.class);
+        rc.register(new RequestFilter());
         rc.register(new ResponseFilter());
         restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.getInstance().getBaseUriREST(), rc);
  
