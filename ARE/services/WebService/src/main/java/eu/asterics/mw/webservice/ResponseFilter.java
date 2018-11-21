@@ -25,11 +25,7 @@
 
 package eu.asterics.mw.webservice;
 
-import eu.asterics.mw.are.AREProperties;
-
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
@@ -44,12 +40,6 @@ import javax.ws.rs.core.MultivaluedMap;
  *
  */
 public class ResponseFilter implements ContainerResponseFilter {
-
-    public static final String ARE_REST_ALLOWED_ORIGINS = "ARE.REST.allowed.origins";
-
-    static {
-        AREProperties.instance.setDefaultPropertyValue(ARE_REST_ALLOWED_ORIGINS, "localhost,127.0.0.1,asterics.github.io,asterics-foundation.org", "Origins that are allowed to access the ARE REST API. Separate with comma (',').");
-    }
 
     @Override
     public void filter(ContainerRequestContext request, ContainerResponseContext response) throws IOException {
@@ -85,41 +75,11 @@ public class ResponseFilter implements ContainerResponseFilter {
         MultivaluedMap<String, Object> headers = response.getHeaders();
 
         // add headers to overcome CORS problems
-        String origin = request.getHeaders().get("origin").get(0);
-        if (isOriginAllowed(origin)) {
-            headers.add("Access-Control-Allow-Origin", "*");
-            headers.add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
-            headers.add("Access-Control-Allow-Credentials", "true");
-            headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-        }
-    }
+        headers.add("Access-Control-Allow-Origin", "*");
+        headers.add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
+        headers.add("Access-Control-Allow-Credentials", "true");
+        headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
 
-    /**
-     * returns true if the given origin is allowed, specified by property value "ARE.REST.allowed.origins"
-     * subdomains are also allowed.
-     * e.g. allowed origin is "asterics-foundation.org"
-     * => "asterics-foundation.org" is allowed
-     * => "test.asterics-foundation.org" is allowed
-     * => "test.asterics-foundation.at" is not allowed
-     *
-     * @param origin
-     * @return
-     */
-    private boolean isOriginAllowed(String origin) {
-        String allowedOriginsProperty = AREProperties.instance.getProperty(ARE_REST_ALLOWED_ORIGINS);
-        List<String> allowedOrigins = Arrays.asList(allowedOriginsProperty.split(","));
-        origin = origin.trim();
-        origin = origin.replace("https://", "");
-        origin = origin.replace("http://", "");
-        if (origin.contains(":")) {
-            origin = origin.substring(0, origin.indexOf(':')); // remove port
-        }
-        for (String testOrigin : allowedOrigins) {
-            if (origin.startsWith(testOrigin) || origin.endsWith("." + testOrigin)) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }
