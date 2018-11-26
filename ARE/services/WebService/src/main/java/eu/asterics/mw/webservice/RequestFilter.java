@@ -127,7 +127,7 @@ public class RequestFilter implements ContainerRequestFilter {
                 }
             }
         } catch (SocketException e1) {
-            AstericsErrorHandling.instance.getLogger().log(Level.FINE, "SocketException in enumerating local IPS.");
+            AstericsErrorHandling.instance.getLogger().log(Level.FINE, "SocketException in enumerating local IP addresses.");
         }
         return ips;
     }
