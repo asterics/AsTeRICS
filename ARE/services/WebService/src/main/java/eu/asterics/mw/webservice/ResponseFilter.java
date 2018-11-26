@@ -35,7 +35,7 @@ import javax.ws.rs.core.MultivaluedMap;
 /**
  * A class that filters the responses of the Rest Server by adding specific
  * headers in order to overcome CORS problems.
- * 
+ *
  * @author Marios Komodromos (mkomod05@cs.ucy.ac.cy)
  *
  */
