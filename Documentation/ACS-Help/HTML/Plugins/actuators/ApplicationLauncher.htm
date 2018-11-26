@@ -16,8 +16,8 @@
 		</figure>
 		<H2>Input Port Description</H2>
 		<ul>
-			<li><STRONG>filename [string]:</STRONG> File name of executable file which shall be started without arguments. The application is started automatically, if onlyByEvent is false.</li>
-			<li><STRONG>arguments [string]:</STRONG> Sets the arguments of the command. The application is started automatically, if onlyByEvent is false.</li>
+			<li><STRONG>filename [string]:</STRONG> File name of executable file which shall be started without arguments. The application is started automatically, if onlyByEvent is false. See <i>Propterties -> defaultApplication</i> description for details.</li>
+			<li><STRONG>arguments [string]:</STRONG> Sets the arguments of the command. The application is started automatically, if onlyByEvent is false. See <i>Propterties -> arguments</i> description for details.</li>
 			<li><STRONG>stdIn [string]:</STRONG> Sends the incoming string to the standard input stream of the started process.</li>
 		</ul>
 		<H2>Output Port Description</H2>
@@ -41,8 +41,16 @@
 		<ul>
 			<li><STRONG>executeOnPlatform [combobox (ALL, WINDOWS, LINUX, MACOSX)]:</STRONG> If != ALL, the application will only be launched if the ARE runs on the defined platform.</li>
 			<li><STRONG>executionMode [combobox (START_APPLICATION, OPEN_URL)]:</STRONG> If START_APPLICATION, the command defined in defaultApplication will be launched with the given arguments. If OPEN_URL, the URL defined in arguments will be launched with the platform default browser. The platform-specific browser launch commands are configurable in the file areProperties.</li>
-			<li><STRONG>defaultApplication [string]:</STRONG> Full path and filename of the default application</li>
-			<li><STRONG>arguments [string]:</STRONG> the commandline arguments for the application</li>
+			<li>
+				<STRONG>defaultApplication [string]:</STRONG> Full path and filename of the default application<br/>
+				The full path can be provided with quotes, but quotes are not mandatory. So <i>C:\Program Files\internet explorer\iexplore.exe</i> and <i>"C:\Program Files\internet explorer\iexplore.exe"</i> are equal and both working.
+			</li>
+			<li>
+				<STRONG>arguments [string]:</STRONG> the commandline arguments for the application (in mode START_APPLICATION) or the URL to open (in mode OPEN_URL).<br/>
+				For Mode START_APPLICATION: Given arguments are split considering whitespaces and quotes. So e.g. the arguments property <i>xterm -e "sudo sh test.sh"</i> will be split in 3 components
+				<i>xterm</i>, <i>-e</i> and <i>"sudo sh test.sh"</i>. However quotes are removed at runtime, so <i>sudo sh test.sh</i> without quotes will be passed to the ProcessBuilder used at Java level to start the program.<br/>
+				Hint for Windows: for cmd.exe "&" is a special character and cannot be used in an argument. If the "&" is needed, mask it with an "^", therefore using "^&" instead of "&" in the argument.
+			</li>
 			<li><STRONG>workingDirectory [string]:</STRONG> the working directory for the application (. is used for home directory of the application)</li>
 			<li><STRONG>closeCmd [string]:</STRONG>Optional close cmd, e.g. if started cmd has forked processes (e.g. OSKA) use: taskkill.exe /IM &quot;OSKA Keyboard.exe&quot; /T</li>
 			<li><STRONG>autoLaunch [boolean]:</STRONG> Defines if the default application is automatically launched at startup</li>
