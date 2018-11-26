@@ -91,7 +91,7 @@ public class RequestFilter implements ContainerRequestFilter {
             origin = origin.substring(0, origin.indexOf(':')); // remove port
         }
         for (String testOrigin : allowedOrigins) {
-            if (origin.startsWith(testOrigin) || origin.endsWith("." + testOrigin)) {
+            if (origin.equals(testOrigin) || origin.endsWith("." + testOrigin)) {
                 return true;
             }
         }
