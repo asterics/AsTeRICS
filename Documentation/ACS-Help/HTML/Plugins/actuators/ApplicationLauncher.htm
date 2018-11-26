@@ -49,7 +49,8 @@
 				<STRONG>arguments [string]:</STRONG> the commandline arguments for the application (in mode START_APPLICATION) or the URL to open (in mode OPEN_URL).<br/>
 				For Mode START_APPLICATION: Given arguments are split considering whitespaces and quotes. So e.g. the arguments property <i>xterm -e "sudo sh test.sh"</i> will be split in 3 components
 				<i>xterm</i>, <i>-e</i> and <i>"sudo sh test.sh"</i>. However quotes are removed at runtime, so <i>sudo sh test.sh</i> without quotes will be passed to the ProcessBuilder used at Java level to start the program.<br/>
-				Hint for Windows: for cmd.exe "&" is a special character and cannot be used in an argument. If the "&" is needed, mask it with an "^", therefore using "^&" instead of "&" in the argument.
+				Hint for Windows: for cmd.exe "&" is a special character and cannot be used in an argument. If the "&" is needed, mask it with an "^", therefore using "^&" instead of "&" in the argument.<br/>
+				For Mode OPEN_URL: URLs can be passed as-is on any platform, no masking of "&" characters is needed.
 			</li>
 			<li><STRONG>workingDirectory [string]:</STRONG> the working directory for the application (. is used for home directory of the application)</li>
 			<li><STRONG>closeCmd [string]:</STRONG>Optional close cmd, e.g. if started cmd has forked processes (e.g. OSKA) use: taskkill.exe /IM &quot;OSKA Keyboard.exe&quot; /T</li>
