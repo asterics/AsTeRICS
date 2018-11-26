@@ -190,7 +190,15 @@ public class OSUtils {
                 logger.fine("No cmd arguments found.");
             }
 
-            Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(arguments);
+            //regex: (([^\s"]+)|(".+?"))\s*
+            //splits arguments with or without quotes, see http://www.regexe.com/ for testing
+            //e.g. xterm -e "sudo sh test.sh" ==> (1) xterm, (2) -e, (3) "sudo sh test.sh"
+            //pattern: (A|B)C => A or B, afterwards C
+            //A = ([^\s"]+)     ==> matches anything that does not contain quotes and
+            //                      does only contain non-whitespace characters ([^\s]), e.g. -e
+            //B = (".+?")       ==> matches anything enquoted with any characters inside, e.g. "sudo sh test.sh"
+            //C = \s*           ==> any whitespace character(s) after each group
+            Matcher m = Pattern.compile("(([^\\s\"]+)|(\".+?\"))\\s*").matcher(arguments);
             while (m.find()) {
                 String token = m.group(1).replace("\"", "");
                 command.add(token);
