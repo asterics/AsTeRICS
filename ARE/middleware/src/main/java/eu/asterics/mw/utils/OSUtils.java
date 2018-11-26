@@ -134,7 +134,7 @@ public class OSUtils {
             return null;
         }
         // quote command if it is with spaces
-        if(applicationPath.contains(" ")) {
+        if(applicationPath.contains(" ") && !applicationPath.startsWith("\"")) {
 			applicationPath = "\"" + applicationPath + "\"";
         }
         // File applicationPathFile = ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.getInstance().getAREBaseURI(), applicationPath);
