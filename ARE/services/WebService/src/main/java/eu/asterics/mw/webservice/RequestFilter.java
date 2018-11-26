@@ -26,10 +26,17 @@
 package eu.asterics.mw.webservice;
 
 import eu.asterics.mw.are.AREProperties;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
@@ -46,6 +53,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 public class RequestFilter implements ContainerRequestFilter {
 
     public static final String ARE_REST_ALLOWED_ORIGINS = "ARE.REST.allowed.origins";
+    private List<String> allowedOrigins = null;
 
     static {
         AREProperties.instance.setDefaultPropertyValue(ARE_REST_ALLOWED_ORIGINS, "localhost,127.0.0.1,asterics.github.io,asterics-foundation.org", "Origins that are allowed to access the ARE REST API. Separate with comma (',').");
@@ -81,21 +89,47 @@ public class RequestFilter implements ContainerRequestFilter {
         if(origin == null || origin.equals("")) {
             return true;
         }
+        if(this.allowedOrigins == null) {
+            this.allowedOrigins = getLocalIPs();
+            String allowedOriginsProperty = AREProperties.instance.getProperty(ARE_REST_ALLOWED_ORIGINS);
+            this.allowedOrigins.addAll(Arrays.asList(allowedOriginsProperty.split(",")));
+        }
 
-        String allowedOriginsProperty = AREProperties.instance.getProperty(ARE_REST_ALLOWED_ORIGINS);
-        List<String> allowedOrigins = Arrays.asList(allowedOriginsProperty.split(","));
         origin = origin.trim();
         origin = origin.replace("https://", "");
         origin = origin.replace("http://", "");
         if (origin.contains(":")) {
             origin = origin.substring(0, origin.indexOf(':')); // remove port
         }
-        for (String testOrigin : allowedOrigins) {
+        for (String testOrigin : this.allowedOrigins) {
             if (origin.equals(testOrigin) || origin.endsWith("." + testOrigin)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * returns a list of strings of the current IPs of the local network interfaces
+     * @return
+     */
+    private List<String> getLocalIPs() {
+        List<String> ips = new ArrayList<>();
+        Enumeration e = null;
+        try {
+            e = NetworkInterface.getNetworkInterfaces();
+            while (e.hasMoreElements()) {
+                NetworkInterface n = (NetworkInterface) e.nextElement();
+                Enumeration ee = n.getInetAddresses();
+                while (ee.hasMoreElements()) {
+                    InetAddress i = (InetAddress) ee.nextElement();
+                    ips.add(i.getHostAddress());
+                }
+            }
+        } catch (SocketException e1) {
+            AstericsErrorHandling.instance.getLogger().log(Level.FINE, "SocketException in enumerating local IPS.");
+        }
+        return ips;
     }
 
 }
