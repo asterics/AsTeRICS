@@ -8,4 +8,4 @@ Homepage: https://github.com/asterics/AsTeRICS
 Provides: asterics-are
 Description: AsTeRICS Runtime Environment (ARE) - http://www.asterics.org
 Recommends: oracle-java8-installer
-Depends: libttspico-utils, libhidapi-libusb0, libudev1
+Depends: libttspico-utils, libhidapi-libusb0, libudev1, xdg-utils
