@@ -81,6 +81,7 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
     private final int CLK_DRAG = 4;
     private final int CLK_DRAGRELEASE = 5;
 
+    private boolean propStartCentered = true;
     private boolean propEnableMouse = false;
     private boolean propAbsolutePosition = true;
     private int propXMin = 0;
@@ -207,6 +208,8 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
             return propAbsolutePosition;
         } else if ("enableMouse".equalsIgnoreCase(propertyName)) {
             return propEnableMouse;
+        } else if ("startCentered".equalsIgnoreCase(propertyName)) {
+            return propStartCentered;
         } else if ("xMin".equalsIgnoreCase(propertyName)) {
             return propXMin;
         } else if ("xMax".equalsIgnoreCase(propertyName)) {
@@ -250,6 +253,11 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
                 propEnableMouse = false;
             }
 
+            return oldValue;
+        }
+        if ("startCentered".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propStartCentered;
+            propStartCentered = Boolean.parseBoolean(((String) newValue));
             return oldValue;
         }
         if ("xMin".equalsIgnoreCase(propertyName)) {
@@ -642,8 +650,13 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
     public void start() {
         super.start();
         first = true;
-        mouseXPos = propXMin + (propXMax - propXMin) / 2;
-        mouseYPos = propYMin + (propYMax - propYMin) / 2;
+        if(this.propStartCentered) {
+            this.mouseXPos = propXMin + (propXMax - propXMin) / 2;
+            this.mouseYPos = propYMin + (propYMax - propYMin) / 2;
+        } else {
+            this.mouseXPos = MouseInfo.getPointerInfo().getLocation().x;
+            this.mouseYPos = MouseInfo.getPointerInfo().getLocation().y;
+        }
         mouseActive = 1;
         nextClick = CLK_LEFT;
         // AstericsErrorHandling.instance.reportInfo(this, "Mouse Instance
