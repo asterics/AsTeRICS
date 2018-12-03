@@ -94,6 +94,10 @@
                       type="boolean"
                       value="true"
                       description="X and Y values are absolute positions or relative movements"/>
+            <property name="startCentered"
+                      type="boolean"
+                      value="true"
+                      description="If true the mouse starts in the middle of the screen, if false starting the starting position is the current position"/>
             <property name="xMin"
                       type="integer"
                       value="0"
