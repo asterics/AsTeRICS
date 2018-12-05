@@ -38,6 +38,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import eu.asterics.mw.jnativehook.NativeHookServices;
+import eu.asterics.mw.webservice.serverUtils.*;
 import org.glassfish.jersey.media.sse.EventOutput;
 import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.glassfish.jersey.media.sse.SseBroadcaster;
@@ -47,10 +49,6 @@ import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.model.deployment.IChannel;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.webservice.serverUtils.AREEventListener;
-import eu.asterics.mw.webservice.serverUtils.AstericsAPIEncoding;
-import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
-import eu.asterics.mw.webservice.serverUtils.RuntimeListener;
 
 @Singleton
 @Path("/")
@@ -60,6 +58,8 @@ public class SseResource {
 
     // Client broadcasters
     private static SseBroadcaster deploymentBroadcaster = new SseBroadcaster();
+    private static SseBroadcaster keyboardPressedBroadcaster = new SseBroadcaster();
+    private static SseBroadcaster keyboardReleasedBroadcaster = new SseBroadcaster();
     private static SseBroadcaster modelStateBroadcaster = new SseBroadcaster();
     private static SseBroadcaster eventChannelBroadcaster = new SseBroadcaster();
     private static SseBroadcaster propertyChangeBroadcaster = new SseBroadcaster();
@@ -68,14 +68,17 @@ public class SseResource {
     // System listeners
     private static AREEventListener eventListener;
     private static RuntimeListener runtimeListener;
+    private static AREKeyboardListener keyboardListener;
 
     public SseResource() {
         // create and register listeners
         SseResource.eventListener = new AREEventListener();
         SseResource.runtimeListener = new RuntimeListener();
+        SseResource.keyboardListener = new AREKeyboardListener();
 
         AREServices.instance.registerAREEventListener(eventListener);
         AREServices.instance.registerRuntimeDataListener(runtimeListener);
+        NativeHookServices.getInstance().registerAREKeyboardListener(keyboardListener);
 
         initializeDataChannelListeners();
     }
@@ -118,6 +121,28 @@ public class SseResource {
         final EventOutput eventOutput = new EventOutput();
 
         SseResource.deploymentBroadcaster.add(eventOutput);
+
+        return eventOutput;
+    }
+
+    @Path("/runtime/keyboard/pressed/listener")
+    @GET
+    @Produces(SseFeature.SERVER_SENT_EVENTS)
+    public EventOutput subscribe_keyboardPressedEvents() {
+        final EventOutput eventOutput = new EventOutput();
+
+        SseResource.keyboardPressedBroadcaster.add(eventOutput);
+
+        return eventOutput;
+    }
+
+    @Path("/runtime/keyboard/released/listener")
+    @GET
+    @Produces(SseFeature.SERVER_SENT_EVENTS)
+    public EventOutput subscribe_keyboardReleasedEvents() {
+        final EventOutput eventOutput = new EventOutput();
+
+        SseResource.keyboardReleasedBroadcaster.add(eventOutput);
 
         return eventOutput;
     }
@@ -204,6 +229,28 @@ public class SseResource {
         deploymentBroadcaster.broadcast(event);
 
         return eventMessage;
+    }
+
+    /**
+     * Static method that broadcasts an event to clients who were subscribed to keyboard pressed events.
+     *
+     * @param eventMessage JSON formatted native key event that was triggered
+     *
+     * @return the json that was sent to the SSE subscribers
+     */
+    public static String broadcastKeyboardPressedEvent(String eventMessage) {
+        return broadcastEvent(keyboardPressedBroadcaster, eventMessage, MediaType.APPLICATION_JSON_TYPE);
+    }
+
+    /**
+     * Static method that broadcasts an event to clients who were subscribed to keyboard released events.
+     *
+     * @param eventMessage JSON formatted native key event that was triggered
+     *
+     * @return the json that was sent to the SSE subscribers
+     */
+    public static String broadcastKeyboardReleasedEvent(String eventMessage) {
+        return broadcastEvent(keyboardReleasedBroadcaster, eventMessage, MediaType.APPLICATION_JSON_TYPE);
     }
 
     /**
@@ -341,5 +388,16 @@ public class SseResource {
     /***********************************
      * BROADCASTER METHODS - end
      **********************************/
+
+
+    private static String broadcastEvent(SseBroadcaster broadcaster, String eventMessage, MediaType eventType) {
+        OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+        eventBuilder.name("event");
+        eventBuilder.mediaType(eventType);
+        eventBuilder.data(String.class, eventMessage);
+        OutboundEvent event = eventBuilder.build();
+        broadcaster.broadcast(event);
+        return eventMessage;
+    }
 
 }
