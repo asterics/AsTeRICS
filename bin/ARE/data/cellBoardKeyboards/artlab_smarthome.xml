@@ -59,7 +59,7 @@
 	<button>
 		<text>On</text>
 		<icon>data/pictures/smarthome/slider.png</icon>
-		<action>@KNX:8/0/0,1.001,on</action>
+		<action>@KNX:11/0/0,1.001,on</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -67,7 +67,7 @@
 	<button>
 		<text>On</text>
 		<icon>data/pictures/smarthome/socket-on.png</icon>
-		<action>@KNX:9/0/0,1.001,on</action>
+		<action></action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -75,7 +75,7 @@
 	<button>
 		<text>On</text>
 		<icon>data/pictures/smarthome/slider.png</icon>
-		<action>@KNX:8/0/2,1.001,on</action>
+		<action>@KNX:11/0/8,1.001,on</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -83,7 +83,7 @@
 	<button>
 		<text>On</text>
 		<icon>data/pictures/smarthome/socket-on.png</icon>
-		<action>@KNX:9/0/4,1.001,on</action>
+		<action></action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -91,7 +91,7 @@
 	<button>
 		<text>Up</text>
 		<icon>data/pictures/smarthome/arrow-up.png</icon>
-		<action>@KNX:10/3/0,9.002,+1</action>
+		<action>@KNX:12/1/1,9.002,+1</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -107,7 +107,7 @@
 	<button>
 		<text>Off</text>
 		<icon>data/pictures/smarthome/slider-0.png</icon>
-		<action>@KNX:8/0/0,1.001,off</action>
+		<action>@KNX:11/0/0,1.001,off</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -115,7 +115,7 @@
 	<button>
 		<text>Off</text>
 		<icon>data/pictures/smarthome/socket-off.png</icon>
-		<action>@KNX:9/0/0,1.001,off</action>
+		<action></action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -123,7 +123,7 @@
 	<button>
 		<text>Off</text>
 		<icon>data/pictures/smarthome/slider-0.png</icon>
-		<action>@KNX:8/0/2,1.001,off</action>
+		<action>@KNX:11/0/8,1.001,off</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -131,7 +131,7 @@
 	<button>
 		<text>Off</text>
 		<icon>data/pictures/smarthome/socket-off.png</icon>
-		<action>@KNX:9/0/4,1.001,off</action>
+		<action></action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -139,7 +139,7 @@
 	<button>
 		<text>Down</text>
 		<icon>data/pictures/smarthome/arrow-down.png</icon>
-		<action>@KNX:10/3/0,9.002,-1</action>
+		<action>@KNX:12/1/1,9.002,-1</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>

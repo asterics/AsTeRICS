@@ -1,0 +1,966 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\ASTERICS_TEST_SingleThreadedStabilisation\AsTeRICS\bin\ARE\models\oska_homecontrol_door.acs_2015_3_18_22_11" version="20130320">
+  <modelDescription>
+    <shortDescription>Comprehensive Home Control solution involving IR control and KNX,
+controlled via head-mouse or touchscreen input .
+</shortDescription>
+    <requirements>The IRTrans universal IR remote control module (USB-, Lan-, or WiFi version) 
+has to be connected to the system, the driver has to be installed.
+A KNX infrastructure has to be connected via KNXnet/IP router.
+A webcam has to be connected, alternatively a touchscreen can be used.
+</requirements>
+    <description>This model allows to control different functions of a smart home (lights via KNX, music player and TV  via IR remote control)
+The functions are selected via head-controlled mouse or via touchscreen input.
+
+The user interface is established via OSKA, where the main menu for function selection 
+is the "aat_homcontrol.xml" grid. Please see these grids for the utilized IR commands 
+and KNX group addresses.
+</description>
+  </modelDescription>
+  <components>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*b/50" />
+      </properties>
+      <layout>
+        <posX>393</posX>
+        <posY>197</posY>
+      </layout>
+    </component>
+    <component id="Deadzone.1" type_id="asterics.Deadzone">
+      <description>Defines active/passive Zone for x/y values</description>
+      <ports>
+        <inputPort portTypeID="radius">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inY">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="xCenter" value="0" />
+        <property name="radius" value="5" />
+        <property name="yCenter" value="0" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>209</posX>
+        <posY>30</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="click" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>485</posX>
+        <posY>28</posY>
+      </layout>
+      <gui>
+        <posX>7100</posX>
+        <posY>3733</posY>
+        <width>600</width>
+        <height>756</height>
+      </gui>
+    </component>
+    <component id="MultiSourceString.1" type_id="asterics.MultiSourceString">
+      <description>Passes strings from input ports to the one output port</description>
+      <ports>
+        <inputPort portTypeID="input2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input1">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>690</posX>
+        <posY>336</posY>
+      </layout>
+    </component>
+    <component id="ApplicationLauncher.1" type_id="asterics.ApplicationLauncher">
+      <description>starts external software applications via path and  filename (.exe)</description>
+      <ports>
+        <inputPort portTypeID="filename">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="arguments" value="" />
+        <property name="defaultApplication" value="c:\windows\notepad.exe" />
+        <property name="autoLaunch" value="false" />
+        <property name="onlyByEvent" value="false" />
+        <property name="autoClose" value="true" />
+        <property name="workingDirectory" value="." />
+      </properties>
+      <layout>
+        <posX>914</posX>
+        <posY>23</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Double" />
+        <property name="buttonCaption2" value="Right" />
+        <property name="buttonCaption3" value="Drag" />
+        <property name="buttonCaption4" value="Other Demos" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>252</posX>
+        <posY>498</posY>
+      </layout>
+      <gui>
+        <posX>4662</posX>
+        <posY>3733</posY>
+        <width>2425</width>
+        <height>756</height>
+      </gui>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>Timer</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="timePeriod" value="1000" />
+        <property name="waitPeriod" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="resolution" value="50" />
+        <property name="autostart" value="false" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>347</posX>
+        <posY>25</posY>
+      </layout>
+    </component>
+    <component id="Averager.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="15" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>205</posX>
+        <posY>189</posY>
+      </layout>
+    </component>
+    <component id="OskaInternalScanning.1" type_id="OskaInternalScanning">
+      <description>Component communicating with OSKA</description>
+      <ports>
+        <outputPort portTypeID="action">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="keycodes">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="port" value="4546" />
+        <property name="keyboardPath" value="keyboards\homeControl\aat_homecontrol.xml" />
+        <property name="title" value="OSKA keyboard" />
+        <property name="highlightStyle" value="1" />
+        <property name="scanSpeed" value="4" />
+        <property name="windowDecorated" value="False" />
+        <property name="oskaPath" value="..\oska\start keyboard.exe" />
+        <property name="resizeEnabled" value="True" />
+        <property name="settingsFile" value="settings\internal_tcp.kst" />
+      </properties>
+      <layout>
+        <posX>476</posX>
+        <posY>545</posY>
+      </layout>
+      <gui>
+        <posX>2075</posX>
+        <posY>4556</posY>
+        <width>5662</width>
+        <height>5222</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot20" value="" />
+        <property name="slot11" value="" />
+        <property name="slot1" value="@MOUSE:nextclick,double" />
+        <property name="slot12" value="" />
+        <property name="slot2" value="@MOUSE:nextclick,right" />
+        <property name="slot3" value="@MOUSE:nextclick,drag" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot19" value="" />
+        <property name="slot18" value="" />
+        <property name="slot17" value="" />
+        <property name="slot16" value="" />
+        <property name="slot15" value="" />
+        <property name="slot14" value="" />
+        <property name="slot13" value="" />
+        <property name="delay" value="300" />
+      </properties>
+      <layout>
+        <posX>533</posX>
+        <posY>325</posY>
+      </layout>
+    </component>
+    <component id="IrTrans.1" type_id="asterics.IrTrans">
+      <description>IR Transmission Module</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="send18" value="" />
+        <property name="port" value="21000" />
+        <property name="send17" value="" />
+        <property name="send16" value="" />
+        <property name="send15" value="" />
+        <property name="send14" value="" />
+        <property name="send13" value="" />
+        <property name="send12" value="" />
+        <property name="send11" value="" />
+        <property name="send1" value="" />
+        <property name="send10" value="" />
+        <property name="send3" value="" />
+        <property name="send2" value="" />
+        <property name="send5" value="" />
+        <property name="send4" value="" />
+        <property name="send7" value="" />
+        <property name="send6" value="" />
+        <property name="send8" value="" />
+        <property name="send9" value="" />
+        <property name="send19" value="" />
+        <property name="send23" value="" />
+        <property name="send22" value="" />
+        <property name="send24" value="" />
+        <property name="hostname" value="" />
+        <property name="prestring" value="" />
+        <property name="send21" value="" />
+        <property name="send20" value="" />
+      </properties>
+      <layout>
+        <posX>853</posX>
+        <posY>542</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="False" />
+        <property name="absolutePosition" value="False" />
+        <property name="yMin" value="390" />
+        <property name="xMax" value="1480" />
+        <property name="yMax" value="1030" />
+        <property name="xMin" value="400" />
+      </properties>
+      <layout>
+        <posX>866</posX>
+        <posY>210</posY>
+      </layout>
+    </component>
+    <component id="Slider.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="10" />
+        <property name="max" value="150" />
+        <property name="default" value="80" />
+        <property name="gain" value="0.01" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="speed" />
+        <property name="majorTickSpacing" value="20" />
+        <property name="minorTickSpacing" value="5" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>52</posX>
+        <posY>349</posY>
+      </layout>
+      <gui>
+        <posX>2076</posX>
+        <posY>3733</posY>
+        <width>2574</width>
+        <height>778</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*b/50" />
+      </properties>
+      <layout>
+        <posX>400</posX>
+        <posY>361</posY>
+      </layout>
+    </component>
+    <component id="Averager.1.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="15" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>227</posX>
+        <posY>338</posY>
+      </layout>
+    </component>
+    <component id="DigitalIn.1" type_id="asterics.DigitalIn">
+      <description>GPIO CIM sensor for inputs</description>
+      <ports />
+      <properties>
+        <property name="activateEventIn4" value="false" />
+        <property name="activateEventIn5" value="false" />
+        <property name="activateEventIn6" value="false" />
+        <property name="uniqueID" value="not used" />
+        <property name="periodicUpdate" value="0" />
+        <property name="activateEventIn1" value="True" />
+        <property name="activateEventIn2" value="false" />
+        <property name="activateEventIn3" value="false" />
+      </properties>
+      <layout>
+        <posX>114</posX>
+        <posY>510</posY>
+      </layout>
+    </component>
+    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
+      <description>Webcamera-based face tracking sensor</description>
+      <ports>
+        <outputPort portTypeID="noseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="noseY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinX">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraResolution" value="1" />
+        <property name="cameraProfile" value="" />
+        <property name="cameraSelection" value="0" />
+        <property name="cameraDisplayUpdate" value="100" />
+      </properties>
+      <layout>
+        <posX>16</posX>
+        <posY>168</posY>
+      </layout>
+      <gui>
+        <posX>8200</posX>
+        <posY>0</posY>
+        <width>1788</width>
+        <height>2400</height>
+      </gui>
+    </component>
+    <component id="FS20Sender.1" type_id="asterics.FS20Sender">
+      <description>Sends FS20 commands</description>
+      <ports>
+        <inputPort portTypeID="Housecode">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Address">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="Housecode" value="11111111" />
+        <property name="Address" value="1111" />
+      </properties>
+      <layout>
+        <posX>719</posX>
+        <posY>607</posY>
+      </layout>
+    </component>
+    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
+      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+      <ports>
+        <inputPort portTypeID="modelName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="model" value="demomenu.acs" />
+      </properties>
+      <layout>
+        <posX>250</posX>
+        <posY>729</posY>
+      </layout>
+    </component>
+    <component id="DigitalOut.1" type_id="asterics.DigitalOut">
+      <description>Digital Output control of GPIO-CIM</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="pullupStateOut3" value="false" />
+        <property name="pullupStateOut4" value="false" />
+        <property name="pullupStateOut5" value="false" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>603</posX>
+        <posY>646</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.11">
+      <description />
+      <source>
+        <component id="OskaInternalScanning.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="IrTrans.1" />
+        <port id="action" />
+      </target>
+    </channel>
+    <channel id="binding.26">
+      <description />
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Deadzone.1" />
+        <port id="inX" />
+      </target>
+    </channel>
+    <channel id="binding.27">
+      <description />
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Deadzone.1" />
+        <port id="inY" />
+      </target>
+    </channel>
+    <channel id="binding.24">
+      <description />
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <description />
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input1" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <description />
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.22">
+      <description />
+      <source>
+        <component id="MultiSourceString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="action" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <description />
+      <source>
+        <component id="OskaInternalScanning.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input2" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <description />
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <description />
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.25">
+      <description />
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="Averager.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <description />
+      <source>
+        <component id="Timer.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <description />
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.23">
+      <description />
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseX" />
+      </source>
+      <target>
+        <component id="Averager.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <description />
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.28">
+      <description />
+      <source>
+        <component id="OskaInternalScanning.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="FS20Sender.1" />
+        <port id="Action" />
+      </target>
+    </channel>
+    <channel id="binding.29">
+      <description />
+      <source>
+        <component id="OskaInternalScanning.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="DigitalOut.1" />
+        <port id="action" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="enterZone_start">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut4_closeNow">
+      <description />
+      <sources>
+        <source>
+          <component id="OskaInternalScanning.1" />
+          <eventPort id="eventOut4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ApplicationLauncher.1" />
+          <eventPort id="closeNow" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut3_launchNow">
+      <description />
+      <sources>
+        <source>
+          <component id="OskaInternalScanning.1" />
+          <eventPort id="eventOut3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ApplicationLauncher.1" />
+          <eventPort id="launchNow" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_pressSwitch2">
+      <description />
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="OskaInternalScanning.1" />
+          <eventPort id="pressSwitch2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_dispatchSlot3">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_switchModel">
+      <description>Switch to standard demos</description>
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="modelSwitcher.1" />
+          <eventPort id="switchModel" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>2075</posX>
+      <posY>3711</posY>
+      <width>5650</width>
+      <height>800</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

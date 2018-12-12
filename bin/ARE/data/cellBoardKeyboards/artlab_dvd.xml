@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<keyboard caption="Control DVD" rows="2" columns="3" scanning="2" textColor="0" scanColor="10" scanCycles="3" backgroundColor="11" hoverTime="1000" hoverIndicator="0" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+<keyboard caption="Control DVD" rows="2" columns="3" scanning="2" textColor="0" scanColor="10" scanCycles="2" backgroundColor="11" hoverTime="1000" hoverIndicator="0" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
 	<button>
 		<text>On/Off</text>
 		<icon>data/pictures/audio/system-shutdown.png</icon>
-		<action>@IRTRANS:snd asterics,dvd_on</action>
+		<action>IRTRANS-WEB@IRTRANS:sndhex H5301000000002725030235004000BE02351C1F0000000000000233003D003D003D003D000000000000048278533030303030313030303030303030303032313131303030303030303030313131313131313130</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -11,7 +11,7 @@
 	<button>
 		<text>Previous</text>
 		<icon>data/pictures/audio/media-skip-backward.png</icon>
-		<action>@IRTRANS:snd asterics,dvd_previous</action>
+		<action>IRTRANS-WEB@IRTRANS:sndhex H5301000000002725030235004000BE02351C1F0000000000000234003D003D003D003E000000000000048278533030303030313030303030303030303032313131303130313130303030303130303131313130</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -19,7 +19,7 @@
 	<button>
 		<text>Next</text>
 		<icon>data/pictures/audio/media-skip-forward.png</icon>
-		<action>@IRTRANS:snd asterics,dvd_next</action>
+		<action>IRTRANS-WEB@IRTRANS:sndhex H5301000000002725010234004000BD023400000000000000000234003E003E003E0000000000000000040100533030303030313030303030303030303032313131303130303031303030303131313031313130</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -35,7 +35,7 @@
 	<button>
 		<text>Stop</text>
 		<icon>data/pictures/audio/media-playback-stop.png</icon>
-		<action>@IRTRANS:snd asterics,dvd_stop</action>
+		<action>IRTRANS-WEB@IRTRANS:sndhex H5301000000002725010234004000BD023400000000000000000234003E003E003E0000000000000000040100533030303030313030303030303030303032313131303131303031303030303031313031313130</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -43,7 +43,7 @@
 	<button>
 		<text>Play/Pause</text>
 		<icon>data/pictures/audio/media-playback-start.png</icon>
-		<action>@IRTRANS:snd asterics,dvd_play</action>
+		<action>IRTRANS-WEB@IRTRANS:sndhex H5301000000002725010234004000BD023500000000000000000234003E003E003D0000000000000000040100533030303030313030303030303030303032313131303030313031303030313130313031313130</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>

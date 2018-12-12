@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<keyboard caption="Control TV" rows="2" columns="4" scanning="2" textColor="0" scanColor="10" scanCycles="3" backgroundColor="11" hoverTime="1000" hoverIndicator="0" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+<keyboard caption="Control TV" rows="2" columns="4" scanning="2" textColor="0" scanColor="10" scanCycles="2" backgroundColor="11" hoverTime="1000" hoverIndicator="0" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
 	<button>
 		<text>On/Off</text>
 		<icon>data/pictures/tv/system-shutdown.png</icon>
-		<action>@IRTRANS:snd asterics,tv_on</action>
+		<action>IRTRANS-USB@IRTRANS:snd asterics,tv_on</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -11,7 +11,7 @@
 	<button>
 		<text>Input</text>
 		<icon>data/pictures/tv/audio-input-line.png</icon>
-		<action>@IRTRANS:snd asterics,tv_input</action>
+		<action>IRTRANS-USB@IRTRANS:snd asterics,tv_input</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -19,7 +19,7 @@
 	<button>
 		<text>Vol. Up</text>
 		<icon>data/pictures/tv/audio-volume-high.png</icon>
-		<action>@IRTRANS:snd asterics,tv_volume_up</action>
+		<action>IRTRANS-USB@IRTRANS:snd asterics,tv_volume_up</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -27,7 +27,7 @@
 	<button>
 		<text>Ch. Up</text>
 		<icon>data/pictures/tv/go-up.png</icon>
-		<action>@IRTRANS:snd asterics,tv_channel_up</action>
+		<action>IRTRANS-USB@IRTRANS:snd asterics,tv_channel_up</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -43,7 +43,7 @@
 	<button>
 		<text>Vol. Mute</text>
 		<icon>data/pictures/tv/audio-volume-muted.png</icon>
-		<action>@IRTRANS:snd asterics,tv_mute</action>
+		<action>IRTRANS-USB@IRTRANS:snd asterics,tv_mute</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -51,7 +51,7 @@
 	<button>
 		<text>Vol. Down</text>
 		<icon>data/pictures/tv/audio-volume-low.png</icon>
-		<action>@IRTRANS:snd asterics,tv_volume_down</action>
+		<action>IRTRANS-USB@IRTRANS:snd asterics,tv_volume_down</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
@@ -59,7 +59,7 @@
 	<button>
 		<text>Ch. Down</text>
 		<icon>data/pictures/tv/go-down.png</icon>
-		<action>@IRTRANS:snd asterics,tv_channel_down</action>
+		<action>IRTRANS-USB@IRTRANS:snd asterics,tv_channel_down</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>
