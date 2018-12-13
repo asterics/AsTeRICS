@@ -89,9 +89,12 @@ public class RequestFilter implements ContainerRequestFilter {
         if(origin == null || origin.equals("")) {
             return true;
         }
+        String allowedOriginsProperty = AREProperties.instance.getProperty(ARE_REST_ALLOWED_ORIGINS);
+        if(allowedOriginsProperty.equals("*")) {
+            return true;
+        }
         if(this.allowedOrigins == null) {
             this.allowedOrigins = getLocalIPs();
-            String allowedOriginsProperty = AREProperties.instance.getProperty(ARE_REST_ALLOWED_ORIGINS);
             this.allowedOrigins.addAll(Arrays.asList(allowedOriginsProperty.split(",")));
         }
 
