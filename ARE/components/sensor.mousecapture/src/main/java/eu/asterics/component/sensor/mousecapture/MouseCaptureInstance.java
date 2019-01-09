@@ -35,6 +35,7 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import java.awt.MouseInfo;
 
 /**
  * MouseCaptureInstance intercepts local mouse input and routes the mouse
@@ -158,6 +159,14 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
         }
     };
 
+    final IRuntimeEventListenerPort elpPollMousePosition = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+        	opMouseX.sendData(MouseInfo.getPointerInfo().getLocation().x);
+        	opMouseY.sendData(MouseInfo.getPointerInfo().getLocation().y);
+        }
+    };
+
     /**
      * returns an Event Listener Port.
      * 
@@ -173,6 +182,8 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
             return elpForwardEvents;
         } else if ("toggleBlock".equalsIgnoreCase(eventPortID)) {
             return elpToggleBlock;
+        } else if ("pollMousePosition".equalsIgnoreCase(eventPortID)) {
+            return elpPollMousePosition;
         }
         return null;
     }

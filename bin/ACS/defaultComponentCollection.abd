@@ -15990,6 +15990,9 @@
   			<eventListenerPort id="toggleBlock">
                 <description>Toggles the block mouse event</description>
             </eventListenerPort>
+  			<eventListenerPort id="pollMousePosition">
+                <description>Gets current mouse cursor x/y values and outputs them</description>
+            </eventListenerPort>
         </events>
         
         <properties>
