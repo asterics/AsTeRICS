@@ -119,6 +119,66 @@
     </componentType>
 
 
+    <componentType id="asterics.AngularCursorControl"
+                   canonical_name="eu.asterics.component.actuator.angularcursorcontrol.AngularCursorControlInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>cursor position control via angular direction</description>
+        <ports>
+			<inputPort id="angle">
+				<description>angle for movement direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="move">
+				<description>cursor movement</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="select">
+				<description>selection (for automatic mode)</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="clickEvent">
+				<description>etp description</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="absoluteAngle"
+				type="boolean"
+				value="false"
+				description="if true, angle input port values are absolute values, else changes of current angle"/>
+			<property name="createClickEvent"
+				type="integer"
+				value="1000"
+				description="if not zero, a click indicator is shown and the click event is created after n millseconds inactivity"/>
+			<property name="arrowWidth"
+				type="integer"
+				value="10"
+				description="length of the arrow indicator"/>
+			<property name="arrowLength"
+				type="integer"
+				value="100"
+				description="length of the arrow indicator"/>
+			<property name="acceleration"
+				type="integer"
+				value="100"
+				description="cursor movement acceleration (for automatic mode)"/>
+			<property name="angularVelocity"
+				type="integer"
+				value="100"
+				description="angular velocity (for automatic mode)"/>
+
+        </properties>
+
+    </componentType>
+
+
     <componentType id="asterics.ApplicationLauncher"
                    canonical_name="eu.asterics.component.actuator.applicationlauncher.ApplicationLauncherInstance">
         <type subtype="File System">actuator</type>
@@ -2883,6 +2943,10 @@
                       type="boolean"
                       value="true"
                       description="X and Y values are absolute positions or relative movements"/>
+            <property name="startCentered"
+                      type="boolean"
+                      value="true"
+                      description="If true the mouse starts in the middle of the screen, if false starting the starting position is the current position"/>
             <property name="xMin"
                       type="integer"
                       value="0"
