@@ -448,7 +448,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
             offsetX=0;
             offsetY=0;
         }
-    };
+    }; 
 
     final IRuntimeEventListenerPort elpActivate = new IRuntimeEventListenerPort() {
         @Override
@@ -510,6 +510,10 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         int rightEyeX = leftEyeX + 20; // TBD: improve: get right eye
                                        // coordinates from API !
         int rightEyeY = leftEyeY;
+        
+        
+        //System.out.println("Fixation="+isFixated);
+        
 
         /*
          * 
@@ -566,7 +570,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
             }
             break;
         }
-
+ 
         // involve offset corrections spots (get linear interpolation)
 
         if (propOffsetCorrectionMode == MODE_CORRECTION_SPOTS) {
@@ -750,7 +754,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 
             if ((isFixated == true) && (measuringFixation == false)) {
                 startFixationTimestamp = System.currentTimeMillis();
-                measuringFixation = true;
+                measuringFixation = true; 
                 sentFixationEvent = false;
             }
 
