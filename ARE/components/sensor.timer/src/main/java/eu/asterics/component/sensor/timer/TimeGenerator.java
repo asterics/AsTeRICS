@@ -114,6 +114,7 @@ public class TimeGenerator implements Runnable {
 
                     case MODE_ONCE_STAY_ACTIVE:
                         owner.opTime.sendData(ConversionUtils.intToBytes(owner.propTimePeriod));
+                        Thread.sleep(owner.propResolution);
                         break;
                     }
                 }
