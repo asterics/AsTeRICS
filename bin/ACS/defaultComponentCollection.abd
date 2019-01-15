@@ -424,6 +424,62 @@
     </componentType>
 
 
+    <componentType id="asterics.CrosshairCursorControl"
+                   canonical_name="eu.asterics.component.actuator.crosshaircursorcontrol.AngularCursorControlInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>cursor position control via crosshair movement</description>
+        <ports>
+			<inputPort id="x">
+				<description>cursor movement x direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="y">
+				<description>cursor movement y direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="select">
+				<description>selection (for automatic mode)</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="clickEvent">
+				<description>etp description</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="absoluteValues"
+				type="boolean"
+				value="false"
+				description="if true, x/y input port values are absolute values, else changes of current values"/>
+			<property name="createClickEvent"
+				type="integer"
+				value="1000"
+				description="if not zero, a click indicator is shown and the click event is created after n millseconds inactivity"/>
+			<property name="lineWidth"
+				type="integer"
+				value="10"
+				description="width of the crosshair indicator"/>
+			<property name="acceleration"
+				type="integer"
+				value="100"
+				description="movement acceleration (for automatic mode)"/>
+			<property name="maxVelocity"
+				type="integer"
+				value="100"
+				description="maximum velocity (for automatic mode)"/>
+
+        </properties>
+
+    </componentType>
+
+
     <componentType id="asterics.DialogBox"
                    canonical_name="eu.asterics.component.actuator.dialogbox.DialogBoxInstance">
         <type subtype="Graphical User Interface">actuator</type>
