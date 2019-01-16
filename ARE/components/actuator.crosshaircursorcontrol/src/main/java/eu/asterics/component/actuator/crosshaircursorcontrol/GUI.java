@@ -38,6 +38,7 @@ import java.awt.Robot;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
@@ -49,6 +50,7 @@ public class GUI extends JFrame {
     
     int width=0,height=0;
     int lineWidth=0;
+    boolean axis=true;
     Robot rob;
 
     double locX = 0;
@@ -91,21 +93,54 @@ public class GUI extends JFrame {
     }
 
     void setOnTop()  {
-        System.out.println("set on top!!"); 
-        setAlwaysOnTop(false);
-        repaint();
-        setAlwaysOnTop(true);
-        repaint();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                setAlwaysOnTop(false);
+                repaint();
+                setAlwaysOnTop(true);
+                repaint();
+            }                
+        });
     }
 
     void showCrosshair()  {
-        setVisible(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                setVisible(true);
+            }                
+        });
     }
 
     void hideCrosshair()  {
-        setVisible(false);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                setVisible(false);
+            }                
+        });
     }
 
+    void resetAxis()  {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                axis=true;
+                repaint();
+            }                
+        });
+    }
+    void changeAxis()  {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                axis=!axis;
+                repaint();
+            }                
+        });
+    }
+    
     void setShape(float x, float y) {
         //Point location = MouseInfo.getPointerInfo().getLocation();
         //setLocation((int)locX-len, (int)locY-len);
@@ -120,7 +155,12 @@ public class GUI extends JFrame {
         }   
 
         //setLocation((int)locX-len, (int)locY-len);
-        repaint();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                repaint();
+            }                
+        });
     }
     
     @Override
@@ -128,10 +168,28 @@ public class GUI extends JFrame {
     {
          super.paint(g);
          Graphics2D g2 = (Graphics2D) g;
-         g2.setColor(Color.RED);
-         g2.fillRect((int)locX-lineWidth/2, 0, lineWidth, (int)locY-lineWidth/2);
-         g2.fillRect((int)locX-lineWidth/2, (int)locY+lineWidth/2, lineWidth, height-(int)locY);
-         g2.fillRect(0, (int)locY-lineWidth/2, (int)locX-lineWidth/2, lineWidth);
-         g2.fillRect((int)locX+lineWidth/2, (int)locY-lineWidth/2, width-(int)locX, lineWidth);
+         if (axis) {
+        	 g2.setColor(Color.RED);
+             g2.fillRect((int)locX-lineWidth/2, 0, lineWidth, (int)locY-lineWidth/2);
+             g2.fillRect((int)locX-lineWidth/2, (int)locY+lineWidth/2, lineWidth, height-(int)locY);
+         
+         }
+         else {
+        	 g2.setColor(Color.GRAY);
+             g2.fillRect((int)locX-lineWidth/2, 0, lineWidth, (int)locY-lineWidth/2);
+             g2.fillRect((int)locX-lineWidth/2, (int)locY+lineWidth/2, lineWidth, height-(int)locY);
+         }
+
+         if (!axis) {
+        	 g2.setColor(Color.RED);
+             g2.fillRect(0, (int)locY-lineWidth/2, (int)locX-lineWidth/2, lineWidth);
+             g2.fillRect((int)locX+lineWidth/2, (int)locY-lineWidth/2, width-(int)locX, lineWidth);
+         }
+         else {
+        	 g2.setColor(Color.GRAY);
+             g2.fillRect(0, (int)locY-lineWidth/2, (int)locX-lineWidth/2, lineWidth);
+             g2.fillRect((int)locX+lineWidth/2, (int)locY-lineWidth/2, width-(int)locX, lineWidth);
+         }
+
     }
 }

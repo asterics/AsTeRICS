@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\crosshairCursorControl2_test.acs_2019_1_16_0_15" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2keys.acs_2019_1_16_21_6" version="20130320">
   <components>
     <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
       <description>cursor position control via crosshair movement</description>
@@ -20,7 +20,7 @@
       </properties>
       <layout>
         <posX>674</posX>
-        <posY>274</posY>
+        <posY>262</posY>
       </layout>
     </component>
     <component id="Timer.1" type_id="asterics.Timer">
@@ -43,7 +43,7 @@
       </properties>
       <layout>
         <posX>264</posX>
-        <posY>35</posY>
+        <posY>23</posY>
       </layout>
     </component>
     <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
@@ -70,7 +70,7 @@
       </properties>
       <layout>
         <posX>379</posX>
-        <posY>19</posY>
+        <posY>7</posY>
       </layout>
     </component>
     <component id="KeyCapture.1" type_id="asterics.KeyCapture">
@@ -81,12 +81,12 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="keyCode" value="31" />
+        <property name="keyCode" value="57421" />
         <property name="block" value="True" />
       </properties>
       <layout>
-        <posX>23</posX>
-        <posY>59</posY>
+        <posX>21</posX>
+        <posY>22</posY>
       </layout>
     </component>
     <component id="Timer.1.1" type_id="asterics.Timer">
@@ -109,7 +109,7 @@
       </properties>
       <layout>
         <posX>266</posX>
-        <posY>204</posY>
+        <posY>192</posY>
       </layout>
     </component>
     <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
@@ -136,7 +136,7 @@
       </properties>
       <layout>
         <posX>383</posX>
-        <posY>211</posY>
+        <posY>199</posY>
       </layout>
     </component>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
@@ -228,7 +228,7 @@
       </properties>
       <layout>
         <posX>800</posX>
-        <posY>262</posY>
+        <posY>250</posY>
       </layout>
     </component>
     <component id="EventRouter.1" type_id="asterics.EventRouter">
@@ -244,7 +244,7 @@
       </properties>
       <layout>
         <posX>157</posX>
-        <posY>57</posY>
+        <posY>45</posY>
       </layout>
     </component>
     <component id="Timer.1.2" type_id="asterics.Timer">
@@ -267,7 +267,7 @@
       </properties>
       <layout>
         <posX>81</posX>
-        <posY>247</posY>
+        <posY>235</posY>
       </layout>
     </component>
     <component id="MultiSource.1" type_id="asterics.MultiSource">
@@ -292,7 +292,7 @@
       <properties />
       <layout>
         <posX>546</posX>
-        <posY>164</posY>
+        <posY>152</posY>
       </layout>
     </component>
     <component id="MultiSource.1.1" type_id="asterics.MultiSource">
@@ -317,7 +317,7 @@
       <properties />
       <layout>
         <posX>546</posX>
-        <posY>362</posY>
+        <posY>350</posY>
       </layout>
     </component>
     <component id="Timer.1.3" type_id="asterics.Timer">
@@ -378,7 +378,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="keyCode" value="30" />
+        <property name="keyCode" value="57419" />
         <property name="block" value="True" />
       </properties>
       <layout>
@@ -452,23 +452,8 @@
         <posY>395</posY>
       </layout>
     </component>
-    <component id="WavefilePlayer.1" type_id="asterics.WavefilePlayer">
-      <description>Plays .Wav - soundfiles on event or filename reception. </description>
-      <ports>
-        <inputPort portTypeID="wavefileName">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="filename" value="data\sounds\3.wav" />
-      </properties>
-      <layout>
-        <posX>1056</posX>
-        <posY>261</posY>
-      </layout>
-    </component>
-    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
-      <description>Send text from chosen slot</description>
+    <component id="ConstantDispatcher.2" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
       <ports>
         <outputPort portTypeID="output">
           <properties />
@@ -478,31 +463,124 @@
         </inputPort>
       </ports>
       <properties>
+        <property name="number" value="20" />
         <property name="delay" value="300" />
-        <property name="slot1" value="data/sounds/3.wav" />
-        <property name="slot2" value="data/sounds/5.wav" />
-        <property name="slot3" value="" />
-        <property name="slot4" value="" />
-        <property name="slot5" value="" />
-        <property name="slot6" value="" />
-        <property name="slot7" value="" />
-        <property name="slot8" value="" />
-        <property name="slot9" value="" />
-        <property name="slot10" value="" />
-        <property name="slot11" value="" />
-        <property name="slot12" value="" />
-        <property name="slot13" value="" />
-        <property name="slot14" value="" />
-        <property name="slot15" value="" />
-        <property name="slot16" value="" />
-        <property name="slot17" value="" />
-        <property name="slot18" value="" />
-        <property name="slot19" value="" />
-        <property name="slot20" value="" />
+        <property name="slot1" value="170" />
+        <property name="slot2" value="0" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
       </properties>
       <layout>
-        <posX>926</posX>
-        <posY>251</posY>
+        <posX>924</posX>
+        <posY>30</posY>
+      </layout>
+    </component>
+    <component id="ConstantDispatcher.1" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="200" />
+        <property name="slot1" value="500" />
+        <property name="slot2" value="600" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>922</posX>
+        <posY>236</posY>
+      </layout>
+    </component>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="Gervill" />
+        <property name="channel" value="1" />
+        <property name="instrument" value="Woodblock   " />
+        <property name="triggerThreshold" value="50" />
+        <property name="triggerMax" value="1000" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="1000" />
+        <property name="toneScale" value="alltones.sc" />
+        <property name="playOnlyChangingNotes" value="False" />
+        <property name="displayGUI" value="False" />
+        <property name="displayNoteNames" value="false" />
+      </properties>
+      <layout>
+        <posX>1057</posX>
+        <posY>226</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>0</posY>
+        <width>5000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="1000" />
+      </properties>
+      <layout>
+        <posX>825</posX>
+        <posY>26</posY>
       </layout>
     </component>
   </components>
@@ -609,12 +687,22 @@
     </channel>
     <channel id="binding.14">
       <source>
-        <component id="StringDispatcher.1" />
+        <component id="ConstantDispatcher.1" />
         <port id="output" />
       </source>
       <target>
-        <component id="WavefilePlayer.1" />
-        <port id="wavefileName" />
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="ConstantDispatcher.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="trigger" />
       </target>
     </channel>
   </channels>
@@ -979,36 +1067,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="clickEvent_dispatchSlot2">
-      <description />
-      <sources>
-        <source>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="clickEvent" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot2" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="periodFinished_dispatchSlot1">
-      <description />
-      <sources>
-        <source>
-          <component id="Timer.1.2" />
-          <eventPort id="periodFinished" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot1" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="clickEvent_select1">
       <description />
       <sources>
@@ -1036,6 +1094,51 @@
         <target>
           <component id="EventRouter.1.1" />
           <eventPort id="select1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="clickEvent_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="clickEvent" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.2" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_select">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="select" />
         </target>
       </targets>
     </eventChannel>

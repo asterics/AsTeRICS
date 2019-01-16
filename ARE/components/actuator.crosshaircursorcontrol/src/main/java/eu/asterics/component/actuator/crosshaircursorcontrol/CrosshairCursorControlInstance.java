@@ -33,6 +33,8 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.util.logging.Logger;
 import java.awt.Toolkit;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import javax.swing.SwingUtilities;
 
 import eu.asterics.mw.data.ConversionUtils;
@@ -77,6 +79,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     private float x =0;
     private float y =0;
     private boolean running;
+    int screenWidth = 0;
+    int screenHeight = 0;          
+
     
     volatile long elapsedIdleTime=Long.MAX_VALUE;
   
@@ -242,6 +247,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 		    else {
 	              x+=(float)ConversionUtils.doubleFromBytes(data);
             }
+            if (x<0) x=0;
+            if (x>screenWidth) x=screenWidth;
             gui.setShape(x,y);
 		}
 	};
@@ -256,6 +263,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             else {
                   y+=(float)ConversionUtils.doubleFromBytes(data);
             }
+            if (y<0) y=0;
+            if (y>screenHeight) y=screenHeight;
             gui.setShape(x,y);
 		}
 	};
@@ -268,7 +277,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 	{
 		public void receiveEvent(final String data)
 		{
-		    elapsedIdleTime=System.currentTimeMillis();
+		    //elapsedIdleTime=System.currentTimeMillis();
+            gui.changeAxis();
 		}
 	};
 
@@ -283,18 +293,27 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
       public void start()
       {
           
-          //GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-          //int width = gd.getDisplayMode().getWidth();
-          //int height = gd.getDisplayMode().getHeight();
-          Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-          // double width = screenSize.getWidth();
-          // double height = screenSize.getHeight();          
+          GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+          int width = gd.getDisplayMode().getWidth();
+          int height = gd.getDisplayMode().getHeight();
+    	  Dimension screenSize=new Dimension(width,height);
+    	  
+    	  // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+          screenWidth = (int)screenSize.getWidth();
+          screenHeight = (int)screenSize.getHeight();       
+          System.out.println("Screen width:"+screenWidth+" height:"+screenHeight);
           gui = new GUI(this, screenSize, propLineWidth);
           if(gui!=null) {
               //gui.addMouseListener(this);
               //gui.addMouseMotionListener(this);
           }
           
+          Point location = MouseInfo.getPointerInfo().getLocation();
+          x=location.x;
+          y=location.y;
+          
+          gui.resetAxis();
+
           super.start();
           
           elapsedIdleTime=Long.MAX_VALUE;
@@ -313,6 +332,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                           //Thread.sleep(200);
                           //gui.showCrosshair();
                           gui.setOnTop();
+                          gui.resetAxis();
                           elapsedIdleTime=Long.MAX_VALUE;
                       }
                   } catch (InterruptedException e) {
