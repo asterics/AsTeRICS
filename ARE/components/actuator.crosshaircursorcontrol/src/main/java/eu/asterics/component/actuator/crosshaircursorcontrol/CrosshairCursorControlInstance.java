@@ -80,10 +80,12 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     private float y =0;
     private boolean running;
     int screenWidth = 0;
-    int screenHeight = 0;          
+    int screenHeight = 0;     
+    double actAccel=1.0;
 
     
     volatile long elapsedIdleTime=Long.MAX_VALUE;
+    volatile long lastInputValue=Long.MAX_VALUE;
   
     
    /**
@@ -245,7 +247,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 		        x=(float)ConversionUtils.doubleFromBytes(data);
 		    }
 		    else {
-	              x+=(float)ConversionUtils.doubleFromBytes(data);
+	              x+=(float)ConversionUtils.doubleFromBytes(data) * actAccel;
             }
             if (x<0) x=0;
             if (x>screenWidth) x=screenWidth;
@@ -261,7 +263,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 y=(float)ConversionUtils.doubleFromBytes(data);
             }
             else {
-                  y+=(float)ConversionUtils.doubleFromBytes(data);
+                  y+=(float)ConversionUtils.doubleFromBytes(data) * actAccel;
             }
             if (y<0) y=0;
             if (y>screenHeight) y=screenHeight;
@@ -279,6 +281,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 		{
 		    //elapsedIdleTime=System.currentTimeMillis();
             gui.changeAxis();
+            
 		}
 	};
 
@@ -335,6 +338,14 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                           gui.resetAxis();
                           elapsedIdleTime=Long.MAX_VALUE;
                       }
+                      
+                      if (((System.currentTimeMillis()-elapsedIdleTime)<200) && (elapsedIdleTime!=Long.MAX_VALUE))
+                      {
+                    	  actAccel+=0.001*(double)propAcceleration;
+                    	  if (actAccel>propMaxVelocity) actAccel=propMaxVelocity;
+                    	  // System.out.println("Accel="+actAccel);
+                      } else actAccel=1.0;
+
                   } catch (InterruptedException e) {
                   }
                  }
