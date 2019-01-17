@@ -121,9 +121,12 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
         threadRunning = false;
         if(port != null) {
             try {
-                port.close();
+                port.disableReceiveFraming();
+                port.disableReceiveThreshold();
+                port.disableReceiveTimeout();
                 port.removeEventListener();
                 port.notifyOnDataAvailable(false); //sometimes throws NPE?!
+                port.close();
             } catch (Exception e) {
                 logger.log(Level.WARNING, "error preparing port for closing: " + e.getClass().getName());
             }
