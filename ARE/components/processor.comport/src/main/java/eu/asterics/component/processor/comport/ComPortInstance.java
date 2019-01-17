@@ -205,7 +205,7 @@ public class ComPortInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveData(byte[] data) {
             String str = ConversionUtils.stringFromBytes(data);
-            System.out.print("Trying to send:" + str);
+            // System.out.print("Trying to send:" + str);
 
             if (out != null) {
                 try {
@@ -235,7 +235,7 @@ public class ComPortInstance extends AbstractRuntimeComponentInstance {
      */
     public void handlePacketReceived(byte data) {
 
-        System.out.print((char) data);
+        // System.out.print((char) data);
 
         switch (propReceivedDataType) {
         case 0: // string
@@ -261,7 +261,7 @@ public class ComPortInstance extends AbstractRuntimeComponentInstance {
                     "ComPort-plugin: Could not construct raw port controller, please verify that the COM port is valid.");
         } else {
 
-            System.out.print("COM Port " + propComPort + " opened !");
+            // System.out.print("COM Port " + propComPort + " opened !");
 
             in = portController.getInputStream();
             out = portController.getOutputStream();
