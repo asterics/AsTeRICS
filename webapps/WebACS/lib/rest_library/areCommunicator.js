@@ -759,9 +759,11 @@ function subscribe(successCallback, errorCallback, eventType, channelId) {
 		switch(e.target.readyState) {
 			case EventSource.CONNECTING:	
 				console.log(400, 'reconnecting');
+                errorCallback(400, 'reconnecting');
 				break;
 			case EventSource.CLOSED:		
 				console.log(400, 'connectionLost');
+                errorCallback(400, 'connectionLost');
 				break;
 			default:
 				errorCallback(400, 'someErrorOccurred');

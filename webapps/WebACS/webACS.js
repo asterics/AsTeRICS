@@ -83,6 +83,10 @@
 												ACS.areBaseURI = actTuple[1];
 											}
 											break;
+                case 'helpUrlPath':			if (actTuple[1] !== '') {
+                    							ACS.vConst.VIEW_ONLINE_HELP_PATH = actTuple[1];
+											}
+											break;
 			}
 		}
 	}

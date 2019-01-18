@@ -30,6 +30,7 @@
 ACS.vConst = {
 	// view
 	VIEW_PATHTOACSHELPSTARTPAGE: 'ACS_Basic_Functions.htm',
+	VIEW_ONLINE_HELP_PATH: 'http://asterics.github.io/AsTeRICS/webapps/WebACS/help/',
 	// canvasView
 	CANVASVIEW_MOTHERPANEL: 'canvasMotherPanel',
 	CANVASVIEW_TABLIST: 'canvasPanelTabList',

@@ -23,6 +23,7 @@ When starting the WebACS certain parameters can be specified in the query string
 * **autoConnect**: boolean – if true: automatically connects to the ARE upon startup: default is false
 * **autoDownloadModel**: boolean – if true: automatically downloads the current model from the ARE; will only work if autoConnect is true and no openFile is specified; default is false
 * **areBaseURI**: string that specifies the URI for the ARE; if not specified, but the WebACS is hosted by an ARE-webservice, the hosting ARE will be used, else localhost will be assumed
+* **helpUrlPath**: Sets the URL to the online help which shall be used if no ARE connection is active. Example: ```helpUrlPath=http://localhost:8081/help/```
 
 #### Examples
 * Automatically connect to the specified ARE and download the model from there:

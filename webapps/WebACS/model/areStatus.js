@@ -188,6 +188,10 @@
 	returnObj.getStatus = function() {
 		return status;
 	}
+
+     returnObj.isConnected = function() {
+         return status && status != ACS.statusType.CONNECTING && status != ACS.statusType.CONNECTIONLOST && status != ACS.statusType.DISCONNECTED;
+     }
 	
 // ***********************************************************************************************************************
 // ************************************************** constructor code ***************************************************

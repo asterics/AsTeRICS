@@ -440,34 +440,29 @@ ACS.view = function(modelList, // ACS.modelList
 	}
 	
 	var helpHandler = function() {
-		// using AJAX call to determine whether there is an external help system (i.e. on the ARE webservice)
-		var pathToHelp = '../../help/'; // path to help on the ARE webservice
-		httpRequest = new XMLHttpRequest();
-		httpRequest.onreadystatechange = function() {
-			if (httpRequest.readyState === XMLHttpRequest.DONE) {
-				if (httpRequest.status !== 200) { // no external help system found - use internal one
-					pathToHelp = './help/';
-				}
-				// load the help system
-				var actModel = modelList.getActModel();
-				if (actModel.selectedItemsList.length === 1 && typeof actModel.selectedItemsList[0].getComponentTypeId() !== 'undefined') { // thus there is one single item selected and this item is a component
-					var directory;
-					switch (actModel.selectedItemsList[0].getType()) {
-						case ACS.componentType.SENSOR: directory = 'sensors'; break;
-						case ACS.componentType.PROCESSOR: directory = 'processors'; break;
-						case ACS.componentType.ACTUATOR: directory = 'actuators'; break;
-					}
-					var file = actModel.selectedItemsList[0].getComponentTypeId() + '.htm';
-					if (file.indexOf('Oska') === -1) file = file.slice(9); // the slice eliminates the "asterics."
-					window.open(pathToHelp + 'index.html?plugins&' + directory + '/' + file);
-				} else {			
-					window.open(pathToHelp + 'index.html?acs&' + ACS.vConst.VIEW_PATHTOACSHELPSTARTPAGE);
-				}
-			}
+        if(ACS.areStatus.isConnected()) {
+            openHelp(ACS.areBaseURI + '/webapps/WebACS/help/');
+        } else {
+            openHelp(ACS.vConst.VIEW_ONLINE_HELP_PATH);
 		}
-		// try to load help from ARE webserver
-		httpRequest.open('GET', pathToHelp + 'index.htm', true);
-		httpRequest.send();
+
+        function openHelp(pathToHelp) {
+            // load the help system
+            var actModel = modelList.getActModel();
+            if (actModel.selectedItemsList.length === 1 && typeof actModel.selectedItemsList[0].getComponentTypeId() !== 'undefined') { // thus there is one single item selected and this item is a component
+                var directory;
+                switch (actModel.selectedItemsList[0].getType()) {
+                    case ACS.componentType.SENSOR: directory = 'sensors'; break;
+                    case ACS.componentType.PROCESSOR: directory = 'processors'; break;
+                    case ACS.componentType.ACTUATOR: directory = 'actuators'; break;
+                }
+                var file = actModel.selectedItemsList[0].getComponentTypeId() + '.htm';
+                if (file.indexOf('Oska') === -1) file = file.slice(9); // the slice eliminates the "asterics."
+                window.open(pathToHelp + 'index.html?plugins&' + directory + '/' + file);
+            } else {
+                window.open(pathToHelp + 'index.html?acs&' + ACS.vConst.VIEW_PATHTOACSHELPSTARTPAGE);
+            }
+		}
 	}
 	
 	var AREStatusChangedEventHandler = function() {
