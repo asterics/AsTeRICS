@@ -12,7 +12,8 @@ function defaultSuccessCallback(data, status) {
 }
 function defaultErrorCallback(status, e) { 
     // alert("Error message: "+ e);
-    alert("Connection with ARE failed.\n Check if your ARE is running on your machine and retry.");
+    // alert("Connection with ARE failed.\n Check if your ARE is running on your machine and retry.");
+    console.log("Connection with ARE failed.\n Check if your ARE is running on your machine and retry. Error: "+e);
 }
 function defaultUpdatePropertyCallback (data, status) {
     if (JSON.parse(data).length == 0) {
@@ -471,8 +472,8 @@ function demo3_application(id) {
         rgb_value_ard = "rgb(45%,45%,45%)";
 
         // No ErrorCallback if application was not started
-        sendDataToInputPort(defaultSuccessCallback, null, 'Arduino.1', 'pwm3', "0");
-        triggerEvent(defaultSuccessCallback, null, 'ConstantDispatcher.1', 'dispatchSlot2');
+        sendDataToInputPort(defaultSuccessCallback, defaultErrorCallback, 'Arduino.1', 'pwm3', "0");
+        triggerEvent(defaultSuccessCallback, defaultErrorCallback, 'ConstantDispatcher.1', 'dispatchSlot2');
     }
     demo3_circuit_text.innerHTML = String(dutycycle) + "%";
     demo3_led.setAttribute("fill",rgb_value_ard);
@@ -522,7 +523,7 @@ function demo5_application(id) {
         degree = 0; 
 
         // No ErrorCallback if application was not started
-        sendDataToInputPort(defaultSuccessCallback, null, 'Arduino.1', 'pwm3', "0");
+        sendDataToInputPort(defaultSuccessCallback, defaultErrorCallback, 'Arduino.1', 'pwm3', "0");
     }
     
     $(demo5_rotor).attr({transform: "rotate(-" + degree + " 200 362.36221)"}); 
