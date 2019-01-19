@@ -18,16 +18,27 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
+            <outputPort id="tooltip">
+                <description>the filename of the selected tooltip icon.</description>
+                <dataType>string</dataType>
+            </outputPort>
 
 
         </ports>
 		<events>
 			<eventListenerPort id="select">
-				<description>selection (for automatic mode)</description>
+				<description>change axis selection indicator</description>
+			</eventListenerPort>
+
+			<eventListenerPort id="activateTooltips">
+				<description>if available, show tooltip icons and activate tooltip mode</description>
 			</eventListenerPort>
 
 			<eventTriggererPort id="clickEvent">
-				<description>etp description</description>
+				<description>this event is generated after an inactivity of clickEventTime milliseconds</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="tooltipSelected">
+				<description>this event is generated when a tooltip icon has been selected after an inactivity of clickEventTime milliseconds</description>
 			</eventTriggererPort>
 
 		</events>			
@@ -35,11 +46,11 @@
 			<property name="absoluteValues"
 				type="boolean"
 				value="false"
-				description="if true, x/y input port values are absolute values, else changes of current values"/>
-			<property name="createClickEvent"
+				description="if true, x/y input port values are absolute coordinates, else relative coordinates"/>
+			<property name="clickEventTime"
 				type="integer"
 				value="1000"
-				description="if not zero, a click indicator is shown and the click event is created after n millseconds inactivity"/>
+				description="if not zero, the click event is created after n millseconds inactivity"/>
 			<property name="lineWidth"
 				type="integer"
 				value="10"
@@ -47,11 +58,15 @@
 			<property name="acceleration"
 				type="integer"
 				value="100"
-				description="movement acceleration (for automatic mode)"/>
+				description="movement acceleration"/>
 			<property name="maxVelocity"
 				type="integer"
 				value="100"
-				description="maximum velocity (for automatic mode)"/>
+				description="maximum velocity"/>
+			<property name="tooltipFolder"
+				type="string"
+				value="data/pictures/tooltips"
+				description="folder which contains tooltip icons in .png format"/>
 
         </properties>
 

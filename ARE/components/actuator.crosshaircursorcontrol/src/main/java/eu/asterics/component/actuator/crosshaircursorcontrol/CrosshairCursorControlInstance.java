@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 import java.awt.Toolkit;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+
 import javax.swing.SwingUtilities;
 
 import eu.asterics.mw.data.ConversionUtils;
@@ -62,15 +63,18 @@ import eu.asterics.mw.services.AstericsThreadPool;
 public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInstance
 {
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+    final IRuntimeOutputPort opTooltip = new DefaultRuntimeOutputPort();
 
 	final IRuntimeEventTriggererPort etpClickEvent = new DefaultRuntimeEventTriggererPort();
+    final IRuntimeEventTriggererPort etpTooltipSelected = new DefaultRuntimeEventTriggererPort();
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
 	boolean propAbsoluteValues = false;
-	int propCreateClickEvent = 1000;
+	int propClickEventTime = 1000;
 	int propLineWidth = 200;
 	int propAcceleration = 100;
 	int propMaxVelocity = 100;
+    String propTooltipFolder = "data/pictures/tooltips";
 
 	// declare member variables here
 
@@ -123,6 +127,10 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
 
+        if ("tooltip".equalsIgnoreCase(portID))
+        {
+            return opTooltip;
+        }
 		return null;
 	}
 
@@ -137,6 +145,10 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 		{
 			return elpSelect;
 		}
+		if ("activateTooltips".equalsIgnoreCase(eventPortID))
+        {
+            return elpActivateTooltips;
+        }
 
         return null;
     }
@@ -153,6 +165,10 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 			return etpClickEvent;
 		}
 
+        if ("tooltipSelected".equalsIgnoreCase(eventPortID))
+        {
+            return etpTooltipSelected;
+        }
         return null;
     }
 		
@@ -167,9 +183,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 		{
 			return propAbsoluteValues;
 		}
-		if ("createClickEvent".equalsIgnoreCase(propertyName))
+		if ("clickEventTime".equalsIgnoreCase(propertyName))
 		{
-			return propCreateClickEvent;
+			return propClickEventTime;
 		}
 		if ("lineWidth".equalsIgnoreCase(propertyName))
 		{
@@ -183,6 +199,10 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 		{
 			return propMaxVelocity;
 		}
+        if ("tooltipFolder".equalsIgnoreCase(propertyName))
+        {
+            return propTooltipFolder;
+        }
 
         return null;
     }
@@ -207,10 +227,10 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 			}
 			return oldValue;
 		}
-		if ("createClickEvent".equalsIgnoreCase(propertyName))
+		if ("clickEventTime".equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = propCreateClickEvent;
-			propCreateClickEvent = Integer.parseInt(newValue.toString());
+			final Object oldValue = propClickEventTime;
+			propClickEventTime = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
 		if ("lineWidth".equalsIgnoreCase(propertyName))
@@ -231,6 +251,12 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 			propMaxVelocity = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
+        if ("tooltipFolder".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propTooltipFolder;
+            propTooltipFolder = (String)newValue;
+            return oldValue;
+        }
 
         return null;
     }
@@ -242,32 +268,40 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 	{
 		public void receiveData(byte[] data)
 		{
+            float inputValue=(float)ConversionUtils.doubleFromBytes(data);
             elapsedIdleTime=System.currentTimeMillis();
-		    if (propAbsoluteValues==true)  {
-		        x=(float)ConversionUtils.doubleFromBytes(data);
-		    }
-		    else {
-	              x+=(float)ConversionUtils.doubleFromBytes(data) * actAccel;
+            if (!gui.tooltipsActive()) {
+    		    if (propAbsoluteValues==true)  {
+    		        x=inputValue;
+    		    }
+    		    else {
+    	              x+=inputValue;
+                }
+                if (x<0) x=0;
+                if (x>screenWidth) x=screenWidth;
+                gui.setCursor(x,y);
             }
-            if (x<0) x=0;
-            if (x>screenWidth) x=screenWidth;
-            gui.setShape(x,y);
+            else gui.navigateTooltips(inputValue);
 		}
 	};
 	private final IRuntimeInputPort ipY  = new DefaultRuntimeInputPort()
 	{
 		public void receiveData(byte[] data)
 		{
+		    float inputValue=(float)ConversionUtils.doubleFromBytes(data);
             elapsedIdleTime=System.currentTimeMillis();
-            if (propAbsoluteValues==true)  {
-                y=(float)ConversionUtils.doubleFromBytes(data);
+            if (!gui.tooltipsActive()) {
+                if (propAbsoluteValues==true)  {
+                    y=inputValue;
+                }
+                else {
+                      y+=inputValue;
+                }
+                if (y<0) y=0;
+                if (y>screenHeight) y=screenHeight;
+                gui.setCursor(x,y);
             }
-            else {
-                  y+=(float)ConversionUtils.doubleFromBytes(data) * actAccel;
-            }
-            if (y<0) y=0;
-            if (y>screenHeight) y=screenHeight;
-            gui.setShape(x,y);
+            else gui.navigateTooltips(inputValue);
 		}
 	};
 
@@ -280,10 +314,20 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 		public void receiveEvent(final String data)
 		{
 		    //elapsedIdleTime=System.currentTimeMillis();
-            gui.changeAxis();
-            
+            if (!gui.tooltipsActive()) 
+                gui.changeAxis();
+            gui.setOnTop();            
 		}
 	};
+
+	final IRuntimeEventListenerPort elpActivateTooltips = new IRuntimeEventListenerPort()
+    {
+        public void receiveEvent(final String data)
+        {
+            elapsedIdleTime=System.currentTimeMillis();
+            gui.activateTooltips(propTooltipFolder);
+        }
+    };
 
     Point position;
     Dimension dimension;
@@ -328,15 +372,27 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                   while (running) {
                   try {
                       Thread.sleep(20);
-                      if ((System.currentTimeMillis()-elapsedIdleTime)>propCreateClickEvent)
+                      if ((System.currentTimeMillis()-elapsedIdleTime)>propClickEventTime)
                       {
-                          //gui.hideCrosshair();
-                          etpClickEvent.raiseEvent();
-                          //Thread.sleep(200);
-                          //gui.showCrosshair();
-                          gui.setOnTop();
-                          gui.resetAxis();
-                          elapsedIdleTime=Long.MAX_VALUE;
+                          if (gui.tooltipsActive()) {
+                              String tmp = gui.getTooltipFilename();
+                              if (!tmp.equals("")) {
+                                  opTooltip.sendData(ConversionUtils.stringToBytes(tmp));
+                                  gui.deactivateTooltips();
+                              }
+                              etpTooltipSelected.raiseEvent();
+                              gui.setOnTop();
+                              gui.resetAxis();
+                              elapsedIdleTime=Long.MAX_VALUE;
+                          } else {
+                              //gui.hideCrosshair();
+                              etpClickEvent.raiseEvent();
+                              //Thread.sleep(200);
+                              //gui.showCrosshair();
+                              gui.setOnTop();
+                              gui.resetAxis();
+                              elapsedIdleTime=Long.MAX_VALUE;
+                          }
                       }
                       
                       if (((System.currentTimeMillis()-elapsedIdleTime)<200) && (elapsedIdleTime!=Long.MAX_VALUE))

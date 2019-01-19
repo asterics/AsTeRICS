@@ -27,19 +27,19 @@
 package eu.asterics.component.actuator.crosshaircursorcontrol;
 
 import java.awt.*;
-import java.awt.AWTException;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.Robot;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+
+import eu.asterics.mw.services.AstericsErrorHandling;
+
+
+
 
 /**
  * Implements the Graphical User Interface for the <pluginname> plugin
@@ -52,6 +52,12 @@ public class GUI extends JFrame {
     int lineWidth=0;
     boolean axis=true;
     Robot rob;
+    BufferedImage image = null;
+    int actTooltip=0;
+    float tooltipX=0;
+    volatile long tooltipTime=Long.MAX_VALUE;
+    String tooltipFolder="";
+    String actImageFileName="";
 
     double locX = 0;
     double locY = 0;
@@ -84,12 +90,74 @@ public class GUI extends JFrame {
         } catch (AWTException e) {
             e.printStackTrace();
         }
-
+                
         setLocation(0,0);
         Point location = MouseInfo.getPointerInfo().getLocation();
         locX=location.x;
         locY=location.y;
         
+    }
+
+    
+    void loadImage(String fn)  {
+        String tmpFileName = tooltipFolder+fn+".png";
+        try {
+            File imageFile = new File(tmpFileName);
+            image = ImageIO.read(imageFile);
+            actImageFileName=fn;
+        } catch (Exception ex) {
+            image=null;
+            actTooltip=0;
+            actImageFileName="";
+            AstericsErrorHandling.instance.getLogger()
+            .warning(" *****  Can not open picture: " + ex.getMessage() + tmpFileName);
+        }
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                repaint();
+            }                
+        });
+    }
+
+    String getTooltipFilename()  {
+        return(actImageFileName);
+    }
+   
+    boolean tooltipsActive() {
+        if (actTooltip>0) {
+            return(true);
+        }
+        return(false);
+    }
+    
+    void activateTooltips(String tooltipFolder)  {
+        this.tooltipFolder=tooltipFolder+"/";
+        actTooltip=1;
+        tooltipX=0;
+        loadImage("1");
+        tooltipTime=System.currentTimeMillis();
+    }
+
+    void deactivateTooltips()  {
+        actTooltip=0;
+        loadImage("");
+    }
+    
+    void navigateTooltips(float dx) {
+        // tooltipX+=dx;
+        //if (tooltipX<0) tooltipX=0;
+        //int temp=(int)(tooltipX/100)+1;
+        //if (actTooltip!=temp) {
+        //    actTooltip=temp;
+        
+        if (System.currentTimeMillis()-tooltipTime>100)
+        {
+            if (dx>0) actTooltip++;
+            else if (actTooltip>1) actTooltip--;
+            loadImage(Integer.toString (actTooltip));
+        }
+        tooltipTime=System.currentTimeMillis();
     }
 
     void setOnTop()  {
@@ -141,7 +209,7 @@ public class GUI extends JFrame {
         });
     }
     
-    void setShape(float x, float y) {
+    void setCursor(float x, float y) {
         //Point location = MouseInfo.getPointerInfo().getLocation();
         //setLocation((int)locX-len, (int)locY-len);
         locX=x;
@@ -168,27 +236,37 @@ public class GUI extends JFrame {
     {
          super.paint(g);
          Graphics2D g2 = (Graphics2D) g;
-         if (axis) {
-        	 g2.setColor(Color.RED);
-             g2.fillRect((int)locX-lineWidth/2, 0, lineWidth, (int)locY-lineWidth/2);
-             g2.fillRect((int)locX-lineWidth/2, (int)locY+lineWidth/2, lineWidth, height-(int)locY);
-         
-         }
-         else {
-        	 g2.setColor(Color.GRAY);
-             g2.fillRect((int)locX-lineWidth/2, 0, lineWidth, (int)locY-lineWidth/2);
-             g2.fillRect((int)locX-lineWidth/2, (int)locY+lineWidth/2, lineWidth, height-(int)locY);
+         Color xAxisColor,yAxisColor;
+
+         if (image != null) {
+             xAxisColor=Color.GRAY;
+             yAxisColor=Color.GRAY;             
+         } else {
+             if (axis) {
+                 xAxisColor=Color.GRAY;
+                 yAxisColor=Color.RED;
+             } else {
+                 xAxisColor=Color.RED;
+                 yAxisColor=Color.GRAY;
+             }             
          }
 
-         if (!axis) {
-        	 g2.setColor(Color.RED);
-             g2.fillRect(0, (int)locY-lineWidth/2, (int)locX-lineWidth/2, lineWidth);
-             g2.fillRect((int)locX+lineWidth/2, (int)locY-lineWidth/2, width-(int)locX, lineWidth);
-         }
-         else {
-        	 g2.setColor(Color.GRAY);
-             g2.fillRect(0, (int)locY-lineWidth/2, (int)locX-lineWidth/2, lineWidth);
-             g2.fillRect((int)locX+lineWidth/2, (int)locY-lineWidth/2, width-(int)locX, lineWidth);
+         g2.setColor(yAxisColor);
+         g2.fillRect((int)locX-lineWidth/2, 0, lineWidth, (int)locY-lineWidth/2);
+         g2.fillRect((int)locX-lineWidth/2, (int)locY+lineWidth/2, lineWidth, height-(int)locY);
+
+         g2.setColor(xAxisColor);
+         g2.fillRect(0, (int)locY-lineWidth/2, (int)locX-lineWidth/2, lineWidth);
+         g2.fillRect((int)locX+lineWidth/2, (int)locY-lineWidth/2, width-(int)locX, lineWidth);
+         
+         if (image!=null) {
+             int toolX,toolY;
+             if ((int)locY > 100) toolY=(int)locY-90;
+             else toolY=(int)locY+10;
+             if ((int)locX < width-image.getWidth()) toolX=(int)locX+10;
+             else toolX=(int)locX-image.getWidth()-10;
+                 
+             g.drawImage(image, toolX, toolY, null);
          }
 
     }
