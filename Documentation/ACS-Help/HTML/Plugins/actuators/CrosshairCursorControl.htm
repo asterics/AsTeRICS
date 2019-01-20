@@ -1,0 +1,54 @@
+<!doctype html>
+<HTML>AngularCursorControl
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>CrosshairCursorControl</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>CrosshairCursorControl</H1>
+		<span class="componentType">Component Type: Actuator (Subcategory: Input Device Emulation)</span>
+		<p>The CrosshairCursorControl component allows mouse cursor positioning by software emulation with a limited number of input control channels. 
+           A crosshair indicator is displayed on the screen next to the mouse cursor. This crosshair can be moved horizontally and vertically using the x and y input ports.
+           Using other components, a stepswise control of x and y movement can be achieved, allowing full control of the cursor position. After a certain time of inactiivty (no values received at 
+           the input ports), a click event can be created for generating different mouse clicks e.g. via a mouse element. Additionally, a number of tooltip icons can be displayed,
+           sequentially. The currently displayed icon can be selected via an adjustable time of inactivity. The name of the selected icon is then sent to the toopltip output port.
+        </p>
+		<figure>
+			<img class="image" src="img/CrosshairCursorControl.jpg" alt="Screenshot: CrosshairCursorControl plugin" title="Screenshot: CrosshairCursorControl plugin" />
+			<figcaption>CrosshairCursorControl plugin</figcaption>
+			<img class="image" src="img/CrosshairCursorControl_demo.jpg" alt="Screenshot: CrosshairCursorControl arrow indicator" title="Screenshot: CrosshairCursorControl arrow indicator" />
+			<figcaption>CrosshairCursorControl arrow indicator</figcaption>
+		</figure>
+		<br>
+		<p><strong>Please Note:</strong>The mouse emulation on <strong>Windows 7/10</strong> does not always work as expected due to User Account Control (UAC) settings. 
+        Especially when you want to use the Windows 7 On-Screen-Keyboard dragging the keyboard does not work. To troubleshoot <a href="http://windows.microsoft.com/en-au/windows/turn-user-account-control-on-off#1TC=windows-7">turn off the User Account Control (UAC)</a> - change the level to "Never notify"
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>x [double]:</STRONG> The mouse cursor movement in x direction. Indicated via x-Axis crosshair. </li>
+			<li><STRONG>y [double]:</STRONG> The mouse cursor movement in y direction. Indicated via y-Axis crosshair. </li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>tooltip [string]:</STRONG> When a tooltip is selected, the filename of the chosen tooltip icon (without file extension) is sent to this output port. </li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>select:</STRONG> changes the currently selected crosshair line, which is displayed in red color. The other crosshair line is displayed in gray color.</li>
+			<li><STRONG>activateTooltips:</STRONG> displays the tooltip icons and activates tooltip mode.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>clickEvent:</STRONG> This event is fired after an adjustable time of inactivity (property clickEventTime).</li>
+			<li><STRONG>tooltipSelected:</STRONG> This event is fired after a tooltip icon was selected after and adjustable time of inactivity (property clickEventTime).</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>absoluteValues [boolean]:</STRONG> If this property value is set to false (default), incoming values at the x and y input ports are interpreted as relative movement information (changes of the position). If the property value is set to true, the input values are interpreted as absolute positions.</li>
+			<li><STRONG>clickEventTime [integer]:</STRONG> The time of inactivity (in milliseconds) after which the clickEvent will be created or the currently displayed tooltip is selected (use zero to deactivate the clickEvent).</li>
+			<li><STRONG>lineWidth [integer]:</STRONG> The width of the crosshair lines</li>
+			<li><STRONG>acceleration [integer]:</STRONG> The acceleration factor for relative movement of the crosshair. The acceleration factor increases as long as input values are received at the input ports without a pause of more thatn 200 milliseconds. When a pause is detected, the acceleration factor is reset to 1.0 </li>
+			<li><STRONG>maxVelocity [integer]:</STRONG> The maximum value for the acceleration factor.</li>
+			<li><STRONG>tooltipFolder [integer]:</STRONG> Name of a folder (including file path or relative file path from the ARE folder) which contains the tooltip icons in .png format. The expected filenames are 1.png, 2.png, 3.png ... </li>
+		</ul>
+	</BODY>
+</HTML>

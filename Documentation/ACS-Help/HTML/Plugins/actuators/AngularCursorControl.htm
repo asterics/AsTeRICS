@@ -1,0 +1,48 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>AngularCursorControl</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>AngularCursorControl</H1>
+		<span class="componentType">Component Type: Actuator (Subcategory: Input Device Emulation)</span>
+		<p>The AngularCursorControl component allows mouse cursor positioning by software emulation with a limited number of input control channels. 
+           An arrow indicator is displayed on the screen next to the mouse cursor. This arrow can be rotated 360 degrees using the angle input port.
+           If values are received at the move input port, the mouse cursor is moved in the direction of the arrow. Using other components, a stepswise
+           control of angle and movement can be achieved, allowing full control of the cursor position. After a certain time of inactivity (no values received at 
+           the input ports), a click event can be created for generating different mouse clicks e.g. via a mouse element.
+        </p>
+		<figure>
+			<img class="image" src="img/AngularCursorControl.jpg" alt="Screenshot: AngularCursorControl plugin" title="Screenshot: AngularCursorControl plugin" />
+			<figcaption>AngularCursorControl plugin</figcaption>
+			<img class="image" src="img/AngularCursorControl_demo.jpg" alt="Screenshot: AngularCursorControl arrow indicator" title="Screenshot: AngularCursorControl arrow indicator" />
+			<figcaption>AngularCursorControl arrow indicator</figcaption>
+		</figure>
+		<br>
+		<p><strong>Please Note:</strong>The mouse emulation on <strong>Windows 7/10</strong> does not always work as expected due to User Account Control (UAC) settings. 
+        Especially when you want to use the Windows 7 On-Screen-Keyboard dragging the keyboard does not work. To troubleshoot <a href="http://windows.microsoft.com/en-au/windows/turn-user-account-control-on-off#1TC=windows-7">turn off the User Account Control (UAC)</a> - change the level to "Never notify"
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>angle [double]:</STRONG> The angle (angular changes) of the mouse cursor movement (in radians). Indicated by arrow icon next to mouse cursor</li>
+			<li><STRONG>move [double]:</STRONG> The mouse cursor movement (in direction of current angle). Negative values allow backward movement.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>select:</STRONG> currently not used.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>clickEvent:</STRONG> This event is fired after an adjustable time of inactivity (property clickEventTime).</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>absoluteAngle [boolean]:</STRONG> If this property value is set to false (default), incoming values at the angle input port are interpreted as relative movement information (changes of the angle). If the property value is set to true, the angle input values are interpreted as absolute values.</li>
+			<li><STRONG>clickEventTime [integer]:</STRONG> The time of inactivity (in milliseconds) after which the clickEvent will be created (use zero to deactivate the clickEvent).</li>
+			<li><STRONG>arrowWidth [integer]:</STRONG> The width of the arrow indicator icon</li>
+			<li><STRONG>arrowLength [integer]:</STRONG> The length of the arrow indicator icon</li>
+			<li><STRONG>acceleration [integer]:</STRONG> The acceleration factor for movement and relative angular control. (currently not used)</li>
+			<li><STRONG>maxVelocity [integer]:</STRONG> The maximum value for the acceleration factor. (currently not used)</li>
+		</ul>
+	</BODY>
+</HTML>
