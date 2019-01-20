@@ -33,6 +33,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -58,6 +59,7 @@ public class GUI extends JFrame {
     volatile long tooltipTime=Long.MAX_VALUE;
     String tooltipFolder="";
     String actImageFileName="";
+    JPanel xAxisPanel,yAxisPanel;
 
     double locX = 0;
     double locY = 0;
@@ -75,7 +77,7 @@ public class GUI extends JFrame {
         this.width=width;    
         setUndecorated(true);
         setAlwaysOnTop(true);
-        setBackground(new Color(0,0,0,0));
+        setBackground(new Color(0,0,0,0));  // transparent !
         setSize(dim);
         width=dim.width;
         height=dim.height;
@@ -83,7 +85,7 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setOpacity(0.5f);
         setVisible(true);
-        
+
         try {
             rob = new Robot();
             rob.setAutoDelay(0);
@@ -95,6 +97,8 @@ public class GUI extends JFrame {
         Point location = MouseInfo.getPointerInfo().getLocation();
         locX=location.x;
         locY=location.y;
+        
+        
         
     }
 
@@ -214,7 +218,7 @@ public class GUI extends JFrame {
         //setLocation((int)locX-len, (int)locY-len);
         locX=x;
         locY=y;
-
+        
         try {
             Robot r = new Robot();
             r.mouseMove((int)locX, (int) locY);
@@ -270,4 +274,5 @@ public class GUI extends JFrame {
          }
 
     }
+    
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\angularCursorControl2_test.acs_2019_1_15_21_19" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\angularCursorControl_2keys.acs_2019_1_20_21_50" version="20130320">
   <components>
     <component id="AngularCursorControl.1" type_id="asterics.AngularCursorControl">
       <description>cursor position control via angular direction</description>
@@ -13,11 +13,11 @@
       </ports>
       <properties>
         <property name="absoluteAngle" value="false" />
-        <property name="createClickEvent" value="1000" />
-        <property name="arrowWidth" value="6" />
-        <property name="arrowLength" value="800" />
+        <property name="clickEventTime" value="1000" />
+        <property name="arrowWidth" value="10" />
+        <property name="arrowLength" value="150" />
         <property name="acceleration" value="100" />
-        <property name="angularVelocity" value="100" />
+        <property name="maxVelocity" value="100" />
       </properties>
       <layout>
         <posX>670</posX>
@@ -82,12 +82,12 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="keyCode" value="30" />
+        <property name="keyCode" value="57419" />
         <property name="block" value="True" />
       </properties>
       <layout>
         <posX>23</posX>
-        <posY>59</posY>
+        <posY>38</posY>
       </layout>
     </component>
     <component id="Timer.1.1" type_id="asterics.Timer">
@@ -133,7 +133,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="a/80" />
+        <property name="expression" value="-a/80" />
       </properties>
       <layout>
         <posX>383</posX>
@@ -379,12 +379,12 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="keyCode" value="31" />
+        <property name="keyCode" value="57421" />
         <property name="block" value="True" />
       </properties>
       <layout>
-        <posX>9</posX>
-        <posY>400</posY>
+        <posX>10</posX>
+        <posY>425</posY>
       </layout>
     </component>
     <component id="Timer.1.1.1" type_id="asterics.Timer">
@@ -430,11 +430,11 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="-a/80" />
+        <property name="expression" value="a/80" />
       </properties>
       <layout>
         <posX>432</posX>
-        <posY>544</posY>
+        <posY>552</posY>
       </layout>
     </component>
     <component id="EventRouter.1.1" type_id="asterics.EventRouter">

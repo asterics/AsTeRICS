@@ -23,7 +23,7 @@
         </ports>
 		<events>
 			<eventListenerPort id="select">
-				<description>selection (for automatic mode)</description>
+				<description>selection event</description>
 			</eventListenerPort>
 
 			<eventTriggererPort id="clickEvent">
@@ -36,7 +36,7 @@
 				type="boolean"
 				value="false"
 				description="if true, angle input port values are absolute values, else changes of current angle"/>
-			<property name="createClickEvent"
+			<property name="clickEventTime"
 				type="integer"
 				value="1000"
 				description="if not zero, a click indicator is shown and the click event is created after n millseconds inactivity"/>
@@ -51,11 +51,11 @@
 			<property name="acceleration"
 				type="integer"
 				value="100"
-				description="cursor movement acceleration (for automatic mode)"/>
-			<property name="angularVelocity"
+				description="cursor movement and angle acceleration (0 to deactive acceleration)"/>
+			<property name="maxVelocity"
 				type="integer"
 				value="100"
-				description="angular velocity (for automatic mode)"/>
+				description="maximum value for acceleration factor"/>
 
         </properties>
 

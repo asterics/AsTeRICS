@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\angularCursorControl_test.acs_2019_1_14_0_1" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\componentTests\actuators\AngularCursorControl_test.acs_2019_1_20_22_38" version="20130320">
   <components>
     <component id="AngularCursorControl.1" type_id="asterics.AngularCursorControl">
       <description>cursor position control via angular direction</description>
@@ -13,11 +13,11 @@
       </ports>
       <properties>
         <property name="absoluteAngle" value="false" />
-        <property name="createClickEvent" value="1000" />
+        <property name="clickEventTime" value="1000" />
         <property name="arrowWidth" value="6" />
         <property name="arrowLength" value="800" />
         <property name="acceleration" value="100" />
-        <property name="angularVelocity" value="100" />
+        <property name="maxVelocity" value="100" />
       </properties>
       <layout>
         <posX>533</posX>
@@ -270,6 +270,32 @@
         <posX>95</posX>
         <posY>256</posY>
       </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="use keys a and s for control" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>829</posX>
+        <posY>54</posY>
+      </layout>
+      <gui>
+        <posX>2260</posX>
+        <posY>121</posY>
+        <width>3375</width>
+        <height>444</height>
+      </gui>
     </component>
   </components>
   <channels>
@@ -535,7 +561,7 @@
     <AREGUIWindow>
       <posX>0</posX>
       <posY>-44</posY>
-      <width>2500</width>
+      <width>5812</width>
       <height>667</height>
     </AREGUIWindow>
   </modelGUI>

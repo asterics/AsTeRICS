@@ -65,11 +65,11 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
 	boolean propAbsoluteAngle = false;
-	int propCreateClickEvent = 1000;
+	int propClickEventTime = 1000;
 	int propArrowWidth = 200;
 	int propArrowLength = 200;
 	int propAcceleration = 100;
-	int propAngularVelocity = 100;
+	int propMaxVelocity = 100;
 
 	// declare member variables here
 
@@ -160,9 +160,9 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
 		{
 			return propAbsoluteAngle;
 		}
-		if ("createClickEvent".equalsIgnoreCase(propertyName))
+		if ("clickEventTime".equalsIgnoreCase(propertyName))
 		{
-			return propCreateClickEvent;
+			return propClickEventTime;
 		}
 		if ("arrowWidth".equalsIgnoreCase(propertyName))
 		{
@@ -176,9 +176,9 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
 		{
 			return propAcceleration;
 		}
-		if ("angularVelocity".equalsIgnoreCase(propertyName))
+		if ("maxVelocity".equalsIgnoreCase(propertyName))
 		{
-			return propAngularVelocity;
+			return propMaxVelocity;
 		}
 
         return null;
@@ -204,10 +204,10 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
 			}
 			return oldValue;
 		}
-		if ("createClickEvent".equalsIgnoreCase(propertyName))
+		if ("clickEventTime".equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = propCreateClickEvent;
-			propCreateClickEvent = Integer.parseInt(newValue.toString());
+			final Object oldValue = propClickEventTime;
+			propClickEventTime = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
 		if ("arrowWidth".equalsIgnoreCase(propertyName))
@@ -228,10 +228,10 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
 			propAcceleration = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
-		if ("angularVelocity".equalsIgnoreCase(propertyName))
+		if ("maxVelocity".equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = propAngularVelocity;
-			propAngularVelocity = Integer.parseInt(newValue.toString());
+			final Object oldValue = propMaxVelocity;
+			propMaxVelocity = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
 
@@ -306,7 +306,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
                   while (running) {
                   try {
                       Thread.sleep(20);
-                      if ((System.currentTimeMillis()-elapsedIdleTime)>propCreateClickEvent)
+                      if ((System.currentTimeMillis()-elapsedIdleTime)>propClickEventTime)
                       {
                           etpClickEvent.raiseEvent();
                           gui.setOnTop();

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2EMG.acs_2019_1_17_19_36" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2EMG.acs_2019_1_20_18_15" version="20130320">
   <components>
     <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
       <description>cursor position control via crosshair movement</description>
@@ -10,13 +10,17 @@
         <inputPort portTypeID="y">
           <properties />
         </inputPort>
+        <outputPort portTypeID="tooltip">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="absoluteValues" value="false" />
-        <property name="createClickEvent" value="2000" />
+        <property name="clickEventTime" value="1000" />
         <property name="lineWidth" value="10" />
         <property name="acceleration" value="1500" />
         <property name="maxVelocity" value="80" />
+        <property name="tooltipFolder" value="data/pictures/tooltips" />
       </properties>
       <layout>
         <posX>1028</posX>

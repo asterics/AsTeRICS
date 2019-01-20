@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\angularCursorControl_test.acs_2019_1_14_0_1" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\angularCursorControl_1key.acs_2019_1_20_21_47" version="20130320">
   <components>
     <component id="AngularCursorControl.1" type_id="asterics.AngularCursorControl">
       <description>cursor position control via angular direction</description>
@@ -13,11 +13,11 @@
       </ports>
       <properties>
         <property name="absoluteAngle" value="false" />
-        <property name="createClickEvent" value="1000" />
+        <property name="clickEventTime" value="1000" />
         <property name="arrowWidth" value="6" />
         <property name="arrowLength" value="800" />
         <property name="acceleration" value="100" />
-        <property name="angularVelocity" value="100" />
+        <property name="maxVelocity" value="100" />
       </properties>
       <layout>
         <posX>533</posX>
