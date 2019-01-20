@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-16"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\autostart.acs_2016_2_19_15_45" version="20130320">
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ARE\autostart.acs_2017_12_14_11_53" version="20130320">
   <modelDescription>
     <shortDescription>A menu selection for some demo models which do not need special hardware.</shortDescription>
     <requirements>none</requirements>
@@ -64,7 +64,7 @@
         <property name="keyboardFile" value="" />
         <property name="ignoreKeyboardFileProperties" value="false" />
         <property name="displayGUI" value="true" />
-        <property name="cellText1" value="CameraMouse (W)" />
+        <property name="cellText1" value="XCameraMouse (W, L, M)" />
         <property name="cellImage1" value="" />
         <property name="actionText1" value="" />
         <property name="cellText2" value="OskaWriting (W)" />
@@ -73,7 +73,7 @@
         <property name="cellText3" value="SpeechControl (W)" />
         <property name="cellImage3" value="" />
         <property name="actionText3" value="" />
-        <property name="cellText4" value="Eyetracking Grid" />
+        <property name="cellText4" value="GamepadMouse (W)" />
         <property name="cellImage4" value="" />
         <property name="actionText4" value="" />
         <property name="cellText5" value="ImageDemo (W, L, M)" />
@@ -82,7 +82,7 @@
         <property name="cellText6" value="Ergotherapie" />
         <property name="cellImage6" value="" />
         <property name="actionText6" value="" />
-        <property name="cellText7" value="XCameraMouse (W, L, M)" />
+        <property name="cellText7" value="CameraMouse (W)" />
         <property name="cellImage7" value="" />
         <property name="actionText7" value="" />
         <property name="cellText8" value="" />
@@ -237,13 +237,13 @@
       </ports>
       <properties>
         <property name="delay" value="300" />
-        <property name="slot1" value="CameraMouse.acs" />
+        <property name="slot1" value="XFaceTrackerMouse.acs" />
         <property name="slot2" value="OskaWriting.acs" />
         <property name="slot3" value="SpeechControl.acs" />
-        <property name="slot4" value="grids/eyeX_Environment/eyeX_Environment.acs" />
+        <property name="slot4" value="GamepadMouse.acs" />
         <property name="slot5" value="ImageDemo.acs" />
         <property name="slot6" value="Ergotherapie/ergomenu.acs" />
-        <property name="slot7" value="XFaceTrackerMouse.acs" />
+        <property name="slot7" value="CameraMouse.acs" />
         <property name="slot8" value="" />
         <property name="slot9" value="" />
         <property name="slot10" value="" />
