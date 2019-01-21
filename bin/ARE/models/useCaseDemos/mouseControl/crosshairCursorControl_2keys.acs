@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2keys.acs_2019_1_20_20_14" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2keys.acs_2019_1_21_19_14" version="20130320">
   <components>
     <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
       <description>cursor position control via crosshair movement</description>
@@ -20,7 +20,7 @@
         <property name="lineWidth" value="10" />
         <property name="acceleration" value="50" />
         <property name="maxVelocity" value="100" />
-        <property name="tooltipFolder" value="data/pictures/tooltips" />
+        <property name="tooltipFolder" value="pictures/tooltips" />
       </properties>
       <layout>
         <posX>674</posX>
@@ -89,8 +89,8 @@
         <property name="block" value="True" />
       </properties>
       <layout>
-        <posX>21</posX>
-        <posY>22</posY>
+        <posX>4</posX>
+        <posY>59</posY>
       </layout>
     </component>
     <component id="Timer.1.1" type_id="asterics.Timer">
@@ -106,14 +106,14 @@
       <properties>
         <property name="mode" value="3" />
         <property name="repeatCounter" value="1" />
-        <property name="timePeriod" value="3000" />
+        <property name="timePeriod" value="2000" />
         <property name="resolution" value="20" />
         <property name="waitPeriod" value="0" />
         <property name="autostart" value="False" />
       </properties>
       <layout>
         <posX>266</posX>
-        <posY>192</posY>
+        <posY>193</posY>
       </layout>
     </component>
     <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
@@ -206,8 +206,8 @@
         <property name="wrapAround" value="true" />
       </properties>
       <layout>
-        <posX>157</posX>
-        <posY>45</posY>
+        <posX>143</posX>
+        <posY>21</posY>
       </layout>
     </component>
     <component id="Timer.1.2" type_id="asterics.Timer">
@@ -345,8 +345,8 @@
         <property name="block" value="True" />
       </properties>
       <layout>
-        <posX>9</posX>
-        <posY>461</posY>
+        <posX>19</posX>
+        <posY>438</posY>
       </layout>
     </component>
     <component id="Timer.1.1.1" type_id="asterics.Timer">
@@ -362,7 +362,7 @@
       <properties>
         <property name="mode" value="3" />
         <property name="repeatCounter" value="1" />
-        <property name="timePeriod" value="3000" />
+        <property name="timePeriod" value="2000" />
         <property name="resolution" value="20" />
         <property name="waitPeriod" value="0" />
         <property name="autostart" value="False" />
@@ -586,7 +586,7 @@
         <property name="delay" value="10" />
       </properties>
       <layout>
-        <posX>32</posX>
+        <posX>34</posX>
         <posY>225</posY>
       </layout>
     </component>
@@ -1443,6 +1443,126 @@
         <target>
           <component id="StringDispatcher.1.1" />
           <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.3" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.3" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
         </target>
       </targets>
     </eventChannel>
