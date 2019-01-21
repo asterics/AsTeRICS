@@ -44,14 +44,14 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
 /**
- * Implements the Graphical User Interface for the <pluginname> plugin
+ * Implements the Graphical User Interface for the AngularCursorControl plugin
  * 
- * @author <your name> [<your email>] Date: Time:
+ * @author Chris, Date: 2019-01-20
  */
 public class GUI extends JFrame {
-    
-    float x=0.0f;
-    int len=0, width=0;
+
+    float x = 0.0f;
+    int len = 0, width = 0;
     float angle = 0.0f;
     Robot rob;
     double remainX = 0;
@@ -67,20 +67,22 @@ public class GUI extends JFrame {
      * 
      * @param owner
      *            the owner class instance
+     * @param dim
+     *            the dimension of the screen
      */
     public GUI(final AngularCursorControlInstance owner, final Dimension dim) {
         super("CursorMovementPanel");
-        len=dim.height;
-        width=dim.width;    
+        len = dim.height;
+        width = dim.width;
         setUndecorated(true);
         setAlwaysOnTop(true);
-        setBackground(new Color(0,0,0,0));
-        setSize(new Dimension(len*2+width,len*2+width));
+        setBackground(new Color(0, 0, 0, 0));
+        setSize(new Dimension(len * 2 + width, len * 2 + width));
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setOpacity(0.5f);
         setVisible(true);
         setShape(0.0f);
-        
+
         try {
             rob = new Robot();
             rob.setAutoDelay(0);
@@ -89,78 +91,71 @@ public class GUI extends JFrame {
         }
 
         Point location = MouseInfo.getPointerInfo().getLocation();
-        locX=location.x;
-        locY=location.y;
-        
+        locX = location.x;
+        locY = location.y;
+
     }
 
-    void setOnTop()  {
-        System.out.println("set on top!!"); 
+    void setOnTop() {
         setAlwaysOnTop(false);
         repaint();
         setAlwaysOnTop(true);
         repaint();
 
     }
+
     void setShape(float angle) {
-        this.angle=angle;
-        //Point location = MouseInfo.getPointerInfo().getLocation();
-        //setLocation(location.x-len, location.y-len);
-        setLocation((int)locX-len, (int)locY-len);
+        this.angle = angle;
+        // Point location = MouseInfo.getPointerInfo().getLocation();
+        // setLocation(location.x-len, location.y-len);
+        setLocation((int) locX - len, (int) locY - len);
         repaint();
 
         /*
-        AffineTransform tx = new AffineTransform();
-        tx.translate(len,len);
-        tx.rotate(angle);
-        tx.translate(-len,-len);
-        Rectangle shape = new Rectangle(len-width/2, 0, width, len-10);
-        Shape newShape = tx.createTransformedShape(shape);        
-        com.sun.awt.AWTUtilities
-        .setWindowShape(this, newShape);
+         * AffineTransform tx = new AffineTransform(); tx.translate(len,len); tx.rotate(angle); tx.translate(-len,-len); Rectangle shape = new
+         * Rectangle(len-width/2, 0, width, len-10); Shape newShape = tx.createTransformedShape(shape); com.sun.awt.AWTUtilities .setWindowShape(this,
+         * newShape);
          */
     }
 
     void moveCursor(double dx, double dy) {
 
-        locX+=dx;
-        locY+=dy;
+        locX += dx;
+        locY += dy;
 
         try {
             Robot r = new Robot();
-            r.mouseMove((int)locX, (int) locY);
+            r.mouseMove((int) locX, (int) locY);
         } catch (AWTException e) {
             e.printStackTrace();
-        }   
+        }
 
-        setLocation((int)locX-len, (int)locY-len);
+        setLocation((int) locX - len, (int) locY - len);
     }
-    
+
     @Override
-    public void paint(Graphics g) 
-    {
-         super.paint(g);
-         Graphics2D g2 = (Graphics2D) g;
-         g2.setColor(Color.RED);
-         
-         int x1Points[] = {len, len+width, len-width, len};
-         int y1Points[] = {0, len-10, len-10, 0};
-         GeneralPath polygon = 
-                 new GeneralPath(GeneralPath.WIND_EVEN_ODD,
-                                 x1Points.length);
-         polygon.moveTo(x1Points[0], y1Points[0]);
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.RED);
 
-         for (int index = 1; index < x1Points.length; index++) {
-                 polygon.lineTo(x1Points[index], y1Points[index]);
-         };
+        int x1Points[] = { len, len + width, len - width, len };
+        int y1Points[] = { 0, len - 10, len - 10, 0 };
+        GeneralPath polygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD, x1Points.length);
+        polygon.moveTo(x1Points[0], y1Points[0]);
 
-         polygon.closePath();
-         
-         AffineTransform tx = new AffineTransform();
-         tx.translate(len,len);
-         tx.rotate(angle);
-         tx.translate(-len,-len);
-         Shape newShape = tx.createTransformedShape(polygon);         
-         g2.fill(newShape);              
+        for (int index = 1; index < x1Points.length; index++) {
+            polygon.lineTo(x1Points[index], y1Points[index]);
+        }
+        ;
+
+        polygon.closePath();
+
+        AffineTransform tx = new AffineTransform();
+        tx.translate(len, len);
+        tx.rotate(angle);
+        tx.translate(-len, -len);
+        Shape newShape = tx.createTransformedShape(polygon);
+        g2.fill(newShape);
     }
 }

@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,7 +26,6 @@
 
 package eu.asterics.component.actuator.angularcursorcontrol;
 
-
 import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -50,316 +48,274 @@ import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
  * 
- * <Describe purpose of this module>
+ * The AngularCursorControl component allows mouse cursor positioning by software emulation with a limited number of input control channels.
  * 
  * 
- *  
- * @author <your name> [<your email address>]
- *         Date: 
+ * @author Chris, Date: 2019-01-20
  */
-public class AngularCursorControlInstance extends AbstractRuntimeComponentInstance
-{
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class AngularCursorControlInstance extends AbstractRuntimeComponentInstance {
+    final IRuntimeEventTriggererPort etpClickEvent = new DefaultRuntimeEventTriggererPort();
 
-	final IRuntimeEventTriggererPort etpClickEvent = new DefaultRuntimeEventTriggererPort();
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
-
-	boolean propAbsoluteAngle = false;
-	int propClickEventTime = 1000;
-	int propArrowWidth = 200;
-	int propArrowLength = 200;
-	int propAcceleration = 100;
-	int propMaxVelocity = 100;
-
-	// declare member variables here
+    boolean propAbsoluteAngle = false;
+    int propClickEventTime = 1000;
+    int propArrowWidth = 200;
+    int propArrowLength = 200;
+    int propAcceleration = 100;
+    int propMaxVelocity = 100;
 
     // declare member variables here
     private GUI gui = null;
-    private float actangle =0;
+    private float actangle = 0;
     private boolean running;
-    
-    volatile long elapsedIdleTime=Long.MAX_VALUE;
-  
-    
-   /**
-    * The class constructor.
-    */
-    public AngularCursorControlInstance()
-    {
+
+    volatile long elapsedIdleTime = Long.MAX_VALUE;
+
+    /**
+     * The class constructor.
+     */
+    public AngularCursorControlInstance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-		if ("angle".equalsIgnoreCase(portID))
-		{
-			return ipAngle;
-		}
-		if ("move".equalsIgnoreCase(portID))
-		{
-			return ipMove;
-		}
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("angle".equalsIgnoreCase(portID)) {
+            return ipAngle;
+        }
+        if ("move".equalsIgnoreCase(portID)) {
+            return ipMove;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
+    public IRuntimeOutputPort getOutputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-		if ("select".equalsIgnoreCase(eventPortID))
-		{
-			return elpSelect;
-		}
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if ("select".equalsIgnoreCase(eventPortID)) {
+            return elpSelect;
+        }
 
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
-		if ("clickEvent".equalsIgnoreCase(eventPortID))
-		{
-			return etpClickEvent;
-		}
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+        if ("clickEvent".equalsIgnoreCase(eventPortID)) {
+            return etpClickEvent;
+        }
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("absoluteAngle".equalsIgnoreCase(propertyName))
-		{
-			return propAbsoluteAngle;
-		}
-		if ("clickEventTime".equalsIgnoreCase(propertyName))
-		{
-			return propClickEventTime;
-		}
-		if ("arrowWidth".equalsIgnoreCase(propertyName))
-		{
-			return propArrowWidth;
-		}
-		if ("arrowLength".equalsIgnoreCase(propertyName))
-		{
-			return propArrowLength;
-		}
-		if ("acceleration".equalsIgnoreCase(propertyName))
-		{
-			return propAcceleration;
-		}
-		if ("maxVelocity".equalsIgnoreCase(propertyName))
-		{
-			return propMaxVelocity;
-		}
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("absoluteAngle".equalsIgnoreCase(propertyName)) {
+            return propAbsoluteAngle;
+        }
+        if ("clickEventTime".equalsIgnoreCase(propertyName)) {
+            return propClickEventTime;
+        }
+        if ("arrowWidth".equalsIgnoreCase(propertyName)) {
+            return propArrowWidth;
+        }
+        if ("arrowLength".equalsIgnoreCase(propertyName)) {
+            return propArrowLength;
+        }
+        if ("acceleration".equalsIgnoreCase(propertyName)) {
+            return propAcceleration;
+        }
+        if ("maxVelocity".equalsIgnoreCase(propertyName)) {
+            return propMaxVelocity;
+        }
 
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("absoluteAngle".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propAbsoluteAngle;
-			if("true".equalsIgnoreCase((String)newValue))
-			{
-				propAbsoluteAngle = true;
-			}
-			else if("false".equalsIgnoreCase((String)newValue))
-			{
-				propAbsoluteAngle = false;
-			}
-			return oldValue;
-		}
-		if ("clickEventTime".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propClickEventTime;
-			propClickEventTime = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
-		if ("arrowWidth".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propArrowWidth;
-			propArrowWidth = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
-		if ("arrowLength".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propArrowLength;
-			propArrowLength = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
-		if ("acceleration".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propAcceleration;
-			propAcceleration = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
-		if ("maxVelocity".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propMaxVelocity;
-			propMaxVelocity = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("absoluteAngle".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propAbsoluteAngle;
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propAbsoluteAngle = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propAbsoluteAngle = false;
+            }
+            return oldValue;
+        }
+        if ("clickEventTime".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propClickEventTime;
+            propClickEventTime = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
+        if ("arrowWidth".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propArrowWidth;
+            propArrowWidth = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
+        if ("arrowLength".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propArrowLength;
+            propArrowLength = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
+        if ("acceleration".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propAcceleration;
+            propAcceleration = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
+        if ("maxVelocity".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propMaxVelocity;
+            propMaxVelocity = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
 
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
-	private final IRuntimeInputPort ipAngle  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-            elapsedIdleTime=Long.MAX_VALUE;
-		    if (propAbsoluteAngle==true)  {
-		        actangle=(float)ConversionUtils.doubleFromBytes(data);
-		    }
-		    else {
-	              actangle+=(float)ConversionUtils.doubleFromBytes(data);
+    /**
+     * Input Ports for receiving values.
+     */
+    private final IRuntimeInputPort ipAngle = new DefaultRuntimeInputPort() {
+        public void receiveData(byte[] data) {
+            elapsedIdleTime = Long.MAX_VALUE;
+            if (propAbsoluteAngle == true) {
+                actangle = (float) ConversionUtils.doubleFromBytes(data);
+            } else {
+                actangle += (float) ConversionUtils.doubleFromBytes(data);
             }
             gui.setShape(actangle);
-		}
-	};
-	private final IRuntimeInputPort ipMove  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-            elapsedIdleTime=System.currentTimeMillis();
-            double actmove=ConversionUtils.doubleFromBytes(data);
-            double dx= actmove * Math.sin(actangle);
-            double dy= - (actmove * Math.cos(actangle));
-            gui.moveCursor(dx,dy);
-		}
-	};
+        }
+    };
+    private final IRuntimeInputPort ipMove = new DefaultRuntimeInputPort() {
+        public void receiveData(byte[] data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            double actmove = ConversionUtils.doubleFromBytes(data);
+            double dx = actmove * Math.sin(actangle);
+            double dy = -(actmove * Math.cos(actangle));
+            gui.moveCursor(dx, dy);
+        }
+    };
 
-
-     /**
-      * Event Listerner Ports.
-      */
-	final IRuntimeEventListenerPort elpSelect = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-		    elapsedIdleTime=System.currentTimeMillis();
-		}
-	};
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpSelect = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+        }
+    };
 
     Point position;
     Dimension dimension;
-	
 
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
-          gui = new GUI(this, new Dimension(propArrowWidth,propArrowLength));
-          if(gui!=null) {
-              //gui.addMouseListener(this);
-              //gui.addMouseMotionListener(this);
-          }
-          
-          super.start();
-          
-          elapsedIdleTime=Long.MAX_VALUE;
-          running = true;
-          
-          AstericsThreadPool.instance.execute(new Runnable() {
-              @Override
-              public void run() {
-                  while (running) {
-                  try {
-                      Thread.sleep(20);
-                      if ((System.currentTimeMillis()-elapsedIdleTime)>propClickEventTime)
-                      {
-                          etpClickEvent.raiseEvent();
-                          gui.setOnTop();
-                          elapsedIdleTime=Long.MAX_VALUE;
-                      }
-                  } catch (InterruptedException e) {
-                  }
-                 }
-              }
-          });
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        gui = new GUI(this, new Dimension(propArrowWidth, propArrowLength));
+        super.start();
 
-      }
+        elapsedIdleTime = Long.MAX_VALUE;
+        running = true;
 
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-          super.pause();
-      }
+        AstericsThreadPool.instance.execute(new Runnable() {
+            @Override
+            public void run() {
+                while (running) {
+                    try {
+                        Thread.sleep(20);
+                        if ((System.currentTimeMillis() - elapsedIdleTime) > propClickEventTime) {
+                            etpClickEvent.raiseEvent();
+                            gui.setOnTop();
+                            elapsedIdleTime = Long.MAX_VALUE;
+                        }
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
+        });
 
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-          super.resume();
-      }
+    }
 
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
-          super.stop();
-          running=false;
-          final GUI guiToDestroy=gui;
-          gui=null;
-          SwingUtilities.invokeLater(new Runnable() {
-              @Override
-              public void run() {
-                  //now the cleanup of the window can be done at any time in the event dispatch thread wihtout interfering the other code.
-                  if (guiToDestroy != null) {
-                      //guiToDestroy.removeMouseListener(HoverPanelInstance.this);
-                      //guiToDestroy.removeMouseMotionListener(HoverPanelInstance.this);
-                      guiToDestroy.setVisible(false);
-                      guiToDestroy.dispose();
-                  }
-              }
-          });
-      }
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
+
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+
+        super.stop();
+        running = false;
+        final GUI guiToDestroy = gui;
+        gui = null;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                // now the cleanup of the window can be done at any time in the event dispatch
+                // thread wihtout interfering the other code.
+                if (guiToDestroy != null) {
+                    guiToDestroy.setVisible(false);
+                    guiToDestroy.dispose();
+                }
+            }
+        });
+    }
 }
