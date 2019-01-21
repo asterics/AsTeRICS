@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\angularCursorControl_2keys.acs_2019_1_20_21_50" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\angularCursorControl_2keys.acs_2019_1_21_18_51" version="20130320">
   <components>
     <component id="AngularCursorControl.1" type_id="asterics.AngularCursorControl">
       <description>cursor position control via angular direction</description>
@@ -15,7 +15,7 @@
         <property name="absoluteAngle" value="false" />
         <property name="clickEventTime" value="1000" />
         <property name="arrowWidth" value="10" />
-        <property name="arrowLength" value="150" />
+        <property name="arrowLength" value="80" />
         <property name="acceleration" value="100" />
         <property name="maxVelocity" value="100" />
       </properties>
