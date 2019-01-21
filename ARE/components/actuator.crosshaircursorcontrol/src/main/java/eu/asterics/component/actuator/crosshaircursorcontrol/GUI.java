@@ -29,6 +29,7 @@ package eu.asterics.component.actuator.crosshaircursorcontrol;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URI;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -38,28 +39,27 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
-
-
+import eu.asterics.mw.services.ResourceRegistry;
 
 
 /**
- * Implements the Graphical User Interface for the <pluginname> plugin
+ * Implements the Graphical User Interface for the CrosshairCursorControl plugin
  * 
- * @author <your name> [<your email>] Date: Time:
+ * @author Chris, Date: 2019-01-20
  */
 public class GUI extends JFrame {
-    
-    int width=0,height=0;
-    int lineWidth=0;
-    boolean axis=true;
-    Robot rob;
+
+    int width = 0, height = 0;
+    int lineWidth = 0;
+    boolean axis = true;
+    Robot MouseRobot;
     BufferedImage image = null;
-    int actTooltip=0;
-    float tooltipX=0;
-    volatile long tooltipTime=Long.MAX_VALUE;
-    String tooltipFolder="";
-    String actImageFileName="";
-    JPanel xAxisPanel,yAxisPanel;
+    int actTooltip = 0;
+    float tooltipX = 0;
+    volatile long tooltipTime = Long.MAX_VALUE;
+    String tooltipFolder = "";
+    String actImageFileName = "";
+    JPanel xAxisPanel, yAxisPanel;
 
     double locX = 0;
     double locY = 0;
@@ -71,100 +71,98 @@ public class GUI extends JFrame {
      * 
      * @param owner
      *            the owner class instance
+     * @param dim
+     *            the dimension of the screen
+     * @param lineWidth
+     *            the width of horizontal and vertial crosshair lines
+     * 
      */
     public GUI(final CrosshairCursorControlInstance owner, final Dimension dim, final int lineWidth) {
         super("CursorMovementPanel");
-        this.width=width;    
+        this.width = width;
         setUndecorated(true);
         setAlwaysOnTop(true);
-        setBackground(new Color(0,0,0,0));  // transparent !
+        setBackground(new Color(0, 0, 0, 0)); // transparent !
         setSize(dim);
-        width=dim.width;
-        height=dim.height;
-        this.lineWidth=lineWidth;
+        width = dim.width;
+        height = dim.height;
+        this.lineWidth = lineWidth;
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setOpacity(0.5f);
         setVisible(true);
 
         try {
-            rob = new Robot();
-            rob.setAutoDelay(0);
+            MouseRobot = new Robot();
+            MouseRobot.setAutoDelay(0);
         } catch (AWTException e) {
             e.printStackTrace();
         }
-                
-        setLocation(0,0);
+        setLocation(0, 0);
         Point location = MouseInfo.getPointerInfo().getLocation();
-        locX=location.x;
-        locY=location.y;
-        
-        
-        
+        locX = location.x;
+        locY = location.y;
     }
 
-    
-    void loadImage(String fn)  {
-        String tmpFileName = tooltipFolder+fn+".png";
+    void loadImage(String fn) {
+        String tmpFileName = tooltipFolder + fn + ".png";
+        
         try {
-            File imageFile = new File(tmpFileName);
+            URI myURI = ResourceRegistry.getInstance().getResource(tmpFileName, ResourceRegistry.RES_TYPE.DATA);
+            File imageFile = new File(myURI);
+            
             image = ImageIO.read(imageFile);
-            actImageFileName=fn;
+            actImageFileName = fn;
         } catch (Exception ex) {
-            image=null;
-            actTooltip=0;
-            actImageFileName="";
-            AstericsErrorHandling.instance.getLogger()
-            .warning(" *****  Can not open picture: " + ex.getMessage() + tmpFileName);
+            image = null;
+            actTooltip = 0;
+            actImageFileName = "";
+            AstericsErrorHandling.instance.getLogger().warning(" *****  Can not open picture: " + ex.getMessage());
         }
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 repaint();
-            }                
+            }
         });
     }
 
-    String getTooltipFilename()  {
-        return(actImageFileName);
-    }
-   
-    boolean tooltipsActive() {
-        if (actTooltip>0) {
-            return(true);
-        }
-        return(false);
-    }
-    
-    void activateTooltips(String tooltipFolder)  {
-        this.tooltipFolder=tooltipFolder+"/";
-        actTooltip=1;
-        tooltipX=0;
-        loadImage("1");
-        tooltipTime=System.currentTimeMillis();
+    String getTooltipFilename() {
+        return (actImageFileName);
     }
 
-    void deactivateTooltips()  {
-        actTooltip=0;
+    boolean tooltipsActive() {
+        if (actTooltip > 0) {
+            return (true);
+        }
+        return (false);
+    }
+
+    void activateTooltips(String tooltipFolder) {
+        this.tooltipFolder = tooltipFolder + "/";
+        actTooltip = 1;
+        tooltipX = 0;
+        loadImage("1");
+        tooltipTime = System.currentTimeMillis();
+    }
+
+    void deactivateTooltips() {
+        actTooltip = 0;
         loadImage("");
     }
-    
+
     void navigateTooltips(float dx) {
-        // tooltipX+=dx;
-        //if (tooltipX<0) tooltipX=0;
-        //int temp=(int)(tooltipX/100)+1;
-        //if (actTooltip!=temp) {
-        //    actTooltip=temp;
-        
-        if (System.currentTimeMillis()-tooltipTime>100)
-        {
-            if (dx>0) actTooltip++;
-            else if (actTooltip>1) actTooltip--;
-            loadImage(Integer.toString (actTooltip));
+
+        if (System.currentTimeMillis() - tooltipTime > 100) {
+            if (dx > 0)
+                actTooltip++;
+            else if (actTooltip > 1)
+                actTooltip--;
+            loadImage(Integer.toString(actTooltip));
         }
-        tooltipTime=System.currentTimeMillis();
+        tooltipTime = System.currentTimeMillis();
     }
 
-    void setOnTop()  {
+    void setOnTop() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -172,107 +170,102 @@ public class GUI extends JFrame {
                 repaint();
                 setAlwaysOnTop(true);
                 repaint();
-            }                
+            }
         });
     }
 
-    void showCrosshair()  {
+    void showCrosshair() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 setVisible(true);
-            }                
+            }
         });
     }
 
-    void hideCrosshair()  {
+    void hideCrosshair() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 setVisible(false);
-            }                
+            }
         });
     }
 
-    void resetAxis()  {
+    void resetAxis() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                axis=true;
+                axis = true;
                 repaint();
-            }                
+            }
         });
     }
-    void changeAxis()  {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                axis=!axis;
-                repaint();
-            }                
-        });
-    }
-    
-    void setCursor(float x, float y) {
-        //Point location = MouseInfo.getPointerInfo().getLocation();
-        //setLocation((int)locX-len, (int)locY-len);
-        locX=x;
-        locY=y;
-        
-        try {
-            Robot r = new Robot();
-            r.mouseMove((int)locX, (int) locY);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }   
 
-        //setLocation((int)locX-len, (int)locY-len);
+    void changeAxis() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                axis = !axis;
+                repaint();
+            }
+        });
+    }
+
+    synchronized void setCursor(float x, float y) {
+        locX = x;
+        locY = y;
+        MouseRobot.mouseMove((int) locX, (int) locY);
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 repaint();
-            }                
+            }
         });
     }
-    
+
     @Override
-    public void paint(Graphics g) 
-    {
-         super.paint(g);
-         Graphics2D g2 = (Graphics2D) g;
-         Color xAxisColor,yAxisColor;
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D) g;
+        Color xAxisColor, yAxisColor;
 
-         if (image != null) {
-             xAxisColor=Color.GRAY;
-             yAxisColor=Color.GRAY;             
-         } else {
-             if (axis) {
-                 xAxisColor=Color.GRAY;
-                 yAxisColor=Color.RED;
-             } else {
-                 xAxisColor=Color.RED;
-                 yAxisColor=Color.GRAY;
-             }             
-         }
+        if (image != null) {
+            xAxisColor = Color.GRAY;
+            yAxisColor = Color.GRAY;
+        } else {
+            if (axis) {
+                xAxisColor = Color.GRAY;
+                yAxisColor = Color.RED;
+            } else {
+                xAxisColor = Color.RED;
+                yAxisColor = Color.GRAY;
+            }
+        }
 
-         g2.setColor(yAxisColor);
-         g2.fillRect((int)locX-lineWidth/2, 0, lineWidth, (int)locY-lineWidth/2);
-         g2.fillRect((int)locX-lineWidth/2, (int)locY+lineWidth/2, lineWidth, height-(int)locY);
+        g2.setColor(yAxisColor);
+        g2.fillRect((int) locX - lineWidth / 2, 0, lineWidth, (int) locY - lineWidth / 2);
+        g2.fillRect((int) locX - lineWidth / 2, (int) locY + lineWidth / 2, lineWidth, height - (int) locY);
 
-         g2.setColor(xAxisColor);
-         g2.fillRect(0, (int)locY-lineWidth/2, (int)locX-lineWidth/2, lineWidth);
-         g2.fillRect((int)locX+lineWidth/2, (int)locY-lineWidth/2, width-(int)locX, lineWidth);
-         
-         if (image!=null) {
-             int toolX,toolY;
-             if ((int)locY > 100) toolY=(int)locY-90;
-             else toolY=(int)locY+10;
-             if ((int)locX < width-image.getWidth()) toolX=(int)locX+10;
-             else toolX=(int)locX-image.getWidth()-10;
-                 
-             g.drawImage(image, toolX, toolY, null);
-         }
+        g2.setColor(xAxisColor);
+        g2.fillRect(0, (int) locY - lineWidth / 2, (int) locX - lineWidth / 2, lineWidth);
+        g2.fillRect((int) locX + lineWidth / 2, (int) locY - lineWidth / 2, width - (int) locX, lineWidth);
+
+        if (image != null) {
+            int toolX, toolY;
+            if ((int) locY > 100)
+                toolY = (int) locY - 90;
+            else
+                toolY = (int) locY + 10;
+            if ((int) locX < width - image.getWidth())
+                toolX = (int) locX + 10;
+            else
+                toolX = (int) locX - image.getWidth() - 10;
+
+            g.drawImage(image, toolX, toolY, null);
+        }
 
     }
-    
+
 }
