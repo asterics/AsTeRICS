@@ -162,6 +162,14 @@ public class GUI extends JFrame {
         tooltipTime = System.currentTimeMillis();
     }
 
+    void navigateNextTooltip() {
+        navigateTooltips(1);
+    }
+
+    void navigatePreviousTooltip() {
+        navigateTooltips(-1);
+    }
+
     void setOnTop() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
