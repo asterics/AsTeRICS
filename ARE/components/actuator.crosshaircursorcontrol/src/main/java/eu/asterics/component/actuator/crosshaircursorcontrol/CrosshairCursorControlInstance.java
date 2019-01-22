@@ -142,6 +142,12 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("activateTooltips".equalsIgnoreCase(eventPortID)) {
             return elpActivateTooltips;
         }
+        if ("nextTooltip".equalsIgnoreCase(eventPortID)) {
+            return elpNextTooltip;
+        }
+        if ("previousTooltip".equalsIgnoreCase(eventPortID)) {
+            return elpPreviousTooltip;
+        }
         if ("startMoveLeft".equalsIgnoreCase(eventPortID)) {
             return elpStartMoveLeft;
         }
@@ -331,8 +337,27 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         }
     };
 
+    final IRuntimeEventListenerPort elpNextTooltip = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            if(gui.tooltipsActive()) {
+                elapsedIdleTime = System.currentTimeMillis();
+                gui.navigateNextTooltip();
+            }
+        }
+    };
+
+    final IRuntimeEventListenerPort elpPreviousTooltip = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            if(gui.tooltipsActive()) {
+                elapsedIdleTime = System.currentTimeMillis();
+                gui.navigatePreviousTooltip();;
+            }
+        }
+    };
+
     final IRuntimeEventListenerPort elpStartMoveLeft = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
+            if(gui.tooltipsActive()) return;
             lastMoveTimeH = System.currentTimeMillis();
             moveLeft = true;
             moveRight = false;
@@ -341,6 +366,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStartMoveRight = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
+            if(gui.tooltipsActive()) return;
             lastMoveTimeH = System.currentTimeMillis();
             moveRight = true;
             moveLeft = false;
@@ -349,6 +375,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStartMoveUp = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
+            if(gui.tooltipsActive()) return;
             lastMoveTimeV = System.currentTimeMillis();
             moveUp = true;
             moveDown = false;
@@ -357,6 +384,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStartMoveDown = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
+            if(gui.tooltipsActive()) return;
             lastMoveTimeV = System.currentTimeMillis();
             moveDown = true;
             moveUp = false;

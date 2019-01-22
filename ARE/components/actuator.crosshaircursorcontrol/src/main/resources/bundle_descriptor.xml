@@ -32,6 +32,12 @@
 			<eventListenerPort id="activateTooltips">
 				<description>if available, show tooltip icons and activate tooltip mode</description>
 			</eventListenerPort>
+			<eventListenerPort id="nextTooltip">
+				<description>navigates to next tooltip, if tooltips are currently activated</description>
+			</eventListenerPort>
+			<eventListenerPort id="previousTooltip">
+				<description>navigates to previous tooltip, if tooltips are currently activated</description>
+			</eventListenerPort>
 			<eventListenerPort id="startMoveLeft">
 				<description>starts movement to the left</description>
 			</eventListenerPort>
