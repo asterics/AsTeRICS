@@ -533,7 +533,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 this.x += diffPx;
             }
 
-            float diffSpeed = propAcceleration * diffTime / 1000;
+            float diffSpeed = (float) propAcceleration * diffTime / 1000;
             if (this.currentMoveSpeedH + diffSpeed < propMaxVelocity) {
                 this.currentMoveSpeedH += diffSpeed;
             } else {
@@ -551,7 +551,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 this.y += diffPx;
             }
 
-            float diffSpeed = propAcceleration * diffTime / 1000;
+            float diffSpeed = (float) propAcceleration * diffTime / 1000;
             if (this.currentMoveSpeedV + diffSpeed < propMaxVelocity) {
                 this.currentMoveSpeedV += diffSpeed;
             } else {
