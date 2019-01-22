@@ -29,9 +29,35 @@
 			<eventListenerPort id="select">
 				<description>change axis selection indicator</description>
 			</eventListenerPort>
-
 			<eventListenerPort id="activateTooltips">
 				<description>if available, show tooltip icons and activate tooltip mode</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveLeft">
+				<description>starts movement to the left</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveRight">
+				<description>starts movement to the right</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveUp">
+				<description>starts movement up</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveDown">
+				<description>starts movement down</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveLeft">
+				<description>stops movement to the left</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveRight">
+				<description>stops movement to the right</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveUp">
+				<description>stops movement up</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveDown">
+				<description>stops movement down</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveAll">
+				<description>stops all automatic movement</description>
 			</eventListenerPort>
 
 			<eventTriggererPort id="clickEvent">
@@ -40,7 +66,6 @@
 			<eventTriggererPort id="tooltipSelected">
 				<description>this event is generated when a tooltip icon has been selected after an inactivity of clickEventTime milliseconds</description>
 			</eventTriggererPort>
-
 		</events>			
         <properties>
 			<property name="absoluteValues"
@@ -55,14 +80,18 @@
 				type="integer"
 				value="10"
 				description="width of the crosshair indicator"/>
+			<property name="baseVelocity"
+				type="integer"
+				value="10"
+				description="base movement velocity in px per second"/>
 			<property name="acceleration"
 				type="integer"
 				value="100"
-				description="movement acceleration"/>
+				description="movement acceleration, increasing px/second per second"/>
 			<property name="maxVelocity"
 				type="integer"
 				value="100"
-				description="maximum velocity"/>
+				description="maximum movement velocity in px per second"/>
 			<property name="tooltipFolder"
 				type="string"
 				value="data/pictures/tooltips"

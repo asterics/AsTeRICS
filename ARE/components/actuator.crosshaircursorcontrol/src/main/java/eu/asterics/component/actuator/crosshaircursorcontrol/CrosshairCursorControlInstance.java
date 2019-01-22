@@ -29,8 +29,6 @@ package eu.asterics.component.actuator.crosshaircursorcontrol;
 import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.Point;
-import java.util.logging.Logger;
-import java.awt.Toolkit;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
@@ -45,8 +43,6 @@ import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
@@ -69,6 +65,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     int propLineWidth = 200;
     int propAcceleration = 100;
     int propMaxVelocity = 100;
+    int propBaseVelocity = 10;
     String propTooltipFolder = "data/pictures/tooltips";
 
     // declare member variables here
@@ -76,6 +73,14 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     private float x = 0;
     private float y = 0;
     private boolean running;
+    private boolean moveLeft = false;
+    private boolean moveRight = false;
+    private boolean moveUp = false;
+    private boolean moveDown = false;
+    private double currentMoveSpeedH = this.propBaseVelocity;
+    private double currentMoveSpeedV = this.propBaseVelocity;
+    private long lastMoveTimeH = 0;
+    private long lastMoveTimeV = 0;
     int screenWidth = 0;
     int screenHeight = 0;
     double actAccel = 1.0;
@@ -137,6 +142,33 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("activateTooltips".equalsIgnoreCase(eventPortID)) {
             return elpActivateTooltips;
         }
+        if ("startMoveLeft".equalsIgnoreCase(eventPortID)) {
+            return elpStartMoveLeft;
+        }
+        if ("startMoveRight".equalsIgnoreCase(eventPortID)) {
+            return elpStartMoveRight;
+        }
+        if ("startMoveUp".equalsIgnoreCase(eventPortID)) {
+            return elpStartMoveUp;
+        }
+        if ("startMoveDown".equalsIgnoreCase(eventPortID)) {
+            return elpStartMoveDown;
+        }
+        if ("stopMoveLeft".equalsIgnoreCase(eventPortID)) {
+            return elpStopMoveLeft;
+        }
+        if ("stopMoveRight".equalsIgnoreCase(eventPortID)) {
+            return elpStopMoveRight;
+        }
+        if ("stopMoveUp".equalsIgnoreCase(eventPortID)) {
+            return elpStopMoveUp;
+        }
+        if ("stopMoveDown".equalsIgnoreCase(eventPortID)) {
+            return elpStopMoveDown;
+        }
+        if ("stopMoveAll".equalsIgnoreCase(eventPortID)) {
+            return elpStopMoveAll;
+        }
 
         return null;
     }
@@ -181,6 +213,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         }
         if ("maxVelocity".equalsIgnoreCase(propertyName)) {
             return propMaxVelocity;
+        }
+        if ("baseVelocity".equalsIgnoreCase(propertyName)) {
+            return propBaseVelocity;
         }
         if ("tooltipFolder".equalsIgnoreCase(propertyName)) {
             return propTooltipFolder;
@@ -227,6 +262,11 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             propMaxVelocity = Integer.parseInt(newValue.toString());
             return oldValue;
         }
+        if ("baseVelocity".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propBaseVelocity;
+            propBaseVelocity = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
         if ("tooltipFolder".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propTooltipFolder;
             propTooltipFolder = (String) newValue;
@@ -249,10 +289,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 } else {
                     x += inputValue;
                 }
-                if (x < 0)
-                    x = 0;
-                if (x > screenWidth)
-                    x = screenWidth;
+                x = normalizeValue(x, 0, screenWidth);
                 gui.setCursor(x, y);
             } else
                 gui.navigateTooltips(inputValue);
@@ -268,10 +305,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 } else {
                     y += inputValue;
                 }
-                if (y < 0)
-                    y = 0;
-                if (y > screenHeight)
-                    y = screenHeight;
+                y = normalizeValue(y, 0, screenHeight);
                 gui.setCursor(x, y);
             } else
                 gui.navigateTooltips(inputValue);
@@ -297,8 +331,76 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         }
     };
 
-    Point position;
-    Dimension dimension;
+    final IRuntimeEventListenerPort elpStartMoveLeft = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            lastMoveTimeH = System.currentTimeMillis();
+            moveLeft = true;
+            moveRight = false;
+        }
+    };
+
+    final IRuntimeEventListenerPort elpStartMoveRight = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            lastMoveTimeH = System.currentTimeMillis();
+            moveRight = true;
+            moveLeft = false;
+        }
+    };
+
+    final IRuntimeEventListenerPort elpStartMoveUp = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            lastMoveTimeV = System.currentTimeMillis();
+            moveUp = true;
+            moveDown = false;
+        }
+    };
+
+    final IRuntimeEventListenerPort elpStartMoveDown = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            lastMoveTimeV = System.currentTimeMillis();
+            moveDown = true;
+            moveUp = false;
+        }
+    };
+
+    final IRuntimeEventListenerPort elpStopMoveLeft = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            moveLeft = false;
+            currentMoveSpeedH = propBaseVelocity;
+        }
+    };
+
+    final IRuntimeEventListenerPort elpStopMoveRight = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            moveRight = false;
+            currentMoveSpeedH = propBaseVelocity;
+        }
+    };
+
+    final IRuntimeEventListenerPort elpStopMoveUp = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            moveUp = false;
+            currentMoveSpeedV = propBaseVelocity;
+        }
+    };
+
+    final IRuntimeEventListenerPort elpStopMoveDown = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            moveDown = false;
+            currentMoveSpeedV = propBaseVelocity;
+        }
+    };
+
+    final IRuntimeEventListenerPort elpStopMoveAll = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            moveLeft = false;
+            moveRight = false;
+            moveUp = false;
+            moveDown = false;
+            currentMoveSpeedH = propBaseVelocity;
+            currentMoveSpeedV = propBaseVelocity;
+        }
+    };
 
     /**
      * called when model is started.
@@ -354,6 +456,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                                 gui.resetAxis();
                                 elapsedIdleTime = Long.MAX_VALUE;
                             }
+                        } else {
+                            doMove();
                         }
 
                         if (((System.currentTimeMillis() - elapsedIdleTime) < 200) && (elapsedIdleTime != Long.MAX_VALUE)) {
@@ -361,9 +465,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                             if (actAccel > propMaxVelocity)
                                 actAccel = propMaxVelocity;
                             // System.out.println("Accel="+actAccel);
-                        } else
+                        } else {
                             actAccel = 1.0;
-
+                        }
                     } catch (InterruptedException e) {
                     }
                 }
@@ -408,5 +512,71 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 }
             }
         });
+    }
+
+    /**
+     * moves if the class member boolean variables are set
+     */
+    private void doMove() {
+        if(!this.moveLeft && !this.moveRight && !this.moveUp && !this.moveDown) {
+            return;
+        }
+        elapsedIdleTime = System.currentTimeMillis();
+
+        if ((this.moveLeft || this.moveRight)) {
+            long diffTime = System.currentTimeMillis() - this.lastMoveTimeH;
+            float diffPx = (float) currentMoveSpeedH * diffTime / 1000;
+            this.lastMoveTimeH = System.currentTimeMillis();
+            if (this.moveLeft) {
+                this.x -= diffPx;
+            } else if (this.moveRight) {
+                this.x += diffPx;
+            }
+
+            float diffSpeed = propAcceleration * diffTime / 1000;
+            if (this.currentMoveSpeedH + diffSpeed < propMaxVelocity) {
+                this.currentMoveSpeedH += diffSpeed;
+            } else {
+                this.currentMoveSpeedH = propMaxVelocity;
+            }
+        }
+
+        if ((this.moveUp || this.moveDown)) {
+            long diffTime = System.currentTimeMillis() - this.lastMoveTimeV;
+            float diffPx = (float) currentMoveSpeedV * diffTime / 1000;
+            this.lastMoveTimeV = System.currentTimeMillis();
+            if (this.moveUp) {
+                this.y -= diffPx;
+            } else if (this.moveDown) {
+                this.y += diffPx;
+            }
+
+            float diffSpeed = propAcceleration * diffTime / 1000;
+            if (this.currentMoveSpeedV + diffSpeed < propMaxVelocity) {
+                this.currentMoveSpeedV += diffSpeed;
+            } else {
+                this.currentMoveSpeedV = propMaxVelocity;
+            }
+        }
+
+        this.x = normalizeValue(x, 0, screenWidth);
+        this.y = normalizeValue(y, 0, screenHeight);
+        gui.setCursor(x, y);
+    }
+
+    /**
+     * normalizes the given value to a given range.
+     * @param value the value to normalize
+     * @param minValue
+     * @param maxValue
+     * @return
+     */
+    private float normalizeValue(float value, float minValue, float maxValue) {
+        if (value < minValue) {
+            return minValue;
+        } else if (value > maxValue) {
+            return maxValue;
+        }
+        return value;
     }
 }
