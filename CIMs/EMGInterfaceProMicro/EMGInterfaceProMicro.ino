@@ -1,7 +1,6 @@
 
 #define CHANNELS 4
 #define USE_BUFFERED_AVG 1
-#define SENSOR A0
 #define RXLED  17
 #define STARTBUTTON 14
 #define DELAYTIME 50
@@ -10,6 +9,7 @@
 
 int delta[CHANNELS] = {0};
 int oldValue[CHANNELS] = {0};
+int SENSORS[CHANNELS] = {A3,A0,A2,A1};
 const int N_AVERAGE = 3;
 long lastPrint = 0;
 
@@ -31,7 +31,10 @@ void setup() {
   pinMode(RXLED, OUTPUT);
   digitalWrite(RXLED, HIGH);
 
-  pinMode(SENSOR, INPUT);
+  pinMode(SENSORS[0], INPUT);
+  pinMode(SENSORS[1], INPUT);
+  pinMode(SENSORS[2], INPUT);
+  pinMode(SENSORS[3], INPUT);
   pinMode(STARTBUTTON, INPUT_PULLUP);
   delay(2);
 }
@@ -61,9 +64,9 @@ void loop() {
       for (int i=0;i<CHANNELS;i++) {
         
         #ifdef USE_BUFFERED_AVG
-          value = getBufferedAvg(&bufAveragers[i], analogRead(SENSOR+i));
+          value = getBufferedAvg(&bufAveragers[i], analogRead(SENSORS[i]));
         #else
-          value = getMovingAvg(&movAverage[i], analogRead(SENSOR+i));
+          value = getMovingAvg(&movAverage[i], analogRead(SENSORS[i]));
         #endif
         
         if(value > oldValue[i]) {
