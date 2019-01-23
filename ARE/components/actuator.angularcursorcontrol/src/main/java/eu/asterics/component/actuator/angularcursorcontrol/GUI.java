@@ -50,6 +50,8 @@ import javax.swing.WindowConstants;
  */
 public class GUI extends JFrame {
 
+    private int screenWidth = 0;
+    private int screenHeight = 0;
     float x = 0.0f;
     int len = 0, width = 0;
     float angle = 0.0f;
@@ -82,6 +84,10 @@ public class GUI extends JFrame {
         setOpacity(0.5f);
         setVisible(true);
         setShape(0.0f);
+
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        screenWidth = gd.getDisplayMode().getWidth();
+        screenHeight = gd.getDisplayMode().getHeight();
 
         try {
             rob = new Robot();
@@ -122,6 +128,8 @@ public class GUI extends JFrame {
 
         locX += dx;
         locY += dy;
+        locX = normalizeValue(locX,0, screenWidth);
+        locY = normalizeValue(locY,0, screenHeight);
 
         try {
             Robot r = new Robot();
@@ -157,5 +165,21 @@ public class GUI extends JFrame {
         tx.translate(-len, -len);
         Shape newShape = tx.createTransformedShape(polygon);
         g2.fill(newShape);
+    }
+
+    /**
+     * normalizes the given value to a given range.
+     * @param value the value to normalize
+     * @param minValue
+     * @param maxValue
+     * @return
+     */
+    private double normalizeValue(double value, double minValue, double maxValue) {
+        if (value < minValue) {
+            return minValue;
+        } else if (value > maxValue) {
+            return maxValue;
+        }
+        return value;
     }
 }
