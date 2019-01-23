@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2EMG.acs_2019_1_23_16_6" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2EMG.acs_2019_1_23_16_12" version="20130320">
   <components>
     <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
       <description>cursor position control via crosshair movement</description>
@@ -361,7 +361,7 @@
         <property name="expression" value="-a/1" />
       </properties>
       <layout>
-        <posX>721</posX>
+        <posX>722</posX>
         <posY>347</posY>
       </layout>
     </component>
@@ -1335,8 +1335,8 @@
   <modelGUI>
     <Decoration>false</Decoration>
     <Fullscreen>false</Fullscreen>
-    <AlwaysOnTop>true</AlwaysOnTop>
-    <ToSystemTray>false</ToSystemTray>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>true</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
       <posX>0</posX>
