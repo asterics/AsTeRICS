@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2EMG.acs_2019_1_20_18_15" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2EMG.acs_2019_1_23_16_6" version="20130320">
   <components>
     <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
       <description>cursor position control via crosshair movement</description>
@@ -10,6 +10,12 @@
         <inputPort portTypeID="y">
           <properties />
         </inputPort>
+        <inputPort portTypeID="accelerationH">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationV">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="tooltip">
           <properties />
         </outputPort>
@@ -18,13 +24,15 @@
         <property name="absoluteValues" value="false" />
         <property name="clickEventTime" value="1000" />
         <property name="lineWidth" value="10" />
-        <property name="acceleration" value="1500" />
+        <property name="baseVelocity" value="10" />
+        <property name="accelerationH" value="100" />
+        <property name="accelerationV" value="100" />
         <property name="maxVelocity" value="80" />
         <property name="tooltipFolder" value="data/pictures/tooltips" />
       </properties>
       <layout>
-        <posX>1028</posX>
-        <posY>266</posY>
+        <posX>1030</posX>
+        <posY>264</posY>
       </layout>
     </component>
     <component id="PathSelector.1" type_id="asterics.PathSelector">
@@ -74,7 +82,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="a/20" />
+        <property name="expression" value="a/1" />
       </properties>
       <layout>
         <posX>725</posX>
@@ -128,7 +136,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="a/20" />
+        <property name="expression" value="a/1" />
       </properties>
       <layout>
         <posX>720</posX>
@@ -249,7 +257,7 @@
       <properties>
         <property name="xCenter" value="0" />
         <property name="yCenter" value="0" />
-        <property name="radius" value="20" />
+        <property name="radius" value="100" />
         <property name="mode" value="2" />
       </properties>
       <layout>
@@ -350,11 +358,11 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="-a/20" />
+        <property name="expression" value="-a/1" />
       </properties>
       <layout>
         <posX>721</posX>
-        <posY>346</posY>
+        <posY>347</posY>
       </layout>
     </component>
     <component id="MathEvaluator.1.2" type_id="asterics.MathEvaluator">
@@ -377,11 +385,11 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="-a/20" />
+        <property name="expression" value="-a/1" />
       </properties>
       <layout>
-        <posX>720</posX>
-        <posY>513</posY>
+        <posX>717</posX>
+        <posY>514</posY>
       </layout>
     </component>
     <component id="PathSelector.1.1" type_id="asterics.PathSelector">
@@ -553,14 +561,14 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="ComPort" value="COM20" />
-        <property name="BaudRate" value="115200" />
+        <property name="ComPort" value="COM16" />
+        <property name="BaudRate" value="9600" />
         <property name="ReceivedDataType" value="0" />
         <property name="SendDataType" value="1" />
       </properties>
       <layout>
-        <posX>18</posX>
-        <posY>184</posY>
+        <posX>16</posX>
+        <posY>142</posY>
       </layout>
     </component>
     <component id="StringSplitter.1" type_id="asterics.StringSplitter">
@@ -622,7 +630,7 @@
         <property name="Seperator" value="," />
       </properties>
       <layout>
-        <posX>153</posX>
+        <posX>134</posX>
         <posY>149</posY>
       </layout>
     </component>
@@ -675,13 +683,94 @@
       <properties>
         <property name="xCenter" value="0" />
         <property name="yCenter" value="0" />
-        <property name="radius" value="20" />
+        <property name="radius" value="100" />
         <property name="mode" value="2" />
       </properties>
       <layout>
         <posX>290</posX>
         <posY>279</posY>
       </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>291</posX>
+        <posY>484</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>1565</posY>
+        <width>3062</width>
+        <height>3333</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>289</posX>
+        <posY>640</posY>
+      </layout>
+      <gui>
+        <posX>3260</posX>
+        <posY>1676</posY>
+        <width>2688</width>
+        <height>3222</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>462</posX>
+        <posY>614</posY>
+      </layout>
+      <gui>
+        <posX>6260</posX>
+        <posY>232</posY>
+        <width>2938</width>
+        <height>4444</height>
+      </gui>
     </component>
   </components>
   <channels>
@@ -695,13 +784,13 @@
         <port id="y" />
       </target>
     </channel>
-    <channel id="binding.18">
+    <channel id="binding.32">
       <source>
         <component id="StringSplitter.1" />
         <port id="out2" />
       </source>
       <target>
-        <component id="Deadzone.1.1" />
+        <component id="Deadzone.1" />
         <port id="inX" />
       </target>
     </channel>
@@ -715,13 +804,13 @@
         <port id="input1" />
       </target>
     </channel>
-    <channel id="binding.17">
+    <channel id="binding.31">
       <source>
         <component id="StringSplitter.1" />
         <port id="out1" />
       </source>
       <target>
-        <component id="Deadzone.1" />
+        <component id="Deadzone.1.1" />
         <port id="inX" />
       </target>
     </channel>
@@ -873,6 +962,26 @@
       <target>
         <component id="CrosshairCursorControl.1" />
         <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.29">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.30">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
       </target>
     </channel>
   </channels>
@@ -1042,21 +1151,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="enterZone_stop">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1" />
-          <eventPort id="enterZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Timer.1.2" />
-          <eventPort id="stop" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="enterZone_reset">
       <description />
       <sources>
@@ -1132,6 +1226,111 @@
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="enterZone_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.2" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="enterZone_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="enterZone_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.1.1" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.1.1" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="clickEvent_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="clickEvent" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
     <Decoration>false</Decoration>
@@ -1142,8 +1341,8 @@
     <AREGUIWindow>
       <posX>0</posX>
       <posY>-44</posY>
-      <width>2500</width>
-      <height>667</height>
+      <width>9625</width>
+      <height>5444</height>
     </AREGUIWindow>
   </modelGUI>
 </model>
