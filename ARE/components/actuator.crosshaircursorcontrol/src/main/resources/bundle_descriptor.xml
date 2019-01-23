@@ -18,6 +18,16 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
+			<inputPort id="accelerationH">
+				<description>horizontal movement acceleration, increasing px/second per second</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="accelerationV">
+				<description>vertical movement acceleration, increasing px/second per second</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
             <outputPort id="tooltip">
                 <description>the filename of the selected tooltip icon.</description>
                 <dataType>string</dataType>
@@ -90,10 +100,14 @@
 				type="integer"
 				value="10"
 				description="base movement velocity in px per second"/>
-			<property name="acceleration"
+			<property name="accelerationH"
 				type="integer"
 				value="100"
-				description="movement acceleration, increasing px/second per second"/>
+				description="horizontal movement acceleration, increasing px/second per second"/>
+			<property name="accelerationV"
+					  type="integer"
+					  value="100"
+					  description="vertical movement acceleration, increasing px/second per second"/>
 			<property name="maxVelocity"
 				type="integer"
 				value="100"

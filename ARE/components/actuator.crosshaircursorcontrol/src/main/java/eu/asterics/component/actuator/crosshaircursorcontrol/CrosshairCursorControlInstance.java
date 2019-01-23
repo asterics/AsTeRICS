@@ -63,7 +63,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     boolean propAbsoluteValues = false;
     int propClickEventTime = 1000;
     int propLineWidth = 200;
-    int propAcceleration = 100;
+    int propAccelerationH = 100;
+    int propAccelerationV = 100;
     int propMaxVelocity = 100;
     int propBaseVelocity = 10;
     String propTooltipFolder = "data/pictures/tooltips";
@@ -108,6 +109,12 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         }
         if ("y".equalsIgnoreCase(portID)) {
             return ipY;
+        }
+        if ("accelerationH".equalsIgnoreCase(portID)) {
+            return ipAccelerationH;
+        }
+        if ("accelerationV".equalsIgnoreCase(portID)) {
+            return ipAccelerationV;
         }
 
         return null;
@@ -214,8 +221,11 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("lineWidth".equalsIgnoreCase(propertyName)) {
             return propLineWidth;
         }
-        if ("acceleration".equalsIgnoreCase(propertyName)) {
-            return propAcceleration;
+        if ("accelerationH".equalsIgnoreCase(propertyName)) {
+            return propAccelerationH;
+        }
+        if ("accelerationV".equalsIgnoreCase(propertyName)) {
+            return propAccelerationV;
         }
         if ("maxVelocity".equalsIgnoreCase(propertyName)) {
             return propMaxVelocity;
@@ -258,9 +268,14 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             propLineWidth = Integer.parseInt(newValue.toString());
             return oldValue;
         }
-        if ("acceleration".equalsIgnoreCase(propertyName)) {
-            final Object oldValue = propAcceleration;
-            propAcceleration = Integer.parseInt(newValue.toString());
+        if ("accelerationH".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propAccelerationH;
+            propAccelerationH = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
+        if ("accelerationV".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propAccelerationV;
+            propAccelerationV = Integer.parseInt(newValue.toString());
             return oldValue;
         }
         if ("maxVelocity".equalsIgnoreCase(propertyName)) {
@@ -318,14 +333,29 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         }
     };
 
+    private final IRuntimeInputPort ipAccelerationH = new DefaultRuntimeInputPort() {
+        public void receiveData(byte[] data) {
+            propAccelerationH = ConversionUtils.intFromBytes(data);
+            elapsedIdleTime = System.currentTimeMillis();
+        }
+    };
+
+    private final IRuntimeInputPort ipAccelerationV = new DefaultRuntimeInputPort() {
+        public void receiveData(byte[] data) {
+            propAccelerationV = ConversionUtils.intFromBytes(data);
+            elapsedIdleTime = System.currentTimeMillis();
+        }
+    };
+
     /**
      * Event Listerner Ports.
      */
     final IRuntimeEventListenerPort elpSelect = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            // elapsedIdleTime=System.currentTimeMillis();
-            if (!gui.tooltipsActive())
+            elapsedIdleTime=System.currentTimeMillis();
+            if (!gui.tooltipsActive()) {
                 gui.changeAxis();
+            }
             gui.setOnTop();
         }
     };
@@ -489,7 +519,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                         }
 
                         if (((System.currentTimeMillis() - elapsedIdleTime) < 200) && (elapsedIdleTime != Long.MAX_VALUE)) {
-                            actAccel += 0.001 * (double) propAcceleration;
+                            actAccel += 0.001 * (double) propAccelerationH;
                             if (actAccel > propMaxVelocity)
                                 actAccel = propMaxVelocity;
                             // System.out.println("Accel="+actAccel);
@@ -561,11 +591,14 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 this.x += diffPx;
             }
 
-            float diffSpeed = (float) propAcceleration * diffTime / 1000;
+            float diffSpeed = (float) propAccelerationH * diffTime / 1000;
             if (this.currentMoveSpeedH + diffSpeed < propMaxVelocity) {
                 this.currentMoveSpeedH += diffSpeed;
             } else {
                 this.currentMoveSpeedH = propMaxVelocity;
+            }
+            if(this.currentMoveSpeedH < propBaseVelocity) {
+                this.currentMoveSpeedH = propBaseVelocity;
             }
         }
 
@@ -579,11 +612,14 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 this.y += diffPx;
             }
 
-            float diffSpeed = (float) propAcceleration * diffTime / 1000;
+            float diffSpeed = (float) propAccelerationV * diffTime / 1000;
             if (this.currentMoveSpeedV + diffSpeed < propMaxVelocity) {
                 this.currentMoveSpeedV += diffSpeed;
             } else {
                 this.currentMoveSpeedV = propMaxVelocity;
+            }
+            if(this.currentMoveSpeedV < propBaseVelocity) {
+                this.currentMoveSpeedV = propBaseVelocity;
             }
         }
 
