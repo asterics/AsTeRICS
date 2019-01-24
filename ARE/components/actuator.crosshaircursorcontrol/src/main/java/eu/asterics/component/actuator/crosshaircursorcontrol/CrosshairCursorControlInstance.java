@@ -67,12 +67,14 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     int propAccelerationV = 100;
     int propMaxVelocity = 100;
     int propBaseVelocity = 10;
-    String propTooltipFolder = "data/pictures/tooltips";
+    String propTooltipFolder = "pictures/tooltips";
 
     // declare member variables here
     private GUI gui = null;
     private float x = 0;
     private float y = 0;
+    private float lastStableX = -1;
+    private float lastStableY = -1;
     private boolean running;
     private boolean moveLeft = false;
     private boolean moveRight = false;
@@ -181,6 +183,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         }
         if ("stopMoveAll".equalsIgnoreCase(eventPortID)) {
             return elpStopMoveAll;
+        }
+        if ("moveToLastStable".equalsIgnoreCase(eventPortID)) {
+            return elpMoveToLastStable;
         }
 
         return null;
@@ -425,6 +430,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         public void receiveEvent(final String data) {
             moveLeft = false;
             currentMoveSpeedH = propBaseVelocity;
+            lastStableX = x;
         }
     };
 
@@ -432,6 +438,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         public void receiveEvent(final String data) {
             moveRight = false;
             currentMoveSpeedH = propBaseVelocity;
+            lastStableX = x;
         }
     };
 
@@ -439,6 +446,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         public void receiveEvent(final String data) {
             moveUp = false;
             currentMoveSpeedV = propBaseVelocity;
+            lastStableY = y;
         }
     };
 
@@ -446,6 +454,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         public void receiveEvent(final String data) {
             moveDown = false;
             currentMoveSpeedV = propBaseVelocity;
+            lastStableY = y;
         }
     };
 
@@ -457,6 +466,16 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             moveDown = false;
             currentMoveSpeedH = propBaseVelocity;
             currentMoveSpeedV = propBaseVelocity;
+            lastStableX = x;
+            lastStableY = y;
+        }
+    };
+
+    final IRuntimeEventListenerPort elpMoveToLastStable = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            x = lastStableX != -1 ? lastStableX : x;
+            y = lastStableY != -1 ? lastStableY : y;
+            gui.setCursor(x,y);
         }
     };
 
@@ -514,7 +533,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                                 gui.resetAxis();
                                 elapsedIdleTime = Long.MAX_VALUE;
                             }
-                        } else {
+                        } else if(!gui.tooltipsActive()) {
                             doMove();
                         }
 

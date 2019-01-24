@@ -75,6 +75,9 @@
 			<eventListenerPort id="stopMoveAll">
 				<description>stops all automatic movement</description>
 			</eventListenerPort>
+			<eventListenerPort id="moveToLastStable">
+				<description>moves to last stable x/y cursor position without movement</description>
+			</eventListenerPort>
 
 			<eventTriggererPort id="clickEvent">
 				<description>this event is generated after an inactivity of clickEventTime milliseconds</description>
