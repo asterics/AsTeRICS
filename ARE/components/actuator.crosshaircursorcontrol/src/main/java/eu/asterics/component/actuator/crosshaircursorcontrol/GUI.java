@@ -51,7 +51,6 @@ public class GUI extends JFrame {
 
     int width = 0, height = 0;
     int lineWidth = 0;
-    boolean axis = true;
     Robot MouseRobot;
     BufferedImage image = null;
     int actTooltip = 0;
@@ -61,10 +60,12 @@ public class GUI extends JFrame {
     volatile long tooltipTime = Long.MAX_VALUE;
     String tooltipFolder = "";
     String actImageFileName = "";
-    JPanel xAxisPanel, yAxisPanel;
 
     double locX = 0;
     double locY = 0;
+
+    private boolean highlightXAxis = false;
+    private boolean highlightYAxis = true;
     // private JLabel myLabel;
     // add more GUI elements here
 
@@ -103,6 +104,7 @@ public class GUI extends JFrame {
         Point location = MouseInfo.getPointerInfo().getLocation();
         locX = location.x;
         locY = location.y;
+        repaintInternal();
     }
 
     void loadImage(String fn) {
@@ -120,12 +122,7 @@ public class GUI extends JFrame {
             tooltipActive = false;
             AstericsErrorHandling.instance.getLogger().warning(" *****  Can not open picture: " + ex.getMessage());
         }
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                repaint();
-            }
-        });
+        repaintInternal();
     }
 
     String getTooltipFilename() {
@@ -204,36 +201,30 @@ public class GUI extends JFrame {
     }
 
     void resetAxis() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                axis = true;
-                repaint();
-            }
-        });
+        highlightXAxis = false;
+        highlightYAxis = false;
+        repaintInternal();
     }
 
-    void changeAxis() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                axis = !axis;
-                repaint();
-            }
-        });
+    void toggleAxis() {
+        highlightXAxis = !highlightXAxis;
+        highlightYAxis = !highlightYAxis;
+        repaintInternal();
+    }
+
+    void setXAxisHighlight(boolean highlightXAxis) {
+        this.highlightXAxis = highlightXAxis;
+    }
+
+    void setYAxisHighlight(boolean highlightYAxis) {
+        this.highlightYAxis = highlightYAxis;
     }
 
     synchronized void setCursor(float x, float y) {
         locX = x;
         locY = y;
         MouseRobot.mouseMove((int) locX, (int) locY);
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                repaint();
-            }
-        });
+        repaintInternal();
     }
 
     @Override
@@ -242,17 +233,13 @@ public class GUI extends JFrame {
         Graphics2D g2 = (Graphics2D) g;
         Color xAxisColor, yAxisColor;
 
-        if (image != null) {
-            xAxisColor = Color.GRAY;
-            yAxisColor = Color.GRAY;
-        } else {
-            if (axis) {
-                xAxisColor = Color.GRAY;
-                yAxisColor = Color.RED;
-            } else {
-                xAxisColor = Color.RED;
-                yAxisColor = Color.GRAY;
-            }
+        xAxisColor = Color.GRAY;
+        yAxisColor = Color.GRAY;
+        if (highlightXAxis && image == null) {
+            xAxisColor = Color.RED;
+        }
+        if (highlightYAxis && image == null) {
+            yAxisColor = Color.RED;
         }
 
         g2.setColor(yAxisColor);
@@ -279,4 +266,12 @@ public class GUI extends JFrame {
 
     }
 
+    private void repaintInternal() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                repaint();
+            }
+        });
+    }
 }
