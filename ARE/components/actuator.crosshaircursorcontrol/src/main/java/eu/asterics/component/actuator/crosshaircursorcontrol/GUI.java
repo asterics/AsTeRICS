@@ -55,6 +55,8 @@ public class GUI extends JFrame {
     Robot MouseRobot;
     BufferedImage image = null;
     int actTooltip = 0;
+    int tooltipStartIndex = 0;
+    boolean tooltipActive = false;
     float tooltipX = 0;
     volatile long tooltipTime = Long.MAX_VALUE;
     String tooltipFolder = "";
@@ -109,13 +111,13 @@ public class GUI extends JFrame {
         try {
             URI myURI = ResourceRegistry.getInstance().getResource(tmpFileName, ResourceRegistry.RES_TYPE.DATA);
             File imageFile = new File(myURI);
-            
             image = ImageIO.read(imageFile);
             actImageFileName = fn;
         } catch (Exception ex) {
             image = null;
-            actTooltip = 0;
+            actTooltip = tooltipStartIndex;
             actImageFileName = "";
+            tooltipActive = false;
             AstericsErrorHandling.instance.getLogger().warning(" *****  Can not open picture: " + ex.getMessage());
         }
         SwingUtilities.invokeLater(new Runnable() {
@@ -131,22 +133,22 @@ public class GUI extends JFrame {
     }
 
     boolean tooltipsActive() {
-        if (actTooltip > 0) {
-            return (true);
-        }
-        return (false);
+        return tooltipActive;
     }
 
-    void activateTooltips(String tooltipFolder) {
+    void activateTooltips(String tooltipFolder, int startIndex) {
         this.tooltipFolder = tooltipFolder + "/";
-        actTooltip = 1;
+        this.tooltipStartIndex = startIndex;
+        actTooltip = tooltipStartIndex;
+        this.tooltipActive = true;
         tooltipX = 0;
-        loadImage("1");
+        loadImage(Integer.toString(actTooltip));
         tooltipTime = System.currentTimeMillis();
     }
 
     void deactivateTooltips() {
-        actTooltip = 0;
+        actTooltip = tooltipStartIndex;
+        this.tooltipActive = false;
         loadImage("");
     }
 
@@ -155,8 +157,9 @@ public class GUI extends JFrame {
         if (System.currentTimeMillis() - tooltipTime > 100) {
             if (dx > 0)
                 actTooltip++;
-            else if (actTooltip > 1)
+            else {
                 actTooltip--;
+            }
             loadImage(Integer.toString(actTooltip));
         }
         tooltipTime = System.currentTimeMillis();

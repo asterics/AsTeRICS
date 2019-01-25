@@ -67,6 +67,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     int propAccelerationV = 100;
     int propMaxVelocity = 100;
     int propBaseVelocity = 10;
+    int propTooltipStartIndex = 3;
     String propTooltipFolder = "pictures/tooltips";
 
     // declare member variables here
@@ -241,6 +242,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("tooltipFolder".equalsIgnoreCase(propertyName)) {
             return propTooltipFolder;
         }
+        if ("tooltipStartIndex".equalsIgnoreCase(propertyName)) {
+            return propTooltipStartIndex;
+        }
 
         return null;
     }
@@ -296,6 +300,11 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("tooltipFolder".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propTooltipFolder;
             propTooltipFolder = (String) newValue;
+            return oldValue;
+        }
+        if ("tooltipStartIndex".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propTooltipStartIndex;
+            propTooltipStartIndex = Integer.parseInt(newValue.toString());
             return oldValue;
         }
 
@@ -368,7 +377,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     final IRuntimeEventListenerPort elpActivateTooltips = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
-            gui.activateTooltips(propTooltipFolder);
+            gui.activateTooltips(propTooltipFolder, propTooltipStartIndex);
         }
     };
 

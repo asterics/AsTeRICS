@@ -117,8 +117,12 @@
 				description="maximum movement velocity in px per second"/>
 			<property name="tooltipFolder"
 				type="string"
-				value="data/pictures/tooltips"
+				value="pictures/tooltips"
 				description="folder which contains tooltip icons in .png format"/>
+			<property name="tooltipStartIndex"
+				type="integer"
+				value="3"
+				description="start index for first shown tooltip"/>
 
         </properties>
 
