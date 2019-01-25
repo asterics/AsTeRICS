@@ -1,0 +1,1317 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_4EMG_events.acs_2019_1_24_16_38" version="20130320">
+  <modelDescription>
+    <shortDescription>Two EMG inputs trigger movement start/stop over a given Threshold (Deadzones)
+EMG amplitude determines movement acceleration.
+Automatic switch between horizontal/vertical after given time (Timer1.2)</shortDescription>
+    <requirements />
+    <description />
+  </modelDescription>
+  <components>
+    <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
+      <description>cursor position control via crosshair movement</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationH">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationV">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="tooltip">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="absoluteValues" value="false" />
+        <property name="clickEventTime" value="1000" />
+        <property name="lineWidth" value="10" />
+        <property name="baseVelocity" value="30" />
+        <property name="accelerationH" value="600" />
+        <property name="accelerationV" value="600" />
+        <property name="maxVelocity" value="2000" />
+        <property name="tooltipFolder" value="pictures/tooltips" />
+        <property name="tooltipStartIndex" value="3" />
+      </properties>
+      <layout>
+        <posX>904</posX>
+        <posY>347</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a+c-10*b)*b" />
+      </properties>
+      <layout>
+        <posX>625</posX>
+        <posY>310</posY>
+      </layout>
+    </component>
+    <component id="ConstantDispatcher.DeadzoneRadius" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="1" />
+        <property name="slot1" value="50" />
+        <property name="slot2" value="0" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="1" />
+      </properties>
+      <layout>
+        <posX>163</posX>
+        <posY>5</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="true" />
+        <property name="startCentered" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>1237</posX>
+        <posY>376</posY>
+      </layout>
+    </component>
+    <component id="Deadzone.Right" type_id="asterics.Deadzone">
+      <description>Defines active/passive Zone for x/y values</description>
+      <ports>
+        <inputPort portTypeID="inX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="radius">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="xCenter" value="0" />
+        <property name="yCenter" value="0" />
+        <property name="radius" value="30" />
+        <property name="mode" value="2" />
+      </properties>
+      <layout>
+        <posX>368</posX>
+        <posY>340</posY>
+      </layout>
+    </component>
+    <component id="Deadzone.Down" type_id="asterics.Deadzone">
+      <description>Defines active/passive Zone for x/y values</description>
+      <ports>
+        <inputPort portTypeID="inX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="radius">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="xCenter" value="0" />
+        <property name="yCenter" value="0" />
+        <property name="radius" value="30" />
+        <property name="mode" value="2" />
+      </properties>
+      <layout>
+        <posX>367</posX>
+        <posY>668</posY>
+      </layout>
+    </component>
+    <component id="Deadzone.Up" type_id="asterics.Deadzone">
+      <description>Defines active/passive Zone for x/y values</description>
+      <ports>
+        <inputPort portTypeID="inX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="radius">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="xCenter" value="0" />
+        <property name="yCenter" value="0" />
+        <property name="radius" value="30" />
+        <property name="mode" value="2" />
+      </properties>
+      <layout>
+        <posX>372</posX>
+        <posY>508</posY>
+      </layout>
+    </component>
+    <component id="ComPort.1" type_id="asterics.ComPort">
+      <description>interfaces a (virtual) COM Port for data send/receive  operations</description>
+      <ports>
+        <inputPort portTypeID="send">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="received">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="ComPort" value="COM16" />
+        <property name="BaudRate" value="9600" />
+        <property name="ReceivedDataType" value="0" />
+        <property name="SendDataType" value="1" />
+      </properties>
+      <layout>
+        <posX>12</posX>
+        <posY>283</posY>
+      </layout>
+    </component>
+    <component id="StringSplitter.1" type_id="asterics.StringSplitter">
+      <description>Split the string in up to 16 strings</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out9">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out10">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out11">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out12">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out13">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out14">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out15">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out16">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Seperator" value="," />
+      </properties>
+      <layout>
+        <posX>136</posX>
+        <posY>291</posY>
+      </layout>
+    </component>
+    <component id="ConstantDispatcher.Factor" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="1" />
+        <property name="slot1" value="5" />
+        <property name="slot2" value="0" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="1" />
+      </properties>
+      <layout>
+        <posX>450</posX>
+        <posY>5</posY>
+      </layout>
+    </component>
+    <component id="Deadzone.Left" type_id="asterics.Deadzone">
+      <description>Defines active/passive Zone for x/y values</description>
+      <ports>
+        <inputPort portTypeID="inX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="radius">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="xCenter" value="0" />
+        <property name="yCenter" value="0" />
+        <property name="radius" value="30" />
+        <property name="mode" value="2" />
+      </properties>
+      <layout>
+        <posX>370</posX>
+        <posY>172</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>256</posX>
+        <posY>814</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>1565</posY>
+        <width>3062</width>
+        <height>3333</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>134</posX>
+        <posY>790</posY>
+      </layout>
+      <gui>
+        <posX>3260</posX>
+        <posY>1676</posY>
+        <width>2688</width>
+        <height>3222</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.1.2" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a+b-(abs(a-b))" />
+      </properties>
+      <layout>
+        <posX>627</posX>
+        <posY>86</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a+c-10*b)*b" />
+      </properties>
+      <layout>
+        <posX>623</posX>
+        <posY>474</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="200" />
+        <property name="thresholdLow" value="200" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="0" />
+        <property name="eventCondition" value="0" />
+      </properties>
+      <layout>
+        <posX>760</posX>
+        <posY>94</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.CtrlLeft" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="29" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>1001</posX>
+        <posY>589</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.AltLeft" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="56" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>1115</posX>
+        <posY>587</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.PageUp" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="3657" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>1013</posX>
+        <posY>753</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.PageDown" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="3665" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>1123</posX>
+        <posY>753</posY>
+      </layout>
+    </component>
+    <component id="EventDispatcher.1" type_id="asterics.EventDispatcher">
+      <description>Translates incoming command strings into events</description>
+      <ports>
+        <inputPort portTypeID="cmd">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="command1" value="1" />
+        <property name="command2" value="2" />
+        <property name="command3" value="3" />
+        <property name="command4" value="4" />
+        <property name="command5" value="5" />
+        <property name="command6" value="6" />
+        <property name="command7" value="7" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+      </properties>
+      <layout>
+        <posX>1061</posX>
+        <posY>163</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="a" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>1418</posX>
+        <posY>156</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="{CTRL}c" />
+        <property name="slot2" value="{CTRL}v" />
+        <property name="slot3" value="{CTRL}x" />
+        <property name="slot4" value="{CTRL}a" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>1294</posX>
+        <posY>157</posY>
+      </layout>
+    </component>
+    <component id="EventDelay.2" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="100" />
+      </properties>
+      <layout>
+        <posX>1173</posX>
+        <posY>158</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.32">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="Deadzone.Right" />
+        <port id="inX" />
+      </target>
+    </channel>
+    <channel id="binding.31">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="Deadzone.Left" />
+        <port id="inX" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="Deadzone.Up" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="Deadzone.Left" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.33">
+      <source>
+        <component id="MathEvaluator.1.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.29">
+      <source>
+        <component id="Deadzone.Left" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.2" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.26">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="CrosshairCursorControl.1" />
+        <port id="accelerationH" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="ConstantDispatcher.DeadzoneRadius" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Deadzone.Left" />
+        <port id="radius" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="ConstantDispatcher.DeadzoneRadius" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Deadzone.Right" />
+        <port id="radius" />
+      </target>
+    </channel>
+    <channel id="binding.22">
+      <source>
+        <component id="ConstantDispatcher.DeadzoneRadius" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Deadzone.Down" />
+        <port id="radius" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="ConstantDispatcher.DeadzoneRadius" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Deadzone.Up" />
+        <port id="radius" />
+      </target>
+    </channel>
+    <channel id="binding.23">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out3" />
+      </source>
+      <target>
+        <component id="Deadzone.Up" />
+        <port id="inX" />
+      </target>
+    </channel>
+    <channel id="binding.24">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out4" />
+      </source>
+      <target>
+        <component id="Deadzone.Down" />
+        <port id="inX" />
+      </target>
+    </channel>
+    <channel id="binding.28">
+      <source>
+        <component id="Deadzone.Right" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inC" />
+      </target>
+    </channel>
+    <channel id="binding.37">
+      <source>
+        <component id="ComPort.1" />
+        <port id="received" />
+      </source>
+      <target>
+        <component id="StringSplitter.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.25">
+      <source>
+        <component id="ConstantDispatcher.Factor" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.30">
+      <source>
+        <component id="Deadzone.Right" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.2" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="Deadzone.Down" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inC" />
+      </target>
+    </channel>
+    <channel id="binding.27">
+      <source>
+        <component id="ConstantDispatcher.Factor" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.34">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.35">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.36">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Keyboard.1" />
+        <port id="keyCodes" />
+      </target>
+    </channel>
+    <channel id="binding.38">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="tooltip" />
+      </source>
+      <target>
+        <component id="EventDispatcher.1" />
+        <port id="cmd" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="clickEvent_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="clickEvent" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="enterZone_startMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.Right" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_stopMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.Right" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="enterZone_startMoveLeft">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.Left" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveLeft" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_stopMoveLeft">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.Left" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveLeft" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_stopMoveUp">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.AltLeft" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_startMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.PageUp" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_stopMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.PageDown" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_startMoveUp">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.CtrlLeft" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="enterZone_startMoveUp">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.Up" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_stopMoveUp">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.Up" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="enterZone_startMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.Down" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_stopMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.Down" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_activateTooltips">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="activateTooltips" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="enterZone_nextTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.Right" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="nextTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="enterZone_previousTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="Deadzone.Left" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="previousTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_moveToLastStable">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="moveToLastStable" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.2" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_nextClickRelease">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDelay.2" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="nextClickRelease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_dispatchSlot3">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_dispatchSlot4">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_rightClick">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_doubleClick">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="doubleClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_dragPress">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="dragPress" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>true</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>-44</posY>
+      <width>9625</width>
+      <height>5444</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
