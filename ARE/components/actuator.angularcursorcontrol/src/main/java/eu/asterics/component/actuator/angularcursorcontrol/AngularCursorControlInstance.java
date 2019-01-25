@@ -383,7 +383,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
      * moves if the class member boolean variables are set
      */
     private void doMove() {
-        if(!this.moveForward && !this.moveBackward) {
+        if (!this.moveForward && !this.moveBackward) {
             return;
         }
         elapsedIdleTime = System.currentTimeMillis();
@@ -401,7 +401,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         } else {
             this.currentMoveSpeed = propMaxVelocity;
         }
-        if(this.currentMoveSpeed < propBaseVelocity) {
+        if (this.currentMoveSpeed < propBaseVelocity) {
             this.currentMoveSpeed = propBaseVelocity;
         }
 
