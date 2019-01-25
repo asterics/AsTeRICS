@@ -61,12 +61,17 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     int propArrowWidth = 200;
     int propArrowLength = 200;
     int propAcceleration = 100;
-    int propMaxVelocity = 100;
+    int propMaxVelocity = 1000;
+    int propBaseVelocity = 30;
 
     // declare member variables here
     private GUI gui = null;
     private float actangle = 0;
     private boolean running;
+    private boolean moveForward = false;
+    private boolean moveBackward = false;
+    private long lastMoveTime = 0;
+    private int currentMoveSpeed = propBaseVelocity;
 
     volatile long elapsedIdleTime = Long.MAX_VALUE;
 
@@ -118,6 +123,15 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         if ("select".equalsIgnoreCase(eventPortID)) {
             return elpSelect;
         }
+        if ("startMoveForward".equalsIgnoreCase(eventPortID)) {
+            return elpStartMoveForward;
+        }
+        if ("startMoveBackward".equalsIgnoreCase(eventPortID)) {
+            return elpStartMoveBackward;
+        }
+        if ("stopMove".equalsIgnoreCase(eventPortID)) {
+            return elpStopMove;
+        }
 
         return null;
     }
@@ -162,6 +176,9 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
         if ("maxVelocity".equalsIgnoreCase(propertyName)) {
             return propMaxVelocity;
+        }
+        if ("baseVelocity".equalsIgnoreCase(propertyName)) {
+            return propBaseVelocity;
         }
 
         return null;
@@ -210,6 +227,11 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
             propMaxVelocity = Integer.parseInt(newValue.toString());
             return oldValue;
         }
+        if ("baseVelocity".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propBaseVelocity;
+            propBaseVelocity = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
 
         return null;
     }
@@ -247,6 +269,42 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
     };
 
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpStartMoveForward = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            lastMoveTime = System.currentTimeMillis();
+            moveForward = true;
+            moveBackward = false;
+        }
+    };
+
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpStartMoveBackward = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            lastMoveTime = System.currentTimeMillis();
+            moveBackward = true;
+            moveForward = false;
+        }
+    };
+
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpStopMove = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            moveBackward = false;
+            moveForward = false;
+            currentMoveSpeed = propBaseVelocity;
+        }
+    };
+
     Point position;
     Dimension dimension;
 
@@ -271,6 +329,8 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
                             etpClickEvent.raiseEvent();
                             gui.setOnTop();
                             elapsedIdleTime = Long.MAX_VALUE;
+                        } else {
+                            doMove();
                         }
                     } catch (InterruptedException e) {
                     }
@@ -317,5 +377,34 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
                 }
             }
         });
+    }
+
+    /**
+     * moves if the class member boolean variables are set
+     */
+    private void doMove() {
+        if(!this.moveForward && !this.moveBackward) {
+            return;
+        }
+        elapsedIdleTime = System.currentTimeMillis();
+        long diffTime = System.currentTimeMillis() - this.lastMoveTime;
+        float diffPx = (float) currentMoveSpeed * diffTime / 1000;
+
+        int factor = moveForward ? 1 : -1;
+        double dx = factor * diffPx * Math.sin(actangle);
+        double dy = factor * -(diffPx * Math.cos(actangle));
+        this.lastMoveTime = System.currentTimeMillis();
+
+        float diffSpeed = (float) propAcceleration * diffTime / 1000;
+        if (this.currentMoveSpeed + diffSpeed < propMaxVelocity) {
+            this.currentMoveSpeed += diffSpeed;
+        } else {
+            this.currentMoveSpeed = propMaxVelocity;
+        }
+        if(this.currentMoveSpeed < propBaseVelocity) {
+            this.currentMoveSpeed = propBaseVelocity;
+        }
+
+        gui.moveCursor(dx, dy);
     }
 }

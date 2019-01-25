@@ -25,6 +25,15 @@
 			<eventListenerPort id="select">
 				<description>selection event</description>
 			</eventListenerPort>
+			<eventListenerPort id="startMoveForward">
+				<description>starts automatic movement backward, accelerated by propery acceleration</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveBackward">
+				<description>starts automatic movement forward, accelerated by propery acceleration</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMove">
+				<description>stops any automatic movement</description>
+			</eventListenerPort>
 
 			<eventTriggererPort id="clickEvent">
 				<description>etp description</description>
@@ -51,11 +60,15 @@
 			<property name="acceleration"
 				type="integer"
 				value="100"
-				description="cursor movement and angle acceleration (0 to deactive acceleration)"/>
+				description="cursor movement acceleration in px/second per second (0 to deactive acceleration)"/>
 			<property name="maxVelocity"
 				type="integer"
-				value="100"
-				description="maximum value for acceleration factor"/>
+				value="1000"
+				description="maximum mouse movement velocity in px per second"/>
+			<property name="baseVelocity"
+					  type="integer"
+					  value="30"
+					  description="base movement velocity in px per second"/>
 
         </properties>
 
