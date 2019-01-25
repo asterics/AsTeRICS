@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\crosshairCursorControl_test.acs_2019_1_15_23_12" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_1key.acs_2019_1_25_16_46" version="20130320">
   <components>
     <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
       <description>cursor position control via crosshair movement</description>
@@ -10,13 +10,27 @@
         <inputPort portTypeID="y">
           <properties />
         </inputPort>
+        <inputPort portTypeID="accelerationH">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationV">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="tooltip">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="absoluteValues" value="false" />
-        <property name="createClickEvent" value="1000" />
+        <property name="autoColorAxis" value="False" />
+        <property name="clickEventTime" value="1000" />
         <property name="lineWidth" value="10" />
-        <property name="acceleration" value="100" />
+        <property name="baseVelocity" value="10" />
+        <property name="accelerationH" value="100" />
+        <property name="accelerationV" value="100" />
         <property name="maxVelocity" value="100" />
+        <property name="tooltipFolder" value="pictures/tooltips" />
+        <property name="tooltipStartIndex" value="3" />
       </properties>
       <layout>
         <posX>533</posX>
@@ -243,8 +257,8 @@
         <property name="wrapAround" value="true" />
       </properties>
       <layout>
-        <posX>157</posX>
-        <posY>57</posY>
+        <posX>129</posX>
+        <posY>54</posY>
       </layout>
     </component>
     <component id="Timer.1.2" type_id="asterics.Timer">
@@ -266,8 +280,8 @@
         <property name="autostart" value="False" />
       </properties>
       <layout>
-        <posX>95</posX>
-        <posY>256</posY>
+        <posX>111</posX>
+        <posY>261</posY>
       </layout>
     </component>
   </components>
@@ -521,6 +535,21 @@
         <target>
           <component id="Mouse.1" />
           <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_toggleAxisHighlight">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="toggleAxisHighlight" />
         </target>
       </targets>
     </eventChannel>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2keys.acs_2019_1_21_19_14" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2keys.acs_2019_1_25_16_57" version="20130320">
   <components>
     <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
       <description>cursor position control via crosshair movement</description>
@@ -10,17 +10,27 @@
         <inputPort portTypeID="y">
           <properties />
         </inputPort>
+        <inputPort portTypeID="accelerationH">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationV">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="tooltip">
           <properties />
         </outputPort>
       </ports>
       <properties>
         <property name="absoluteValues" value="false" />
+        <property name="autoColorAxis" value="False" />
         <property name="clickEventTime" value="1500" />
         <property name="lineWidth" value="10" />
-        <property name="acceleration" value="50" />
+        <property name="baseVelocity" value="10" />
+        <property name="accelerationH" value="100" />
+        <property name="accelerationV" value="100" />
         <property name="maxVelocity" value="100" />
         <property name="tooltipFolder" value="pictures/tooltips" />
+        <property name="tooltipStartIndex" value="3" />
       </properties>
       <layout>
         <posX>674</posX>
@@ -368,8 +378,8 @@
         <property name="autostart" value="False" />
       </properties>
       <layout>
-        <posX>289</posX>
-        <posY>545</posY>
+        <posX>286</posX>
+        <posY>543</posY>
       </layout>
     </component>
     <component id="MathEvaluator.1.2" type_id="asterics.MathEvaluator">
@@ -1191,21 +1201,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="periodFinished_select">
-      <description />
-      <sources>
-        <source>
-          <component id="Timer.1.2" />
-          <eventPort id="periodFinished" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="select" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="keyPressed_activateTooltips">
       <description />
       <sources>
@@ -1563,6 +1558,36 @@
         <target>
           <component id="Timer.1" />
           <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_toggleAxisHighlight">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="toggleAxisHighlight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="clickEvent_highlightYAxis">
+      <description />
+      <sources>
+        <source>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="clickEvent" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="highlightYAxis" />
         </target>
       </targets>
     </eventChannel>
