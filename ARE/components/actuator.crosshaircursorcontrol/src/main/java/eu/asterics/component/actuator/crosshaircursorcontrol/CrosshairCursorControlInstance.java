@@ -395,7 +395,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     final IRuntimeEventListenerPort elpActivateTooltips = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
-            gui.activateTooltips(propTooltipFolder, propTooltipStartIndex);
+            if(!gui.tooltipsActive()) {
+                gui.activateTooltips(propTooltipFolder, propTooltipStartIndex);
+            }
         }
     };
 
