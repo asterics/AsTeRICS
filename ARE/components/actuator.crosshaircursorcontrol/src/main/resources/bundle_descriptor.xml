@@ -101,6 +101,10 @@
 					  type="boolean"
 					  value="true"
 					  description="if true, the axis are colored automatically according to the current movement"/>
+			<property name="highlightClick"
+					  type="boolean"
+					  value="true"
+					  description="if true, the axis are shortly colored green for indicating the clickEvent"/>
 			<property name="wrapAround"
 					  type="boolean"
 					  value="false"

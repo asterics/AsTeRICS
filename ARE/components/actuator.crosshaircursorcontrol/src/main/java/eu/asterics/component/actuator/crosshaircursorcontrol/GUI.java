@@ -68,6 +68,7 @@ public class GUI extends JFrame {
     private boolean highlightYAxis = true;
     private boolean currentHighlightXAxis = false;
     private boolean currentHighlightYAxis = false;
+    private boolean highlightClick = false;
     // private JLabel myLabel;
     // add more GUI elements here
 
@@ -230,6 +231,11 @@ public class GUI extends JFrame {
         }
     }
 
+    void doAxisClickHighlight() {
+        highlightClick = true;
+        repaintInternal();
+    }
+
     synchronized void setCursor(float x, float y) {
         locX = x;
         locY = y;
@@ -255,6 +261,10 @@ public class GUI extends JFrame {
             yAxisColor = Color.RED;
             currentHighlightYAxis = true;
         }
+        if(highlightClick) {
+            xAxisColor = Color.GREEN;
+            yAxisColor = Color.GREEN;
+        }
 
         g2.setColor(yAxisColor);
         g2.fillRect((int) locX - lineWidth / 2, 0, lineWidth, (int) locY - lineWidth / 2);
@@ -278,14 +288,33 @@ public class GUI extends JFrame {
             g.drawImage(image, toolX, toolY, null);
         }
 
+        if(highlightClick) {
+            highlightClick = false;
+            repaintInternal(150);
+        }
     }
 
-    private void repaintInternal() {
+    private void repaintInternal(final long sleepMs) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                if(sleepMs > 0) {
+                    sleepInternal(sleepMs);
+                }
                 repaint();
             }
         });
+    }
+
+    private void repaintInternal() {
+        repaintInternal(0);
+    }
+
+    private void sleepInternal(long ms) {
+        try {
+            Thread.currentThread().sleep(ms);
+        } catch (InterruptedException e) {
+            AstericsErrorHandling.instance.getLogger().warning("GUI sleep error: " + e.getMessage());
+        }
     }
 }

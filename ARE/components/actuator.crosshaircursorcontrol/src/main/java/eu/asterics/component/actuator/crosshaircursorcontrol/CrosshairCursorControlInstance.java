@@ -62,6 +62,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     boolean propAbsoluteValues = false;
     boolean propAutoColorAxis = true;
+    boolean propHighlightClick = true;
     boolean propWrapAround = false;
     int propClickEventTime = 1000;
     int propLineWidth = 200;
@@ -232,6 +233,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("autoColorAxis".equalsIgnoreCase(propertyName)) {
             return propAutoColorAxis;
         }
+        if ("highlightClick".equalsIgnoreCase(propertyName)) {
+            return propHighlightClick;
+        }
         if ("wrapAround".equalsIgnoreCase(propertyName)) {
             return propWrapAround;
         }
@@ -280,6 +284,11 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("autoColorAxis".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propAutoColorAxis;
             propAutoColorAxis = Boolean.parseBoolean((String) newValue);
+            return oldValue;
+        }
+        if ("highlightClick".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propHighlightClick;
+            propHighlightClick = Boolean.parseBoolean((String) newValue);
             return oldValue;
         }
         if ("wrapAround".equalsIgnoreCase(propertyName)) {
@@ -583,6 +592,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                             } else {
                                 // gui.hideCrosshair();
                                 gui.setCursor(x, y); // update cursor position (prevent JavaRobot positioning error when quickly updated)
+                                if(propHighlightClick) gui.doAxisClickHighlight();
                                 etpClickEvent.raiseEvent();
                                 // Thread.sleep(200);
                                 // gui.showCrosshair();
