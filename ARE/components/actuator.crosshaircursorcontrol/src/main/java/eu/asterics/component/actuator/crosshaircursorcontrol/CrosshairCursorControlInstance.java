@@ -152,6 +152,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("activateTooltips".equalsIgnoreCase(eventPortID)) {
             return elpActivateTooltips;
         }
+        if ("deactivateTooltips".equalsIgnoreCase(eventPortID)) {
+            return elpDeactivateTooltips;
+        }
         if ("nextTooltip".equalsIgnoreCase(eventPortID)) {
             return elpNextTooltip;
         }
@@ -398,6 +401,13 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             if(!gui.tooltipsActive()) {
                 gui.activateTooltips(propTooltipFolder, propTooltipStartIndex);
             }
+        }
+    };
+
+    final IRuntimeEventListenerPort elpDeactivateTooltips = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            gui.deactivateTooltips();
         }
     };
 

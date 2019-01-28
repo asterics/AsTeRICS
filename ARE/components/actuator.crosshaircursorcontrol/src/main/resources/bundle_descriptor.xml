@@ -39,6 +39,9 @@
 			<eventListenerPort id="activateTooltips">
 				<description>if available, show tooltip icons and activate tooltip mode</description>
 			</eventListenerPort>
+			<eventListenerPort id="deactivateTooltips">
+				<description>deactivate tooltip mode</description>
+			</eventListenerPort>
 			<eventListenerPort id="nextTooltip">
 				<description>navigates to next tooltip, if tooltips are currently activated</description>
 			</eventListenerPort>

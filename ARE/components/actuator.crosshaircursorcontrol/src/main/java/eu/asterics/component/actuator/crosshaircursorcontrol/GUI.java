@@ -123,7 +123,7 @@ public class GUI extends JFrame {
             actTooltip = tooltipStartIndex;
             actImageFileName = "";
             tooltipActive = false;
-            AstericsErrorHandling.instance.getLogger().warning(" *****  Can not open picture: " + ex.getMessage());
+            AstericsErrorHandling.instance.getLogger().fine(" *****  Can not open picture: " + ex.getMessage());
         }
         repaintInternal();
     }
