@@ -101,6 +101,10 @@
 					  type="boolean"
 					  value="true"
 					  description="if true, the axis are colored automatically according to the current movement"/>
+			<property name="wrapAround"
+					  type="boolean"
+					  value="false"
+					  description="if true, movement continues on other side of the screen, if screen end reached"/>
 			<property name="clickEventTime"
 				type="integer"
 				value="1000"

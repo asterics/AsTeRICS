@@ -62,6 +62,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     boolean propAbsoluteValues = false;
     boolean propAutoColorAxis = true;
+    boolean propWrapAround = false;
     int propClickEventTime = 1000;
     int propLineWidth = 200;
     int propAccelerationH = 100;
@@ -231,6 +232,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("autoColorAxis".equalsIgnoreCase(propertyName)) {
             return propAutoColorAxis;
         }
+        if ("wrapAround".equalsIgnoreCase(propertyName)) {
+            return propWrapAround;
+        }
         if ("clickEventTime".equalsIgnoreCase(propertyName)) {
             return propClickEventTime;
         }
@@ -276,6 +280,11 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("autoColorAxis".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propAutoColorAxis;
             propAutoColorAxis = Boolean.parseBoolean((String) newValue);
+            return oldValue;
+        }
+        if ("wrapAround".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propWrapAround;
+            propWrapAround = Boolean.parseBoolean((String) newValue);
             return oldValue;
         }
         if ("clickEventTime".equalsIgnoreCase(propertyName)) {
@@ -335,7 +344,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 } else {
                     x += inputValue;
                 }
-                x = normalizeValue(x, 0, screenWidth);
+                x = normalizeValue(x, 0, screenWidth, propWrapAround);
                 lastMoveTimeH = System.currentTimeMillis();
                 gui.setCursor(x, y);
             } else
@@ -353,7 +362,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                     y += inputValue;
                 }
                 lastMoveTimeV = System.currentTimeMillis();
-                y = normalizeValue(y, 0, screenHeight);
+                y = normalizeValue(y, 0, screenHeight, propWrapAround);
                 gui.setCursor(x, y);
             } else
                 gui.navigateTooltips(inputValue);
@@ -695,8 +704,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             }
         }
 
-        this.x = normalizeValue(x, 0, screenWidth);
-        this.y = normalizeValue(y, 0, screenHeight);
+        this.x = normalizeValue(x, 0, screenWidth, propWrapAround);
+        this.y = normalizeValue(y, 0, screenHeight, propWrapAround);
         gui.setCursor(x, y);
     }
 
@@ -707,11 +716,11 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
      * @param maxValue
      * @return
      */
-    private float normalizeValue(float value, float minValue, float maxValue) {
+    private float normalizeValue(float value, float minValue, float maxValue, boolean wrapAround) {
         if (value < minValue) {
-            return minValue;
+            return wrapAround ? maxValue : minValue;
         } else if (value > maxValue) {
-            return maxValue;
+            return wrapAround ? minValue : maxValue;
         }
         return value;
     }
