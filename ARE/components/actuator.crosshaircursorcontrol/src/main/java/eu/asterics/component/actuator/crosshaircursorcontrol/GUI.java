@@ -66,6 +66,8 @@ public class GUI extends JFrame {
 
     private boolean highlightXAxis = false;
     private boolean highlightYAxis = true;
+    private boolean currentHighlightXAxis = false;
+    private boolean currentHighlightYAxis = false;
     // private JLabel myLabel;
     // add more GUI elements here
 
@@ -203,7 +205,9 @@ public class GUI extends JFrame {
     void resetAxis() {
         highlightXAxis = false;
         highlightYAxis = false;
-        repaintInternal();
+        if(currentHighlightXAxis || currentHighlightYAxis) {
+            repaintInternal();
+        }
     }
 
     void toggleAxis() {
@@ -214,10 +218,16 @@ public class GUI extends JFrame {
 
     void setXAxisHighlight(boolean highlightXAxis) {
         this.highlightXAxis = highlightXAxis;
+        if(currentHighlightXAxis != highlightXAxis) {
+            repaintInternal();
+        }
     }
 
     void setYAxisHighlight(boolean highlightYAxis) {
         this.highlightYAxis = highlightYAxis;
+        if(currentHighlightYAxis != highlightYAxis) {
+            repaintInternal();
+        }
     }
 
     synchronized void setCursor(float x, float y) {
@@ -235,11 +245,15 @@ public class GUI extends JFrame {
 
         xAxisColor = Color.GRAY;
         yAxisColor = Color.GRAY;
+        currentHighlightXAxis = false;
+        currentHighlightYAxis = false;
         if (highlightXAxis && image == null) {
             xAxisColor = Color.RED;
+            currentHighlightXAxis = true;
         }
         if (highlightYAxis && image == null) {
             yAxisColor = Color.RED;
+            currentHighlightYAxis = true;
         }
 
         g2.setColor(yAxisColor);
