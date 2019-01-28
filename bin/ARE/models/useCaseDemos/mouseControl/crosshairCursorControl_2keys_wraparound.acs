@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2keys_wraparound.acs_2019_1_28_8_10" version="20130320">
+  <components>
+    <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
+      <description>cursor position control via crosshair movement</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationH">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationV">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="tooltip">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="absoluteValues" value="false" />
+        <property name="autoColorAxis" value="False" />
+        <property name="wrapAround" value="True" />
+        <property name="clickEventTime" value="1000" />
+        <property name="lineWidth" value="10" />
+        <property name="baseVelocity" value="10" />
+        <property name="accelerationH" value="500" />
+        <property name="accelerationV" value="500" />
+        <property name="maxVelocity" value="1500" />
+        <property name="tooltipFolder" value="pictures/tooltips" />
+        <property name="tooltipStartIndex" value="3" />
+      </properties>
+      <layout>
+        <posX>533</posX>
+        <posY>138</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="true" />
+        <property name="startCentered" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>694</posX>
+        <posY>137</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1.2" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57421" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>357</posX>
+        <posY>69</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57419" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>356</posX>
+        <posY>255</posY>
+      </layout>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="clickEvent_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="clickEvent" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_startMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.2" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_stopMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.2" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_startMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_stopMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>true</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>-44</posY>
+      <width>2500</width>
+      <height>667</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
