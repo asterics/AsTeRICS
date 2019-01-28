@@ -359,8 +359,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 x = normalizeValue(x, 0, screenWidth, propWrapAround);
                 lastMoveTimeH = System.currentTimeMillis();
                 gui.setCursor(x, y);
-            } else
-                gui.navigateTooltips(inputValue);
+            }
         }
     };
     private final IRuntimeInputPort ipY = new DefaultRuntimeInputPort() {
@@ -376,8 +375,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 lastMoveTimeV = System.currentTimeMillis();
                 y = normalizeValue(y, 0, screenHeight, propWrapAround);
                 gui.setCursor(x, y);
-            } else
-                gui.navigateTooltips(inputValue);
+            }
         }
     };
 
