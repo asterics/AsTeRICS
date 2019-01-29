@@ -1,5 +1,5 @@
 <!doctype html>
-<HTML>AngularCursorControl
+<HTML>
 	<HEAD>
 		<meta charset="UTF-8">
 		<Title>CrosshairCursorControl</Title>
@@ -8,24 +8,35 @@
 		<H1>CrosshairCursorControl</H1>
 		<span class="componentType">Component Type: Actuator (Subcategory: Input Device Emulation)</span>
 		<p>The CrosshairCursorControl component allows mouse cursor positioning by software emulation with a limited number of input control channels. 
-           A crosshair indicator is displayed on the screen next to the mouse cursor. This crosshair can be moved horizontally and vertically using the x and y input ports.
-           Using other components, a stepswise control of x and y movement can be achieved, allowing full control of the cursor position. After a certain time of inactiivty (no values received at 
+           A crosshair indicator is displayed on the screen next to the mouse cursor. This crosshair can be moved horizontally and vertically using the x and y input ports. Alternatively movement can
+			be started or stopped by events.
+        </p>
+		<p>
+           Using other components, a stepswise control of x and y movement can be achieved, allowing full control of the cursor position. After a certain time of inactivity (no values received at
            the input ports), a click event can be created for generating different mouse clicks e.g. via a mouse element. Additionally, a number of tooltip icons can be displayed,
-           sequentially. The currently displayed icon can be selected via an adjustable time of inactivity. The name of the selected icon is then sent to the toopltip output port.
+           sequentially. The currently displayed icon can be selected via an adjustable time of inactivity. The name of the selected icon is then sent to the tooltip output port.
         </p>
 		<figure>
 			<img class="image" src="img/CrosshairCursorControl.jpg" alt="Screenshot: CrosshairCursorControl plugin" title="Screenshot: CrosshairCursorControl plugin" />
 			<figcaption>CrosshairCursorControl plugin</figcaption>
+		</figure>
+		<figure>
 			<img class="image" src="img/CrosshairCursorControl_demo.jpg" alt="Screenshot: CrosshairCursorControl arrow indicator" title="Screenshot: CrosshairCursorControl arrow indicator" />
 			<figcaption>CrosshairCursorControl arrow indicator</figcaption>
 		</figure>
+		<figure>
+			<img class="image" src="img/CrosshairCursorControl_tooltip.jpg" alt="Screenshot: CrosshairCursorControl tooltip for doubleclick" title="Screenshot: CrosshairCursorControl tooltip for doubleclick" />
+			<figcaption>CrosshairCursorControl tooltip for double click</figcaption>
+		</figure>
 		<br>
-		<p><strong>Please Note:</strong>The mouse emulation on <strong>Windows 7/10</strong> does not always work as expected due to User Account Control (UAC) settings. 
+		<p><strong>Please Note:</strong><br>The mouse emulation on <strong>Windows 7/10</strong> does not always work as expected due to User Account Control (UAC) settings.
         Especially when you want to use the Windows 7 On-Screen-Keyboard dragging the keyboard does not work. To troubleshoot <a href="http://windows.microsoft.com/en-au/windows/turn-user-account-control-on-off#1TC=windows-7">turn off the User Account Control (UAC)</a> - change the level to "Never notify"
 		<H2>Input Port Description</H2>
 		<ul>
 			<li><STRONG>x [double]:</STRONG> The mouse cursor movement in x direction. Indicated via x-Axis crosshair. </li>
 			<li><STRONG>y [double]:</STRONG> The mouse cursor movement in y direction. Indicated via y-Axis crosshair. </li>
+			<li><STRONG>accelerationH [integer]:</STRONG> The acceleration for movement in horizontal orientation. See property <i>accelerationH</i> for details. </li>
+			<li><STRONG>accelerationV [integer]:</STRONG> The acceleration for movement in vertical orientation. See property <i>accelerationV</i> for details. </li>
 		</ul>
 		<H2>Output Port Description</H2>
 		<ul>
@@ -33,8 +44,23 @@
 		</ul>
 		<H2>Event Listener Description</H2>
 		<ul>
-			<li><STRONG>select:</STRONG> changes the currently selected crosshair line, which is displayed in red color. The other crosshair line is displayed in gray color.</li>
 			<li><STRONG>activateTooltips:</STRONG> displays the tooltip icons and activates tooltip mode.</li>
+			<li><STRONG>deactivateTooltips:</STRONG> deactivates tooltip mode, if currently active.</li>
+			<li><STRONG>nextTooltip:</STRONG> navigates to next tooltip, if tooltip mode is currently active.</li>
+			<li><STRONG>previousTooltip:</STRONG> navigates to previous tooltip, if tooltip mode is currently active.</li>
+			<li><STRONG>startMoveLeft:</STRONG> starts automatic movement to the left.</li>
+			<li><STRONG>startMoveRight:</STRONG> starts automatic movement to the right.</li>
+			<li><STRONG>startMoveUp:</STRONG> starts automatic movement up.</li>
+			<li><STRONG>startMoveDown:</STRONG> starts automatic movement down.</li>
+			<li><STRONG>stopMoveLeft:</STRONG> stops automatic movement to the left.</li>
+			<li><STRONG>stopMoveRight:</STRONG> stops automatic movement to the right.</li>
+			<li><STRONG>stopMoveUp:</STRONG> stops automatic movement to the up.</li>
+			<li><STRONG>stopMoveDown:</STRONG> stops automatic movement to the down.</li>
+			<li><STRONG>stopMoveAll:</STRONG> stops all automatic movement.</li>
+			<li><STRONG>moveToLastStable:</STRONG> moves the cursor to last stable position (where no movement was made). Can be used in combination with 'activateTooltips', if activation is done by same means of movement in order to correct unintended movement.</li>
+			<li><STRONG>highlightXAxis:</STRONG> highlights the X-axis by coloring it red.</li>
+			<li><STRONG>highlightYAxis:</STRONG> highlights the Y-axis by coloring it red.</li>
+			<li><STRONG>toggleAxisHighlight:</STRONG> toggles the current coloring of X- and Y-axis.</li>
 		</ul>
 		<H2>Event Trigger Description</H2>
 		<ul>
@@ -44,11 +70,17 @@
 		<H2>Properties</H2>
 		<ul>
 			<li><STRONG>absoluteValues [boolean]:</STRONG> If this property value is set to false (default), incoming values at the x and y input ports are interpreted as relative movement information (changes of the position). If the property value is set to true, the input values are interpreted as absolute positions.</li>
+			<li><STRONG>autoColorAxis [boolean]:</STRONG> If true (default), the axis are automatically highlighted (red colored) according to current movement. For horizontal movement the Y-axis is highlighted, for vertical movement the X-axis is highlighted. </li>
+			<li><STRONG>highlightClick [boolean]:</STRONG> If true (default), a click event is visualized by a short green flash of the X- and Y-axis. </li>
+			<li><STRONG>wrapAround [boolean]:</STRONG> If true (default is false), a movement exceeding the border of the screen results in continued movement on the opposite side of the screen. </li>
 			<li><STRONG>clickEventTime [integer]:</STRONG> The time of inactivity (in milliseconds) after which the clickEvent will be created or the currently displayed tooltip is selected (use zero to deactivate the clickEvent).</li>
-			<li><STRONG>lineWidth [integer]:</STRONG> The width of the crosshair lines</li>
-			<li><STRONG>acceleration [integer]:</STRONG> The acceleration factor for relative movement of the crosshair. The acceleration factor increases as long as input values are received at the input ports without a pause of more thatn 200 milliseconds. When a pause is detected, the acceleration factor is reset to 1.0 </li>
-			<li><STRONG>maxVelocity [integer]:</STRONG> The maximum value for the acceleration factor.</li>
-			<li><STRONG>tooltipFolder [integer]:</STRONG> Name of a folder (including file path or relative file path from the ARE folder) which contains the tooltip icons in .png format. The expected filenames are 1.png, 2.png, 3.png ... </li>
+			<li><STRONG>lineWidth [integer]:</STRONG> The width of the crosshair lines, use zero to deactivate the crosshair.</li>
+			<li><STRONG>baseVelocity [integer]:</STRONG> The starting velocity of automatic movement (triggered by events) in px per second. The baseVelocity is at the same time the minimum velocity that can be reached, if the acceleration values are negative.</li>
+			<li><STRONG>accelerationH [integer]:</STRONG> The acceleration of horizontal movement in px/second per second, positive or negative. This property applies to automatic movement as well as relative movement triggered by input in the x/y input ports. Use zero to deactivate movement acceleration.</li>
+			<li><STRONG>accelerationV [integer]:</STRONG> The acceleration of vertical movement in px/second per second, positive or negative. This property applies to automatic movement as well as relative movement triggered by input in the x/y input ports. Use zero to deactivate movement acceleration.</li>
+			<li><STRONG>maxVelocity [integer]:</STRONG> The maximum movement velocity in px per second. This property applies to automatic movement as well as relative movement triggered by input in the x/y input ports.</li>
+			<li><STRONG>tooltipFolder [integer]:</STRONG> Name of a folder (including file path or relative file path from the ARE/data folder) which contains the tooltip icons in .png format. The expected filenames are 1.png, 2.png, 3.png ... </li>
+			<li><STRONG>tooltipStartIndex [integer]:</STRONG> Index of the first tooltip to show, after tooltips are activated. </li>
 		</ul>
 	</BODY>
 </HTML>
