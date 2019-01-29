@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2EMG_difference.acs_2019_1_28_14_2" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2EMG_difference.acs_2019_1_29_10_32" version="20130320">
   <modelDescription>
     <shortDescription>Difference between two EMG Signals move cursor
 Difference is cubed in order to cause small movements for small values
@@ -35,9 +35,9 @@ Timer changes between horizontal/vertical</shortDescription>
         <property name="wrapAround" value="True" />
         <property name="clickEventTime" value="1500" />
         <property name="lineWidth" value="5" />
-        <property name="baseVelocity" value="30" />
-        <property name="accelerationH" value="100" />
-        <property name="accelerationV" value="100" />
+        <property name="baseVelocity" value="10" />
+        <property name="accelerationH" value="0" />
+        <property name="accelerationV" value="0" />
         <property name="maxVelocity" value="1000" />
         <property name="tooltipFolder" value="pictures/tooltips" />
         <property name="tooltipStartIndex" value="3" />
@@ -105,36 +105,6 @@ Timer changes between horizontal/vertical</shortDescription>
       <layout>
         <posX>1288</posX>
         <posY>291</posY>
-      </layout>
-    </component>
-    <component id="Deadzone.1" type_id="asterics.Deadzone">
-      <description>Defines active/passive Zone for x/y values</description>
-      <ports>
-        <inputPort portTypeID="inX">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="inY">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="radius">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="outX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="outY">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="xCenter" value="0" />
-        <property name="yCenter" value="0" />
-        <property name="radius" value="10" />
-        <property name="mode" value="2" />
-      </properties>
-      <layout>
-        <posX>601</posX>
-        <posY>446</posY>
       </layout>
     </component>
     <component id="Timer.1.2" type_id="asterics.Timer">
@@ -207,11 +177,11 @@ Timer changes between horizontal/vertical</shortDescription>
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="(-a+b)*abs(-a+b)/200" />
+        <property name="expression" value="(-a+b)*abs(-a+b)/300" />
       </properties>
       <layout>
-        <posX>824</posX>
-        <posY>264</posY>
+        <posX>819</posX>
+        <posY>266</posY>
       </layout>
     </component>
     <component id="ComPort.1" type_id="asterics.ComPort">
@@ -322,34 +292,27 @@ Timer changes between horizontal/vertical</shortDescription>
         <posY>491</posY>
       </layout>
     </component>
-    <component id="Deadzone.1.1" type_id="asterics.Deadzone">
-      <description>Defines active/passive Zone for x/y values</description>
+    <component id="Threshold.2.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
       <ports>
-        <inputPort portTypeID="inX">
+        <inputPort portTypeID="in">
           <properties />
         </inputPort>
-        <inputPort portTypeID="inY">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="radius">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="outX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="outY">
+        <outputPort portTypeID="out">
           <properties />
         </outputPort>
       </ports>
       <properties>
-        <property name="xCenter" value="0" />
-        <property name="yCenter" value="0" />
-        <property name="radius" value="10" />
-        <property name="mode" value="2" />
+        <property name="thresholdHigh" value="10" />
+        <property name="thresholdLow" value="10" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="2" />
+        <property name="eventCondition" value="2" />
       </properties>
       <layout>
-        <posX>591</posX>
-        <posY>217</posY>
+        <posX>604</posX>
+        <posY>420</posY>
       </layout>
     </component>
     <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
@@ -524,7 +487,7 @@ Timer changes between horizontal/vertical</shortDescription>
       </ports>
       <properties>
         <property name="inMin" value="0.0" />
-        <property name="inMax" value="300" />
+        <property name="inMax" value="600" />
         <property name="outMin" value="0" />
         <property name="outMax" value="100" />
       </properties>
@@ -573,7 +536,7 @@ Timer changes between horizontal/vertical</shortDescription>
       </ports>
       <properties>
         <property name="inMin" value="0.0" />
-        <property name="inMax" value="500" />
+        <property name="inMax" value="600" />
         <property name="outMin" value="0" />
         <property name="outMax" value="100" />
       </properties>
@@ -726,29 +689,42 @@ Timer changes between horizontal/vertical</shortDescription>
       </properties>
       <layout>
         <posX>801</posX>
-        <posY>35</posY>
+        <posY>22</posY>
+      </layout>
+    </component>
+    <component id="Threshold.2" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="10" />
+        <property name="thresholdLow" value="10" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="2" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>604</posX>
+        <posY>216</posY>
       </layout>
     </component>
   </components>
   <channels>
-    <channel id="binding.32">
+    <channel id="binding.20">
       <source>
         <component id="SignalTranslation.2.1" />
         <port id="out" />
       </source>
       <target>
-        <component id="Deadzone.1" />
-        <port id="inX" />
-      </target>
-    </channel>
-    <channel id="binding.26">
-      <source>
-        <component id="SignalTranslation.2" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="Deadzone.1.1" />
-        <port id="inX" />
+        <component id="Threshold.2.1" />
+        <port id="in" />
       </target>
     </channel>
     <channel id="binding.12">
@@ -781,20 +757,10 @@ Timer changes between horizontal/vertical</shortDescription>
         <port id="input" />
       </target>
     </channel>
-    <channel id="binding.27">
+    <channel id="binding.19">
       <source>
-        <component id="Deadzone.1" />
-        <port id="outX" />
-      </source>
-      <target>
-        <component id="MathEvaluator.1" />
-        <port id="inB" />
-      </target>
-    </channel>
-    <channel id="binding.20">
-      <source>
-        <component id="Deadzone.1.1" />
-        <port id="outX" />
+        <component id="Threshold.2" />
+        <port id="out" />
       </source>
       <target>
         <component id="MathEvaluator.1" />
@@ -823,8 +789,8 @@ Timer changes between horizontal/vertical</shortDescription>
     </channel>
     <channel id="binding.30">
       <source>
-        <component id="StringSplitter.1" />
-        <port id="out2" />
+        <component id="MathEvaluator.1" />
+        <port id="out" />
       </source>
       <target>
         <component id="Oscilloscope.1.1" />
@@ -911,23 +877,23 @@ Timer changes between horizontal/vertical</shortDescription>
         <port id="setMin" />
       </target>
     </channel>
-    <channel id="binding.34">
+    <channel id="binding.26">
+      <source>
+        <component id="Threshold.2.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.18">
       <source>
         <component id="SignalTranslation.2" />
         <port id="out" />
       </source>
       <target>
-        <component id="Oscilloscope.1.2" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.35">
-      <source>
-        <component id="SignalTranslation.2.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="Oscilloscope.1.2.1" />
+        <component id="Threshold.2" />
         <port id="in" />
       </target>
     </channel>
@@ -973,66 +939,6 @@ Timer changes between horizontal/vertical</shortDescription>
     </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="enterZone_reset">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1" />
-          <eventPort id="enterZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Timer.1.2" />
-          <eventPort id="reset" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="enterZone_stop">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1" />
-          <eventPort id="enterZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Timer.1.2" />
-          <eventPort id="stop" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="enterZone_stop">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1.1" />
-          <eventPort id="enterZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Timer.1.2" />
-          <eventPort id="stop" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="enterZone_reset">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1.1" />
-          <eventPort id="enterZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Timer.1.2" />
-          <eventPort id="reset" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="recognizedCommand4_dispatchSlot1">
       <description />
       <sources>
@@ -1183,66 +1089,6 @@ Timer changes between horizontal/vertical</shortDescription>
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="enterZone_increase">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1.1" />
-          <eventPort id="enterZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventCounter.1" />
-          <eventPort id="increase" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="exitZone_decrease">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1.1" />
-          <eventPort id="exitZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventCounter.1" />
-          <eventPort id="decrease" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="enterZone_increase">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1" />
-          <eventPort id="enterZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventCounter.1" />
-          <eventPort id="increase" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="exitZone_decrease">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1" />
-          <eventPort id="exitZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventCounter.1" />
-          <eventPort id="decrease" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="recognizedCommand1_start">
       <description />
       <sources>
@@ -1333,36 +1179,6 @@ Timer changes between horizontal/vertical</shortDescription>
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="enterZone_previousTooltip">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1.1" />
-          <eventPort id="enterZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="previousTooltip" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="enterZone_nextTooltip">
-      <description />
-      <sources>
-        <source>
-          <component id="Deadzone.1" />
-          <eventPort id="enterZone" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="nextTooltip" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="output_event-in">
       <description />
       <sources>
@@ -1408,12 +1224,162 @@ Timer changes between horizontal/vertical</shortDescription>
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="eventPosEdge_increase">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.2" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="increase" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_decrease">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.2" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="decrease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_increase">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.2.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="increase" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_decrease">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.2.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="decrease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.2.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.2" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.2.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.2" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.2" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.2" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.2" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.2" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_previousTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.2" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="previousTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_nextTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.2.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="nextTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
     <Decoration>false</Decoration>
     <Fullscreen>false</Fullscreen>
-    <AlwaysOnTop>false</AlwaysOnTop>
-    <ToSystemTray>true</ToSystemTray>
+    <AlwaysOnTop>true</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
       <posX>0</posX>
