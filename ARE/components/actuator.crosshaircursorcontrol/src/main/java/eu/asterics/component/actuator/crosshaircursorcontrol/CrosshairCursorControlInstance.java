@@ -90,7 +90,6 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     private long lastMoveTimeV = 0;
     int screenWidth = 0;
     int screenHeight = 0;
-    double actAccel = 1.0;
 
     volatile long elapsedIdleTime = Long.MAX_VALUE;
     volatile long lastInputValue = Long.MAX_VALUE;
@@ -349,14 +348,21 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     private final IRuntimeInputPort ipX = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
+            if(inputValue == 0 && !propAbsoluteValues) {
+                currentMoveSpeedH = propBaseVelocity;
+                return;
+            }
             elapsedIdleTime = System.currentTimeMillis();
             if (!gui.tooltipsActive()) {
-                if (propAbsoluteValues == true) {
+                if (propAbsoluteValues) {
                     x = inputValue;
                 } else {
-                    x += inputValue;
+                    long diffTimeMs = elapsedIdleTime - lastMoveTimeH;
+                    currentMoveSpeedH = getNewSpeed(currentMoveSpeedH, propBaseVelocity, propMaxVelocity, diffTimeMs, propAccelerationH);
+                    int diffPx = getDiffPx(currentMoveSpeedH - propBaseVelocity, propBaseVelocity, propMaxVelocity, diffTimeMs, inputValue);
+                    x += diffPx;
                 }
-                x = normalizeValue(x, 0, screenWidth, propWrapAround);
+                x = (float) normalizeValue(x, 0, screenWidth, propWrapAround);
                 lastMoveTimeH = System.currentTimeMillis();
                 gui.setCursor(x, y);
             }
@@ -365,15 +371,22 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     private final IRuntimeInputPort ipY = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
+            if(inputValue == 0 && !propAbsoluteValues) {
+                currentMoveSpeedV = propBaseVelocity;
+                return;
+            }
             elapsedIdleTime = System.currentTimeMillis();
             if (!gui.tooltipsActive()) {
-                if (propAbsoluteValues == true) {
+                if (propAbsoluteValues) {
                     y = inputValue;
                 } else {
-                    y += inputValue;
+                    long diffTimeMs = elapsedIdleTime - lastMoveTimeV;
+                    currentMoveSpeedV = getNewSpeed(currentMoveSpeedV, propBaseVelocity, propMaxVelocity, diffTimeMs, propAccelerationV);
+                    int diffPx = getDiffPx(currentMoveSpeedV - propBaseVelocity, propBaseVelocity, propMaxVelocity, diffTimeMs, inputValue);
+                    y += diffPx;
                 }
                 lastMoveTimeV = System.currentTimeMillis();
-                y = normalizeValue(y, 0, screenHeight, propWrapAround);
+                y = (float) normalizeValue(y, 0, screenHeight, propWrapAround);
                 gui.setCursor(x, y);
             }
         }
@@ -618,15 +631,6 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                             gui.setYAxisHighlight(currentTime - lastMoveTimeH < 50);
                             gui.setXAxisHighlight(currentTime - lastMoveTimeV < 50);
                         }
-
-                        if (((System.currentTimeMillis() - elapsedIdleTime) < 200) && (elapsedIdleTime != Long.MAX_VALUE)) {
-                            actAccel += 0.001 * (double) propAccelerationH;
-                            if (actAccel > propMaxVelocity)
-                                actAccel = propMaxVelocity;
-                            // System.out.println("Accel="+actAccel);
-                        } else {
-                            actAccel = 1.0;
-                        }
                     } catch (InterruptedException e) {
                     }
                 }
@@ -692,15 +696,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 this.x += diffPx;
             }
 
-            float diffSpeed = (float) propAccelerationH * diffTime / 1000;
-            if (this.currentMoveSpeedH + diffSpeed < propMaxVelocity) {
-                this.currentMoveSpeedH += diffSpeed;
-            } else {
-                this.currentMoveSpeedH = propMaxVelocity;
-            }
-            if(this.currentMoveSpeedH < propBaseVelocity) {
-                this.currentMoveSpeedH = propBaseVelocity;
-            }
+            this.currentMoveSpeedH = getNewSpeed(currentMoveSpeedH, propBaseVelocity, propMaxVelocity, diffTime, propAccelerationH);
         }
 
         if ((this.moveUp || this.moveDown)) {
@@ -713,20 +709,67 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 this.y += diffPx;
             }
 
-            float diffSpeed = (float) propAccelerationV * diffTime / 1000;
-            if (this.currentMoveSpeedV + diffSpeed < propMaxVelocity) {
-                this.currentMoveSpeedV += diffSpeed;
-            } else {
-                this.currentMoveSpeedV = propMaxVelocity;
-            }
-            if(this.currentMoveSpeedV < propBaseVelocity) {
-                this.currentMoveSpeedV = propBaseVelocity;
-            }
+            this.currentMoveSpeedV = getNewSpeed(this.currentMoveSpeedV, propBaseVelocity, propMaxVelocity, diffTime, propAccelerationV);
         }
 
-        this.x = normalizeValue(x, 0, screenWidth, propWrapAround);
-        this.y = normalizeValue(y, 0, screenHeight, propWrapAround);
+        this.x = (float) normalizeValue(x, 0, screenWidth, propWrapAround);
+        this.y = (float) normalizeValue(y, 0, screenHeight, propWrapAround);
         gui.setCursor(x, y);
+    }
+
+    /**
+     * returns new speed according to given acceleration, min/max-speed and time difference.
+     * If time difference is greater than 0.2 seconds, minSpeed is returned (assuming that it is the first call of the
+     * method after initialization)
+     *
+     * @param currentSpeed
+     * @param minSpeed
+     * @param maxSpeed
+     * @param diffTimeMs
+     * @param acceleration
+     * @return
+     */
+    private double getNewSpeed(double currentSpeed, int minSpeed, int maxSpeed, long diffTimeMs, int acceleration) {
+        if(diffTimeMs > 200) {
+            return  minSpeed;
+        }
+        float diffSpeed = (float) acceleration * diffTimeMs / 1000;
+        if (currentSpeed + diffSpeed < maxSpeed) {
+            currentSpeed += diffSpeed;
+        } else {
+            currentSpeed = maxSpeed;
+        }
+        if(currentSpeed < minSpeed) {
+            currentSpeed = minSpeed;
+        }
+        return currentSpeed;
+    }
+
+    private int getDiffPx(double speed, int minSpeed, int maxSpeed, long diffTimeMs, float givenDiffPx) {
+        if(diffTimeMs > 200) {
+            return (int) givenDiffPx;
+        }
+        float signum = Math.signum(givenDiffPx);
+        double speedByPx = (Math.abs(givenDiffPx * 1.0) / diffTimeMs) * 1000;
+        double resultSpeed = normalizeValue(speed + speedByPx, minSpeed, maxSpeed);
+        return (int) ((resultSpeed * diffTimeMs / 1000) * signum);
+    }
+
+    /**
+     * normalizes the given value to a given range.
+     * @param value the value to normalize
+     * @param minValue
+     * @param maxValue
+     * @param wrapAround if true, a value smaller than minValue results in maxValue and vice versa
+     * @return
+     */
+    private double normalizeValue(double value, double minValue, double maxValue, boolean wrapAround) {
+        if (value < minValue) {
+            return wrapAround ? maxValue : minValue;
+        } else if (value > maxValue) {
+            return wrapAround ? minValue : maxValue;
+        }
+        return value;
     }
 
     /**
@@ -736,12 +779,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
      * @param maxValue
      * @return
      */
-    private float normalizeValue(float value, float minValue, float maxValue, boolean wrapAround) {
-        if (value < minValue) {
-            return wrapAround ? maxValue : minValue;
-        } else if (value > maxValue) {
-            return wrapAround ? minValue : maxValue;
-        }
-        return value;
+    private double normalizeValue(double value, double minValue, double maxValue) {
+        return normalizeValue(value, minValue, maxValue, false);
     }
 }
