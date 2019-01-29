@@ -326,6 +326,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("baseVelocity".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propBaseVelocity;
             propBaseVelocity = Integer.parseInt(newValue.toString());
+            currentMoveSpeedV = propBaseVelocity;
+            currentMoveSpeedH = propBaseVelocity;
             return oldValue;
         }
         if ("tooltipFolder".equalsIgnoreCase(propertyName)) {
