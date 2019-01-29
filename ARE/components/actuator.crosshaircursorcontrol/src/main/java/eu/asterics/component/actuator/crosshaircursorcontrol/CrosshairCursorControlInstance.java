@@ -603,7 +603,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                     try {
                         long currentTime = System.currentTimeMillis();
                         Thread.sleep(20);
-                        if ((currentTime - elapsedIdleTime) > propClickEventTime) {
+                        if ((currentTime - elapsedIdleTime) > propClickEventTime && propClickEventTime > 0) {
                             if (gui.tooltipsActive()) {
                                 String tmp = gui.getTooltipFilename();
                                 if (!tmp.equals("")) {
