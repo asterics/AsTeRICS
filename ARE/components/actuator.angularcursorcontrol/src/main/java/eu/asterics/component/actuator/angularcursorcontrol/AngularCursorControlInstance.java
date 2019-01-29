@@ -61,8 +61,11 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     int propArrowWidth = 200;
     int propArrowLength = 200;
     int propAcceleration = 100;
-    int propMaxVelocity = 1000;
     int propBaseVelocity = 30;
+    int propMaxVelocity = 1000;
+    int propAccelerationAngle = 30;
+    int propBaseVelocityAngle = 20;
+    int propMaxVelocityAngle = 180;
 
     // declare member variables here
     private GUI gui = null;
@@ -70,8 +73,12 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     private boolean running;
     private boolean moveForward = false;
     private boolean moveBackward = false;
+    private boolean moveAngleLeft = false;
+    private boolean moveAngleRight = false;
     private long lastMoveTime = 0;
-    private int currentMoveSpeed = propBaseVelocity;
+    private long lastAngleMoveTime = 0;
+    private double currentMoveSpeed = propBaseVelocity;
+    private double currentMoveSpeedAngle = propBaseVelocityAngle;
 
     volatile long elapsedIdleTime = Long.MAX_VALUE;
 
@@ -129,6 +136,24 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         if ("startMoveBackward".equalsIgnoreCase(eventPortID)) {
             return elpStartMoveBackward;
         }
+        if ("startAngleLeft".equalsIgnoreCase(eventPortID)) {
+            return elpStartAngleLeft;
+        }
+        if ("startAngleRight".equalsIgnoreCase(eventPortID)) {
+            return elpStartAngleRight;
+        }
+        if ("stopMoveForward".equalsIgnoreCase(eventPortID)) {
+            return elpStopMoveForward;
+        }
+        if ("stopMoveBackward".equalsIgnoreCase(eventPortID)) {
+            return elpStopMoveBackward;
+        }
+        if ("stopAngleLeft".equalsIgnoreCase(eventPortID)) {
+            return elpStopAngleLeft;
+        }
+        if ("stopAngleRight".equalsIgnoreCase(eventPortID)) {
+            return elpStopAngleRight;
+        }
         if ("stopMove".equalsIgnoreCase(eventPortID)) {
             return elpStopMove;
         }
@@ -174,11 +199,20 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         if ("acceleration".equalsIgnoreCase(propertyName)) {
             return propAcceleration;
         }
+        if ("accelerationAngle".equalsIgnoreCase(propertyName)) {
+            return propAccelerationAngle;
+        }
         if ("maxVelocity".equalsIgnoreCase(propertyName)) {
             return propMaxVelocity;
         }
+        if ("maxVelocityAngle".equalsIgnoreCase(propertyName)) {
+            return propMaxVelocityAngle;
+        }
         if ("baseVelocity".equalsIgnoreCase(propertyName)) {
             return propBaseVelocity;
+        }
+        if ("baseVelocityAngle".equalsIgnoreCase(propertyName)) {
+            return propBaseVelocityAngle;
         }
 
         return null;
@@ -222,14 +256,31 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
             propAcceleration = Integer.parseInt(newValue.toString());
             return oldValue;
         }
+        if ("baseVelocity".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propBaseVelocity;
+            propBaseVelocity = Integer.parseInt(newValue.toString());
+            currentMoveSpeed = propBaseVelocity;
+            return oldValue;
+        }
         if ("maxVelocity".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propMaxVelocity;
             propMaxVelocity = Integer.parseInt(newValue.toString());
             return oldValue;
         }
-        if ("baseVelocity".equalsIgnoreCase(propertyName)) {
-            final Object oldValue = propBaseVelocity;
-            propBaseVelocity = Integer.parseInt(newValue.toString());
+        if ("accelerationAngle".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propAccelerationAngle;
+            propAccelerationAngle = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
+        if ("baseVelocityAngle".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propBaseVelocityAngle;
+            propBaseVelocityAngle = Integer.parseInt(newValue.toString());
+            currentMoveSpeedAngle = propBaseVelocityAngle;
+            return oldValue;
+        }
+        if ("maxVelocityAngle".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propMaxVelocityAngle;
+            propMaxVelocityAngle = Integer.parseInt(newValue.toString());
             return oldValue;
         }
 
@@ -247,15 +298,15 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
             } else {
                 actangle += (float) ConversionUtils.doubleFromBytes(data);
             }
-            gui.setShape(actangle);
+            gui.setShape(getCurrentRad());
         }
     };
     private final IRuntimeInputPort ipMove = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
             elapsedIdleTime = System.currentTimeMillis();
             double actmove = ConversionUtils.doubleFromBytes(data);
-            double dx = actmove * Math.sin(actangle);
-            double dy = -(actmove * Math.cos(actangle));
+            double dx = actmove * Math.sin(getCurrentRad());
+            double dy = -(actmove * Math.cos(getCurrentRad()));
             gui.moveCursor(dx, dy);
         }
     };
@@ -296,12 +347,87 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     /**
      * Event Listerner Ports.
      */
+    final IRuntimeEventListenerPort elpStartAngleLeft = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            lastAngleMoveTime = System.currentTimeMillis();
+            moveAngleLeft = true;
+            moveAngleRight = false;
+        }
+    };
+
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpStartAngleRight = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            lastAngleMoveTime = System.currentTimeMillis();
+            moveAngleRight = true;
+            moveAngleLeft = false;
+        }
+    };
+
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpStopMoveForward = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            lastMoveTime = System.currentTimeMillis();
+            moveForward = false;
+            currentMoveSpeed = propBaseVelocity;
+        }
+    };
+
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpStopMoveBackward = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            lastMoveTime = System.currentTimeMillis();
+            moveBackward = false;
+            currentMoveSpeed = propBaseVelocity;
+        }
+    };
+
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpStopAngleLeft = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            lastAngleMoveTime = System.currentTimeMillis();
+            moveAngleLeft = false;
+            currentMoveSpeedAngle = propBaseVelocityAngle;
+        }
+    };
+
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpStopAngleRight = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            lastAngleMoveTime = System.currentTimeMillis();
+            moveAngleRight = false;
+            currentMoveSpeedAngle = propBaseVelocityAngle;
+        }
+    };
+
+    /**
+     * Event Listerner Ports.
+     */
     final IRuntimeEventListenerPort elpStopMove = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
             moveBackward = false;
             moveForward = false;
             currentMoveSpeed = propBaseVelocity;
+            moveAngleLeft = false;
+            moveAngleRight = false;
+            currentMoveSpeedAngle = propBaseVelocityAngle;
         }
     };
 
@@ -383,28 +509,71 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
      * moves if the class member boolean variables are set
      */
     private void doMove() {
-        if (!this.moveForward && !this.moveBackward) {
+        if (!this.moveForward && !this.moveBackward && !this.moveAngleLeft && !this.moveAngleRight) {
             return;
         }
         elapsedIdleTime = System.currentTimeMillis();
-        long diffTime = System.currentTimeMillis() - this.lastMoveTime;
-        float diffPx = (float) currentMoveSpeed * diffTime / 1000;
 
-        int factor = moveForward ? 1 : -1;
-        double dx = factor * diffPx * Math.sin(actangle);
-        double dy = factor * -(diffPx * Math.cos(actangle));
-        this.lastMoveTime = System.currentTimeMillis();
+        if(moveForward || moveBackward) {
+            long diffTime = System.currentTimeMillis() - this.lastMoveTime;
+            float diffPx = (float) currentMoveSpeed * diffTime / 1000;
+            int factor = moveForward ? 1 : -1;
+            double dx = factor * diffPx * Math.sin(getCurrentRad());
+            double dy = factor * -(diffPx * Math.cos(getCurrentRad()));
+            this.lastMoveTime = System.currentTimeMillis();
 
-        float diffSpeed = (float) propAcceleration * diffTime / 1000;
-        if (this.currentMoveSpeed + diffSpeed < propMaxVelocity) {
-            this.currentMoveSpeed += diffSpeed;
+            this.currentMoveSpeed = getNewSpeed(currentMoveSpeed, propBaseVelocity, propMaxVelocity, diffTime, propAcceleration);
+            gui.moveCursor(dx, dy);
+        }
+
+        if(moveAngleRight || moveAngleLeft) {
+            long diffTimeAngle = System.currentTimeMillis() - this.lastAngleMoveTime;
+            float diffAngle = (float) currentMoveSpeedAngle * diffTimeAngle / 1000;
+            this.lastAngleMoveTime = System.currentTimeMillis();
+            if (moveAngleRight) {
+                actangle += diffAngle;
+            } else {
+                actangle -= diffAngle;
+            }
+
+            this.currentMoveSpeedAngle = getNewSpeed(currentMoveSpeedAngle, propBaseVelocityAngle, propMaxVelocityAngle, diffTimeAngle, propAccelerationAngle);
+            gui.setShape(getCurrentRad());
+        }
+    }
+
+    /**
+     * returns new speed according to given acceleration, min/max-speed and time difference.
+     * If time difference is greater than 0.2 seconds, minSpeed is returned (assuming that it is the first call of the
+     * method after initialization)
+     *
+     * @param currentSpeed
+     * @param minSpeed
+     * @param maxSpeed
+     * @param diffTimeMs
+     * @param acceleration
+     * @return
+     */
+    private double getNewSpeed(double currentSpeed, double minSpeed, double maxSpeed, long diffTimeMs, double acceleration) {
+        if(diffTimeMs > 200) {
+            return  minSpeed;
+        }
+        float diffSpeed = (float) acceleration * diffTimeMs / 1000;
+        if (currentSpeed + diffSpeed < maxSpeed) {
+            currentSpeed += diffSpeed;
         } else {
-            this.currentMoveSpeed = propMaxVelocity;
+            currentSpeed = maxSpeed;
         }
-        if (this.currentMoveSpeed < propBaseVelocity) {
-            this.currentMoveSpeed = propBaseVelocity;
+        if(currentSpeed < minSpeed) {
+            currentSpeed = minSpeed;
         }
+        return currentSpeed;
+    }
 
-        gui.moveCursor(dx, dy);
+    private double angleToRad(double angle) {
+        return angle * Math.PI / 180;
+    }
+
+    private float getCurrentRad() {
+        return (float) angleToRad(actangle);
     }
 }

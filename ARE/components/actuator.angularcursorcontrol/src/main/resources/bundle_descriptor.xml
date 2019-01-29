@@ -31,6 +31,24 @@
 			<eventListenerPort id="startMoveBackward">
 				<description>starts automatic movement forward, accelerated by propery acceleration</description>
 			</eventListenerPort>
+			<eventListenerPort id="startAngleLeft">
+				<description>starts automatic angle rotation to the left (counterclockwise), accelerated by propery accelerationAngle</description>
+			</eventListenerPort>
+			<eventListenerPort id="startAngleRight">
+				<description>starts automatic angle rotation to the right (clockwise), accelerated by propery accelerationAngle</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveForward">
+				<description>stops automatic movement backward</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveBackward">
+				<description>stops automatic movement forward</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopAngleLeft">
+				<description>stops automatic angle rotation to the left (counterclockwise)</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopAngleRight">
+				<description>stops automatic angle rotation to the right (clockwise)</description>
+			</eventListenerPort>
 			<eventListenerPort id="stopMove">
 				<description>stops any automatic movement</description>
 			</eventListenerPort>
@@ -58,17 +76,29 @@
 				value="100"
 				description="length of the arrow indicator"/>
 			<property name="acceleration"
-				type="integer"
-				value="100"
-				description="cursor movement acceleration in px/second per second (0 to deactive acceleration)"/>
-			<property name="maxVelocity"
-				type="integer"
-				value="1000"
-				description="maximum mouse movement velocity in px per second"/>
+					  type="integer"
+					  value="100"
+					  description="cursor movement acceleration in px/second per second (0 to deactive acceleration)"/>
 			<property name="baseVelocity"
 					  type="integer"
 					  value="30"
 					  description="base movement velocity in px per second"/>
+			<property name="maxVelocity"
+				type="integer"
+				value="1000"
+				description="maximum mouse movement velocity in px per second"/>
+			<property name="accelerationAngle"
+					  type="integer"
+					  value="30"
+					  description="angle movement acceleration in degrees/second per second (0 to deactive acceleration)"/>
+			<property name="baseVelocityAngle"
+					  type="integer"
+					  value="20"
+					  description="base angle movement velocity in degrees per second"/>
+			<property name="maxVelocityAngle"
+					  type="integer"
+					  value="180"
+					  description="maximum angle movement velocity in degrees per second"/>
 
         </properties>
 
