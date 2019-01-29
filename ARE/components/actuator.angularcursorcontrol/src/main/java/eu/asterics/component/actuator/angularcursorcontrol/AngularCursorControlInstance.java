@@ -57,6 +57,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     final IRuntimeEventTriggererPort etpClickEvent = new DefaultRuntimeEventTriggererPort();
 
     boolean propAbsoluteAngle = false;
+    boolean propWrapAround = false;
     int propClickEventTime = 1000;
     int propArrowWidth = 200;
     int propArrowLength = 200;
@@ -187,6 +188,9 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         if ("absoluteAngle".equalsIgnoreCase(propertyName)) {
             return propAbsoluteAngle;
         }
+        if ("wrapAround".equalsIgnoreCase(propertyName)) {
+            return propWrapAround;
+        }
         if ("clickEventTime".equalsIgnoreCase(propertyName)) {
             return propClickEventTime;
         }
@@ -229,11 +233,13 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         if ("absoluteAngle".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propAbsoluteAngle;
-            if ("true".equalsIgnoreCase((String) newValue)) {
-                propAbsoluteAngle = true;
-            } else if ("false".equalsIgnoreCase((String) newValue)) {
-                propAbsoluteAngle = false;
-            }
+            propAbsoluteAngle = Boolean.parseBoolean(newValue.toString());
+            return oldValue;
+        }
+        if ("wrapAround".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propWrapAround;
+            propWrapAround = Boolean.parseBoolean(newValue.toString());
+            if (gui != null) gui.setWrapAround(propWrapAround);
             return oldValue;
         }
         if ("clickEventTime".equalsIgnoreCase(propertyName)) {
@@ -293,7 +299,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     private final IRuntimeInputPort ipAngle = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
             elapsedIdleTime = Long.MAX_VALUE;
-            if (propAbsoluteAngle == true) {
+            if (propAbsoluteAngle) {
                 actangle = (float) ConversionUtils.doubleFromBytes(data);
             } else {
                 actangle += (float) ConversionUtils.doubleFromBytes(data);
@@ -439,7 +445,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
      */
     @Override
     public void start() {
-        gui = new GUI(this, new Dimension(propArrowWidth, propArrowLength));
+        gui = new GUI(this, new Dimension(propArrowWidth, propArrowLength), propWrapAround);
         super.start();
 
         elapsedIdleTime = Long.MAX_VALUE;

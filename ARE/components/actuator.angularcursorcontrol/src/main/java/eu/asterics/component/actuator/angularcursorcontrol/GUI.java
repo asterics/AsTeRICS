@@ -61,6 +61,7 @@ public class GUI extends JFrame {
 
     double locX = 0;
     double locY = 0;
+    private boolean wrapAround = false;
     // private JLabel myLabel;
     // add more GUI elements here
 
@@ -72,8 +73,9 @@ public class GUI extends JFrame {
      * @param dim
      *            the dimension of the screen
      */
-    public GUI(final AngularCursorControlInstance owner, final Dimension dim) {
+    public GUI(final AngularCursorControlInstance owner, final Dimension dim, boolean wrapAround) {
         super("CursorMovementPanel");
+        this.wrapAround = wrapAround;
         len = dim.height;
         width = dim.width;
         setUndecorated(true);
@@ -128,8 +130,8 @@ public class GUI extends JFrame {
 
         locX += dx;
         locY += dy;
-        locX = normalizeValue(locX,0, screenWidth);
-        locY = normalizeValue(locY,0, screenHeight);
+        locX = normalizeValue(locX,0, screenWidth, wrapAround);
+        locY = normalizeValue(locY,0, screenHeight, wrapAround);
 
         try {
             Robot r = new Robot();
@@ -139,6 +141,10 @@ public class GUI extends JFrame {
         }
 
         setLocation((int) locX - len, (int) locY - len);
+    }
+
+    void setWrapAround(boolean wrapAround) {
+        this.wrapAround = wrapAround;
     }
 
     @Override
@@ -172,13 +178,14 @@ public class GUI extends JFrame {
      * @param value the value to normalize
      * @param minValue
      * @param maxValue
+     * @param wrapAround if true, a value smaller than minValue results in maxValue and vice versa
      * @return
      */
-    private double normalizeValue(double value, double minValue, double maxValue) {
+    private double normalizeValue(double value, double minValue, double maxValue, boolean wrapAround) {
         if (value < minValue) {
-            return minValue;
+            return wrapAround ? maxValue : minValue;
         } else if (value > maxValue) {
-            return maxValue;
+            return wrapAround ? minValue : maxValue;
         }
         return value;
     }

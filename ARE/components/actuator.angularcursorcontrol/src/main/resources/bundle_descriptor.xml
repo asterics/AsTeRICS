@@ -63,6 +63,10 @@
 				type="boolean"
 				value="false"
 				description="if true, angle input port values are absolute values, else changes of current angle"/>
+			<property name="wrapAround"
+				type="boolean"
+				value="false"
+				description="if true, movement continues on other side of the screen, if screen end reached"/>
 			<property name="clickEventTime"
 				type="integer"
 				value="1000"
