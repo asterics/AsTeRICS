@@ -350,6 +350,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
             if(inputValue == 0 && !propAbsoluteValues) {
                 currentMoveSpeedH = propBaseVelocity;
+                lastStableX = x;
                 return;
             }
             elapsedIdleTime = System.currentTimeMillis();
@@ -372,6 +373,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         public void receiveData(byte[] data) {
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
             if(inputValue == 0 && !propAbsoluteValues) {
+                lastStableY = y;
                 currentMoveSpeedV = propBaseVelocity;
                 return;
             }
