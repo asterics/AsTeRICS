@@ -309,23 +309,24 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
      */
     private final IRuntimeInputPort ipAngle = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
-            if (!propEnabled) return;
-            elapsedIdleTime = Long.MAX_VALUE;
+            double value = ConversionUtils.doubleFromBytes(data);
+            if (!propEnabled || (value == 0 && !propAbsoluteAngle)) return;
+            elapsedIdleTime = System.currentTimeMillis();
             if (propAbsoluteAngle) {
-                actangle = (float) ConversionUtils.doubleFromBytes(data);
+                actangle = (float) value;
             } else {
-                actangle += (float) ConversionUtils.doubleFromBytes(data);
+                actangle += (float) value;
             }
             gui.setShape(getCurrentRad());
         }
     };
     private final IRuntimeInputPort ipMove = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
-            if (!propEnabled) return;
+            double value = ConversionUtils.doubleFromBytes(data);
+            if (!propEnabled || value == 0) return;
             elapsedIdleTime = System.currentTimeMillis();
-            double actmove = ConversionUtils.doubleFromBytes(data);
-            double dx = actmove * Math.sin(getCurrentRad());
-            double dy = -(actmove * Math.cos(getCurrentRad()));
+            double dx = value * Math.sin(getCurrentRad());
+            double dy = -(value * Math.cos(getCurrentRad()));
             moveCursorInternal(dx, dy);
         }
     };
