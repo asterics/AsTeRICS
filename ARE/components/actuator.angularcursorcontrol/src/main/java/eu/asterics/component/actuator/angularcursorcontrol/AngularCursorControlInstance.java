@@ -583,6 +583,6 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     private void moveCursorInternal(double dx, double dy) {
         gui.moveCursor(dx, dy);
         opOutX.sendData(ConversionUtils.doubleToBytes(gui.getCursorX()));
-        opOutY.sendData(ConversionUtils.doubleToBytes(gui.getCursorX()));
+        opOutY.sendData(ConversionUtils.doubleToBytes(gui.getCursorY()));
     }
 }

@@ -41,16 +41,12 @@ public class GUI extends JFrame {
 
     private int screenWidth = 0;
     private int screenHeight = 0;
-    float x = 0.0f;
     int len = 0, width = 0;
     float angle = 0.0f;
-    Robot rob;
-    double remainX = 0;
-    double remainY = 0;
 
     double locX = 0;
     double locY = 0;
-    private boolean wrapAround = false;
+    private boolean wrapAround;
     private boolean active = true;
 
     /**
@@ -78,13 +74,6 @@ public class GUI extends JFrame {
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         screenWidth = gd.getDisplayMode().getWidth();
         screenHeight = gd.getDisplayMode().getHeight();
-
-        try {
-            rob = new Robot();
-            rob.setAutoDelay(0);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
 
         Point location = MouseInfo.getPointerInfo().getLocation();
         locX = location.x;
@@ -124,13 +113,6 @@ public class GUI extends JFrame {
         locY += dy;
         locX = normalizeValue(locX, 0, screenWidth, wrapAround);
         locY = normalizeValue(locY, 0, screenHeight, wrapAround);
-
-        try {
-            Robot r = new Robot();
-            r.mouseMove((int) locX, (int) locY);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
 
         setLocation((int) locX - len, (int) locY - len);
     }
