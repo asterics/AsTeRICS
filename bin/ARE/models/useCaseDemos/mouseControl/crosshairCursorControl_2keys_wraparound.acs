@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2keys_wraparound.acs_2019_1_28_14_15" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_2keys_wraparound.acs_2019_1_31_14_25" version="20130320">
   <components>
     <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
       <description>cursor position control via crosshair movement</description>
@@ -16,11 +16,15 @@
         <inputPort portTypeID="accelerationV">
           <properties />
         </inputPort>
-        <outputPort portTypeID="tooltip">
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
           <properties />
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
         <property name="absoluteValues" value="false" />
         <property name="autoColorAxis" value="True" />
         <property name="highlightClick" value="true" />
@@ -31,8 +35,6 @@
         <property name="accelerationH" value="500" />
         <property name="accelerationV" value="500" />
         <property name="maxVelocity" value="1500" />
-        <property name="tooltipFolder" value="pictures/tooltips" />
-        <property name="tooltipStartIndex" value="3" />
       </properties>
       <layout>
         <posX>533</posX>
@@ -62,8 +64,8 @@
         <property name="yMax" value="0" />
       </properties>
       <layout>
-        <posX>694</posX>
-        <posY>137</posY>
+        <posX>697</posX>
+        <posY>138</posY>
       </layout>
     </component>
     <component id="KeyCapture.1.2" type_id="asterics.KeyCapture">
@@ -99,6 +101,28 @@
       </layout>
     </component>
   </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outY" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+  </channels>
   <eventChannels>
     <eventChannel id="clickEvent_leftClick">
       <description />
