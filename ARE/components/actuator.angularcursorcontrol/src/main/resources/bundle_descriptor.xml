@@ -35,20 +35,17 @@
 			<eventListenerPort id="disablePlugin">
 				<description>disables all functionality of this plugin</description>
 			</eventListenerPort>
-			<eventListenerPort id="select">
-				<description>selection event</description>
-			</eventListenerPort>
 			<eventListenerPort id="startMoveForward">
-				<description>starts automatic movement backward, accelerated by propery acceleration</description>
+				<description>starts automatic movement backward, accelerated by property acceleration</description>
 			</eventListenerPort>
 			<eventListenerPort id="startMoveBackward">
-				<description>starts automatic movement forward, accelerated by propery acceleration</description>
+				<description>starts automatic movement forward, accelerated by property acceleration</description>
 			</eventListenerPort>
 			<eventListenerPort id="startAngleLeft">
-				<description>starts automatic angle rotation to the left (counterclockwise), accelerated by propery accelerationAngle</description>
+				<description>starts automatic angle rotation to the left (counterclockwise), accelerated by property accelerationAngle</description>
 			</eventListenerPort>
 			<eventListenerPort id="startAngleRight">
-				<description>starts automatic angle rotation to the right (clockwise), accelerated by propery accelerationAngle</description>
+				<description>starts automatic angle rotation to the right (clockwise), accelerated by property accelerationAngle</description>
 			</eventListenerPort>
 			<eventListenerPort id="stopMoveForward">
 				<description>stops automatic movement backward</description>
