@@ -51,8 +51,7 @@ public class GUI extends JFrame {
     double locX = 0;
     double locY = 0;
     private boolean wrapAround = false;
-    // private JLabel myLabel;
-    // add more GUI elements here
+    private boolean active = true;
 
     /**
      * The class constructor, initialises the GUI
@@ -91,6 +90,10 @@ public class GUI extends JFrame {
         locX = location.x;
         locY = location.y;
 
+    }
+
+    void setActive(boolean active) {
+        this.active = active;
     }
 
     void setOnTop() {
@@ -140,7 +143,7 @@ public class GUI extends JFrame {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.RED);
+        g2.setColor(active ? Color.RED : Color.GRAY);
 
         int x1Points[] = { len, len + width, len - width, len };
         int y1Points[] = { 0, len - 10, len - 10, 0 };

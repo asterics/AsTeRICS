@@ -46,6 +46,7 @@ import eu.asterics.mw.services.AstericsThreadPool;
 public class AngularCursorControlInstance extends AbstractRuntimeComponentInstance {
     final IRuntimeEventTriggererPort etpClickEvent = new DefaultRuntimeEventTriggererPort();
 
+    private boolean propEnabled = true;
     boolean propAbsoluteAngle = false;
     boolean propWrapAround = false;
     int propClickEventTime = 1000;
@@ -118,8 +119,11 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
      * @return the EventListener port or null if not found
      */
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
-        if ("select".equalsIgnoreCase(eventPortID)) {
-            return elpSelect;
+        if ("enablePlugin".equalsIgnoreCase(eventPortID)) {
+            return elpEnablePlugin;
+        }
+        if ("disablePlugin".equalsIgnoreCase(eventPortID)) {
+            return elpDisablePlugin;
         }
         if ("startMoveForward".equalsIgnoreCase(eventPortID)) {
             return elpStartMoveForward;
@@ -175,6 +179,9 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
      * @return the property value or null if not found
      */
     public Object getRuntimePropertyValue(String propertyName) {
+        if ("enabled".equalsIgnoreCase(propertyName)) {
+            return propEnabled;
+        }
         if ("absoluteAngle".equalsIgnoreCase(propertyName)) {
             return propAbsoluteAngle;
         }
@@ -221,6 +228,11 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
      *            the desired property value or null if not found
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("enabled".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propEnabled;
+            propEnabled = Boolean.parseBoolean(newValue.toString());
+            return oldValue;
+        }
         if ("absoluteAngle".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propAbsoluteAngle;
             propAbsoluteAngle = Boolean.parseBoolean(newValue.toString());
@@ -288,6 +300,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
      */
     private final IRuntimeInputPort ipAngle = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
+            if (!propEnabled) return;
             elapsedIdleTime = Long.MAX_VALUE;
             if (propAbsoluteAngle) {
                 actangle = (float) ConversionUtils.doubleFromBytes(data);
@@ -299,6 +312,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     };
     private final IRuntimeInputPort ipMove = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
+            if (!propEnabled) return;
             elapsedIdleTime = System.currentTimeMillis();
             double actmove = ConversionUtils.doubleFromBytes(data);
             double dx = actmove * Math.sin(getCurrentRad());
@@ -310,17 +324,25 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     /**
      * Event Listerner Ports.
      */
-    final IRuntimeEventListenerPort elpSelect = new IRuntimeEventListenerPort() {
+    final IRuntimeEventListenerPort elpEnablePlugin = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
+            propEnabled = true;
+            gui.setActive(true);
         }
     };
 
-    /**
-     * Event Listerner Ports.
-     */
+    final IRuntimeEventListenerPort elpDisablePlugin = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            elapsedIdleTime = System.currentTimeMillis();
+            propEnabled = false;
+            gui.setActive(false);
+        }
+    };
+
     final IRuntimeEventListenerPort elpStartMoveForward = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
+            if (!propEnabled) return;
             elapsedIdleTime = System.currentTimeMillis();
             lastMoveTime = System.currentTimeMillis();
             moveForward = true;
@@ -328,11 +350,9 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
     };
 
-    /**
-     * Event Listerner Ports.
-     */
     final IRuntimeEventListenerPort elpStartMoveBackward = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
+            if (!propEnabled) return;
             elapsedIdleTime = System.currentTimeMillis();
             lastMoveTime = System.currentTimeMillis();
             moveBackward = true;
@@ -340,11 +360,9 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
     };
 
-    /**
-     * Event Listerner Ports.
-     */
     final IRuntimeEventListenerPort elpStartAngleLeft = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
+            if (!propEnabled) return;
             elapsedIdleTime = System.currentTimeMillis();
             lastAngleMoveTime = System.currentTimeMillis();
             moveAngleLeft = true;
@@ -352,11 +370,9 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
     };
 
-    /**
-     * Event Listerner Ports.
-     */
     final IRuntimeEventListenerPort elpStartAngleRight = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
+            if (!propEnabled) return;
             elapsedIdleTime = System.currentTimeMillis();
             lastAngleMoveTime = System.currentTimeMillis();
             moveAngleRight = true;
@@ -364,9 +380,6 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
     };
 
-    /**
-     * Event Listerner Ports.
-     */
     final IRuntimeEventListenerPort elpStopMoveForward = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
@@ -376,9 +389,6 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
     };
 
-    /**
-     * Event Listerner Ports.
-     */
     final IRuntimeEventListenerPort elpStopMoveBackward = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
@@ -388,9 +398,6 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
     };
 
-    /**
-     * Event Listerner Ports.
-     */
     final IRuntimeEventListenerPort elpStopAngleLeft = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
@@ -400,9 +407,6 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
     };
 
-    /**
-     * Event Listerner Ports.
-     */
     final IRuntimeEventListenerPort elpStopAngleRight = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
@@ -412,9 +416,6 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
     };
 
-    /**
-     * Event Listerner Ports.
-     */
     final IRuntimeEventListenerPort elpStopMove = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
@@ -426,9 +427,6 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
             currentMoveSpeedAngle = propBaseVelocityAngle;
         }
     };
-
-    Point position;
-    Dimension dimension;
 
     /**
      * called when model is started.
@@ -447,6 +445,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
                 while (running) {
                     try {
                         Thread.sleep(20);
+                        if (!propEnabled) continue;
                         if ((System.currentTimeMillis() - elapsedIdleTime) > propClickEventTime) {
                             etpClickEvent.raiseEvent();
                             gui.setOnTop();
