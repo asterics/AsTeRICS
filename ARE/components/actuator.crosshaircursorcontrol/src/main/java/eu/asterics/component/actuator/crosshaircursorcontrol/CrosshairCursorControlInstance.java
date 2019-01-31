@@ -527,9 +527,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
             propAutoColorAxis = false;
-            if (propEnabled) {
-                gui.toggleAxis();
-            }
+            gui.toggleAxis();
             gui.setOnTop();
         }
     };
