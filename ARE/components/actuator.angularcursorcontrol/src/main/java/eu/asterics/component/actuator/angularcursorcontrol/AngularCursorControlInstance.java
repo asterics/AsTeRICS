@@ -34,6 +34,7 @@ import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.*;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
@@ -44,6 +45,9 @@ import eu.asterics.mw.services.AstericsThreadPool;
  * @author Chris, Date: 2019-01-20
  */
 public class AngularCursorControlInstance extends AbstractRuntimeComponentInstance {
+
+    final IRuntimeOutputPort opOutX = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opOutY = new DefaultRuntimeOutputPort();
     final IRuntimeEventTriggererPort etpClickEvent = new DefaultRuntimeEventTriggererPort();
 
     private boolean propEnabled = true;
@@ -107,7 +111,12 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
      * @return the output port or null if not found
      */
     public IRuntimeOutputPort getOutputPort(String portID) {
-
+        if ("outX".equalsIgnoreCase(portID)) {
+            return opOutX;
+        }
+        if ("outY".equalsIgnoreCase(portID)) {
+            return opOutY;
+        }
         return null;
     }
 
@@ -317,7 +326,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
             double actmove = ConversionUtils.doubleFromBytes(data);
             double dx = actmove * Math.sin(getCurrentRad());
             double dy = -(actmove * Math.cos(getCurrentRad()));
-            gui.moveCursor(dx, dy);
+            moveCursorInternal(dx, dy);
         }
     };
 
@@ -518,7 +527,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
             this.lastMoveTime = System.currentTimeMillis();
 
             this.currentMoveSpeed = getNewSpeed(currentMoveSpeed, propBaseVelocity, propMaxVelocity, diffTime, propAcceleration);
-            gui.moveCursor(dx, dy);
+            moveCursorInternal(dx, dy);
         }
 
         if (moveAngleRight || moveAngleLeft) {
@@ -569,5 +578,11 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
 
     private float getCurrentRad() {
         return (float) angleToRad(actangle);
+    }
+
+    private void moveCursorInternal(double dx, double dy) {
+        gui.moveCursor(dx, dy);
+        opOutX.sendData(ConversionUtils.doubleToBytes(gui.getCursorX()));
+        opOutY.sendData(ConversionUtils.doubleToBytes(gui.getCursorX()));
     }
 }

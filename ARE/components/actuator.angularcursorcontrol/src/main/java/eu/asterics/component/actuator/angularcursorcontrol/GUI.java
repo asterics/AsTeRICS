@@ -135,6 +135,14 @@ public class GUI extends JFrame {
         setLocation((int) locX - len, (int) locY - len);
     }
 
+    double getCursorX() {
+        return locX;
+    }
+
+    double getCursorY() {
+        return locY;
+    }
+
     void setWrapAround(boolean wrapAround) {
         this.wrapAround = wrapAround;
     }

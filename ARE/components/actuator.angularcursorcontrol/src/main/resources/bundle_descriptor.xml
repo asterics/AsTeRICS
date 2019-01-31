@@ -19,7 +19,14 @@
 				<dataType>double</dataType>
 			</inputPort>
 
-
+			<outputPort id="outX">
+				<description>the current x-position of the angular arrow (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="outY">
+				<description>the current y-position of the angular arrow (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
         </ports>
 		<events>
 			<eventListenerPort id="enablePlugin">
@@ -62,7 +69,6 @@
 			<eventTriggererPort id="clickEvent">
 				<description>etp description</description>
 			</eventTriggererPort>
-
 		</events>			
         <properties>
 			<property name="enabled"
