@@ -193,6 +193,9 @@ public class GUI extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                setAlwaysOnTop(false);
+                repaint();
+                setAlwaysOnTop(true);
                 repaint();
             }
         });
