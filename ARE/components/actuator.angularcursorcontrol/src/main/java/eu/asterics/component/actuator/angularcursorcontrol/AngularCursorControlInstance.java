@@ -456,7 +456,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
                     try {
                         Thread.sleep(20);
                         if (!propEnabled) continue;
-                        if ((System.currentTimeMillis() - elapsedIdleTime) > propClickEventTime) {
+                        if ((System.currentTimeMillis() - elapsedIdleTime) > propClickEventTime && propClickEventTime != 0) {
                             etpClickEvent.raiseEvent();
                             gui.setOnTop();
                             elapsedIdleTime = Long.MAX_VALUE;
