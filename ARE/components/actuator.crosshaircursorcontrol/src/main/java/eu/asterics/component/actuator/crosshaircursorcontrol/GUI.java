@@ -57,13 +57,9 @@ public class GUI extends JFrame {
     /**
      * The class constructor, initialises the GUI
      *
-     * @param owner
-     *            the owner class instance
-     * @param dim
-     *            the dimension of the screen
-     * @param lineWidth
-     *            the width of horizontal and vertial crosshair lines
-     *
+     * @param owner     the owner class instance
+     * @param dim       the dimension of the screen
+     * @param lineWidth the width of horizontal and vertial crosshair lines
      */
     public GUI(final CrosshairCursorControlInstance owner, final Dimension dim, final int lineWidth) {
         super("CursorMovementPanel");
@@ -119,7 +115,7 @@ public class GUI extends JFrame {
     void resetAxis() {
         highlightXAxis = false;
         highlightYAxis = false;
-        if(currentHighlightXAxis || currentHighlightYAxis) {
+        if (currentHighlightXAxis || currentHighlightYAxis) {
             repaintInternal();
         }
     }
@@ -132,14 +128,14 @@ public class GUI extends JFrame {
 
     void setXAxisHighlight(boolean highlightXAxis) {
         this.highlightXAxis = highlightXAxis;
-        if(currentHighlightXAxis != highlightXAxis) {
+        if (currentHighlightXAxis != highlightXAxis) {
             repaintInternal();
         }
     }
 
     void setYAxisHighlight(boolean highlightYAxis) {
         this.highlightYAxis = highlightYAxis;
-        if(currentHighlightYAxis != highlightYAxis) {
+        if (currentHighlightYAxis != highlightYAxis) {
             repaintInternal();
         }
     }
@@ -178,7 +174,7 @@ public class GUI extends JFrame {
             yAxisColor = Color.RED;
             currentHighlightYAxis = true;
         }
-        if(highlightClick) {
+        if (highlightClick) {
             xAxisColor = Color.GREEN;
             yAxisColor = Color.GREEN;
         }
@@ -191,7 +187,7 @@ public class GUI extends JFrame {
         g2.fillRect(0, (int) locY - lineWidth / 2, (int) locX - lineWidth / 2, lineWidth);
         g2.fillRect((int) locX + lineWidth / 2, (int) locY - lineWidth / 2, width - (int) locX, lineWidth);
 
-        if(highlightClick) {
+        if (highlightClick) {
             highlightClick = false;
             repaintInternal(150);
         }
@@ -201,7 +197,7 @@ public class GUI extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if(sleepMs > 0) {
+                if (sleepMs > 0) {
                     sleepInternal(sleepMs);
                 }
                 repaint();

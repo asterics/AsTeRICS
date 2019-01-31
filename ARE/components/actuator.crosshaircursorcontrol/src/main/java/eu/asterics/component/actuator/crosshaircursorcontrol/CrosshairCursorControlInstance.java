@@ -1,27 +1,27 @@
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
- * 
- * 
- *        d8888      88888888888       8888888b.  8888888 .d8888b.   .d8888b. 
+ *
+ *
+ *        d8888      88888888888       8888888b.  8888888 .d8888b.   .d8888b.
  *       d88888          888           888   Y88b   888  d88P  Y88b d88P  Y88b
- *      d88P888          888           888    888   888  888    888 Y88b.     
- *     d88P 888 .d8888b  888   .d88b.  888   d88P   888  888         "Y888b.  
+ *      d88P888          888           888    888   888  888    888 Y88b.
+ *     d88P 888 .d8888b  888   .d88b.  888   d88P   888  888         "Y888b.
  *    d88P  888 88K      888  d8P  Y8b 8888888P"    888  888            "Y88b.
  *   d88P   888 "Y8888b. 888  88888888 888 T88b     888  888    888       "888
  *  d8888888888      X88 888  Y8b.     888  T88b    888  Y88b  d88P Y88b  d88P
- * d88P     888  88888P' 888   "Y8888  888   T88b 8888888 "Y8888P"   "Y8888P" 
+ * d88P     888  88888P' 888   "Y8888  888   T88b 8888888 "Y8888P"   "Y8888P"
  *
  *
- *                    homepage: http://www.asterics.org 
+ *                    homepage: http://www.asterics.org
  *
- *         This project has been funded by the European Commission, 
+ *         This project has been funded by the European Commission,
  *                      Grant Agreement Number 247730
- *  
- *  
+ *
+ *
  *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
  *         (please refer to the folder LICENSE)
- * 
+ *
  */
 
 package eu.asterics.component.actuator.crosshaircursorcontrol;
@@ -46,12 +46,9 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
- * 
  * The CrosshairCursorControl component allows mouse cursor positioning by software emulation with a limited number of input control channels. A crosshair
  * indicator is displayed on the screen next to the mouse cursor.
- * 
- * 
- * 
+ *
  * @author Chris Date: 2019-01-20
  */
 public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInstance {
@@ -102,9 +99,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     /**
      * returns an Input Port.
-     * 
-     * @param portID
-     *            the name of the port
+     *
+     * @param portID the name of the port
      * @return the input port or null if not found
      */
     public IRuntimeInputPort getInputPort(String portID) {
@@ -126,9 +122,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     /**
      * returns an Output Port.
-     * 
-     * @param portID
-     *            the name of the port
+     *
+     * @param portID the name of the port
      * @return the output port or null if not found
      */
     public IRuntimeOutputPort getOutputPort(String portID) {
@@ -143,9 +138,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     /**
      * returns an Event Listener Port.
-     * 
-     * @param eventPortID
-     *            the name of the port
+     *
+     * @param eventPortID the name of the port
      * @return the EventListener port or null if not found
      */
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
@@ -203,9 +197,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     /**
      * returns an Event Triggerer Port.
-     * 
-     * @param eventPortID
-     *            the name of the port
+     *
+     * @param eventPortID the name of the port
      * @return the EventTriggerer port or null if not found
      */
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
@@ -218,9 +211,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     /**
      * returns the value of the given property.
-     * 
-     * @param propertyName
-     *            the name of the property
+     *
+     * @param propertyName the name of the property
      * @return the property value or null if not found
      */
     public Object getRuntimePropertyValue(String propertyName) {
@@ -263,11 +255,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     /**
      * sets a new value for the given property.
-     * 
-     * @param propertyName
-     *            the name of the property
-     * @param newValue
-     *            the desired property value or null if not found
+     *
+     * @param propertyName the name of the property
+     * @param newValue     the desired property value or null if not found
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         if ("enabled".equalsIgnoreCase(propertyName)) {
@@ -340,7 +330,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 return;
             }
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
-            if(inputValue == 0 && !propAbsoluteValues) {
+            if (inputValue == 0 && !propAbsoluteValues) {
                 currentMoveSpeedH = propBaseVelocity;
                 lastStableX = x;
                 return;
@@ -365,7 +355,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 return;
             }
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
-            if(inputValue == 0 && !propAbsoluteValues) {
+            if (inputValue == 0 && !propAbsoluteValues) {
                 lastStableY = y;
                 currentMoveSpeedV = propBaseVelocity;
                 return;
@@ -417,7 +407,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStartMoveLeft = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if(!propEnabled) return;
+            if (!propEnabled) return;
             lastMoveTimeH = System.currentTimeMillis();
             moveLeft = true;
             moveRight = false;
@@ -426,7 +416,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStartMoveRight = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if(!propEnabled) return;
+            if (!propEnabled) return;
             lastMoveTimeH = System.currentTimeMillis();
             moveRight = true;
             moveLeft = false;
@@ -435,7 +425,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStartMoveUp = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if(!propEnabled) return;
+            if (!propEnabled) return;
             lastMoveTimeV = System.currentTimeMillis();
             moveUp = true;
             moveDown = false;
@@ -444,7 +434,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStartMoveDown = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if(!propEnabled) return;
+            if (!propEnabled) return;
             lastMoveTimeV = System.currentTimeMillis();
             moveDown = true;
             moveUp = false;
@@ -453,7 +443,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStopMoveLeft = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if(propAutoColorAxis) gui.resetAxis();
+            if (propAutoColorAxis) gui.resetAxis();
             moveLeft = false;
             currentMoveSpeedH = propBaseVelocity;
             lastStableX = x;
@@ -462,7 +452,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStopMoveRight = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if(propAutoColorAxis) gui.resetAxis();
+            if (propAutoColorAxis) gui.resetAxis();
             moveRight = false;
             currentMoveSpeedH = propBaseVelocity;
             lastStableX = x;
@@ -471,7 +461,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStopMoveUp = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if(propAutoColorAxis) gui.resetAxis();
+            if (propAutoColorAxis) gui.resetAxis();
             moveUp = false;
             currentMoveSpeedV = propBaseVelocity;
             lastStableY = y;
@@ -480,7 +470,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStopMoveDown = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if(propAutoColorAxis) gui.resetAxis();
+            if (propAutoColorAxis) gui.resetAxis();
             moveDown = false;
             currentMoveSpeedV = propBaseVelocity;
             lastStableY = y;
@@ -489,7 +479,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStopMoveAll = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if(propAutoColorAxis) gui.resetAxis();
+            if (propAutoColorAxis) gui.resetAxis();
             moveLeft = false;
             moveRight = false;
             moveUp = false;
@@ -506,13 +496,13 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             if (!propEnabled) return;
             x = lastStableX != -1 ? lastStableX : x;
             y = lastStableY != -1 ? lastStableY : y;
-            setCursorInternal(x,y);
+            setCursorInternal(x, y);
         }
     };
 
     final IRuntimeEventListenerPort elpHighlightXAxis = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            elapsedIdleTime=System.currentTimeMillis();
+            elapsedIdleTime = System.currentTimeMillis();
             propAutoColorAxis = false;
             if (propEnabled) {
                 gui.setXAxisHighlight(true);
@@ -524,7 +514,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpHighlightYAxis = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            elapsedIdleTime=System.currentTimeMillis();
+            elapsedIdleTime = System.currentTimeMillis();
             propAutoColorAxis = false;
             if (propEnabled) {
                 gui.setYAxisHighlight(true);
@@ -536,7 +526,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpToggleAxisHighlight = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            elapsedIdleTime=System.currentTimeMillis();
+            elapsedIdleTime = System.currentTimeMillis();
             propAutoColorAxis = false;
             if (propEnabled) {
                 gui.toggleAxis();
@@ -589,24 +579,24 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                     try {
                         long currentTime = System.currentTimeMillis();
                         Thread.sleep(20);
-                        if(!propEnabled) {
+                        if (!propEnabled) {
                             continue;
                         }
                         if ((currentTime - elapsedIdleTime) > propClickEventTime && propClickEventTime > 0) {
                             // gui.hideCrosshair();
                             setCursorInternal(x, y); // update cursor position (prevent JavaRobot positioning error when quickly updated)
-                            if(propHighlightClick) gui.doAxisClickHighlight();
+                            if (propHighlightClick) gui.doAxisClickHighlight();
                             etpClickEvent.raiseEvent();
                             // Thread.sleep(200);
                             // gui.showCrosshair();
                             gui.setOnTop();
-                            if(propAutoColorAxis) gui.resetAxis();
+                            if (propAutoColorAxis) gui.resetAxis();
                             elapsedIdleTime = Long.MAX_VALUE;
                         } else {
                             doMove();
                         }
 
-                        if(propAutoColorAxis) {
+                        if (propAutoColorAxis) {
                             gui.setYAxisHighlight(currentTime - lastMoveTimeH < 50);
                             gui.setXAxisHighlight(currentTime - lastMoveTimeV < 50);
                         }
@@ -660,7 +650,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
      * moves if the class member boolean variables are set
      */
     private void doMove() {
-        if(!this.moveLeft && !this.moveRight && !this.moveUp && !this.moveDown) {
+        if (!this.moveLeft && !this.moveRight && !this.moveUp && !this.moveDown) {
             return;
         }
         elapsedIdleTime = System.currentTimeMillis();
@@ -709,8 +699,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
      * @return
      */
     private double getNewSpeed(double currentSpeed, int minSpeed, int maxSpeed, long diffTimeMs, int acceleration) {
-        if(diffTimeMs > 200) {
-            return  minSpeed;
+        if (diffTimeMs > 200) {
+            return minSpeed;
         }
         float diffSpeed = (float) acceleration * diffTimeMs / 1000;
         if (currentSpeed + diffSpeed < maxSpeed) {
@@ -718,14 +708,14 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         } else {
             currentSpeed = maxSpeed;
         }
-        if(currentSpeed < minSpeed) {
+        if (currentSpeed < minSpeed) {
             currentSpeed = minSpeed;
         }
         return currentSpeed;
     }
 
     private int getDiffPx(double speed, int minSpeed, int maxSpeed, long diffTimeMs, float givenDiffPx) {
-        if(diffTimeMs > 200) {
+        if (diffTimeMs > 200) {
             return (int) givenDiffPx;
         }
         float signum = Math.signum(givenDiffPx);
@@ -736,7 +726,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     /**
      * normalizes the given value to a given range.
-     * @param value the value to normalize
+     *
+     * @param value      the value to normalize
      * @param minValue
      * @param maxValue
      * @param wrapAround if true, a value smaller than minValue results in maxValue and vice versa
@@ -753,7 +744,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     /**
      * normalizes the given value to a given range.
-     * @param value the value to normalize
+     *
+     * @param value    the value to normalize
      * @param minValue
      * @param maxValue
      * @return
