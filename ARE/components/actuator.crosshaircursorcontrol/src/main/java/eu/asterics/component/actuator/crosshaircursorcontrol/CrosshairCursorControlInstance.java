@@ -26,23 +26,15 @@
 
 package eu.asterics.component.actuator.crosshaircursorcontrol;
 
-import java.awt.Dimension;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.*;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
@@ -100,7 +92,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     /**
      * returns an Input Port.
      *
-     * @param portID the name of the port
+     * @param portID
+     *            the name of the port
      * @return the input port or null if not found
      */
     public IRuntimeInputPort getInputPort(String portID) {
@@ -123,7 +116,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     /**
      * returns an Output Port.
      *
-     * @param portID the name of the port
+     * @param portID
+     *            the name of the port
      * @return the output port or null if not found
      */
     public IRuntimeOutputPort getOutputPort(String portID) {
@@ -139,7 +133,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     /**
      * returns an Event Listener Port.
      *
-     * @param eventPortID the name of the port
+     * @param eventPortID
+     *            the name of the port
      * @return the EventListener port or null if not found
      */
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
@@ -198,7 +193,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     /**
      * returns an Event Triggerer Port.
      *
-     * @param eventPortID the name of the port
+     * @param eventPortID
+     *            the name of the port
      * @return the EventTriggerer port or null if not found
      */
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
@@ -212,7 +208,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     /**
      * returns the value of the given property.
      *
-     * @param propertyName the name of the property
+     * @param propertyName
+     *            the name of the property
      * @return the property value or null if not found
      */
     public Object getRuntimePropertyValue(String propertyName) {
@@ -256,8 +253,10 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     /**
      * sets a new value for the given property.
      *
-     * @param propertyName the name of the property
-     * @param newValue     the desired property value or null if not found
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         if ("enabled".equalsIgnoreCase(propertyName)) {
@@ -687,9 +686,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     }
 
     /**
-     * returns new speed according to given acceleration, min/max-speed and time difference.
-     * If time difference is greater than 0.2 seconds, minSpeed is returned (assuming that it is the first call of the
-     * method after initialization)
+     * returns new speed according to given acceleration, min/max-speed and time difference. If time difference is greater than 0.2 seconds, minSpeed is
+     * returned (assuming that it is the first call of the method after initialization)
      *
      * @param currentSpeed
      * @param minSpeed
@@ -727,10 +725,12 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     /**
      * normalizes the given value to a given range.
      *
-     * @param value      the value to normalize
+     * @param value
+     *            the value to normalize
      * @param minValue
      * @param maxValue
-     * @param wrapAround if true, a value smaller than minValue results in maxValue and vice versa
+     * @param wrapAround
+     *            if true, a value smaller than minValue results in maxValue and vice versa
      * @return
      */
     private double normalizeValue(double value, double minValue, double maxValue, boolean wrapAround) {
@@ -745,7 +745,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     /**
      * normalizes the given value to a given range.
      *
-     * @param value    the value to normalize
+     * @param value
+     *            the value to normalize
      * @param minValue
      * @param maxValue
      * @return

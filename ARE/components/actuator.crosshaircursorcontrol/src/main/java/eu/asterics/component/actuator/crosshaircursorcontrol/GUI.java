@@ -26,11 +26,11 @@
 
 package eu.asterics.component.actuator.crosshaircursorcontrol;
 
-import eu.asterics.mw.services.AstericsErrorHandling;
-
-import javax.swing.*;
 import java.awt.*;
 
+import javax.swing.*;
+
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
  * Implements the Graphical User Interface for the CrosshairCursorControl plugin
@@ -57,9 +57,12 @@ public class GUI extends JFrame {
     /**
      * The class constructor, initialises the GUI
      *
-     * @param owner     the owner class instance
-     * @param dim       the dimension of the screen
-     * @param lineWidth the width of horizontal and vertial crosshair lines
+     * @param owner
+     *            the owner class instance
+     * @param dim
+     *            the dimension of the screen
+     * @param lineWidth
+     *            the width of horizontal and vertial crosshair lines
      */
     public GUI(final CrosshairCursorControlInstance owner, final Dimension dim, final int lineWidth) {
         super("CursorMovementPanel");
