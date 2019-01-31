@@ -154,14 +154,16 @@ public class GUI extends JFrame {
 
         if (image != null) {
             int toolX, toolY;
-            if ((int) mouseY > 100)
-                toolY = (int) mouseY - 90;
-            else
+            if ((int) mouseY < image.getHeight()) {
                 toolY = (int) mouseY + 10;
-            if ((int) mouseX < width - image.getWidth())
+            } else {
+                toolY = (int) mouseY - image.getHeight() - 10;
+            }
+            if ((int) mouseX < image.getWidth()) {
                 toolX = (int) mouseX + 10;
-            else
+            } else {
                 toolX = (int) mouseX - image.getWidth() - 10;
+            }
 
             g.drawImage(image, toolX, toolY, null);
         }
