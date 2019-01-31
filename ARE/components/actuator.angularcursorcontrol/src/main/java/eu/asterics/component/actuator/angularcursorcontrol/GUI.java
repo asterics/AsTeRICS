@@ -27,21 +27,10 @@
 package eu.asterics.component.actuator.angularcursorcontrol;
 
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-import java.awt.AWTException;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.Robot;
+import java.awt.geom.GeneralPath;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 /**
  * Implements the Graphical User Interface for the AngularCursorControl plugin
@@ -130,8 +119,8 @@ public class GUI extends JFrame {
 
         locX += dx;
         locY += dy;
-        locX = normalizeValue(locX,0, screenWidth, wrapAround);
-        locY = normalizeValue(locY,0, screenHeight, wrapAround);
+        locX = normalizeValue(locX, 0, screenWidth, wrapAround);
+        locY = normalizeValue(locY, 0, screenHeight, wrapAround);
 
         try {
             Robot r = new Robot();
@@ -175,10 +164,13 @@ public class GUI extends JFrame {
 
     /**
      * normalizes the given value to a given range.
-     * @param value the value to normalize
+     * 
+     * @param value
+     *            the value to normalize
      * @param minValue
      * @param maxValue
-     * @param wrapAround if true, a value smaller than minValue results in maxValue and vice versa
+     * @param wrapAround
+     *            if true, a value smaller than minValue results in maxValue and vice versa
      * @return
      */
     private double normalizeValue(double value, double minValue, double maxValue, boolean wrapAround) {

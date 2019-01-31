@@ -26,24 +26,14 @@
 
 package eu.asterics.component.actuator.angularcursorcontrol;
 
-import java.awt.Dimension;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.util.logging.Logger;
+import java.awt.*;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.*;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
@@ -520,7 +510,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         }
         elapsedIdleTime = System.currentTimeMillis();
 
-        if(moveForward || moveBackward) {
+        if (moveForward || moveBackward) {
             long diffTime = System.currentTimeMillis() - this.lastMoveTime;
             float diffPx = (float) currentMoveSpeed * diffTime / 1000;
             int factor = moveForward ? 1 : -1;
@@ -532,7 +522,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
             gui.moveCursor(dx, dy);
         }
 
-        if(moveAngleRight || moveAngleLeft) {
+        if (moveAngleRight || moveAngleLeft) {
             long diffTimeAngle = System.currentTimeMillis() - this.lastAngleMoveTime;
             float diffAngle = (float) currentMoveSpeedAngle * diffTimeAngle / 1000;
             this.lastAngleMoveTime = System.currentTimeMillis();
@@ -548,9 +538,8 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
     }
 
     /**
-     * returns new speed according to given acceleration, min/max-speed and time difference.
-     * If time difference is greater than 0.2 seconds, minSpeed is returned (assuming that it is the first call of the
-     * method after initialization)
+     * returns new speed according to given acceleration, min/max-speed and time difference. If time difference is greater than 0.2 seconds, minSpeed is
+     * returned (assuming that it is the first call of the method after initialization)
      *
      * @param currentSpeed
      * @param minSpeed
@@ -560,8 +549,8 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
      * @return
      */
     private double getNewSpeed(double currentSpeed, double minSpeed, double maxSpeed, long diffTimeMs, double acceleration) {
-        if(diffTimeMs > 200) {
-            return  minSpeed;
+        if (diffTimeMs > 200) {
+            return minSpeed;
         }
         float diffSpeed = (float) acceleration * diffTimeMs / 1000;
         if (currentSpeed + diffSpeed < maxSpeed) {
@@ -569,7 +558,7 @@ public class AngularCursorControlInstance extends AbstractRuntimeComponentInstan
         } else {
             currentSpeed = maxSpeed;
         }
-        if(currentSpeed < minSpeed) {
+        if (currentSpeed < minSpeed) {
             currentSpeed = minSpeed;
         }
         return currentSpeed;
