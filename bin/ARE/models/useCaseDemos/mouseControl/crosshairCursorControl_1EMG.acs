@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_1EMG.acs_2019_1_28_11_23" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_1EMG.acs_2019_1_31_15_21" version="20130320">
   <components>
-    <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
-      <description>cursor position control via crosshair movement</description>
+    <component id="Tooltip.1" type_id="asterics.Tooltip">
+      <description>show tooltips next to mouse pointer for triggering various actions</description>
       <ports>
         <inputPort portTypeID="x">
           <properties />
@@ -10,60 +10,31 @@
         <inputPort portTypeID="y">
           <properties />
         </inputPort>
-        <inputPort portTypeID="accelerationH">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="accelerationV">
-          <properties />
-        </inputPort>
         <outputPort portTypeID="tooltip">
           <properties />
         </outputPort>
       </ports>
       <properties>
-        <property name="absoluteValues" value="false" />
-        <property name="autoColorAxis" value="False" />
-        <property name="highlightClick" value="true" />
-        <property name="wrapAround" value="True" />
-        <property name="clickEventTime" value="1500" />
-        <property name="lineWidth" value="5" />
-        <property name="baseVelocity" value="10" />
-        <property name="accelerationH" value="300" />
-        <property name="accelerationV" value="300" />
-        <property name="maxVelocity" value="1500" />
+        <property name="initialX" value="0" />
+        <property name="initialY" value="0" />
+        <property name="selectTime" value="1000" />
         <property name="tooltipFolder" value="pictures/tooltips" />
         <property name="tooltipStartIndex" value="1" />
       </properties>
       <layout>
-        <posX>885</posX>
-        <posY>278</posY>
+        <posX>913</posX>
+        <posY>328</posY>
       </layout>
     </component>
-    <component id="Mouse.1" type_id="asterics.Mouse">
-      <description>Local mouse actuator, emulates mouse activity on local system</description>
-      <ports>
-        <inputPort portTypeID="mouseX">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="mouseY">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="action">
-          <properties />
-        </inputPort>
-      </ports>
+    <component id="EventDelay.2" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
       <properties>
-        <property name="enableMouse" value="true" />
-        <property name="absolutePosition" value="true" />
-        <property name="startCentered" value="False" />
-        <property name="xMin" value="0" />
-        <property name="xMax" value="0" />
-        <property name="yMin" value="0" />
-        <property name="yMax" value="0" />
+        <property name="delay" value="100" />
       </properties>
       <layout>
-        <posX>1036</posX>
-        <posY>277</posY>
+        <posX>1119</posX>
+        <posY>498</posY>
       </layout>
     </component>
     <component id="EventRouter.1" type_id="asterics.EventRouter">
@@ -116,17 +87,6 @@
         <posY>464</posY>
       </layout>
     </component>
-    <component id="EventDelay.2" type_id="asterics.EventDelay">
-      <description>Delalys events</description>
-      <ports />
-      <properties>
-        <property name="delay" value="100" />
-      </properties>
-      <layout>
-        <posX>1081</posX>
-        <posY>535</posY>
-      </layout>
-    </component>
     <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
       <description>Send text from chosen slot</description>
       <ports>
@@ -161,8 +121,8 @@
         <property name="slot20" value="" />
       </properties>
       <layout>
-        <posX>1222</posX>
-        <posY>540</posY>
+        <posX>1260</posX>
+        <posY>503</posY>
       </layout>
     </component>
     <component id="EventDispatcher.1" type_id="asterics.EventDispatcher">
@@ -185,8 +145,8 @@
         <property name="command10" value="" />
       </properties>
       <layout>
-        <posX>980</posX>
-        <posY>535</posY>
+        <posX>1018</posX>
+        <posY>498</posY>
       </layout>
     </component>
     <component id="Keyboard.1" type_id="asterics.Keyboard">
@@ -202,8 +162,48 @@
         <property name="waitTime" value="1000" />
       </properties>
       <layout>
-        <posX>1352</posX>
-        <posY>544</posY>
+        <posX>1390</posX>
+        <posY>507</posY>
+      </layout>
+    </component>
+    <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
+      <description>cursor position control via crosshair movement</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationH">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationV">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enabled" value="True" />
+        <property name="absoluteValues" value="false" />
+        <property name="autoColorAxis" value="False" />
+        <property name="highlightClick" value="True" />
+        <property name="wrapAround" value="True" />
+        <property name="clickEventTime" value="1500" />
+        <property name="lineWidth" value="5" />
+        <property name="baseVelocity" value="50" />
+        <property name="accelerationH" value="300" />
+        <property name="accelerationV" value="300" />
+        <property name="maxVelocity" value="1500" />
+      </properties>
+      <layout>
+        <posX>754</posX>
+        <posY>277</posY>
       </layout>
     </component>
     <component id="Deadzone.1.1" type_id="asterics.Deadzone">
@@ -310,7 +310,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="ComPort" value="COM16" />
+        <property name="ComPort" value="COM12" />
         <property name="BaudRate" value="9600" />
         <property name="ReceivedDataType" value="0" />
         <property name="SendDataType" value="1" />
@@ -342,34 +342,51 @@
       <properties>
         <property name="xCenter" value="0" />
         <property name="yCenter" value="0" />
-        <property name="radius" value="700" />
+        <property name="radius" value="800" />
         <property name="mode" value="2" />
       </properties>
       <layout>
-        <posX>560</posX>
+        <posX>563</posX>
         <posY>45</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="true" />
+        <property name="startCentered" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>910</posX>
+        <posY>156</posY>
       </layout>
     </component>
   </components>
   <channels>
-    <channel id="binding.2">
+    <channel id="binding.3">
       <source>
         <component id="CrosshairCursorControl.1" />
-        <port id="tooltip" />
+        <port id="outX" />
       </source>
       <target>
-        <component id="EventDispatcher.1" />
-        <port id="cmd" />
-      </target>
-    </channel>
-    <channel id="binding.0">
-      <source>
-        <component id="StringDispatcher.1" />
-        <port id="output" />
-      </source>
-      <target>
-        <component id="Keyboard.1" />
-        <port id="keyCodes" />
+        <component id="Mouse.1" />
+        <port id="mouseX" />
       </target>
     </channel>
     <channel id="binding.4">
@@ -402,6 +419,56 @@
         <port id="inX" />
       </target>
     </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Keyboard.1" />
+        <port id="keyCodes" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outY" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="Tooltip.1" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outY" />
+      </source>
+      <target>
+        <component id="Tooltip.1" />
+        <port id="y" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="Tooltip.1" />
+        <port id="tooltip" />
+      </source>
+      <target>
+        <component id="EventDispatcher.1" />
+        <port id="cmd" />
+      </target>
+    </channel>
   </channels>
   <eventChannels>
     <eventChannel id="periodFinished_selectNext">
@@ -419,21 +486,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="clickEvent_leftClick">
-      <description />
-      <sources>
-        <source>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="clickEvent" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="leftClick" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="output_start">
       <description />
       <sources>
@@ -446,246 +498,6 @@
         <target>
           <component id="Timer.1.2" />
           <eventPort id="start" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="eventOut1_startMoveRight">
-      <description />
-      <sources>
-        <source>
-          <component id="EventRouter.1" />
-          <eventPort id="eventOut1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="startMoveRight" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="eventOut2_1_stopMoveRight">
-      <description />
-      <sources>
-        <source>
-          <component id="EventRouter.1" />
-          <eventPort id="eventOut2_1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="stopMoveRight" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="eventOut2_startMoveDown">
-      <description />
-      <sources>
-        <source>
-          <component id="EventRouter.1" />
-          <eventPort id="eventOut2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="startMoveDown" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="eventOut2_2_stopMoveDown">
-      <description />
-      <sources>
-        <source>
-          <component id="EventRouter.1" />
-          <eventPort id="eventOut2_2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="stopMoveDown" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="periodFinished_toggleAxisHighlight">
-      <description />
-      <sources>
-        <source>
-          <component id="Timer.1.2" />
-          <eventPort id="periodFinished" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="toggleAxisHighlight" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand4_dispatchSlot1">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand4" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot1" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand5_dispatchSlot2">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand5" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot2" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand6_dispatchSlot3">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand6" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot3" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand7_dispatchSlot4">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand7" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot4" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand3_input">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventDelay.2" />
-          <eventPort id="input" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand3_rightClick">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand3" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="rightClick" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand2_doubleClick">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="doubleClick" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand1_dragPress">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="dragPress" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="output_nextClickRelease">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDelay.2" />
-          <eventPort id="output" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="nextClickRelease" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="eventOut1_highlightYAxis">
-      <description />
-      <sources>
-        <source>
-          <component id="EventRouter.1" />
-          <eventPort id="eventOut1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="highlightYAxis" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="eventOut2_highlightXAxis">
-      <description />
-      <sources>
-        <source>
-          <component id="EventRouter.1" />
-          <eventPort id="eventOut2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="highlightXAxis" />
         </target>
       </targets>
     </eventChannel>
@@ -764,6 +576,186 @@
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="clickEvent_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="clickEvent" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_rightClick">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_doubleClick">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="doubleClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_dragPress">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="dragPress" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_nextClickRelease">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDelay.2" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="nextClickRelease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="tooltipDeactivated_enablePlugin">
+      <description />
+      <sources>
+        <source>
+          <component id="Tooltip.1" />
+          <eventPort id="tooltipDeactivated" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="enablePlugin" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="tooltipDeactivated_disablePlugin">
+      <description />
+      <sources>
+        <source>
+          <component id="Tooltip.1" />
+          <eventPort id="tooltipActivated" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="disablePlugin" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="tooltipActivated_moveToLastStable">
+      <description />
+      <sources>
+        <source>
+          <component id="Tooltip.1" />
+          <eventPort id="tooltipActivated" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="moveToLastStable" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_dispatchSlot3">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_dispatchSlot4">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
     <eventChannel id="enterZone_activateTooltips">
       <description />
       <sources>
@@ -774,23 +766,83 @@
       </sources>
       <targets>
         <target>
-          <component id="CrosshairCursorControl.1" />
+          <component id="Tooltip.1" />
           <eventPort id="activateTooltips" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="enterZone_moveToLastStable">
+    <eventChannel id="eventOut1_startMoveRight">
       <description />
       <sources>
         <source>
-          <component id="Deadzone.1.1.1" />
-          <eventPort id="enterZone" />
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut1" />
         </source>
       </sources>
       <targets>
         <target>
           <component id="CrosshairCursorControl.1" />
-          <eventPort id="moveToLastStable" />
+          <eventPort id="startMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut2_1_stopMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut2_1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut2_startMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut2_2_stopMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut2_2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_toggleAxisHighlight">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="toggleAxisHighlight" />
         </target>
       </targets>
     </eventChannel>
@@ -804,7 +856,7 @@
       </sources>
       <targets>
         <target>
-          <component id="CrosshairCursorControl.1" />
+          <component id="Tooltip.1" />
           <eventPort id="nextTooltip" />
         </target>
       </targets>

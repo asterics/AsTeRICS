@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_4EMG_difference.acs_2019_1_29_11_35" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_4EMG_difference.acs_2019_1_31_15_14" version="20130320">
   <modelDescription>
     <shortDescription>Difference between two EMG Signals move cursor
 Difference is cubed in order to cause small movements for small values
@@ -24,119 +24,47 @@ Timer changes between horizontal/vertical</shortDescription>
         <inputPort portTypeID="accelerationV">
           <properties />
         </inputPort>
-        <outputPort portTypeID="tooltip">
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
           <properties />
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="True" />
         <property name="absoluteValues" value="false" />
-        <property name="autoColorAxis" value="true" />
-        <property name="highlightClick" value="true" />
+        <property name="autoColorAxis" value="True" />
+        <property name="highlightClick" value="True" />
         <property name="wrapAround" value="True" />
-        <property name="clickEventTime" value="1000" />
+        <property name="clickEventTime" value="1500" />
         <property name="lineWidth" value="5" />
-        <property name="baseVelocity" value="10" />
+        <property name="baseVelocity" value="50" />
         <property name="accelerationH" value="0" />
         <property name="accelerationV" value="0" />
-        <property name="maxVelocity" value="1000" />
-        <property name="tooltipFolder" value="pictures/tooltips" />
-        <property name="tooltipStartIndex" value="3" />
+        <property name="maxVelocity" value="1500" />
       </properties>
       <layout>
-        <posX>1130</posX>
-        <posY>283</posY>
+        <posX>1073</posX>
+        <posY>353</posY>
       </layout>
     </component>
-    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
-      <description>Oscilloscope display for one signal channel</description>
+    <component id="Keyboard.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
       <ports>
-        <inputPort portTypeID="in">
+        <inputPort portTypeID="keyCodes">
           <properties />
         </inputPort>
       </ports>
       <properties>
-        <property name="displayBuffer" value="3" />
-        <property name="drawingMode" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="drawingInterval" value="100" />
-        <property name="min" value="-100" />
-        <property name="max" value="100" />
-        <property name="gridColor" value="0" />
-        <property name="channelColor" value="10" />
-        <property name="backgroundColor" value="11" />
-        <property name="fontSize" value="14" />
-        <property name="caption" value="oscilloscope" />
-        <property name="displayGUI" value="true" />
+        <property name="keyCodeString" value="a" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
       </properties>
       <layout>
-        <posX>772</posX>
-        <posY>732</posY>
+        <posX>1709</posX>
+        <posY>583</posY>
       </layout>
-      <gui>
-        <posX>10</posX>
-        <posY>3454</posY>
-        <width>6000</width>
-        <height>3000</height>
-      </gui>
-    </component>
-    <component id="Mouse.1" type_id="asterics.Mouse">
-      <description>Local mouse actuator, emulates mouse activity on local system</description>
-      <ports>
-        <inputPort portTypeID="mouseX">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="mouseY">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="action">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="enableMouse" value="true" />
-        <property name="absolutePosition" value="true" />
-        <property name="startCentered" value="False" />
-        <property name="xMin" value="0" />
-        <property name="xMax" value="0" />
-        <property name="yMin" value="0" />
-        <property name="yMax" value="0" />
-      </properties>
-      <layout>
-        <posX>1288</posX>
-        <posY>291</posY>
-      </layout>
-    </component>
-    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
-      <description>Oscilloscope display for one signal channel</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="displayBuffer" value="3" />
-        <property name="drawingMode" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="drawingInterval" value="100" />
-        <property name="min" value="-100" />
-        <property name="max" value="100" />
-        <property name="gridColor" value="0" />
-        <property name="channelColor" value="10" />
-        <property name="backgroundColor" value="11" />
-        <property name="fontSize" value="14" />
-        <property name="caption" value="oscilloscope" />
-        <property name="displayGUI" value="true" />
-      </properties>
-      <layout>
-        <posX>848</posX>
-        <posY>670</posY>
-      </layout>
-      <gui>
-        <posX>0</posX>
-        <posY>0</posY>
-        <width>6000</width>
-        <height>3000</height>
-      </gui>
     </component>
     <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
       <description>Mathematical expression evaluator</description>
@@ -203,7 +131,7 @@ Timer changes between horizontal/vertical</shortDescription>
         </outputPort>
       </ports>
       <properties>
-        <property name="ComPort" value="COM16" />
+        <property name="ComPort" value="COM12" />
         <property name="BaudRate" value="9600" />
         <property name="ReceivedDataType" value="0" />
         <property name="SendDataType" value="1" />
@@ -370,15 +298,28 @@ Timer changes between horizontal/vertical</shortDescription>
         <posY>480</posY>
       </layout>
     </component>
-    <component id="EventDelay.2" type_id="asterics.EventDelay">
-      <description>Delalys events</description>
-      <ports />
+    <component id="EventDispatcher.1" type_id="asterics.EventDispatcher">
+      <description>Translates incoming command strings into events</description>
+      <ports>
+        <inputPort portTypeID="cmd">
+          <properties />
+        </inputPort>
+      </ports>
       <properties>
-        <property name="delay" value="100" />
+        <property name="command1" value="1" />
+        <property name="command2" value="2" />
+        <property name="command3" value="3" />
+        <property name="command4" value="4" />
+        <property name="command5" value="5" />
+        <property name="command6" value="6" />
+        <property name="command7" value="7" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
       </properties>
       <layout>
-        <posX>1485</posX>
-        <posY>504</posY>
+        <posX>1337</posX>
+        <posY>574</posY>
       </layout>
     </component>
     <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
@@ -415,49 +356,44 @@ Timer changes between horizontal/vertical</shortDescription>
         <property name="slot20" value="" />
       </properties>
       <layout>
-        <posX>1626</posX>
-        <posY>509</posY>
+        <posX>1579</posX>
+        <posY>579</posY>
       </layout>
     </component>
-    <component id="EventDispatcher.1" type_id="asterics.EventDispatcher">
-      <description>Translates incoming command strings into events</description>
-      <ports>
-        <inputPort portTypeID="cmd">
-          <properties />
-        </inputPort>
-      </ports>
+    <component id="EventDelay.2" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
       <properties>
-        <property name="command1" value="1" />
-        <property name="command2" value="2" />
-        <property name="command3" value="3" />
-        <property name="command4" value="4" />
-        <property name="command5" value="5" />
-        <property name="command6" value="6" />
-        <property name="command7" value="7" />
-        <property name="command8" value="" />
-        <property name="command9" value="" />
-        <property name="command10" value="" />
+        <property name="delay" value="100" />
       </properties>
       <layout>
-        <posX>1384</posX>
-        <posY>504</posY>
+        <posX>1438</posX>
+        <posY>574</posY>
       </layout>
     </component>
-    <component id="Keyboard.1" type_id="asterics.Keyboard">
-      <description>Local Keyboard actuator</description>
+    <component id="Tooltip.1" type_id="asterics.Tooltip">
+      <description>show tooltips next to mouse pointer for triggering various actions</description>
       <ports>
-        <inputPort portTypeID="keyCodes">
+        <inputPort portTypeID="x">
           <properties />
         </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="tooltip">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
-        <property name="keyCodeString" value="a" />
-        <property name="inputMethod" value="1" />
-        <property name="waitTime" value="1000" />
+        <property name="initialX" value="0" />
+        <property name="initialY" value="0" />
+        <property name="selectTime" value="1000" />
+        <property name="tooltipFolder" value="pictures/tooltips" />
+        <property name="tooltipStartIndex" value="3" />
       </properties>
       <layout>
-        <posX>1756</posX>
-        <posY>513</posY>
+        <posX>1232</posX>
+        <posY>404</posY>
       </layout>
     </component>
     <component id="SignalTranslation.2.1" type_id="asterics.SignalTranslation">
@@ -569,8 +505,8 @@ Timer changes between horizontal/vertical</shortDescription>
         </outputPort>
       </ports>
       <properties>
-        <property name="thresholdHigh" value="15" />
-        <property name="thresholdLow" value="15" />
+        <property name="thresholdHigh" value="10" />
+        <property name="thresholdLow" value="10" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="0" />
         <property name="operationMode" value="2" />
@@ -650,8 +586,8 @@ Timer changes between horizontal/vertical</shortDescription>
         <property name="eventCondition" value="2" />
       </properties>
       <layout>
-        <posX>607</posX>
-        <posY>646</posY>
+        <posX>614</posX>
+        <posY>647</posY>
       </layout>
     </component>
     <component id="MathEvaluator.2" type_id="asterics.MathEvaluator">
@@ -692,8 +628,8 @@ Timer changes between horizontal/vertical</shortDescription>
         </outputPort>
       </ports>
       <properties>
-        <property name="thresholdHigh" value="15" />
-        <property name="thresholdLow" value="15" />
+        <property name="thresholdHigh" value="10" />
+        <property name="thresholdLow" value="10" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="0" />
         <property name="operationMode" value="2" />
@@ -702,6 +638,33 @@ Timer changes between horizontal/vertical</shortDescription>
       <layout>
         <posX>593</posX>
         <posY>135</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="true" />
+        <property name="startCentered" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>1229</posX>
+        <posY>232</posY>
       </layout>
     </component>
   </components>
@@ -716,9 +679,9 @@ Timer changes between horizontal/vertical</shortDescription>
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.40">
+    <channel id="binding.39">
       <source>
-        <component id="Threshold.2.1.2" />
+        <component id="Threshold.2.1.1" />
         <port id="out" />
       </source>
       <target>
@@ -726,14 +689,14 @@ Timer changes between horizontal/vertical</shortDescription>
         <port id="inA" />
       </target>
     </channel>
-    <channel id="binding.35">
+    <channel id="binding.41">
       <source>
-        <component id="MathEvaluator.1" />
-        <port id="out" />
+        <component id="CrosshairCursorControl.1" />
+        <port id="outX" />
       </source>
       <target>
-        <component id="CrosshairCursorControl.1" />
-        <port id="x" />
+        <component id="Mouse.1" />
+        <port id="mouseX" />
       </target>
     </channel>
     <channel id="binding.16">
@@ -756,9 +719,9 @@ Timer changes between horizontal/vertical</shortDescription>
         <port id="inA" />
       </target>
     </channel>
-    <channel id="binding.39">
+    <channel id="binding.40">
       <source>
-        <component id="Threshold.2.1.1" />
+        <component id="Threshold.2.1.2" />
         <port id="out" />
       </source>
       <target>
@@ -786,7 +749,7 @@ Timer changes between horizontal/vertical</shortDescription>
         <port id="setMin" />
       </target>
     </channel>
-    <channel id="binding.15">
+    <channel id="binding.44">
       <source>
         <component id="StringDispatcher.1" />
         <port id="output" />
@@ -794,16 +757,6 @@ Timer changes between horizontal/vertical</shortDescription>
       <target>
         <component id="Keyboard.1" />
         <port id="keyCodes" />
-      </target>
-    </channel>
-    <channel id="binding.21">
-      <source>
-        <component id="CrosshairCursorControl.1" />
-        <port id="tooltip" />
-      </source>
-      <target>
-        <component id="EventDispatcher.1" />
-        <port id="cmd" />
       </target>
     </channel>
     <channel id="binding.22">
@@ -956,14 +909,14 @@ Timer changes between horizontal/vertical</shortDescription>
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.41">
+    <channel id="binding.35">
       <source>
-        <component id="MathEvaluator.1.1" />
-        <port id="out" />
+        <component id="CrosshairCursorControl.1" />
+        <port id="outY" />
       </source>
       <target>
-        <component id="CrosshairCursorControl.1" />
-        <port id="y" />
+        <component id="Mouse.1" />
+        <port id="mouseY" />
       </target>
     </channel>
     <channel id="binding.43">
@@ -986,80 +939,70 @@ Timer changes between horizontal/vertical</shortDescription>
         <port id="in" />
       </target>
     </channel>
+    <channel id="binding.45">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="Tooltip.1" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.46">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outY" />
+      </source>
+      <target>
+        <component id="Tooltip.1" />
+        <port id="y" />
+      </target>
+    </channel>
+    <channel id="binding.47">
+      <source>
+        <component id="Tooltip.1" />
+        <port id="tooltip" />
+      </source>
+      <target>
+        <component id="EventDispatcher.1" />
+        <port id="cmd" />
+      </target>
+    </channel>
+    <channel id="binding.48">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="CrosshairCursorControl.1" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.49">
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="CrosshairCursorControl.1" />
+        <port id="y" />
+      </target>
+    </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="recognizedCommand4_dispatchSlot1">
+    <eventChannel id="clickEvent_leftClick">
       <description />
       <sources>
         <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand4" />
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="clickEvent" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot1" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand5_dispatchSlot2">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand5" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot2" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand6_dispatchSlot3">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand6" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot3" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand7_dispatchSlot4">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand7" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot4" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand3_input">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventDelay.2" />
-          <eventPort id="input" />
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
         </target>
       </targets>
     </eventChannel>
@@ -1123,18 +1066,108 @@ Timer changes between horizontal/vertical</shortDescription>
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="clickEvent_leftClick">
+    <eventChannel id="tooltipDeactivated_enablePlugin">
       <description />
       <sources>
         <source>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="clickEvent" />
+          <component id="Tooltip.1" />
+          <eventPort id="tooltipDeactivated" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="Mouse.1" />
-          <eventPort id="leftClick" />
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="enablePlugin" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="tooltipDeactivated_disablePlugin">
+      <description />
+      <sources>
+        <source>
+          <component id="Tooltip.1" />
+          <eventPort id="tooltipActivated" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="disablePlugin" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="tooltipActivated_moveToLastStable">
+      <description />
+      <sources>
+        <source>
+          <component id="Tooltip.1" />
+          <eventPort id="tooltipActivated" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="moveToLastStable" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_dispatchSlot3">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_dispatchSlot4">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
         </target>
       </targets>
     </eventChannel>
@@ -1148,7 +1181,7 @@ Timer changes between horizontal/vertical</shortDescription>
       </sources>
       <targets>
         <target>
-          <component id="CrosshairCursorControl.1" />
+          <component id="Tooltip.1" />
           <eventPort id="activateTooltips" />
         </target>
       </targets>
@@ -1163,7 +1196,7 @@ Timer changes between horizontal/vertical</shortDescription>
       </sources>
       <targets>
         <target>
-          <component id="CrosshairCursorControl.1" />
+          <component id="Tooltip.1" />
           <eventPort id="previousTooltip" />
         </target>
       </targets>
@@ -1178,23 +1211,8 @@ Timer changes between horizontal/vertical</shortDescription>
       </sources>
       <targets>
         <target>
-          <component id="CrosshairCursorControl.1" />
+          <component id="Tooltip.1" />
           <eventPort id="nextTooltip" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="eventPosEdge_moveToLastStable">
-      <description />
-      <sources>
-        <source>
-          <component id="Threshold.1" />
-          <eventPort id="eventPosEdge" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="moveToLastStable" />
         </target>
       </targets>
     </eventChannel>
