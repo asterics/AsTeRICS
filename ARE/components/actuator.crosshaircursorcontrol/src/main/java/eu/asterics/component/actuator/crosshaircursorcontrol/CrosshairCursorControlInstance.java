@@ -492,7 +492,6 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpMoveToLastStable = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if (!propEnabled) return;
             x = lastStableX != -1 ? lastStableX : x;
             y = lastStableY != -1 ? lastStableY : y;
             setCursorInternal(x, y);
