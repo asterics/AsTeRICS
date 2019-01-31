@@ -26,7 +26,7 @@
 		</figure>
 		<figure>
 			<img class="image" src="img/CrosshairCursorControl_tooltip.jpg" alt="Screenshot: CrosshairCursorControl tooltip for doubleclick" title="Screenshot: CrosshairCursorControl tooltip for doubleclick" />
-			<figcaption>CrosshairCursorControl tooltip for double click</figcaption>
+			<figcaption>CrosshairCursorControl in combination with Tooltip plugin for double click</figcaption>
 		</figure>
 		<br>
 		<p><strong>Please Note:</strong><br>The mouse emulation on <strong>Windows 7/10</strong> does not always work as expected due to User Account Control (UAC) settings.
@@ -40,14 +40,13 @@
 		</ul>
 		<H2>Output Port Description</H2>
 		<ul>
-			<li><STRONG>tooltip [string]:</STRONG> When a tooltip is selected, the filename of the chosen tooltip icon (without file extension) is sent to this output port. </li>
+			<li><STRONG>outX [double]:</STRONG> the current absolute value of the X-Axis of the crosshair. Can be used to control the mouse cursor via the mouse plugin.</li>
+			<li><STRONG>outY [double]:</STRONG> the current absolute value of the Y-Axis of the crosshair. Can be used to control the mouse cursor via the mouse plugin.</li>
 		</ul>
 		<H2>Event Listener Description</H2>
 		<ul>
-			<li><STRONG>activateTooltips:</STRONG> displays the tooltip icons and activates tooltip mode.</li>
-			<li><STRONG>deactivateTooltips:</STRONG> deactivates tooltip mode, if currently active.</li>
-			<li><STRONG>nextTooltip:</STRONG> navigates to next tooltip, if tooltip mode is currently active.</li>
-			<li><STRONG>previousTooltip:</STRONG> navigates to previous tooltip, if tooltip mode is currently active.</li>
+			<li><STRONG>enablePlugin:</STRONG> Enables all functionality of this plugin. </li>
+			<li><STRONG>disablePlugin:</STRONG> Disables all functionality of this plugin. Exceptions: the actions for the events 'toggleAxisHighlight' and 'moveToLastStable' are always executed, also if the plugin is disabled. </li>
 			<li><STRONG>startMoveLeft:</STRONG> starts automatic movement to the left.</li>
 			<li><STRONG>startMoveRight:</STRONG> starts automatic movement to the right.</li>
 			<li><STRONG>startMoveUp:</STRONG> starts automatic movement up.</li>
@@ -61,14 +60,15 @@
 			<li><STRONG>highlightXAxis:</STRONG> highlights the X-axis by coloring it red.</li>
 			<li><STRONG>highlightYAxis:</STRONG> highlights the Y-axis by coloring it red.</li>
 			<li><STRONG>toggleAxisHighlight:</STRONG> toggles the current coloring of X- and Y-axis.</li>
+			<li><STRONG>click:</STRONG> manually triggers the clickEvent and highlights the X/Y-axis if highlightClick is enabled.</li>
 		</ul>
 		<H2>Event Trigger Description</H2>
 		<ul>
 			<li><STRONG>clickEvent:</STRONG> This event is fired after an adjustable time of inactivity (property clickEventTime).</li>
-			<li><STRONG>tooltipSelected:</STRONG> This event is fired after a tooltip icon was selected after and adjustable time of inactivity (property clickEventTime).</li>
 		</ul>
 		<H2>Properties</H2>
 		<ul>
+			<li><STRONG>enabled [boolean]:</STRONG> If false (default is true), all functionality of this plugin is disabled. Exceptions: the actions for the events 'toggleAxisHighlight' and 'moveToLastStable' are always executed, also if the plugin is disabled. </li>
 			<li><STRONG>absoluteValues [boolean]:</STRONG> If this property value is set to false (default), incoming values at the x and y input ports are interpreted as relative movement information (changes of the position). If the property value is set to true, the input values are interpreted as absolute positions.</li>
 			<li><STRONG>autoColorAxis [boolean]:</STRONG> If true (default), the axis are automatically highlighted (red colored) according to current movement. For horizontal movement the Y-axis is highlighted, for vertical movement the X-axis is highlighted. </li>
 			<li><STRONG>highlightClick [boolean]:</STRONG> If true (default), a click event is visualized by a short green flash of the X- and Y-axis. </li>
@@ -79,8 +79,6 @@
 			<li><STRONG>accelerationH [integer]:</STRONG> The acceleration of horizontal movement in px/second per second, positive or negative. This property applies to automatic movement as well as relative movement triggered by input in the x/y input ports. Use zero to deactivate movement acceleration.</li>
 			<li><STRONG>accelerationV [integer]:</STRONG> The acceleration of vertical movement in px/second per second, positive or negative. This property applies to automatic movement as well as relative movement triggered by input in the x/y input ports. Use zero to deactivate movement acceleration.</li>
 			<li><STRONG>maxVelocity [integer]:</STRONG> The maximum movement velocity in px per second. This property applies to automatic movement as well as relative movement triggered by input in the x/y input ports.</li>
-			<li><STRONG>tooltipFolder [integer]:</STRONG> Name of a folder (including file path or relative file path from the ARE/data folder) which contains the tooltip icons in .png format. The expected filenames are 1.png, 2.png, 3.png ... </li>
-			<li><STRONG>tooltipStartIndex [integer]:</STRONG> Index of the first tooltip to show, after tooltips are activated. </li>
 		</ul>
 	</BODY>
 </HTML>

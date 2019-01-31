@@ -9,13 +9,17 @@
 		<span class="componentType">Component Type: Actuator (Subcategory: Input Device Emulation)</span>
 		<p>The AngularCursorControl component allows mouse cursor positioning by software emulation with a limited number of input control channels. 
            An arrow indicator is displayed on the screen next to the mouse cursor. This arrow can be rotated 360 degrees using the angle input port.
-           If values are received at the move input port, the mouse cursor is moved in the direction of the arrow. Using other components, a stepswise
-           control of angle and movement can be achieved, allowing full control of the cursor position. After a certain time of inactivity (no values received at 
+        </p>
+		<p>
+           If values are received at the move input port, the mouse cursor is moved in the direction of the arrow. Using other components, a stepwise
+           control of angle and movement can be achieved, allowing full control of the cursor position. After a certain time of inactivity (no values received at
            the input ports), a click event can be created for generating different mouse clicks e.g. via a mouse element.
         </p>
 		<figure>
 			<img class="image" src="img/AngularCursorControl.jpg" alt="Screenshot: AngularCursorControl plugin" title="Screenshot: AngularCursorControl plugin" />
 			<figcaption>AngularCursorControl plugin</figcaption>
+		</figure>
+		<figure>
 			<img class="image" src="img/AngularCursorControl_demo.jpg" alt="Screenshot: AngularCursorControl arrow indicator" title="Screenshot: AngularCursorControl arrow indicator" />
 			<figcaption>AngularCursorControl arrow indicator</figcaption>
 		</figure>
@@ -24,12 +28,28 @@
         Especially when you want to use the Windows 7 On-Screen-Keyboard dragging the keyboard does not work. To troubleshoot <a href="http://windows.microsoft.com/en-au/windows/turn-user-account-control-on-off#1TC=windows-7">turn off the User Account Control (UAC)</a> - change the level to "Never notify"
 		<H2>Input Port Description</H2>
 		<ul>
-			<li><STRONG>angle [double]:</STRONG> The angle (angular changes) of the mouse cursor movement (in radians). Indicated by arrow icon next to mouse cursor</li>
+			<li><STRONG>angle [double]:</STRONG> The angle (angular changes) of the mouse cursor movement (in degrees). Indicated by arrow icon next to mouse cursor</li>
 			<li><STRONG>move [double]:</STRONG> The mouse cursor movement (in direction of current angle). Negative values allow backward movement.</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>outX [double]:</STRONG> the current absolute x-value of the center of the arrow indicator. Can be used to control the mouse cursor via the mouse plugin.</li>
+			<li><STRONG>outY [double]:</STRONG> the current absolute y-value of the center of the arrow indicator. Can be used to control the mouse cursor via the mouse plugin.</li>
 		</ul>
 		<H2>Event Listener Description</H2>
 		<ul>
-			<li><STRONG>select:</STRONG> currently not used.</li>
+			<li><STRONG>enablePlugin:</STRONG> Enables all functionality of this plugin. </li>
+			<li><STRONG>disablePlugin:</STRONG> Disables all functionality of this plugin. </li>
+			<li><STRONG>startMoveForward:</STRONG> starts automatic movement forward in direction of the arrow indicator, accelerated by propery acceleration.</li>
+			<li><STRONG>startMoveBackward:</STRONG> starts automatic movement backward in opposite direction of the arrow indicator, accelerated by propery acceleration.</li>
+			<li><STRONG>startAngleLeft:</STRONG> starts automatic angle rotation to the left (counterclockwise), accelerated by property accelerationAngle.</li>
+			<li><STRONG>startAngleRight:</STRONG> starts automatic angle rotation to the right (clockwise), accelerated by property accelerationAngle.</li>
+			<li><STRONG>stopMoveLeft:</STRONG> stops automatic movement to the left.</li>
+			<li><STRONG>stopMoveForward:</STRONG> stops automatic movement forward.</li>
+			<li><STRONG>stopMoveBackward:</STRONG> stops automatic movement forward.</li>
+			<li><STRONG>stopAngleLeft:</STRONG> stops automatic angle rotation to the left (counterclockwise).</li>
+			<li><STRONG>stopAngleRight:</STRONG> stops automatic angle rotation to the right (clockwise).</li>
+			<li><STRONG>stopMove:</STRONG> stops all automatic movement.</li>
 		</ul>
 		<H2>Event Trigger Description</H2>
 		<ul>
@@ -37,12 +57,17 @@
 		</ul>
 		<H2>Properties</H2>
 		<ul>
-			<li><STRONG>absoluteAngle [boolean]:</STRONG> If this property value is set to false (default), incoming values at the angle input port are interpreted as relative movement information (changes of the angle). If the property value is set to true, the angle input values are interpreted as absolute values.</li>
+			<li><STRONG>enabled [boolean]:</STRONG> If false (default is true), all functionality of this plugin is disabled. </li>
+			<li><STRONG>absoluteAngle [boolean]:</STRONG> If this property value is set to false (default), incoming values at the angle input port are interpreted as relative movement information (changes of the angle in degrees). If the property value is set to true, the angle input values are interpreted as absolute values (in degrees).</li>
 			<li><STRONG>clickEventTime [integer]:</STRONG> The time of inactivity (in milliseconds) after which the clickEvent will be created (use zero to deactivate the clickEvent).</li>
 			<li><STRONG>arrowWidth [integer]:</STRONG> The width of the arrow indicator icon</li>
 			<li><STRONG>arrowLength [integer]:</STRONG> The length of the arrow indicator icon</li>
-			<li><STRONG>acceleration [integer]:</STRONG> The acceleration factor for movement and relative angular control. (currently not used)</li>
-			<li><STRONG>maxVelocity [integer]:</STRONG> The maximum value for the acceleration factor. (currently not used)</li>
+			<li><STRONG>acceleration [integer]:</STRONG> The cursor movement acceleration in px/second per second (0 to deactive acceleration). This property only applies to automatic movement generated by events, not to movement generated by input port 'move'.</li>
+			<li><STRONG>baseVelocity [integer]:</STRONG> The base movement velocity in px per second, starting velocity of automatic movements forward/backward.</li>
+			<li><STRONG>maxVelocity [integer]:</STRONG> The maximum mouse movement velocity in px per second. This property only applies to automatic movement generated by events, not to movement generated by input port 'move'.</li>
+			<li><STRONG>accelerationAngle [integer]:</STRONG> Angle movement acceleration in degrees/second per second (0 to deactive acceleration). This property only applies to automatic movement generated by events, not to movement generated by input port 'angle'.</li>
+			<li><STRONG>baseVelocityAngle [integer]:</STRONG> The base angle movement velocity in degrees per second, starting velocity of automatic movements of angle left/right.</li>
+			<li><STRONG>maxVelocityAngle [integer]:</STRONG> The maximum angle movement velocity in degrees per second. This property only applies to automatic movement generated by events, not to movement generated by input port 'angle'.</li>
 		</ul>
 	</BODY>
 </HTML>
