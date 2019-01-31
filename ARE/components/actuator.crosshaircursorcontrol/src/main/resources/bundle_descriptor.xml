@@ -28,25 +28,23 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
-            <outputPort id="tooltip">
-                <description>the filename of the selected tooltip icon.</description>
-                <dataType>string</dataType>
-            </outputPort>
 
+			<outputPort id="outX">
+				<description>the current x-position of the crosshair (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="outY">
+				<description>the current y-position of the crosshair (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
 
         </ports>
 		<events>
-			<eventListenerPort id="activateTooltips">
-				<description>if available, show tooltip icons and activate tooltip mode</description>
+			<eventListenerPort id="enablePlugin">
+				<description>enables the functionality of this plugin</description>
 			</eventListenerPort>
-			<eventListenerPort id="deactivateTooltips">
-				<description>deactivate tooltip mode</description>
-			</eventListenerPort>
-			<eventListenerPort id="nextTooltip">
-				<description>navigates to next tooltip, if tooltips are currently activated</description>
-			</eventListenerPort>
-			<eventListenerPort id="previousTooltip">
-				<description>navigates to previous tooltip, if tooltips are currently activated</description>
+			<eventListenerPort id="disablePlugin">
+				<description>disables all functionality of this plugin</description>
 			</eventListenerPort>
 			<eventListenerPort id="startMoveLeft">
 				<description>starts movement to the left</description>
@@ -87,15 +85,19 @@
 			<eventListenerPort id="toggleAxisHighlight">
 				<description>toggles the highlighting for the X- and Y-Axis, sets property autoColorAxis to false</description>
 			</eventListenerPort>
+			<eventListenerPort id="click">
+				<description>manually triggers the click event and highlights the X/Y-axis if highlightClick is enabled</description>
+			</eventListenerPort>
 
 			<eventTriggererPort id="clickEvent">
 				<description>this event is generated after an inactivity of clickEventTime milliseconds</description>
 			</eventTriggererPort>
-			<eventTriggererPort id="tooltipSelected">
-				<description>this event is generated when a tooltip icon has been selected after an inactivity of clickEventTime milliseconds</description>
-			</eventTriggererPort>
 		</events>			
         <properties>
+			<property name="enabled"
+					  type="boolean"
+					  value="true"
+					  description="if true, the plugin is enabled, if false the plugin does nothing"/>
 			<property name="absoluteValues"
 				type="boolean"
 				value="false"
@@ -136,15 +138,6 @@
 				type="integer"
 				value="100"
 				description="maximum movement velocity in px per second"/>
-			<property name="tooltipFolder"
-				type="string"
-				value="pictures/tooltips"
-				description="folder which contains tooltip icons in .png format"/>
-			<property name="tooltipStartIndex"
-				type="integer"
-				value="3"
-				description="start index for first shown tooltip"/>
-
         </properties>
 
     </componentType>
