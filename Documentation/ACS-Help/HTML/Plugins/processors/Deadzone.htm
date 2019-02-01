@@ -29,8 +29,8 @@
 		</ul>
 		<H2>Event Trigger Description</H2>
 		<ul>
-			<li><STRONG>enterZone:</STRONG> This event is triggered when the x or x- and y- values enter the specified radius around the centre.</li>
-			<li><STRONG>exitZone:</STRONG> This event is triggered when the x or x- and y- values leave the specified radius around the centre.</li>
+			<li><STRONG>enterZone:</STRONG> This event is triggered when the x- and/or y- values enter the active zone. The active zone is the zone, in which values are passed to the output ports, see property 'mode'.</li>
+			<li><STRONG>exitZone:</STRONG> This event is triggered when the x- and/or y- values leave the active zone. The active zone is the zone, in which values are passed to the output ports, see property 'mode'.</li>
 		</ul>
 		<H2>Properties</H2>
 		<ul>
@@ -42,7 +42,7 @@
 				<ul>
 					<li><EM>"only inner values":</EM> x- and y- values are passed to the output ports only if the distance to the centre is lower than the given radius.</li>
 					<li><EM>"only outer values":</EM> x- and y- values are passed to the output ports only if the distance to the centre is greater than the given radius.</li>
-					<li><EM>"deadzone":</EM> x- and y- values are passed to the output ports only if the distance to the center is lower than the given radius, and additionally a correction of the values is performed so that they start with 0 when leaving the inner zone. This is useful for defining a "deadzone" for sensor values, where an inactive area shall be provided and no sudden acceleration is desired when leaving this inactive area.</li>
+					<li><EM>"deadzone":</EM> x- and y- values are passed to the output ports only if the distance to the center is greater than the given radius, and additionally a correction of the values is performed so that they start with 0 when leaving the inner zone. This is useful for defining a "deadzone" for sensor values, where an inactive area shall be provided and no sudden acceleration is desired when leaving this inactive area.</li>
 				</ul>
 			</li>
 		</ul>
