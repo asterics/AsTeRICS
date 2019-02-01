@@ -36,6 +36,9 @@
 			<eventListenerPort id="previousTooltip">
 				<description>navigates to previous tooltip, if tooltips are currently activated</description>
 			</eventListenerPort>
+			<eventListenerPort id="selectTooltip">
+				<description>selects the currently shown tooltip and disables tooltip mode afterwards</description>
+			</eventListenerPort>
 
 			<eventTriggererPort id="tooltipActivated">
 				<description>this event is generated when the tooltip mode is activated</description>

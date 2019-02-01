@@ -117,6 +117,9 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
         if ("previousTooltip".equalsIgnoreCase(eventPortID)) {
             return elpPreviousTooltip;
         }
+        if ("selectTooltip".equalsIgnoreCase(eventPortID)) {
+            return elpSelectTooltip;
+        }
         return null;
     }
 
@@ -260,6 +263,14 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
         }
     };
 
+    final IRuntimeEventListenerPort elpSelectTooltip = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            if (gui.tooltipsActive()) {
+                selectTooltipInternal();
+            }
+        }
+    };
+
     /**
      * called when model is started.
      */
@@ -276,14 +287,8 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
             public void run() {
                 while (running) {
                     sleepInternal(20);
-                    if (gui.tooltipsActive() && (System.currentTimeMillis() - lastActionTime) > propSelectTime) {
-                        String tmp = gui.getTooltipFilename();
-                        if (!tmp.equals("")) {
-                            opTooltip.sendData(ConversionUtils.stringToBytes(tmp));
-                            gui.deactivateTooltips();
-                        }
-                        etpTooltipDeactivated.raiseEvent();
-                        gui.setOnTop();
+                    if (gui.tooltipsActive() && (System.currentTimeMillis() - lastActionTime) > propSelectTime && propSelectTime != 0) {
+                        selectTooltipInternal();
                     }
                 }
             }
@@ -333,5 +338,15 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
         }
+    }
+
+    private void selectTooltipInternal() {
+        String tmp = gui.getTooltipFilename();
+        if (!tmp.equals("")) {
+            opTooltip.sendData(ConversionUtils.stringToBytes(tmp));
+            gui.deactivateTooltips();
+        }
+        etpTooltipDeactivated.raiseEvent();
+        gui.setOnTop();
     }
 }
