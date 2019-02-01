@@ -1,0 +1,65 @@
+<!doctype html>
+<HTML>
+<HEAD>
+	<meta charset="UTF-8">
+	<Title>Tooltip</Title>
+</HEAD>
+<body class="innerBody">
+<H1>Tooltip</H1>
+<span class="componentType">Component Type: Actuator (Subcategory: Graphical User Interface)</span>
+<p>The Tooltip component shows tooltips on a specific position on the screen. Tooltips are semi-transparent .png images, that are representing different actions like e.g.
+	a double-click with the mouse or specific key-combinations for the keyboard. The main purpose of this plugin is to provide additional functions it in combination with a
+	mouse control solution like CrosshairCursorControl or AngularCursorControl, but also can be used independently of mouse control.
+</p>
+<p>
+	The position of the Tooltips can be changed by properties and input ports (x/y) and they can be shown and selected by events. The plugin includes a default set of 7 .png
+	images for common used tooltips in combination with mouse control, but alternative .png images can be used setting the property 'tooltipFolder'.
+</p>
+<figure>
+	<img class="image" src="img/Tooltip.jpg" alt="Figure 1, Screenshot: Tooltip plugin" title="Screenshot: Tooltip plugin" />
+	<figcaption>Fig. 1: Tooltip plugin</figcaption>
+</figure>
+<figure>
+	<img class="image" src="img/CrosshairCursorControl_tooltip.jpg" alt="Figure 2, Screenshot: Tooltip in combination with CrosshairCursorPlugin" title="Screenshot: Tooltip in combination with CrosshairCursorPlugin" />
+	<figcaption>Fig. 2: Tooltip for double-click shown in a mouse control solution using the CrosshairCursorPlugin</figcaption>
+</figure>
+<figure>
+	<img class="image" src="img/Tooltip_default_iconset.jpg" alt="Figure 3, Screenshot: Default icon set of tooltips" title="Screenshot:Default icon set of tooltips" />
+	<figcaption>Fig. 3: Default icon set of tooltips</figcaption>
+</figure>
+<br>
+<H2>Input Port Description</H2>
+<ul>
+	<li><STRONG>x [double]:</STRONG> The x-value of the center of the tooltip position (= e.g. mouse cursor position). The tooltip is always shown left/right, above/below of this center position, depending on the available space on the screen. </li>
+	<li><STRONG>y [double]:</STRONG> The y-value of the center of the tooltip position (= e.g. mouse cursor position). </li>
+</ul>
+<H2>Output Port Description</H2>
+<ul>
+	<li><STRONG>tooltip [string]:</STRONG> When a tooltip is selected, the filename of the chosen tooltip icon (without file extension) is sent to this output port. </li>
+</ul>
+<H2>Event Listener Description</H2>
+<ul>
+	<li><STRONG>activateTooltips:</STRONG> displays the first tooltip icon (see property 'tooltipStartIndex') and activates tooltip mode.</li>
+	<li><STRONG>deactivateTooltips:</STRONG> deactivates tooltip mode, if currently active.</li>
+	<li><STRONG>nextTooltip:</STRONG> navigates to next tooltip, if tooltip mode is currently active.</li>
+	<li><STRONG>previousTooltip:</STRONG> navigates to previous tooltip, if tooltip mode is currently active.</li>
+	<li><STRONG>selectTooltip:</STRONG> selects the currently shown tooltip and disables tooltip mode afterwards.</li>
+</ul>
+<H2>Event Trigger Description</H2>
+<ul>
+	<li><STRONG>tooltipActivated:</STRONG> This event is fired after the tooltip mode was activated.</li>
+	<li><STRONG>tooltipDeactivated:</STRONG> This event is fired after the tooltip mode was deactivated, either by event 'deactivateTooltip', by inactivity timeout of 'selectTime' or by navigating to an index without corresponding .png file.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+	<li><STRONG>initialX [boolean]:</STRONG> The initial x-value of the center of the tooltip position (= e.g. mouse cursor position). The tooltip is always shown left/right, above/below of this center position, depending on the available space on the screen.</li>
+	<li><STRONG>initialY [boolean]:</STRONG> The initial y-value of the center of the tooltip position (= e.g. mouse cursor position). </li>
+	<li><STRONG>selectTime [integer]:</STRONG> The time of inactivity (in milliseconds) after which the currently shown tooltip is selected. After selection the filename of the selected tooltip is sent to output port 'tooltip' and the tooltip mode is disabled. Use selectTime zero to deactivate automatic selection.</li>
+	<li><STRONG>tooltipFolder [integer]:</STRONG> Optional path of a folder (relative file path from the ARE/data folder, e.g. 'pictures/tooltips') which contains the tooltip icons in .png format. The expected filenames are 1.png, 2.png, 3.png and so on.
+		If not specified, a set of seven (index 1-7) default tooltips are used (see Fig.3):<br>
+		(1) mouse drag, (2) mouse double-click, (3) mouse right-click, (3) keys Ctrl+C, (4) keys Ctrl+V, (5) keys Ctrl+X, (6) keys Ctrl+A
+	</li>
+	<li><STRONG>tooltipStartIndex [integer]:</STRONG> Index of the first tooltip to show, after tooltips are activated. </li>
+</ul>
+</BODY>
+</HTML>
