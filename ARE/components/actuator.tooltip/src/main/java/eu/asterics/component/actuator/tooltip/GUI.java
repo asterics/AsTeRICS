@@ -26,16 +26,16 @@
 
 package eu.asterics.component.actuator.tooltip;
 
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.ResourceRegistry;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 
 /**
  * Implements the Graphical User Interface for the Tooltip plugin
@@ -61,8 +61,8 @@ public class GUI extends JFrame {
     /**
      * The class constructor, initialises the GUI
      *
-     * @param owner the owner class instance
-     * @param dim   the dimension of the screen
+     * @param owner
+     *            the owner class instance
      */
     public GUI(final TooltipInstance owner) {
         super("TooltipPanel");

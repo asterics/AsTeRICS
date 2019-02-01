@@ -26,15 +26,14 @@
 
 package eu.asterics.component.actuator.tooltip;
 
+import javax.swing.*;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.*;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsThreadPool;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * The CrosshairCursorControl component allows mouse cursor positioning by software emulation with a limited number of input control channels. A crosshair
@@ -70,7 +69,8 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Input Port.
      *
-     * @param portID the name of the port
+     * @param portID
+     *            the name of the port
      * @return the input port or null if not found
      */
     public IRuntimeInputPort getInputPort(String portID) {
@@ -87,7 +87,8 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Output Port.
      *
-     * @param portID the name of the port
+     * @param portID
+     *            the name of the port
      * @return the output port or null if not found
      */
     public IRuntimeOutputPort getOutputPort(String portID) {
@@ -101,7 +102,8 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Event Listener Port.
      *
-     * @param eventPortID the name of the port
+     * @param eventPortID
+     *            the name of the port
      * @return the EventListener port or null if not found
      */
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
@@ -126,7 +128,8 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Event Triggerer Port.
      *
-     * @param eventPortID the name of the port
+     * @param eventPortID
+     *            the name of the port
      * @return the EventTriggerer port or null if not found
      */
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
@@ -142,7 +145,8 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns the value of the given property.
      *
-     * @param propertyName the name of the property
+     * @param propertyName
+     *            the name of the property
      * @return the property value or null if not found
      */
     public Object getRuntimePropertyValue(String propertyName) {
@@ -168,8 +172,10 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     /**
      * sets a new value for the given property.
      *
-     * @param propertyName the name of the property
-     * @param newValue     the desired property value or null if not found
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         if ("initialX".equalsIgnoreCase(propertyName)) {
