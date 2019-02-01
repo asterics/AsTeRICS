@@ -218,14 +218,14 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
         public void receiveData(byte[] data) {
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
             x = inputValue;
-            gui.setMouseXY(x, y);
+            if (gui != null) gui.setMouseXY(x, y);
         }
     };
     private final IRuntimeInputPort ipY = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
             y = inputValue;
-            gui.setMouseXY(x, y);
+            if (gui != null) gui.setMouseXY(x, y);
         }
     };
 
@@ -349,10 +349,10 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     private void selectTooltipInternal() {
         String tmp = gui.getTooltipFilename();
         if (!tmp.equals("")) {
+            etpTooltipDeactivated.raiseEvent();
             opTooltip.sendData(ConversionUtils.stringToBytes(tmp));
             gui.deactivateTooltips();
         }
-        etpTooltipDeactivated.raiseEvent();
         gui.setOnTop();
     }
 }
