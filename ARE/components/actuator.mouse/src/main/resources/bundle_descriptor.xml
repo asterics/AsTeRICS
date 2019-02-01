@@ -22,7 +22,16 @@
                 <description>Mouse commands for selection of next click type (eg.: @MOUSE:nextclick,right @MOUSE:action,enable @MOUSE:action,toggle)</description>
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>string</dataType>
-            </inputPort>    
+            </inputPort>
+
+            <outputPort id="outX">
+                <description>the current absolute x-position of the mouse, updated everytime the mouse is moved.</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="outY">
+                <description>the current absolute y-position of the mouse, updated everytime the mouse is moved.</description>
+                <dataType>double</dataType>
+            </outputPort>
         </ports>
         <events>
             <eventListenerPort id="leftClick">
@@ -83,7 +92,10 @@
             </eventListenerPort> 			
 			 <eventListenerPort id="relativePosition">
                 <description>On incoming event, the positioning of the mouse will be set relative to the actual position</description>
-            </eventListenerPort> 
+            </eventListenerPort>
+            <eventListenerPort id="moveToLastStable">
+                <description>moves to last stable x/y cursor position without movement</description>
+            </eventListenerPort>
         </events>         
         <properties>
             <property name="enableMouse"
