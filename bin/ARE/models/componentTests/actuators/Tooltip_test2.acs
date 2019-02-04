@@ -1,0 +1,207 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\klaus\Desktop\test_tooltip2.acs_2019_2_1_10_37" version="20130320">
+  <components>
+    <component id="KeyCapture.KeyRight" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57421" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>221</posX>
+        <posY>211</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.KeyDown" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57424" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>224</posX>
+        <posY>601</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.KeyLeft" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57419" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>222</posX>
+        <posY>25</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.KeyUp" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57416" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>226</posX>
+        <posY>411</posY>
+      </layout>
+    </component>
+    <component id="Tooltip.1" type_id="asterics.Tooltip">
+      <description>show tooltips next to mouse pointer for triggering various actions</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="tooltip">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="initialX" value="500" />
+        <property name="initialY" value="500" />
+        <property name="selectTime" value="0" />
+        <property name="tooltipFolder" value="pictures/tooltips" />
+        <property name="tooltipStartIndex" value="3" />
+      </properties>
+      <layout>
+        <posX>584</posX>
+        <posY>297</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>732</posX>
+        <posY>304</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>0</posY>
+        <width>3000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="Tooltip.1" />
+        <port id="tooltip" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="keyPressed_previousTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyLeft" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="previousTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_nextTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyRight" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="nextTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_activateTooltips">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyUp" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="activateTooltips" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_selectTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyDown" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="selectTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>true</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>3250</width>
+      <height>2444</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
