@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_4EMG_events.acs_2019_1_31_15_8" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_4EMG_events.acs_2019_2_4_8_42" version="20130320">
   <modelDescription>
     <shortDescription>Two EMG inputs trigger movement start/stop over a given Threshold (Deadzones)
 EMG amplitude determines movement acceleration.
@@ -597,6 +597,12 @@ Automatic switch between horizontal/vertical after given time (Timer1.2)</shortD
         <inputPort portTypeID="action">
           <properties />
         </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="enableMouse" value="true" />
