@@ -55,8 +55,8 @@
 	<li><STRONG>initialX [boolean]:</STRONG> The initial x-value of the center of the tooltip position (= e.g. mouse cursor position). The tooltip is always shown left/right, above/below of this center position, depending on the available space on the screen.</li>
 	<li><STRONG>initialY [boolean]:</STRONG> The initial y-value of the center of the tooltip position (= e.g. mouse cursor position). </li>
 	<li><STRONG>selectTime [integer]:</STRONG> The time of inactivity (in milliseconds) after which the currently shown tooltip is selected. After selection the filename of the selected tooltip is sent to output port 'tooltip' and the tooltip mode is disabled. Use selectTime zero to deactivate automatic selection.</li>
-	<li><STRONG>tooltipFolder [integer]:</STRONG> Optional path of a folder (relative file path from the ARE/data folder, e.g. 'pictures/tooltips') which contains the tooltip icons in .png format. The expected filenames are 1.png, 2.png, 3.png and so on.
-		If not specified, a set of seven (index 1-7) default tooltips are used (see Fig.3):<br>
+	<li><STRONG>tooltipFolder [integer]:</STRONG> Path of a folder (relative file path from the ARE/data folder, e.g. 'pictures/tooltips') which contains the tooltip icons in .png format. The expected filenames are 1.png, 2.png, 3.png and so on.
+		 A set of seven (index 1-7) default tooltips is provided by default in the folder 'pictures/tooltips' (see Fig.3):<br>
 		(1) mouse drag, (2) mouse double-click, (3) mouse right-click, (3) keys Ctrl+C, (4) keys Ctrl+V, (5) keys Ctrl+X, (6) keys Ctrl+A
 	</li>
 	<li><STRONG>tooltipStartIndex [integer]:</STRONG> Index of the first tooltip to show, after tooltips are activated. </li>
