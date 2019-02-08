@@ -1,4 +1,4 @@
-# Objective
+# AT Solution Tutorial
 In this tutorial you will learn how to use the [AsTeRICS Solution Template Repository](https://github.com/asterics/asterics-solution-template) to create your own AT-related software project.
 
 # Introduction

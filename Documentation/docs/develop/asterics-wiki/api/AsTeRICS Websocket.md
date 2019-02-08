@@ -1,4 +1,4 @@
-# Objective
+# Websocket Tutorial
 In this tutorial you will learn how to use the AsTeRICS websocket functionality with Javascript from within a web client.
 
 # Introduction

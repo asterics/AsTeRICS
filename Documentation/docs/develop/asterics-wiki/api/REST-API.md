@@ -1,4 +1,4 @@
-# Objective
+# REST Tutorial
 This tutorial demonstrates how to use the AsTeRICS REST API with the Javascript library provided with AsTeRICS 3.0.
 
 # Introduction
