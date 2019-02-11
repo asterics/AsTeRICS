@@ -26,13 +26,21 @@
 
 package eu.asterics.component.actuator.tooltip;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.*;
 
+import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.*;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
@@ -56,8 +64,8 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     private GUI gui;
     private float x = 0;
     private float y = 0;
-    private long lastActionTime = 0;
-    private boolean running = false;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private ScheduledFuture selectionFuture;
 
     /**
      * The class constructor.
@@ -182,14 +190,16 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
             final Object oldValue = propInitialX;
             propInitialX = Integer.parseInt(newValue.toString());
             x = propInitialX;
-            if (gui != null) gui.setMouseXY(x, y);
+            if (gui != null)
+                gui.setMouseXY(x, y);
             return oldValue;
         }
         if ("initialY".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propInitialY;
             propInitialY = Integer.parseInt(newValue.toString());
             y = propInitialY;
-            if (gui != null) gui.setMouseXY(x, y);
+            if (gui != null)
+                gui.setMouseXY(x, y);
             return oldValue;
         }
         if ("selectTime".equalsIgnoreCase(propertyName)) {
@@ -218,64 +228,83 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
         public void receiveData(byte[] data) {
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
             x = inputValue;
-            if (gui != null) gui.setMouseXY(x, y);
+            if (gui != null) {
+                gui.setMouseXY(x, y);
+            }
         }
     };
     private final IRuntimeInputPort ipY = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
             y = inputValue;
-            if (gui != null) gui.setMouseXY(x, y);
+            if (gui != null) {
+                gui.setMouseXY(x, y);
+            }
         }
     };
 
     final IRuntimeEventListenerPort elpActivateTooltips = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            lastActionTime = System.currentTimeMillis();
-            if (!gui.tooltipsActive()) {
-                gui.activateTooltips(propTooltipFolder, propTooltipStartIndex);
-                etpTooltipActivated.raiseEvent();
-            }
+            cancelSelectionTimer(true);
+            gui.activateTooltips();
         }
     };
 
     final IRuntimeEventListenerPort elpDeactivateTooltips = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            lastActionTime = System.currentTimeMillis();
+            cancelSelectionTimer(false);
             if (gui.tooltipsActive()) {
                 gui.deactivateTooltips();
-                etpTooltipDeactivated.raiseEvent();
             }
         }
     };
 
     final IRuntimeEventListenerPort elpNextTooltip = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if (gui.tooltipsActive()) {
-                lastActionTime = System.currentTimeMillis();
-                gui.navigateNextTooltip();
-                if (!gui.tooltipsActive()) etpTooltipDeactivated.raiseEvent();
-            }
+            // cancelSelectionTimer(true);
+            gui.navigateNextTooltip();
+            // gui.activateTooltips();
         }
     };
 
     final IRuntimeEventListenerPort elpPreviousTooltip = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if (gui.tooltipsActive()) {
-                lastActionTime = System.currentTimeMillis();
-                gui.navigatePreviousTooltip();
-                if (!gui.tooltipsActive()) etpTooltipDeactivated.raiseEvent();
-            }
+            // cancelSelectionTimer(true);
+            gui.navigatePreviousTooltip();
+            // gui.activateTooltips();
         }
     };
 
     final IRuntimeEventListenerPort elpSelectTooltip = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if (gui.tooltipsActive()) {
-                selectTooltipInternal();
-            }
+            cancelSelectionTimer(false);
+            selectTooltipInternal();
         }
     };
+
+    /**
+     * Starts/Restarts selection timer for ToolTip. Cancels the timer first, if it is already running.
+     * 
+     * @param restartTimer
+     *            TODO
+     */
+    private void cancelSelectionTimer(boolean restartTimer) {
+        if (selectionFuture != null) {
+            AstericsErrorHandling.instance.getLogger().fine("Cancelling Tooltip selection timer");
+            selectionFuture.cancel(true);
+        }
+        if (!restartTimer || propSelectTime == 0) {
+            return;
+        }
+
+        selectionFuture = scheduler.schedule(new Runnable() {
+            @Override
+            public void run() {
+                AstericsErrorHandling.instance.getLogger().fine("Tooltip selection timer finished");
+                selectTooltipInternal();
+            }
+        }, propSelectTime, TimeUnit.MILLISECONDS);
+    }
 
     /**
      * called when model is started.
@@ -283,22 +312,7 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void start() {
         gui = new GUI(this);
-        gui.setMouseXY(x, y);
-
         super.start();
-        running = true;
-
-        AstericsThreadPool.instance.execute(new Runnable() {
-            @Override
-            public void run() {
-                while (running) {
-                    sleepInternal(20);
-                    if (gui.tooltipsActive() && (System.currentTimeMillis() - lastActionTime) > propSelectTime && propSelectTime != 0) {
-                        selectTooltipInternal();
-                    }
-                }
-            }
-        });
     }
 
     /**
@@ -324,7 +338,6 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     public void stop() {
 
         super.stop();
-        running = false;
         final GUI guiToDestroy = gui;
         gui = null;
         SwingUtilities.invokeLater(new Runnable() {
@@ -339,20 +352,16 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
         });
     }
 
-    private void sleepInternal(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-        }
-    }
-
+    /**
+     * This method is called by the selection timer upon completion of it. Sends out the filename of the selected tooltip and deactivates the tooltip again.
+     */
     private void selectTooltipInternal() {
-        String tmp = gui.getTooltipFilename();
-        if (!tmp.equals("")) {
-            etpTooltipDeactivated.raiseEvent();
-            opTooltip.sendData(ConversionUtils.stringToBytes(tmp));
-            gui.deactivateTooltips();
+        if (gui.tooltipsActive()) {
+            String tmp = gui.getTooltipFilename();
+            if (tmp != null && !tmp.equals("")) {
+                opTooltip.sendData(ConversionUtils.stringToBytes(tmp));
+                gui.deactivateTooltips();
+            }
         }
-        gui.setOnTop();
     }
 }

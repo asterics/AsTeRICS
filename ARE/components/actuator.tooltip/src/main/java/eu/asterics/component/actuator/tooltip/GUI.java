@@ -30,6 +30,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
+import java.security.acl.Owner;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -44,17 +45,15 @@ import eu.asterics.mw.services.ResourceRegistry;
  */
 public class GUI extends JFrame {
 
-    private static final int NAVIGATE_TOOLTIP_INTERVAL = 100;
-    int width, height;
+    private static final int TOOLTIP_INDEX_MIN = 1;
+    private static final int TOOLTIP_INDEX_MAX = 7;
     BufferedImage image = null;
-    int actTooltip = 0;
-    int tooltipStartIndex = 0;
+    int actTooltip = -1;
     boolean tooltipActive = false;
-    long tooltipTime = 0;
-    String tooltipFolder = "";
     String actImageFileName = "";
-    float mouseX = 0;
-    float mouseY = 0;
+    float mouseX = -1;
+    float mouseY = -1;
+    TooltipInstance owner = null;
 
     private int screenWidth;
     private int screenHeight;
@@ -68,139 +67,161 @@ public class GUI extends JFrame {
     public GUI(final TooltipInstance owner) {
         super("TooltipPanel");
 
+        this.owner = owner;
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        int width = gd.getDisplayMode().getWidth();
-        int height = gd.getDisplayMode().getHeight();
-        Dimension dim = new Dimension(width, height);
-
-        screenWidth = (int) dim.getWidth();
-        screenHeight = (int) dim.getHeight();
+        screenWidth = gd.getDisplayMode().getWidth();
+        screenHeight = gd.getDisplayMode().getHeight();
 
         setUndecorated(true);
-        setAlwaysOnTop(true);
         setBackground(new Color(0, 0, 0, 0)); // transparent !
-        setSize(dim);
-        width = dim.width;
-        height = dim.height;
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setOpacity(0.5f);
-        setVisible(true);
-        setLocation(0, 0);
-        repaintInternal();
     }
 
+    /**
+     * Return currently active Tooltip filename.
+     * 
+     * @return
+     */
     String getTooltipFilename() {
         return actImageFileName;
     }
 
+    /**
+     * Tell if Tooltip is currently active (visible)
+     * 
+     * @return
+     */
     boolean tooltipsActive() {
         return tooltipActive;
     }
 
-    void activateTooltips(String tooltipFolder, int startIndex) {
-        this.tooltipFolder = tooltipFolder + "/";
-        this.tooltipStartIndex = startIndex;
-        actTooltip = tooltipStartIndex;
-        this.tooltipActive = true;
-        loadImage(actTooltip);
-    }
-
-    void deactivateTooltips() {
-        actTooltip = tooltipStartIndex;
-        this.tooltipActive = false;
-        resetImage();
-        repaintInternal();
-    }
-
-    void navigateTooltips(float dx) {
-        if (System.currentTimeMillis() - tooltipTime > NAVIGATE_TOOLTIP_INTERVAL) {
-            if (dx > 0)
-                actTooltip++;
-            else {
-                actTooltip--;
-            }
-            loadImage(actTooltip);
+    /**
+     * Activates the current Tooltip image. Sends an etpTooltipActivated afterwards.
+     */
+    void activateTooltips() {
+        if (actTooltip < 0) {
+            actTooltip = owner.propTooltipStartIndex;
         }
+        loadImage(actTooltip);
+        owner.etpTooltipActivated.raiseEvent();
+        this.tooltipActive = true;
     }
 
+    /**
+     * Deactivates the current Tooltip image. Sends an etpTooltipDeactivated afterwards.
+     */
+    void deactivateTooltips() {
+        resetImage();
+        owner.etpTooltipDeactivated.raiseEvent();
+        showTooltip(false);
+        this.tooltipActive = false;
+    }
+
+    /**
+     * Selects the next index of Tooltip images. If the @see {@link #TOOLTIP_INDEX_MAX} is reached, starts with {@link #TOOLTIP_INDEX_MIN}.
+     */
     void navigateNextTooltip() {
-        navigateTooltips(1);
+        actTooltip = (actTooltip + 1 > TOOLTIP_INDEX_MAX) ? TOOLTIP_INDEX_MIN : actTooltip + 1;
     }
 
+    /**
+     * Selects the previous index of Tooltip images. If the @see {@link #TOOLTIP_INDEX_MIN} is reached, starts with {@link #TOOLTIP_INDEX_MAX}. *
+     */
     void navigatePreviousTooltip() {
-        navigateTooltips(-1);
+        actTooltip = (actTooltip - 1 < TOOLTIP_INDEX_MIN) ? TOOLTIP_INDEX_MAX : actTooltip - 1;
     }
 
-    void setOnTop() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                setAlwaysOnTop(false);
-                repaint();
-                setAlwaysOnTop(true);
-                repaint();
-            }
-        });
-    }
-
+    /**
+     * Sets the location where the Tooltip should be shown.
+     * 
+     * @param x
+     * @param y
+     */
     void setMouseXY(float x, float y) {
-        mouseX = (float) normalizeValue(x, 0, screenWidth);
-        mouseY = (float) normalizeValue(y, 0, screenHeight);
+        mouseX = (float) sanitizeValue(x, 0, screenWidth);
+        mouseY = (float) sanitizeValue(y, 0, screenHeight);
     }
 
+    /**
+     * Paints the Tooltip image at the defined location or at the mouse cursor location, if not set.
+     */
     @Override
     public void paint(Graphics g) {
+        // If the mouseX and mouseY values have been set from outside, use them, otherwise default to current mouse position.
+        if (mouseX < 0 || mouseY < 0) {
+            setLocation(MouseInfo.getPointerInfo().getLocation());
+        } else {
+            setLocation((int) mouseX, (int) mouseY);
+        }
+
+        setSize(image.getWidth(), image.getHeight());
+        // System.out.println("getLocation: " + getLocation() + ", Size: " + getSize());
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        if (image != null) {
-            int toolX, toolY;
-            if ((int) mouseY < image.getHeight()) {
-                toolY = (int) mouseY + 10;
-            } else {
-                toolY = (int) mouseY - image.getHeight() - 10;
-            }
-            if ((int) mouseX < image.getWidth()) {
-                toolX = (int) mouseX + 10;
-            } else {
-                toolX = (int) mouseX - image.getWidth() - 10;
-            }
-
-            g.drawImage(image, toolX, toolY, null);
-        }
+        /*
+         * if (image != null) { int toolX, toolY; if ((int) mouseY < image.getHeight()) { toolY = (int) mouseY + 10; } else { toolY = (int) mouseY -
+         * image.getHeight() - 10; } if ((int) mouseX < image.getWidth()) { toolX = (int) mouseX + 10; } else { toolX = (int) mouseX - image.getWidth() - 10; }
+         * 
+         * g.drawImage(image, toolX, toolY, null); }
+         */
+        // System.out.println("Drawing image: "+image+", retVal: "+g.drawImage(image, 0, 0, null));
+        g.drawImage(image, 0, 0, null);
     }
 
     private void loadImage(int nr) {
-        String tmpFileName = tooltipFolder + actTooltip + ".png";
+        String tmpFileName = owner.propTooltipFolder + "/" + nr + ".png";
         try {
             image = ImageIO.read(ResourceRegistry.getInstance().getResourceInputStream(tmpFileName, ResourceRegistry.RES_TYPE.DATA));
             actImageFileName = Integer.toString(nr);
-            tooltipTime = System.currentTimeMillis();
+            showTooltip(true);
         } catch (Exception ex) {
             deactivateTooltips();
+            resetImage();
             AstericsErrorHandling.instance.getLogger().fine(" *****  Can not open picture: " + ex.getMessage());
         }
-        repaintInternal();
     }
 
+    /**
+     * Resets the current image to null.
+     */
     private void resetImage() {
         image = null;
         actImageFileName = "";
     }
 
-    private void repaintInternal() {
+    /**
+     * Toggles visibility of the Tooltip.
+     * 
+     * @param showTooltip
+     */
+    private void showTooltip(final boolean showTooltip) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                setAlwaysOnTop(false);
-                repaint();
-                setAlwaysOnTop(true);
-                repaint();
+                if (showTooltip) {
+                    setVisible(true);
+                    setAlwaysOnTop(true);
+                    repaint();
+                } else {
+                    setAlwaysOnTop(false);
+                    setVisible(false);
+                    repaint();
+                }
             }
         });
     }
 
-    private double normalizeValue(double value, double minValue, double maxValue) {
+    /**
+     * Checks screen boundary boxes and ensures that the given values are within that boundary.
+     * 
+     * @param value
+     * @param minValue
+     * @param maxValue
+     * @return
+     */
+    private double sanitizeValue(double value, double minValue, double maxValue) {
         if (value < minValue) {
             return minValue;
         } else if (value > maxValue) {
