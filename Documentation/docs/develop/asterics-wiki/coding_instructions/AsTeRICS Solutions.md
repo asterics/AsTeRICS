@@ -26,7 +26,7 @@ You might also want to start based on an existing [AsTeRICS solution example](ht
 # Example 1 - Run project
 The template repository already contains a default autostart model at ```custom/bin/ARE/models/autostart.acs```, which opens the ARE webserver startpage with the system default browser.
 
-```cmd
+```bash
 ant run
 ```
 
