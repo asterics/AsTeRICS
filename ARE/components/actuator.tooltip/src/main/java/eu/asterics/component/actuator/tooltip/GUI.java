@@ -44,6 +44,7 @@ import eu.asterics.mw.services.ResourceRegistry;
  */
 public class GUI extends JFrame {
 
+    private static final int NAVIGATE_TOOLTIP_INTERVAL = 100;
     int width, height;
     BufferedImage image = null;
     int actTooltip = 0;
@@ -112,7 +113,7 @@ public class GUI extends JFrame {
     }
 
     void navigateTooltips(float dx) {
-        if (System.currentTimeMillis() - tooltipTime > 100) {
+        if (System.currentTimeMillis() - tooltipTime > NAVIGATE_TOOLTIP_INTERVAL) {
             if (dx > 0)
                 actTooltip++;
             else {
