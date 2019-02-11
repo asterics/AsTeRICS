@@ -172,9 +172,7 @@ public class GUI extends JFrame {
     private void loadImage(int nr) {
         String tmpFileName = tooltipFolder + actTooltip + ".png";
         try {
-            URI myURI = ResourceRegistry.getInstance().getResource(tmpFileName, ResourceRegistry.RES_TYPE.DATA);
-            File imageFile = new File(myURI);
-            image = ImageIO.read(imageFile);
+            image = ImageIO.read(ResourceRegistry.getInstance().getResourceInputStream(tmpFileName, ResourceRegistry.RES_TYPE.DATA));
             actImageFileName = Integer.toString(nr);
             tooltipTime = System.currentTimeMillis();
         } catch (Exception ex) {
