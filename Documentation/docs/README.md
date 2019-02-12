@@ -1,7 +1,7 @@
 ---
 home: true
 heroImage: ./img/asterics-logo.svg
-actionText: Get Started →
+actionText: Get Started (jenkins) →
 actionLink: /getting-started/
 sidebar: auto
 features:
