@@ -5,7 +5,7 @@ pipeline {
     BRANCH_NAME = 'master'
   }
   stages {
-    stage('Build Trigger') {
+    stage('Build Trigger: asterics-docs') {
       steps {
         build 'asterics-docs/master'
       }
