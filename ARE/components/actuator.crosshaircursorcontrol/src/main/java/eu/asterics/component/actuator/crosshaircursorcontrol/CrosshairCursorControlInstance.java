@@ -390,7 +390,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpEnablePlugin = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            elapsedIdleTime = System.currentTimeMillis();
+            elapsedIdleTime = Long.MAX_VALUE;
             propEnabled = true;
             gui.setActive(true);
         }
@@ -398,7 +398,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpDisablePlugin = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            elapsedIdleTime = System.currentTimeMillis();
+            elapsedIdleTime = Long.MAX_VALUE;
             propEnabled = false;
             gui.setActive(false);
         }
