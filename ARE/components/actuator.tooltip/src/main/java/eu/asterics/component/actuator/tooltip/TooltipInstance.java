@@ -244,14 +244,16 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     final IRuntimeEventListenerPort elpActivateTooltips = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             cancelSelectionTimer(true);
-            gui.activateTooltips();
+            if (gui != null) {
+                gui.activateTooltips();
+            }
         }
     };
 
     final IRuntimeEventListenerPort elpDeactivateTooltips = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             cancelSelectionTimer(false);
-            if (gui.tooltipsActive()) {
+            if (gui != null && gui.tooltipsActive()) {
                 gui.deactivateTooltips();
             }
         }
@@ -259,7 +261,7 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
 
     final IRuntimeEventListenerPort elpNextTooltip = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if (gui.tooltipsActive() && System.currentTimeMillis() - lastTooltipNavigationTime > NAVIGATION_DEBOUNCE_TIME_MS) {
+            if (gui != null && gui.tooltipsActive() && System.currentTimeMillis() - lastTooltipNavigationTime > NAVIGATION_DEBOUNCE_TIME_MS) {
                 lastTooltipNavigationTime = System.currentTimeMillis();
                 cancelSelectionTimer(true);
                 gui.navigateNextTooltip();
@@ -269,7 +271,7 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
 
     final IRuntimeEventListenerPort elpPreviousTooltip = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if (gui.tooltipsActive() && System.currentTimeMillis() - lastTooltipNavigationTime > NAVIGATION_DEBOUNCE_TIME_MS) {
+            if (gui != null && gui.tooltipsActive() && System.currentTimeMillis() - lastTooltipNavigationTime > NAVIGATION_DEBOUNCE_TIME_MS) {
                 lastTooltipNavigationTime = System.currentTimeMillis();
                 cancelSelectionTimer(true);
                 gui.navigatePreviousTooltip();
@@ -279,7 +281,7 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
 
     final IRuntimeEventListenerPort elpSelectTooltip = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if (gui.tooltipsActive()) {
+            if (gui != null && gui.tooltipsActive()) {
                 cancelSelectionTimer(false);
                 selectTooltipInternal();
             }
@@ -362,7 +364,7 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
      * This method is called by the selection timer upon completion of it. Sends out the filename of the selected tooltip and deactivates the tooltip again.
      */
     private void selectTooltipInternal() {
-        if (gui.tooltipsActive()) {
+        if (gui!=null && gui.tooltipsActive()) {
             String tmp = gui.getTooltipFilename();
             if (tmp != null && !tmp.equals("")) {
                 //deactivate must be first, in order to re-activate e.g. another Mouse plugin,
