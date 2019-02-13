@@ -1,10 +1,12 @@
 pipeline {
   agent none
   options { skipDefaultCheckout() }
+  environment {
+    BRANCH_NAME = 'master'
+  }
   stages {
     stage('Build Trigger') {
       steps {
-        env.BRANCH_NAME = 'master'
         build 'asterics-docs/master'
       }
     }
