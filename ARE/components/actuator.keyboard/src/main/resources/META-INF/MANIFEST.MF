@@ -7,5 +7,9 @@ Require-Bundle: eu.asterics.mw.jnativehook
 Bundle-NativeCode: lib/native/windows/x86/kbdevent.dll;
  osname=win32;processor=x86,
  lib/native/windows/x64/kbdevent.dll;
- osname=win32;processor=x86_64
+ osname=win32;processor=x86_64,
+ lib/native/windows/x64/kbdevent.dll;
+ osname=Linux,
+ lib/native/windows/x64/kbdevent.dll;
+ osname=MacOSX 
 DynamicImport-Package: *
