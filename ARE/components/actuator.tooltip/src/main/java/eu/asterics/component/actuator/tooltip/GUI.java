@@ -28,9 +28,6 @@ package eu.asterics.component.actuator.tooltip;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.URI;
-import java.security.acl.Owner;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -71,6 +68,7 @@ public class GUI extends JFrame {
         setBackground(new Color(0, 0, 0, 0)); // transparent !
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setOpacity(0.5f);
+        setVisible(true);
     }
 
     /**
@@ -110,12 +108,12 @@ public class GUI extends JFrame {
         resetImage();
         actTooltip = owner.propTooltipStartIndex;
         owner.etpTooltipDeactivated.raiseEvent();
-        showTooltip(false);
+        repaintTooltip();
         this.tooltipActive = false;
     }
 
     /**
-     * Selects the next index of Tooltip images. If the @see {@link #TOOLTIP_INDEX_MAX} is reached, starts with {@link #TOOLTIP_INDEX_MIN}.
+     * Selects the next index of Tooltip images.
      */
     void navigateNextTooltip() {
         actTooltip++;
@@ -123,7 +121,7 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Selects the previous index of Tooltip images. If the @see {@link #TOOLTIP_INDEX_MIN} is reached, starts with {@link #TOOLTIP_INDEX_MAX}. *
+     * Selects the previous index of Tooltip images.
      */
     void navigatePreviousTooltip() {
         actTooltip--;
@@ -131,37 +129,29 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Sets the location where the Tooltip should be shown.
-     * 
-     * @param x
-     * @param y
-     */
-    void setMouseXY(float x, float y) {
-
-    }
-
-    /**
      * Paints the Tooltip image at the defined location or at the mouse cursor location, if not set.
      */
     @Override
     public void paint(Graphics g) {
-        if (image == null) {
+        if(image == null) {
+            super.paint(g);
             return;
         }
 
         int toolX = 0, toolY = 0;
         int mouseX = (int) owner.x;
         int mouseY = (int) owner.y;
-        //if the mouse coordinates are set to -1, capture them using MouseInfo
+
+        // if the mouse coordinates are set to -1, capture them using MouseInfo
         if (mouseX < 0 || mouseY < 0) {
             mouseX = (int) MouseInfo.getPointerInfo().getLocation().getX();
             mouseY = (int) MouseInfo.getPointerInfo().getLocation().getY();
         }
-        //ensures mouse coordinates within the screen bounding box
+        // ensures mouse coordinates within the screen bounding box
         mouseX = sanitizeValue(mouseX, 0, screenWidth);
         mouseY = sanitizeValue(mouseY, 0, screenHeight);
 
-        //Calculates the optimal position for the frame depending on screen corner and image size
+        // Calculates the optimal position for the frame depending on screen corner and image size
         if (mouseY < image.getHeight()) {
             toolY = mouseY + 10;
         } else {
@@ -172,11 +162,9 @@ public class GUI extends JFrame {
         } else {
             toolX = mouseX - image.getWidth() - 10;
         }
-
-        setLocation(toolX, toolY);
         setSize(image.getWidth(), image.getHeight());
+        setLocation(toolX, toolY);
         super.paint(g);
-        Graphics2D g2 = (Graphics2D) g;
         g.drawImage(image, 0, 0, null);
     }
 
@@ -190,7 +178,7 @@ public class GUI extends JFrame {
         try {
             image = ImageIO.read(ResourceRegistry.getInstance().getResourceInputStream(tmpFileName, ResourceRegistry.RES_TYPE.DATA));
             actImageFileName = Integer.toString(nr);
-            showTooltip(true);
+            repaintTooltip();
         } catch (Exception ex) {
             deactivateTooltips();
             resetImage();
@@ -207,30 +195,14 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Repaints the Tooltip at the current position.
+     * repaints the frame
      */
     void repaintTooltip() {
-        showTooltip(true);
-    }
-
-    /**
-     * Toggles visibility of the Tooltip.
-     * 
-     * @param showTooltip
-     */
-    private void showTooltip(final boolean showTooltip) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if (showTooltip) {
-                    setVisible(true);
-                    setAlwaysOnTop(true);
-                    repaint();
-                } else {
-                    setAlwaysOnTop(false);
-                    setVisible(false);
-                    repaint();
-                }
+                setAlwaysOnTop(true);
+                repaint();
             }
         });
     }
