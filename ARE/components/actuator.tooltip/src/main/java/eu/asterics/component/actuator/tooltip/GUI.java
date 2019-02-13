@@ -44,15 +44,10 @@ import eu.asterics.mw.services.ResourceRegistry;
  * @author Benjamin Klaus
  */
 public class GUI extends JFrame {
-
-    private static final int TOOLTIP_INDEX_MIN = 1;
-    private static final int TOOLTIP_INDEX_MAX = 7;
     BufferedImage image = null;
     int actTooltip = -1;
     boolean tooltipActive = false;
     String actImageFileName = "";
-    float mouseX = -1;
-    float mouseY = -1;
     TooltipInstance owner = null;
 
     private int screenWidth;
@@ -113,6 +108,7 @@ public class GUI extends JFrame {
      */
     void deactivateTooltips() {
         resetImage();
+        actTooltip = owner.propTooltipStartIndex;
         owner.etpTooltipDeactivated.raiseEvent();
         showTooltip(false);
         this.tooltipActive = false;
@@ -122,14 +118,16 @@ public class GUI extends JFrame {
      * Selects the next index of Tooltip images. If the @see {@link #TOOLTIP_INDEX_MAX} is reached, starts with {@link #TOOLTIP_INDEX_MIN}.
      */
     void navigateNextTooltip() {
-        actTooltip = (actTooltip + 1 > TOOLTIP_INDEX_MAX) ? TOOLTIP_INDEX_MIN : actTooltip + 1;
+        actTooltip++;
+        loadImage(actTooltip);
     }
 
     /**
      * Selects the previous index of Tooltip images. If the @see {@link #TOOLTIP_INDEX_MIN} is reached, starts with {@link #TOOLTIP_INDEX_MAX}. *
      */
     void navigatePreviousTooltip() {
-        actTooltip = (actTooltip - 1 < TOOLTIP_INDEX_MIN) ? TOOLTIP_INDEX_MAX : actTooltip - 1;
+        actTooltip--;
+        loadImage(actTooltip);
     }
 
     /**
@@ -139,8 +137,7 @@ public class GUI extends JFrame {
      * @param y
      */
     void setMouseXY(float x, float y) {
-        mouseX = (float) sanitizeValue(x, 0, screenWidth);
-        mouseY = (float) sanitizeValue(y, 0, screenHeight);
+
     }
 
     /**
@@ -148,28 +145,46 @@ public class GUI extends JFrame {
      */
     @Override
     public void paint(Graphics g) {
-        // If the mouseX and mouseY values have been set from outside, use them, otherwise default to current mouse position.
-        if (mouseX < 0 || mouseY < 0) {
-            setLocation(MouseInfo.getPointerInfo().getLocation());
-        } else {
-            setLocation((int) mouseX, (int) mouseY);
+        if (image == null) {
+            return;
         }
 
+        int toolX = 0, toolY = 0;
+        int mouseX = (int) owner.x;
+        int mouseY = (int) owner.y;
+        //if the mouse coordinates are set to -1, capture them using MouseInfo
+        if (mouseX < 0 || mouseY < 0) {
+            mouseX = (int) MouseInfo.getPointerInfo().getLocation().getX();
+            mouseY = (int) MouseInfo.getPointerInfo().getLocation().getY();
+        }
+        //ensures mouse coordinates within the screen bounding box
+        mouseX = sanitizeValue(mouseX, 0, screenWidth);
+        mouseY = sanitizeValue(mouseY, 0, screenHeight);
+
+        //Calculates the optimal position for the frame depending on screen corner and image size
+        if (mouseY < image.getHeight()) {
+            toolY = mouseY + 10;
+        } else {
+            toolY = mouseY - image.getHeight() - 10;
+        }
+        if (mouseX < image.getWidth()) {
+            toolX = mouseX + 10;
+        } else {
+            toolX = mouseX - image.getWidth() - 10;
+        }
+
+        setLocation(toolX, toolY);
         setSize(image.getWidth(), image.getHeight());
-        // System.out.println("getLocation: " + getLocation() + ", Size: " + getSize());
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
-
-        /*
-         * if (image != null) { int toolX, toolY; if ((int) mouseY < image.getHeight()) { toolY = (int) mouseY + 10; } else { toolY = (int) mouseY -
-         * image.getHeight() - 10; } if ((int) mouseX < image.getWidth()) { toolX = (int) mouseX + 10; } else { toolX = (int) mouseX - image.getWidth() - 10; }
-         * 
-         * g.drawImage(image, toolX, toolY, null); }
-         */
-        // System.out.println("Drawing image: "+image+", retVal: "+g.drawImage(image, 0, 0, null));
         g.drawImage(image, 0, 0, null);
     }
 
+    /**
+     * Loads the image with the given nr and shows the Tooltip.
+     * If .png file with the given number does not exist, tootip mode is deactivated
+     * @param nr
+     */
     private void loadImage(int nr) {
         String tmpFileName = owner.propTooltipFolder + "/" + nr + ".png";
         try {
@@ -189,6 +204,13 @@ public class GUI extends JFrame {
     private void resetImage() {
         image = null;
         actImageFileName = "";
+    }
+
+    /**
+     * Repaints the Tooltip at the current position.
+     */
+    void repaintTooltip() {
+        showTooltip(true);
     }
 
     /**
@@ -221,7 +243,7 @@ public class GUI extends JFrame {
      * @param maxValue
      * @return
      */
-    private double sanitizeValue(double value, double minValue, double maxValue) {
+    private int sanitizeValue(int value, int minValue, int maxValue) {
         if (value < minValue) {
             return minValue;
         } else if (value > maxValue) {

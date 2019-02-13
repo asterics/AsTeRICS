@@ -53,19 +53,21 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     final IRuntimeOutputPort opTooltip = new DefaultRuntimeOutputPort();
     final IRuntimeEventTriggererPort etpTooltipActivated = new DefaultRuntimeEventTriggererPort();
     final IRuntimeEventTriggererPort etpTooltipDeactivated = new DefaultRuntimeEventTriggererPort();
+    private static final int NAVIGATION_DEBOUNCE_TIME_MS = 100;
 
-    int propInitialX = 0;
-    int propInitialY = 0;
+    int propInitialX = -1;
+    int propInitialY = -1;
     int propSelectTime = 1000;
     int propTooltipStartIndex = 3;
     String propTooltipFolder = "pictures/tooltips";
 
     // declare member variables here
     private GUI gui;
-    private float x = 0;
-    private float y = 0;
+    double x = 0;
+    double y = 0;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private ScheduledFuture selectionFuture;
+    private long lastTooltipNavigationTime = 0;
 
     /**
      * The class constructor.
@@ -190,16 +192,12 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
             final Object oldValue = propInitialX;
             propInitialX = Integer.parseInt(newValue.toString());
             x = propInitialX;
-            if (gui != null)
-                gui.setMouseXY(x, y);
             return oldValue;
         }
         if ("initialY".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propInitialY;
             propInitialY = Integer.parseInt(newValue.toString());
             y = propInitialY;
-            if (gui != null)
-                gui.setMouseXY(x, y);
             return oldValue;
         }
         if ("selectTime".equalsIgnoreCase(propertyName)) {
@@ -229,7 +227,7 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
             x = inputValue;
             if (gui != null) {
-                gui.setMouseXY(x, y);
+                gui.repaintTooltip();
             }
         }
     };
@@ -238,7 +236,7 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
             float inputValue = (float) ConversionUtils.doubleFromBytes(data);
             y = inputValue;
             if (gui != null) {
-                gui.setMouseXY(x, y);
+                gui.repaintTooltip();
             }
         }
     };
@@ -261,24 +259,30 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
 
     final IRuntimeEventListenerPort elpNextTooltip = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            // cancelSelectionTimer(true);
-            gui.navigateNextTooltip();
-            // gui.activateTooltips();
+            if (gui.tooltipsActive() && System.currentTimeMillis() - lastTooltipNavigationTime > NAVIGATION_DEBOUNCE_TIME_MS) {
+                lastTooltipNavigationTime = System.currentTimeMillis();
+                cancelSelectionTimer(true);
+                gui.navigateNextTooltip();
+            }
         }
     };
 
     final IRuntimeEventListenerPort elpPreviousTooltip = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            // cancelSelectionTimer(true);
-            gui.navigatePreviousTooltip();
-            // gui.activateTooltips();
+            if (gui.tooltipsActive() && System.currentTimeMillis() - lastTooltipNavigationTime > NAVIGATION_DEBOUNCE_TIME_MS) {
+                lastTooltipNavigationTime = System.currentTimeMillis();
+                cancelSelectionTimer(true);
+                gui.navigatePreviousTooltip();
+            }
         }
     };
 
     final IRuntimeEventListenerPort elpSelectTooltip = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            cancelSelectionTimer(false);
-            selectTooltipInternal();
+            if (gui.tooltipsActive()) {
+                cancelSelectionTimer(false);
+                selectTooltipInternal();
+            }
         }
     };
 
@@ -312,6 +316,8 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void start() {
         gui = new GUI(this);
+        x=propInitialX;
+        y=propInitialY;
         super.start();
     }
 
@@ -359,8 +365,10 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
         if (gui.tooltipsActive()) {
             String tmp = gui.getTooltipFilename();
             if (tmp != null && !tmp.equals("")) {
-                opTooltip.sendData(ConversionUtils.stringToBytes(tmp));
+                //deactivate must be first, in order to re-activate e.g. another Mouse plugin,
+                //that performs e.g. double click triggered by sendData().
                 gui.deactivateTooltips();
+                opTooltip.sendData(ConversionUtils.stringToBytes(tmp));
             }
         }
     }

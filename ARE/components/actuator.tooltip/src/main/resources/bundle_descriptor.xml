@@ -50,11 +50,11 @@
         <properties>
 			<property name="initialX"
 				type="integer"
-				value="0"
-				description="initial position in x-axis"/>
+				value="-1"
+				description="initial position in x-axis, "/>
 			<property name="initialY"
 				type="integer"
-				value="0"
+				value="-1"
 				description="initial position in y-axis"/>
 			<property name="selectTime"
 				type="integer"
