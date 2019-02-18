@@ -245,6 +245,7 @@ public class TooltipInstance extends AbstractRuntimeComponentInstance {
         public void receiveEvent(final String data) {
             cancelSelectionTimer(true);
             if (gui != null) {
+                lastTooltipNavigationTime = System.currentTimeMillis();
                 gui.activateTooltips();
             }
         }
