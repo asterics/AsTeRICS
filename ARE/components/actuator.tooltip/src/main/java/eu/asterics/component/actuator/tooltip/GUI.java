@@ -34,6 +34,7 @@ import javax.swing.*;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.ResourceRegistry;
+import eu.asterics.mw.utils.OSUtils;
 
 /**
  * Implements the Graphical User Interface for the Tooltip plugin
@@ -49,6 +50,7 @@ public class GUI extends JFrame {
 
     private int screenWidth;
     private int screenHeight;
+    private JLabel imageLabel = new JLabel();
 
     /**
      * The class constructor, initialises the GUI
@@ -64,6 +66,7 @@ public class GUI extends JFrame {
         screenWidth = gd.getDisplayMode().getWidth();
         screenHeight = gd.getDisplayMode().getHeight();
 
+        add(imageLabel);
         setUndecorated(true);
         setBackground(new Color(0, 0, 0, 0)); // transparent !
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -108,7 +111,6 @@ public class GUI extends JFrame {
         resetImage();
         actTooltip = owner.propTooltipStartIndex;
         owner.etpTooltipDeactivated.raiseEvent();
-        repaintTooltip();
         this.tooltipActive = false;
     }
 
@@ -129,48 +131,8 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Paints the Tooltip image at the defined location or at the mouse cursor location, if not set.
-     */
-    @Override
-    public void paint(Graphics g) {
-        if(image == null) {
-            super.paint(g);
-            return;
-        }
-
-        int toolX = 0, toolY = 0;
-        int mouseX = (int) owner.x;
-        int mouseY = (int) owner.y;
-
-        // if the mouse coordinates are set to -1, capture them using MouseInfo
-        if (mouseX < 0 || mouseY < 0) {
-            mouseX = (int) MouseInfo.getPointerInfo().getLocation().getX();
-            mouseY = (int) MouseInfo.getPointerInfo().getLocation().getY();
-        }
-        // ensures mouse coordinates within the screen bounding box
-        mouseX = sanitizeValue(mouseX, 0, screenWidth);
-        mouseY = sanitizeValue(mouseY, 0, screenHeight);
-
-        // Calculates the optimal position for the frame depending on screen corner and image size
-        if (mouseY < image.getHeight()) {
-            toolY = mouseY + 10;
-        } else {
-            toolY = mouseY - image.getHeight() - 10;
-        }
-        if (mouseX < image.getWidth()) {
-            toolX = mouseX + 10;
-        } else {
-            toolX = mouseX - image.getWidth() - 10;
-        }
-        setSize(image.getWidth(), image.getHeight());
-        setLocation(toolX, toolY);
-        super.paint(g);
-        g.drawImage(image, 0, 0, null);
-    }
-
-    /**
-     * Loads the image with the given nr and shows the Tooltip.
-     * If .png file with the given number does not exist, tootip mode is deactivated
+     * Loads the image with the given nr and shows the Tooltip. If .png file with the given number does not exist, tootip mode is deactivated
+     *
      * @param nr
      */
     private void loadImage(int nr) {
@@ -178,10 +140,9 @@ public class GUI extends JFrame {
         try {
             image = ImageIO.read(ResourceRegistry.getInstance().getResourceInputStream(tmpFileName, ResourceRegistry.RES_TYPE.DATA));
             actImageFileName = Integer.toString(nr);
-            repaintTooltip();
+            repaintTooltip(new ImageInfo(image, (int) owner.x, (int) owner.y));
         } catch (Exception ex) {
             deactivateTooltips();
-            resetImage();
             AstericsErrorHandling.instance.getLogger().fine(" *****  Can not open picture: " + ex.getMessage());
         }
     }
@@ -192,15 +153,57 @@ public class GUI extends JFrame {
     private void resetImage() {
         image = null;
         actImageFileName = "";
+        repaintTooltip();
     }
 
     /**
      * repaints the frame
      */
     void repaintTooltip() {
+        repaintTooltip(new ImageInfo(image, (int) owner.x, (int) owner.y));
+    }
+
+    private void repaintTooltip(final ImageInfo imageInfo) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                if (imageInfo.image != null) {
+                    int toolX = 0, toolY = 0;
+                    int mouseX = imageInfo.mouseX;
+                    int mouseY = imageInfo.mouseY;
+
+                    // if the mouse coordinates are set to -1, capture them using MouseInfo
+                    if (mouseX < 0 || mouseY < 0) {
+                        mouseX = (int) MouseInfo.getPointerInfo().getLocation().getX();
+                        mouseY = (int) MouseInfo.getPointerInfo().getLocation().getY();
+                    }
+                    // ensures mouse coordinates within the screen bounding box
+                    mouseX = sanitizeValue(mouseX, 0, screenWidth);
+                    mouseY = sanitizeValue(mouseY, 0, screenHeight);
+
+                    // Calculates the optimal position for the frame depending on screen corner and image size
+                    if (mouseY < imageInfo.image.getHeight()) {
+                        toolY = mouseY + 10;
+                    } else {
+                        toolY = mouseY - imageInfo.image.getHeight() - 10;
+                    }
+                    if (mouseX < imageInfo.image.getWidth()) {
+                        toolX = mouseX + 10;
+                    } else {
+                        toolX = mouseX - imageInfo.image.getWidth() - 10;
+                    }
+                    setSize(imageInfo.image.getWidth(), imageInfo.image.getHeight());
+                    setLocation(toolX, toolY);
+                    imageLabel.setIcon(new ImageIcon(imageInfo.image));
+                    imageLabel.setSize(imageInfo.image.getWidth(), imageInfo.image.getHeight());
+                } else {
+                    imageLabel.setIcon(null);
+                    if (!OSUtils.isWindows()) {
+                        setSize(0, 0);
+                    }
+                }
+//                AstericsErrorHandling.instance.getLogger()
+//                        .fine("image: " + imageInfo.image + ", frameLocation: " + getLocation() + ", frameSize: " + getSize());
                 setAlwaysOnTop(false);
                 repaint();
                 setAlwaysOnTop(true);
@@ -224,5 +227,16 @@ public class GUI extends JFrame {
             return maxValue;
         }
         return value;
+    }
+}
+
+class ImageInfo {
+    BufferedImage image = null;
+    int mouseX, mouseY = 0;
+
+    public ImageInfo(BufferedImage image, int mouseX, int mouseY) {
+        this.image = image;
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
     }
 }
