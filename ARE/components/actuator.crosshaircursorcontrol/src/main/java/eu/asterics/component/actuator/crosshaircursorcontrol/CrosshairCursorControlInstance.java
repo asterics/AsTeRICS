@@ -54,6 +54,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     boolean propAutoColorAxis = true;
     boolean propHighlightClick = true;
     boolean propWrapAround = false;
+    boolean propTaskbarOffset = false;
     int propClickEventTime = 1000;
     int propLineWidth = 200;
     int propAccelerationH = 100;
@@ -228,6 +229,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("wrapAround".equalsIgnoreCase(propertyName)) {
             return propWrapAround;
         }
+        if ("taskbarOffset".equalsIgnoreCase(propertyName)) {
+            return propTaskbarOffset;
+        }
         if ("clickEventTime".equalsIgnoreCase(propertyName)) {
             return propClickEventTime;
         }
@@ -282,6 +286,11 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         if ("wrapAround".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propWrapAround;
             propWrapAround = Boolean.parseBoolean((String) newValue);
+            return oldValue;
+        }
+        if ("taskbarOffset".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propTaskbarOffset;
+            propTaskbarOffset = Boolean.parseBoolean((String) newValue);
             return oldValue;
         }
         if ("clickEventTime".equalsIgnoreCase(propertyName)) {
@@ -555,7 +564,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         screenWidth = (int) screenSize.getWidth();
         screenHeight = (int) screenSize.getHeight();
         // System.out.println("Screen width:" + screenWidth + " height:" + screenHeight);
-        gui = new GUI(this, screenSize, propLineWidth);
+        gui = new GUI(this, screenSize, propLineWidth, propTaskbarOffset);
         Point location = MouseInfo.getPointerInfo().getLocation();
         x = location.x;
         y = location.y;

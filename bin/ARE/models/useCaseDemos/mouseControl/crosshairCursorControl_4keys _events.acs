@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_4keys _events.acs_2019_2_4_8_43" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_4keys _events.acs_2019_2_18_13_20" version="20130320">
   <components>
     <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
       <description>cursor position control via crosshair movement</description>
@@ -29,6 +29,7 @@
         <property name="autoColorAxis" value="true" />
         <property name="highlightClick" value="True" />
         <property name="wrapAround" value="false" />
+        <property name="taskbarOffset" value="false" />
         <property name="clickEventTime" value="1500" />
         <property name="lineWidth" value="5" />
         <property name="baseVelocity" value="50" />

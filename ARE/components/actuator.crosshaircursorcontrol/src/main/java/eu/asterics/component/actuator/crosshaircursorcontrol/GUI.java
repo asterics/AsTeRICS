@@ -58,6 +58,7 @@ public class GUI {
     private JFrame frameUp;
     private JFrame frameDown;
     private java.util.List<JFrame> frames;
+    private boolean taskbarOffset = false;
     // private JLabel myLabel;
     // add more GUI elements here
 
@@ -71,10 +72,11 @@ public class GUI {
      * @param lineWidth
      *            the width of horizontal and vertial crosshair lines
      */
-    public GUI(final CrosshairCursorControlInstance owner, final Dimension dim, final int lineWidth) {
+    public GUI(final CrosshairCursorControlInstance owner, final Dimension dim, final int lineWidth, boolean taskbarOffset) {
         this.lineWidth = lineWidth;
         width = dim.width;
         height = dim.height;
+        this.taskbarOffset = taskbarOffset;
 
         frameLeft = new JFrame("CrosshairLeft");
         frameRight = new JFrame("CrosshairRight");
@@ -225,11 +227,19 @@ public class GUI {
             yAxisColor = Color.GREEN;
         }
 
+        int usedWidth = width;
+        int usedHeight = height;
+        if (taskbarOffset) {
+            Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(frameDown.getGraphicsConfiguration());
+            usedWidth -= (insets.left + insets.right);
+            usedHeight -= (insets.top + insets.bottom);
+        }
+
         int space = Math.max(lineWidth / 2, 4);
         frameLeft.setSize(locX - space, lineWidth);
-        frameRight.setSize(width - locX - space, lineWidth);
+        frameRight.setSize(usedWidth - locX - space, lineWidth);
         frameUp.setSize(lineWidth, locY - space);
-        frameDown.setSize(lineWidth, height - locY - space);
+        frameDown.setSize(lineWidth, usedHeight - locY - space);
 
         frameLeft.setLocation(0, locY - lineWidth / 2);
         frameRight.setLocation(locX + space, locY - lineWidth / 2);

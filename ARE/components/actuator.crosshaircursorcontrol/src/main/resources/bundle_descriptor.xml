@@ -114,6 +114,10 @@
 					  type="boolean"
 					  value="false"
 					  description="if true, movement continues on other side of the screen, if screen end reached"/>
+			<property name="taskbarOffset"
+					  type="boolean"
+					  value="false"
+					  description="if true, the size of the crosshairs (x/y) is calculated from screen size minus any taskbar sizes."/>
 			<property name="clickEventTime"
 				type="integer"
 				value="1000"
