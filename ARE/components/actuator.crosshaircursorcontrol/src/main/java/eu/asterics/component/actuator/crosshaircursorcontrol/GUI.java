@@ -96,7 +96,7 @@ public class GUI {
         Point location = MouseInfo.getPointerInfo().getLocation();
         locX = location.x;
         locY = location.y;
-        repaintInternal();
+        repaintInternal(true, 0);
     }
 
     void resetAxis() {
@@ -229,8 +229,12 @@ public class GUI {
 
         int usedWidth = width;
         int usedHeight = height;
+        int offsetX = 0;
+        int offsetY = 0;
         if (taskbarOffset) {
             Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(frameDown.getGraphicsConfiguration());
+            offsetX = insets.left;
+            offsetY = insets.top;
             usedWidth -= (insets.left + insets.right);
             usedHeight -= (insets.top + insets.bottom);
         }
@@ -242,9 +246,9 @@ public class GUI {
         frameDown.setSize(lineWidth, usedHeight - locY - space);
 
         frameLeft.setLocation(0, locY - lineWidth / 2);
-        frameRight.setLocation(locX + space, locY - lineWidth / 2);
+        frameRight.setLocation(offsetX + locX + space, locY - lineWidth / 2);
         frameUp.setLocation(locX - lineWidth / 2, 0);
-        frameDown.setLocation(locX - lineWidth / 2, locY + space);
+        frameDown.setLocation(locX - lineWidth / 2, offsetY + locY + space);
 
         frameLeft.setBackground(xAxisColor);
         frameRight.setBackground(xAxisColor);
