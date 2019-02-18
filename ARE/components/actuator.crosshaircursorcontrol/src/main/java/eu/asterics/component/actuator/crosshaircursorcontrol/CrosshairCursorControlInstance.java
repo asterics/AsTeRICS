@@ -506,7 +506,6 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 gui.setXAxisHighlight(true);
                 gui.setYAxisHighlight(false);
             }
-            gui.setOnTop();
         }
     };
 
@@ -518,7 +517,6 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                 gui.setYAxisHighlight(true);
                 gui.setXAxisHighlight(false);
             }
-            gui.setOnTop();
         }
     };
 
@@ -527,7 +525,6 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             elapsedIdleTime = System.currentTimeMillis();
             propAutoColorAxis = false;
             gui.toggleAxis();
-            gui.setOnTop();
         }
     };
 
@@ -579,13 +576,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
                             continue;
                         }
                         if ((currentTime - elapsedIdleTime) > propClickEventTime && propClickEventTime > 0) {
-                            // gui.hideCrosshair();
                             setCursorInternal(x, y); // update cursor position (prevent JavaRobot positioning error when quickly updated)
                             if (propHighlightClick) gui.doAxisClickHighlight();
                             etpClickEvent.raiseEvent();
-                            // Thread.sleep(200);
-                            // gui.showCrosshair();
-                            gui.setOnTop();
                             if (propAutoColorAxis) gui.resetAxis();
                             elapsedIdleTime = Long.MAX_VALUE;
                         } else {
@@ -635,8 +628,8 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             public void run() {
                 // now the cleanup of the window can be done at any time in the event dispatch thread wihtout interfering the other code.
                 if (guiToDestroy != null) {
-                    guiToDestroy.setVisible(false);
-                    guiToDestroy.dispose();
+                    guiToDestroy.setAllVisible(false);
+                    guiToDestroy.disposeAll();
                 }
             }
         });
@@ -753,8 +746,10 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     }
 
     private void setCursorInternal(float x, float y) {
-        gui.setCursor(x, y);
-        opOutX.sendData(ConversionUtils.doubleToBytes((double) x));
-        opOutY.sendData(ConversionUtils.doubleToBytes((double) y));
+        int roundedX = Math.round(x);
+        int roundedY = Math.round(y);
+        gui.setCursor(roundedX, roundedY);
+        opOutX.sendData(ConversionUtils.doubleToBytes(roundedX));
+        opOutY.sendData(ConversionUtils.doubleToBytes(roundedY));
     }
 }
