@@ -27,6 +27,7 @@
 package eu.asterics.component.actuator.crosshaircursorcontrol;
 
 import java.awt.*;
+import java.util.Arrays;
 
 import javax.swing.*;
 
@@ -37,13 +38,13 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  *
  * @author Chris, Date: 2019-01-20
  */
-public class GUI extends JFrame {
+public class GUI {
 
     int width = 0, height = 0;
     int lineWidth = 0;
 
-    double locX = 0;
-    double locY = 0;
+    int locX = 0;
+    int locY = 0;
 
     private boolean highlightXAxis = false;
     private boolean highlightYAxis = true;
@@ -51,6 +52,12 @@ public class GUI extends JFrame {
     private boolean currentHighlightYAxis = false;
     private boolean highlightClick = false;
     private boolean active = true;
+
+    private JFrame frameLeft;
+    private JFrame frameRight;
+    private JFrame frameUp;
+    private JFrame frameDown;
+    private java.util.List<JFrame> frames;
     // private JLabel myLabel;
     // add more GUI elements here
 
@@ -65,54 +72,29 @@ public class GUI extends JFrame {
      *            the width of horizontal and vertial crosshair lines
      */
     public GUI(final CrosshairCursorControlInstance owner, final Dimension dim, final int lineWidth) {
-        super("CursorMovementPanel");
-        this.width = width;
-        setUndecorated(true);
-        setAlwaysOnTop(true);
-        setBackground(new Color(0, 0, 0, 0)); // transparent !
-        setSize(dim);
+        this.lineWidth = lineWidth;
         width = dim.width;
         height = dim.height;
-        this.lineWidth = lineWidth;
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setOpacity(0.5f);
-        setVisible(true);
 
-        setLocation(0, 0);
+        frameLeft = new JFrame("CrosshairLeft");
+        frameRight = new JFrame("CrosshairRight");
+        frameUp = new JFrame("CrosshairUp");
+        frameDown = new JFrame("CrosshairDown");
+        frames = Arrays.asList(frameLeft, frameRight, frameUp, frameDown);
+
+        for (JFrame frame : frames) {
+            frame.setUndecorated(true);
+            frame.setAlwaysOnTop(true);
+            frame.setBackground(new Color(0, 0, 0, 0)); // transparent !
+            frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            frame.setOpacity(0.5f);
+            frame.setVisible(true);
+        }
+
         Point location = MouseInfo.getPointerInfo().getLocation();
         locX = location.x;
         locY = location.y;
         repaintInternal();
-    }
-
-    void setOnTop() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                setAlwaysOnTop(false);
-                repaint();
-                setAlwaysOnTop(true);
-                repaint();
-            }
-        });
-    }
-
-    void showCrosshair() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                setVisible(true);
-            }
-        });
-    }
-
-    void hideCrosshair() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                setVisible(false);
-            }
-        });
     }
 
     void resetAxis() {
@@ -148,10 +130,9 @@ public class GUI extends JFrame {
         repaintInternal();
     }
 
-    synchronized void setCursor(float x, float y) {
+    void setCursor(int x, int y) {
         locX = x;
         locY = y;
-
         repaintInternal();
     }
 
@@ -159,12 +140,74 @@ public class GUI extends JFrame {
         this.active = active;
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D) g;
-        Color xAxisColor, yAxisColor;
+    /**
+     * resizes, moves and repaints all frames.
+     * @param asynchronous if true SwingUtils.invokeLater() is used for repainting, otherwise SwingUtils.invokeAndWait()
+     * @param sleepMs if > 0 the current thread is interrupted for the given amount of milliseconds
+     */
+    private void repaintInternal(boolean asynchronous, final int sleepMs) {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                if (sleepMs > 0) {
+                    sleepInternal(sleepMs);
+                }
+                doResizeAndPositining();
+                setAllAlwaysOnTop(true);
+                repaintAll();
+            }
+        };
+        if (asynchronous) {
+            SwingUtilities.invokeLater(r);
+        } else {
+            synchronized (this) {
+                try {
+                    SwingUtilities.invokeAndWait(r);
+                } catch (Exception e) {
+                    AstericsErrorHandling.instance.getLogger().warning("invokeAndWait error: " + e.getMessage());
+                }
+            }
+        }
+    }
 
+    private void repaintInternal() {
+        repaintInternal(false, 0);
+    }
+
+    private void sleepInternal(long ms) {
+        try {
+            Thread.currentThread().sleep(ms);
+        } catch (InterruptedException e) {
+            AstericsErrorHandling.instance.getLogger().warning("GUI sleep error: " + e.getMessage());
+        }
+    }
+
+    void setAllVisible(boolean visible) {
+        for (JFrame frame : frames) {
+            frame.setVisible(visible);
+        }
+    }
+
+    void disposeAll() {
+        for (JFrame frame : frames) {
+            frame.dispose();
+        }
+    }
+
+    private void repaintAll() {
+        for (JFrame frame : frames) {
+            frame.repaint();
+        }
+    }
+
+    private void setAllAlwaysOnTop(boolean alwaysOnTop) {
+        for (JFrame frame : frames) {
+            frame.setAlwaysOnTop(alwaysOnTop);
+        }
+    }
+
+    private void doResizeAndPositining() {
+        Color xAxisColor, yAxisColor;
         xAxisColor = Color.GRAY;
         yAxisColor = Color.GRAY;
         currentHighlightXAxis = false;
@@ -182,41 +225,29 @@ public class GUI extends JFrame {
             yAxisColor = Color.GREEN;
         }
 
-        g2.setColor(yAxisColor);
-        g2.fillRect((int) locX - lineWidth / 2, 0, lineWidth, (int) locY - lineWidth / 2);
-        g2.fillRect((int) locX - lineWidth / 2, (int) locY + lineWidth / 2, lineWidth, height - (int) locY);
+        int space = Math.max(lineWidth / 2, 4);
+        frameLeft.setSize(locX - space, lineWidth);
+        frameRight.setSize(width - locX - space, lineWidth);
+        frameUp.setSize(lineWidth, locY - space);
+        frameDown.setSize(lineWidth, height - locY - space);
 
-        g2.setColor(xAxisColor);
-        g2.fillRect(0, (int) locY - lineWidth / 2, (int) locX - lineWidth / 2, lineWidth);
-        g2.fillRect((int) locX + lineWidth / 2, (int) locY - lineWidth / 2, width - (int) locX, lineWidth);
+        frameLeft.setLocation(0, locY - lineWidth / 2);
+        frameRight.setLocation(locX + space, locY - lineWidth / 2);
+        frameUp.setLocation(locX - lineWidth / 2, 0);
+        frameDown.setLocation(locX - lineWidth / 2, locY + space);
+
+        frameLeft.setBackground(xAxisColor);
+        frameRight.setBackground(xAxisColor);
+        frameUp.setBackground(yAxisColor);
+        frameDown.setBackground(yAxisColor);
+        frameLeft.getContentPane().setBackground(xAxisColor);
+        frameRight.getContentPane().setBackground(xAxisColor);
+        frameUp.getContentPane().setBackground(yAxisColor);
+        frameDown.getContentPane().setBackground(yAxisColor);
 
         if (highlightClick) {
             highlightClick = false;
-            repaintInternal(150);
-        }
-    }
-
-    private void repaintInternal(final long sleepMs) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                if (sleepMs > 0) {
-                    sleepInternal(sleepMs);
-                }
-                repaint();
-            }
-        });
-    }
-
-    private void repaintInternal() {
-        repaintInternal(0);
-    }
-
-    private void sleepInternal(long ms) {
-        try {
-            Thread.currentThread().sleep(ms);
-        } catch (InterruptedException e) {
-            AstericsErrorHandling.instance.getLogger().warning("GUI sleep error: " + e.getMessage());
+            repaintInternal(true, 150);
         }
     }
 }
