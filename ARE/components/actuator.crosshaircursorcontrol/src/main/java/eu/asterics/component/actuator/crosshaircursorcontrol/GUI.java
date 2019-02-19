@@ -240,9 +240,9 @@ public class GUI {
         }
 
         int space = Math.max(lineWidth / 2, 4);
-        frameLeft.setSize(locX - space, lineWidth);
+        frameLeft.setSize(locX - space - offsetX, lineWidth);
         frameRight.setSize(usedWidth - locX - space, lineWidth);
-        frameUp.setSize(lineWidth, locY - space);
+        frameUp.setSize(lineWidth, locY - space - offsetY);
         frameDown.setSize(lineWidth, usedHeight - locY - space);
 
         frameLeft.setLocation(0, locY - lineWidth / 2);
