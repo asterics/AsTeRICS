@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: ./img/asterics-logo.svg
+heroImage: ./assets/img/asterics-logo.svg
 actionText: Get Started →
 actionLink: /getting-started/
 sidebar: auto
