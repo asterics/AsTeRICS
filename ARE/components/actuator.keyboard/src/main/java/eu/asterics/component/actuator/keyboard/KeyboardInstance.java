@@ -47,6 +47,7 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.utils.OSUtils;
 
 /**
  * Implements the Keyboard plugin, which creates local keystrokes via a JNI
@@ -62,11 +63,13 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
      * Statically load the native library
      */
     static {
-        try {
-            System.loadLibrary("kbdevent");
-            AstericsErrorHandling.instance.getLogger().fine("Loading \"kbdevent.dll\" for Keystrike generation... ok!");
-        } catch (UnsatisfiedLinkError e) {
-            AstericsErrorHandling.instance.getLogger().fine("could not load kbdevent.dll (only applies for Windows)");
+        if (OSUtils.isWindows()) {
+            try {
+                System.loadLibrary("kbdevent");
+                AstericsErrorHandling.instance.getLogger().fine("Loading \"kbdevent.dll\" for Keystrike generation... ok!");
+            } catch (UnsatisfiedLinkError e) {
+                AstericsErrorHandling.instance.getLogger().fine("could not load kbdevent.dll (only applies for Windows)");
+            }
         }
     }
 
@@ -81,6 +84,7 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
 
     private String propKeyCodeString = "";
     private int propInputMethod = 1;
+    private static final int JNATIVEHOOK_INPUTMETHOD=2;
     private int propWaitTime = 1000;
 
     private int actSendPos = 0;
@@ -221,7 +225,12 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
             return propKeyCodeString;
         }
         if ("inputMethod".equalsIgnoreCase(propertyName)) {
-            return propInputMethod;
+            //The input method can only be selected, if on Windows. For other OSes, force JNativeHook.
+            if (OSUtils.isWindows()) {
+                return propInputMethod;
+            } else {
+                return JNATIVEHOOK_INPUTMETHOD;
+            }
         }
         if ("waitTime".equalsIgnoreCase(propertyName)) {
             return propWaitTime;
@@ -247,7 +256,13 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
             return oldValue;
         } else if ("inputMethod".equalsIgnoreCase(propertyName)) {
             final Integer oldValue = this.propInputMethod;
-            propInputMethod = Integer.parseInt((String) newValue);
+            //The input method can only be selected, if on Windows. For other OSes, force JNativeHook.
+            if (OSUtils.isWindows()) {
+                propInputMethod = Integer.parseInt((String) newValue);
+            } else {
+                propInputMethod=JNATIVEHOOK_INPUTMETHOD;
+            }
+            
             return oldValue;
         } else if ("waitTime".equalsIgnoreCase(propertyName)) {
             final Integer oldValue = propWaitTime;

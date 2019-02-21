@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.AngularCursorControl"
+                   canonical_name="eu.asterics.component.actuator.angularcursorcontrol.AngularCursorControlInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>cursor position control via angular direction</description>
+        <ports>
+			<inputPort id="angle">
+				<description>angle for movement direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="move">
+				<description>cursor movement</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="outX">
+				<description>the current x-position of the angular arrow (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="outY">
+				<description>the current y-position of the angular arrow (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
+        </ports>
+		<events>
+			<eventListenerPort id="enablePlugin">
+				<description>enables the functionality of this plugin</description>
+			</eventListenerPort>
+			<eventListenerPort id="disablePlugin">
+				<description>disables all functionality of this plugin</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveForward">
+				<description>starts automatic movement backward, accelerated by property acceleration</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveBackward">
+				<description>starts automatic movement forward, accelerated by property acceleration</description>
+			</eventListenerPort>
+			<eventListenerPort id="startAngleLeft">
+				<description>starts automatic angle rotation to the left (counterclockwise), accelerated by property accelerationAngle</description>
+			</eventListenerPort>
+			<eventListenerPort id="startAngleRight">
+				<description>starts automatic angle rotation to the right (clockwise), accelerated by property accelerationAngle</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveForward">
+				<description>stops automatic movement backward</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveBackward">
+				<description>stops automatic movement forward</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopAngleLeft">
+				<description>stops automatic angle rotation to the left (counterclockwise)</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopAngleRight">
+				<description>stops automatic angle rotation to the right (clockwise)</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMove">
+				<description>stops any automatic movement</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="clickEvent">
+				<description>etp description</description>
+			</eventTriggererPort>
+		</events>			
+        <properties>
+			<property name="enabled"
+					  type="boolean"
+					  value="true"
+					  description="if true, the plugin is enabled, if false the plugin does nothing"/>
+			<property name="absoluteAngle"
+				type="boolean"
+				value="false"
+				description="if true, angle input port values are absolute values, else changes of current angle"/>
+			<property name="wrapAround"
+				type="boolean"
+				value="false"
+				description="if true, movement continues on other side of the screen, if screen end reached"/>
+			<property name="clickEventTime"
+				type="integer"
+				value="1000"
+				description="if not zero, a click indicator is shown and the click event is created after n millseconds inactivity"/>
+			<property name="arrowWidth"
+				type="integer"
+				value="10"
+				description="length of the arrow indicator"/>
+			<property name="arrowLength"
+				type="integer"
+				value="100"
+				description="length of the arrow indicator"/>
+			<property name="acceleration"
+					  type="integer"
+					  value="100"
+					  description="cursor movement acceleration in px/second per second (0 to deactive acceleration)"/>
+			<property name="baseVelocity"
+					  type="integer"
+					  value="30"
+					  description="base movement velocity in px per second"/>
+			<property name="maxVelocity"
+				type="integer"
+				value="1000"
+				description="maximum mouse movement velocity in px per second"/>
+			<property name="accelerationAngle"
+					  type="integer"
+					  value="30"
+					  description="angle movement acceleration in degrees/second per second (0 to deactive acceleration)"/>
+			<property name="baseVelocityAngle"
+					  type="integer"
+					  value="20"
+					  description="base angle movement velocity in degrees per second"/>
+			<property name="maxVelocityAngle"
+					  type="integer"
+					  value="180"
+					  description="maximum angle movement velocity in degrees per second"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

@@ -124,8 +124,8 @@ public class TimeGenerator implements Runnable {
                 }
             }
         } catch (InterruptedException e) {
-            AstericsErrorHandling.instance.getLogger()
-                    .fine("TimeGenerator thread <" + Thread.currentThread().getName() + "> got interrupted.");
+           // AstericsErrorHandling.instance.getLogger()
+           //         .fine("TimeGenerator thread <" + Thread.currentThread().getName() + "> got interrupted.");
             active = false;
         }
     }

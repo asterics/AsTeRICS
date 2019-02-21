@@ -119,6 +119,66 @@
     </componentType>
 
 
+    <componentType id="asterics.AngularCursorControl"
+                   canonical_name="eu.asterics.component.actuator.angularcursorcontrol.AngularCursorControlInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>cursor position control via angular direction</description>
+        <ports>
+			<inputPort id="angle">
+				<description>angle for movement direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="move">
+				<description>cursor movement</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="select">
+				<description>selection event</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="clickEvent">
+				<description>etp description</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="absoluteAngle"
+				type="boolean"
+				value="false"
+				description="if true, angle input port values are absolute values, else changes of current angle"/>
+			<property name="clickEventTime"
+				type="integer"
+				value="1000"
+				description="if not zero, a click indicator is shown and the click event is created after n millseconds inactivity"/>
+			<property name="arrowWidth"
+				type="integer"
+				value="10"
+				description="length of the arrow indicator"/>
+			<property name="arrowLength"
+				type="integer"
+				value="100"
+				description="length of the arrow indicator"/>
+			<property name="acceleration"
+				type="integer"
+				value="100"
+				description="cursor movement and angle acceleration (0 to deactive acceleration)"/>
+			<property name="maxVelocity"
+				type="integer"
+				value="100"
+				description="maximum value for acceleration factor"/>
+
+        </properties>
+
+    </componentType>
+
+
     <componentType id="asterics.ApplicationLauncher"
                    canonical_name="eu.asterics.component.actuator.applicationlauncher.ApplicationLauncherInstance">
         <type subtype="File System">actuator</type>
@@ -361,6 +421,77 @@
             <width>1000</width>
             <height>3000</height>
         </gui>
+    </componentType>
+
+
+    <componentType id="asterics.CrosshairCursorControl"
+                   canonical_name="eu.asterics.component.actuator.crosshaircursorcontrol.CrosshairCursorControlInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>cursor position control via crosshair movement</description>
+        <ports>
+			<inputPort id="x">
+				<description>cursor movement x direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="y">
+				<description>cursor movement y direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+            <outputPort id="tooltip">
+                <description>the filename of the selected tooltip icon.</description>
+                <dataType>string</dataType>
+            </outputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="select">
+				<description>change axis selection indicator</description>
+			</eventListenerPort>
+
+			<eventListenerPort id="activateTooltips">
+				<description>if available, show tooltip icons and activate tooltip mode</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="clickEvent">
+				<description>this event is generated after an inactivity of clickEventTime milliseconds</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="tooltipSelected">
+				<description>this event is generated when a tooltip icon has been selected after an inactivity of clickEventTime milliseconds</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="absoluteValues"
+				type="boolean"
+				value="false"
+				description="if true, x/y input port values are absolute coordinates, else relative coordinates"/>
+			<property name="clickEventTime"
+				type="integer"
+				value="1000"
+				description="if not zero, the click event is created after n millseconds inactivity"/>
+			<property name="lineWidth"
+				type="integer"
+				value="10"
+				description="width of the crosshair indicator"/>
+			<property name="acceleration"
+				type="integer"
+				value="100"
+				description="movement acceleration"/>
+			<property name="maxVelocity"
+				type="integer"
+				value="100"
+				description="maximum velocity"/>
+			<property name="tooltipFolder"
+				type="string"
+				value="data/pictures/tooltips"
+				description="folder which contains tooltip icons in .png format"/>
+
+        </properties>
+
     </componentType>
 
 
@@ -2883,6 +3014,10 @@
                       type="boolean"
                       value="true"
                       description="X and Y values are absolute positions or relative movements"/>
+            <property name="startCentered"
+                      type="boolean"
+                      value="true"
+                      description="If true the mouse starts in the middle of the screen, if false starting the starting position is the current position"/>
             <property name="xMin"
                       type="integer"
                       value="0"

@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.CrosshairCursorControl"
+                   canonical_name="eu.asterics.component.actuator.crosshaircursorcontrol.CrosshairCursorControlInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>cursor position control via crosshair movement</description>
+        <ports>
+			<inputPort id="x">
+				<description>cursor movement x direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="y">
+				<description>cursor movement y direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="accelerationH">
+				<description>horizontal movement acceleration, increasing px/second per second</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="accelerationV">
+				<description>vertical movement acceleration, increasing px/second per second</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+			<outputPort id="outX">
+				<description>the current x-position of the crosshair (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="outY">
+				<description>the current y-position of the crosshair (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="enablePlugin">
+				<description>enables the functionality of this plugin</description>
+			</eventListenerPort>
+			<eventListenerPort id="disablePlugin">
+				<description>disables all functionality of this plugin</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveLeft">
+				<description>starts movement to the left</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveRight">
+				<description>starts movement to the right</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveUp">
+				<description>starts movement up</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveDown">
+				<description>starts movement down</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveLeft">
+				<description>stops movement to the left</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveRight">
+				<description>stops movement to the right</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveUp">
+				<description>stops movement up</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveDown">
+				<description>stops movement down</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveAll">
+				<description>stops all automatic movement</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveToLastStable">
+				<description>moves to last stable x/y cursor position without movement</description>
+			</eventListenerPort>
+			<eventListenerPort id="highlightXAxis">
+				<description>highlights the X-Axis in red color, disables highlight for Y-Axis and sets property autoColorAxis to false</description>
+			</eventListenerPort>
+			<eventListenerPort id="highlightYAxis">
+				<description>highlights the Y-Axis in red color, disables highlight for Y-Axis and sets property autoColorAxis to false</description>
+			</eventListenerPort>
+			<eventListenerPort id="toggleAxisHighlight">
+				<description>toggles the highlighting for the X- and Y-Axis, sets property autoColorAxis to false</description>
+			</eventListenerPort>
+			<eventListenerPort id="click">
+				<description>manually triggers the click event and highlights the X/Y-axis if highlightClick is enabled</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="clickEvent">
+				<description>this event is generated after an inactivity of clickEventTime milliseconds</description>
+			</eventTriggererPort>
+		</events>			
+        <properties>
+			<property name="enabled"
+					  type="boolean"
+					  value="true"
+					  description="if true, the plugin is enabled, if false the plugin does nothing"/>
+			<property name="absoluteValues"
+				type="boolean"
+				value="false"
+				description="if true, x/y input port values are absolute coordinates, else relative coordinates"/>
+			<property name="autoColorAxis"
+					  type="boolean"
+					  value="true"
+					  description="if true, the axis are colored automatically according to the current movement"/>
+			<property name="highlightClick"
+					  type="boolean"
+					  value="true"
+					  description="if true, the axis are shortly colored green for indicating the clickEvent"/>
+			<property name="wrapAround"
+					  type="boolean"
+					  value="false"
+					  description="if true, movement continues on other side of the screen, if screen end reached"/>
+			<property name="taskbarOffset"
+					  type="boolean"
+					  value="true"
+					  description="if true, the size of the crosshairs (x/y) is calculated from screen size minus any taskbar sizes."/>
+			<property name="clickEventTime"
+				type="integer"
+				value="1000"
+				description="if not zero, the click event is created after n millseconds inactivity"/>
+			<property name="lineWidth"
+				type="integer"
+				value="10"
+				description="width of the crosshair indicator"/>
+			<property name="baseVelocity"
+				type="integer"
+				value="10"
+				description="base movement velocity in px per second"/>
+			<property name="accelerationH"
+				type="integer"
+				value="100"
+				description="horizontal movement acceleration, increasing px/second per second"/>
+			<property name="accelerationV"
+					  type="integer"
+					  value="100"
+					  description="vertical movement acceleration, increasing px/second per second"/>
+			<property name="maxVelocity"
+				type="integer"
+				value="100"
+				description="maximum movement velocity in px per second"/>
+        </properties>
+
+    </componentType>
+</componentTypes>
