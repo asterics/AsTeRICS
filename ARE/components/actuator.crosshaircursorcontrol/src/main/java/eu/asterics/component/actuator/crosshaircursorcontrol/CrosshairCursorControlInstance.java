@@ -54,7 +54,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     boolean propAutoColorAxis = true;
     boolean propHighlightClick = true;
     boolean propWrapAround = false;
-    boolean propTaskbarOffset = false;
+    boolean propTaskbarOffset = true;
     int propClickEventTime = 1000;
     int propLineWidth = 200;
     int propAccelerationH = 100;
