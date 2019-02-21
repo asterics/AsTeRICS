@@ -53,11 +53,11 @@ public class GUI {
     private boolean highlightClick = false;
     private boolean active = true;
 
-    private JFrame frameLeft;
-    private JFrame frameRight;
-    private JFrame frameUp;
-    private JFrame frameDown;
-    private java.util.List<JFrame> frames;
+    private JWindow windowLeft;
+    private JWindow windowRight;
+    private JWindow windowUp;
+    private JWindow windowDown;
+    private java.util.List<JWindow> windows;
     private boolean taskbarOffset = false;
     // private JLabel myLabel;
     // add more GUI elements here
@@ -78,19 +78,17 @@ public class GUI {
         height = dim.height;
         this.taskbarOffset = taskbarOffset;
 
-        frameLeft = new JFrame("CrosshairLeft");
-        frameRight = new JFrame("CrosshairRight");
-        frameUp = new JFrame("CrosshairUp");
-        frameDown = new JFrame("CrosshairDown");
-        frames = Arrays.asList(frameLeft, frameRight, frameUp, frameDown);
+        windowLeft = new JWindow();
+        windowRight = new JWindow();
+        windowUp = new JWindow();
+        windowDown = new JWindow();
+        windows = Arrays.asList(windowLeft, windowRight, windowUp, windowDown);
 
-        for (JFrame frame : frames) {
-            frame.setUndecorated(true);
-            frame.setAlwaysOnTop(true);
-            frame.setBackground(new Color(0, 0, 0, 0)); // transparent !
-            frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            frame.setOpacity(0.5f);
-            frame.setVisible(true);
+        for (JWindow window : windows) {
+            window.setAlwaysOnTop(true);
+            window.setBackground(new Color(0, 0, 0, 0)); // transparent !
+            window.setOpacity(0.5f);
+            window.setVisible(true);
         }
 
         Point location = MouseInfo.getPointerInfo().getLocation();
@@ -143,9 +141,12 @@ public class GUI {
     }
 
     /**
-     * resizes, moves and repaints all frames.
-     * @param asynchronous if true SwingUtils.invokeLater() is used for repainting, otherwise SwingUtils.invokeAndWait()
-     * @param sleepMs if > 0 the current thread is interrupted for the given amount of milliseconds
+     * resizes, moves and repaints all windows.
+     * 
+     * @param asynchronous
+     *            if true SwingUtils.invokeLater() is used for repainting, otherwise SwingUtils.invokeAndWait()
+     * @param sleepMs
+     *            if > 0 the current thread is interrupted for the given amount of milliseconds
      */
     private void repaintInternal(boolean asynchronous, final int sleepMs) {
         Runnable r = new Runnable() {
@@ -185,26 +186,26 @@ public class GUI {
     }
 
     void setAllVisible(boolean visible) {
-        for (JFrame frame : frames) {
-            frame.setVisible(visible);
+        for (JWindow window : windows) {
+            window.setVisible(visible);
         }
     }
 
     void disposeAll() {
-        for (JFrame frame : frames) {
-            frame.dispose();
+        for (JWindow window : windows) {
+            window.dispose();
         }
     }
 
     private void repaintAll() {
-        for (JFrame frame : frames) {
-            frame.repaint();
+        for (JWindow window : windows) {
+            window.repaint();
         }
     }
 
     private void setAllAlwaysOnTop(boolean alwaysOnTop) {
-        for (JFrame frame : frames) {
-            frame.setAlwaysOnTop(alwaysOnTop);
+        for (JWindow window : windows) {
+            window.setAlwaysOnTop(alwaysOnTop);
         }
     }
 
@@ -227,37 +228,37 @@ public class GUI {
             yAxisColor = Color.GREEN;
         }
 
-        int usedWidth = width;
-        int usedHeight = height;
+        int space = Math.max(lineWidth / 2, 4);
         int offsetX = 0;
         int offsetY = 0;
+        int lengthDown = height - locY - space;
+        int lengthRight = width - locX - space;
         if (taskbarOffset) {
-            Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(frameDown.getGraphicsConfiguration());
+            Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(windowDown.getGraphicsConfiguration());
             offsetX = insets.left;
             offsetY = insets.top;
-            usedWidth -= (insets.left + insets.right);
-            usedHeight -= (insets.top + insets.bottom);
+            lengthDown = lengthDown - insets.bottom;
+            lengthRight = lengthRight - insets.right;
         }
 
-        int space = Math.max(lineWidth / 2, 4);
-        frameLeft.setSize(locX - space - offsetX, lineWidth);
-        frameRight.setSize(usedWidth - locX - space, lineWidth);
-        frameUp.setSize(lineWidth, locY - space - offsetY);
-        frameDown.setSize(lineWidth, usedHeight - locY - space);
+        windowLeft.setSize(locX - space - offsetX, lineWidth);
+        windowRight.setSize(lengthRight, lineWidth);
+        windowUp.setSize(lineWidth, locY - space - offsetY);
+        windowDown.setSize(lineWidth, lengthDown);
 
-        frameLeft.setLocation(0, locY - lineWidth / 2);
-        frameRight.setLocation(offsetX + locX + space, locY - lineWidth / 2);
-        frameUp.setLocation(locX - lineWidth / 2, 0);
-        frameDown.setLocation(locX - lineWidth / 2, offsetY + locY + space);
+        windowLeft.setLocation(offsetX, locY - lineWidth / 2);
+        windowRight.setLocation(locX + space, locY - lineWidth / 2);
+        windowUp.setLocation(locX - lineWidth / 2, offsetY);
+        windowDown.setLocation(locX - lineWidth / 2, locY + space);
 
-        frameLeft.setBackground(xAxisColor);
-        frameRight.setBackground(xAxisColor);
-        frameUp.setBackground(yAxisColor);
-        frameDown.setBackground(yAxisColor);
-        frameLeft.getContentPane().setBackground(xAxisColor);
-        frameRight.getContentPane().setBackground(xAxisColor);
-        frameUp.getContentPane().setBackground(yAxisColor);
-        frameDown.getContentPane().setBackground(yAxisColor);
+        windowLeft.setBackground(xAxisColor);
+        windowRight.setBackground(xAxisColor);
+        windowUp.setBackground(yAxisColor);
+        windowDown.setBackground(yAxisColor);
+        windowLeft.getContentPane().setBackground(xAxisColor);
+        windowRight.getContentPane().setBackground(xAxisColor);
+        windowUp.getContentPane().setBackground(yAxisColor);
+        windowDown.getContentPane().setBackground(yAxisColor);
 
         if (highlightClick) {
             highlightClick = false;
