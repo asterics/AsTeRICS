@@ -234,7 +234,8 @@ public class GUI {
         int lengthDown = height - locY - space;
         int lengthRight = width - locX - space;
         if (taskbarOffset) {
-            Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(windowDown.getGraphicsConfiguration());
+            Insets insets = Toolkit.getDefaultToolkit()
+                    .getScreenInsets(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
             offsetX = insets.left;
             offsetY = insets.top;
             lengthDown = lengthDown - insets.bottom;
