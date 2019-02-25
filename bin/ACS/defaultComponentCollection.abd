@@ -136,23 +136,67 @@
 				<dataType>double</dataType>
 			</inputPort>
 
-
+			<outputPort id="outX">
+				<description>the current x-position of the angular arrow (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="outY">
+				<description>the current y-position of the angular arrow (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
         </ports>
 		<events>
-			<eventListenerPort id="select">
-				<description>selection event</description>
+			<eventListenerPort id="enablePlugin">
+				<description>enables the functionality of this plugin</description>
+			</eventListenerPort>
+			<eventListenerPort id="disablePlugin">
+				<description>disables all functionality of this plugin</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveForward">
+				<description>starts automatic movement backward, accelerated by property acceleration</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveBackward">
+				<description>starts automatic movement forward, accelerated by property acceleration</description>
+			</eventListenerPort>
+			<eventListenerPort id="startAngleLeft">
+				<description>starts automatic angle rotation to the left (counterclockwise), accelerated by property accelerationAngle</description>
+			</eventListenerPort>
+			<eventListenerPort id="startAngleRight">
+				<description>starts automatic angle rotation to the right (clockwise), accelerated by property accelerationAngle</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveForward">
+				<description>stops automatic movement backward</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveBackward">
+				<description>stops automatic movement forward</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopAngleLeft">
+				<description>stops automatic angle rotation to the left (counterclockwise)</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopAngleRight">
+				<description>stops automatic angle rotation to the right (clockwise)</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMove">
+				<description>stops any automatic movement</description>
 			</eventListenerPort>
 
 			<eventTriggererPort id="clickEvent">
 				<description>etp description</description>
 			</eventTriggererPort>
-
 		</events>			
         <properties>
+			<property name="enabled"
+					  type="boolean"
+					  value="true"
+					  description="if true, the plugin is enabled, if false the plugin does nothing"/>
 			<property name="absoluteAngle"
 				type="boolean"
 				value="false"
 				description="if true, angle input port values are absolute values, else changes of current angle"/>
+			<property name="wrapAround"
+				type="boolean"
+				value="false"
+				description="if true, movement continues on other side of the screen, if screen end reached"/>
 			<property name="clickEventTime"
 				type="integer"
 				value="1000"
@@ -166,13 +210,29 @@
 				value="100"
 				description="length of the arrow indicator"/>
 			<property name="acceleration"
-				type="integer"
-				value="100"
-				description="cursor movement and angle acceleration (0 to deactive acceleration)"/>
+					  type="integer"
+					  value="100"
+					  description="cursor movement acceleration in px/second per second (0 to deactive acceleration)"/>
+			<property name="baseVelocity"
+					  type="integer"
+					  value="30"
+					  description="base movement velocity in px per second"/>
 			<property name="maxVelocity"
 				type="integer"
-				value="100"
-				description="maximum value for acceleration factor"/>
+				value="1000"
+				description="maximum mouse movement velocity in px per second"/>
+			<property name="accelerationAngle"
+					  type="integer"
+					  value="30"
+					  description="angle movement acceleration in degrees/second per second (0 to deactive acceleration)"/>
+			<property name="baseVelocityAngle"
+					  type="integer"
+					  value="20"
+					  description="base angle movement velocity in degrees per second"/>
+			<property name="maxVelocityAngle"
+					  type="integer"
+					  value="180"
+					  description="maximum angle movement velocity in degrees per second"/>
 
         </properties>
 
@@ -440,35 +500,106 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
-            <outputPort id="tooltip">
-                <description>the filename of the selected tooltip icon.</description>
-                <dataType>string</dataType>
-            </outputPort>
+			<inputPort id="accelerationH">
+				<description>horizontal movement acceleration, increasing px/second per second</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="accelerationV">
+				<description>vertical movement acceleration, increasing px/second per second</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
 
+			<outputPort id="outX">
+				<description>the current x-position of the crosshair (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="outY">
+				<description>the current y-position of the crosshair (use it e.g. to move the mouse)</description>
+				<dataType>double</dataType>
+			</outputPort>
 
         </ports>
 		<events>
-			<eventListenerPort id="select">
-				<description>change axis selection indicator</description>
+			<eventListenerPort id="enablePlugin">
+				<description>enables the functionality of this plugin</description>
 			</eventListenerPort>
-
-			<eventListenerPort id="activateTooltips">
-				<description>if available, show tooltip icons and activate tooltip mode</description>
+			<eventListenerPort id="disablePlugin">
+				<description>disables all functionality of this plugin</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveLeft">
+				<description>starts movement to the left</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveRight">
+				<description>starts movement to the right</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveUp">
+				<description>starts movement up</description>
+			</eventListenerPort>
+			<eventListenerPort id="startMoveDown">
+				<description>starts movement down</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveLeft">
+				<description>stops movement to the left</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveRight">
+				<description>stops movement to the right</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveUp">
+				<description>stops movement up</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveDown">
+				<description>stops movement down</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopMoveAll">
+				<description>stops all automatic movement</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveToLastStable">
+				<description>moves to last stable x/y cursor position without movement</description>
+			</eventListenerPort>
+			<eventListenerPort id="highlightXAxis">
+				<description>highlights the X-Axis in red color, disables highlight for Y-Axis and sets property autoColorAxis to false</description>
+			</eventListenerPort>
+			<eventListenerPort id="highlightYAxis">
+				<description>highlights the Y-Axis in red color, disables highlight for Y-Axis and sets property autoColorAxis to false</description>
+			</eventListenerPort>
+			<eventListenerPort id="toggleAxisHighlight">
+				<description>toggles the highlighting for the X- and Y-Axis, sets property autoColorAxis to false</description>
+			</eventListenerPort>
+			<eventListenerPort id="click">
+				<description>manually triggers the click event and highlights the X/Y-axis if highlightClick is enabled</description>
 			</eventListenerPort>
 
 			<eventTriggererPort id="clickEvent">
 				<description>this event is generated after an inactivity of clickEventTime milliseconds</description>
 			</eventTriggererPort>
-			<eventTriggererPort id="tooltipSelected">
-				<description>this event is generated when a tooltip icon has been selected after an inactivity of clickEventTime milliseconds</description>
-			</eventTriggererPort>
-
 		</events>			
         <properties>
+			<property name="enabled"
+					  type="boolean"
+					  value="true"
+					  description="if true, the plugin is enabled, if false the plugin does nothing"/>
 			<property name="absoluteValues"
 				type="boolean"
 				value="false"
 				description="if true, x/y input port values are absolute coordinates, else relative coordinates"/>
+			<property name="autoColorAxis"
+					  type="boolean"
+					  value="true"
+					  description="if true, the axis are colored automatically according to the current movement"/>
+			<property name="highlightClick"
+					  type="boolean"
+					  value="true"
+					  description="if true, the axis are shortly colored green for indicating the clickEvent"/>
+			<property name="wrapAround"
+					  type="boolean"
+					  value="false"
+					  description="if true, movement continues on other side of the screen, if screen end reached"/>
+			<property name="taskbarOffset"
+					  type="boolean"
+					  value="true"
+					  description="if true, the size of the crosshairs (x/y) is calculated from screen size minus any taskbar sizes."/>
 			<property name="clickEventTime"
 				type="integer"
 				value="1000"
@@ -477,19 +608,22 @@
 				type="integer"
 				value="10"
 				description="width of the crosshair indicator"/>
-			<property name="acceleration"
+			<property name="baseVelocity"
+				type="integer"
+				value="10"
+				description="base movement velocity in px per second"/>
+			<property name="accelerationH"
 				type="integer"
 				value="100"
-				description="movement acceleration"/>
+				description="horizontal movement acceleration, increasing px/second per second"/>
+			<property name="accelerationV"
+					  type="integer"
+					  value="100"
+					  description="vertical movement acceleration, increasing px/second per second"/>
 			<property name="maxVelocity"
 				type="integer"
 				value="100"
-				description="maximum velocity"/>
-			<property name="tooltipFolder"
-				type="string"
-				value="data/pictures/tooltips"
-				description="folder which contains tooltip icons in .png format"/>
-
+				description="maximum movement velocity in px per second"/>
         </properties>
 
     </componentType>
@@ -2942,7 +3076,16 @@
                 <description>Mouse commands for selection of next click type (eg.: @MOUSE:nextclick,right @MOUSE:action,enable @MOUSE:action,toggle)</description>
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>string</dataType>
-            </inputPort>    
+            </inputPort>
+
+            <outputPort id="outX">
+                <description>the current absolute x-position of the mouse, updated everytime the mouse is moved.</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="outY">
+                <description>the current absolute y-position of the mouse, updated everytime the mouse is moved.</description>
+                <dataType>double</dataType>
+            </outputPort>
         </ports>
         <events>
             <eventListenerPort id="leftClick">
@@ -3003,7 +3146,10 @@
             </eventListenerPort> 			
 			 <eventListenerPort id="relativePosition">
                 <description>On incoming event, the positioning of the mouse will be set relative to the actual position</description>
-            </eventListenerPort> 
+            </eventListenerPort>
+            <eventListenerPort id="moveToLastStable">
+                <description>moves to last stable x/y cursor position without movement</description>
+            </eventListenerPort>
         </events>         
         <properties>
             <property name="enableMouse"
@@ -5146,6 +5292,77 @@
 				description="defines the waveform for the generated tone"/>				
         </properties>
 
+    </componentType>
+
+
+    <componentType id="asterics.Tooltip"
+                   canonical_name="eu.asterics.component.actuator.tooltip.TooltipInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>show tooltips next to mouse pointer for triggering various actions</description>
+        <ports>
+			<inputPort id="x">
+				<description>cursor movement x direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="y">
+				<description>cursor movement y direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+            <outputPort id="tooltip">
+                <description>the filename of the selected tooltip icon.</description>
+                <dataType>string</dataType>
+            </outputPort>
+        </ports>
+		<events>
+			<eventListenerPort id="activateTooltips">
+				<description>if available, show tooltip icons and activate tooltip mode</description>
+			</eventListenerPort>
+			<eventListenerPort id="deactivateTooltips">
+				<description>deactivate tooltip mode</description>
+			</eventListenerPort>
+			<eventListenerPort id="nextTooltip">
+				<description>navigates to next tooltip, if tooltips are currently activated</description>
+			</eventListenerPort>
+			<eventListenerPort id="previousTooltip">
+				<description>navigates to previous tooltip, if tooltips are currently activated</description>
+			</eventListenerPort>
+			<eventListenerPort id="selectTooltip">
+				<description>selects the currently shown tooltip and disables tooltip mode afterwards</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="tooltipActivated">
+				<description>this event is generated when the tooltip mode is activated</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="tooltipDeactivated">
+				<description>this event is generated when the tooltip mode is deactivated, either by event or by timeout of selectTime</description>
+			</eventTriggererPort>
+		</events>			
+        <properties>
+			<property name="initialX"
+				type="integer"
+				value="-1"
+				description="initial position in x-axis, "/>
+			<property name="initialY"
+				type="integer"
+				value="-1"
+				description="initial position in y-axis"/>
+			<property name="selectTime"
+				type="integer"
+				value="1000"
+				description="if not zero, the click event is created after n millseconds inactivity"/>
+			<property name="tooltipFolder"
+				type="string"
+				value="pictures/tooltips"
+				description="folder which contains tooltip icons in .png format"/>
+			<property name="tooltipStartIndex"
+				type="integer"
+				value="3"
+				description="start index for first shown tooltip"/>
+
+        </properties>
     </componentType>
 
 
