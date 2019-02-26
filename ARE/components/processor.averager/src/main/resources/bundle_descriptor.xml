@@ -18,7 +18,19 @@
                 <dataType>double</dataType>
             </outputPort>
         </ports>
-        <properties>
+    <events>
+        <eventListenerPort id="enablePlugin">
+            <description>enables the functionality of this plugin</description>
+        </eventListenerPort>
+        <eventListenerPort id="disablePlugin">
+            <description>disables the functionality of this plugin</description>
+        </eventListenerPort>
+    </events>
+    <properties>
+            <property name="enabled"
+                      type="boolean"
+                      value="true"
+                      description="if true, the plugin is enabled, if false the plugin does nothing"/>
             <property name="bufferSize"
                       type="integer"
                       value="50"

@@ -27,8 +27,10 @@ package eu.asterics.component.processor.signaltranslation;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
+import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
@@ -61,6 +63,10 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     // ports
     private InputPort ipIn = new InputPort(this);
     private OutputPort opOut = new OutputPort();
+    private final IRuntimeEventTriggererPort etpExitRange = new DefaultRuntimeEventTriggererPort();
+    private final IRuntimeEventTriggererPort etpEnterRange = new DefaultRuntimeEventTriggererPort();
+    
+    private boolean inRange = false;
 
     /**
      * An input port implementation that will use incoming data to set the
@@ -126,6 +132,23 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     public IRuntimeOutputPort getOutputPort(String portID) {
         if (NAME_OUTPUT.equalsIgnoreCase(portID)) {
             return opOut;
+        }
+        return null;
+    }
+
+    /**
+     * returns an Event Triggerer Port.
+     *
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
+     */
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+        if ("enterRange".equalsIgnoreCase(eventPortID)) {
+            return etpEnterRange;
+        }
+        if ("exitRange".equalsIgnoreCase(eventPortID)) {
+            return etpExitRange;
         }
         return null;
     }
@@ -209,12 +232,26 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     public void processInput(double value) {
         if (value > propInMax) {
             value = propInMax;
+            triggerRangeEvents(true);
         } else if (value < propInMin) {
             value = propInMin;
+            triggerRangeEvents(true);
+        } else {
+            triggerRangeEvents(false);
         }
 
         double out = (value - propInMin) / (propInMax - propInMin) * (propOutMax - propOutMin) + propOutMin;
         opOut.sendData(out);
+    }
+    
+    private void triggerRangeEvents(boolean outOfRange) {
+        if(inRange && outOfRange) {
+            inRange = false;
+            etpExitRange.raiseEvent();
+        } else if (!inRange && !outOfRange) {
+            inRange = true;
+            etpEnterRange.raiseEvent();
+        }
     }
 
     /**

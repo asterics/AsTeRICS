@@ -28,6 +28,14 @@
                 <dataType>double</dataType>
             </outputPort>            
         </ports>
+        <events>
+            <eventTriggererPort id="enterRange">
+                <description>this event is generated if the defined input range was entered by the last input value</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="exitRange">
+                <description>this event is generated if the defined input range was left by the last input value</description>
+            </eventTriggererPort>
+        </events>
         <properties>
             <property name="inMin"
                       type="double"
