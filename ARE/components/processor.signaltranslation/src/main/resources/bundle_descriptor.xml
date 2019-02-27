@@ -32,8 +32,11 @@
             <eventTriggererPort id="enterRange">
                 <description>this event is generated if the defined input range was entered by the last input value</description>
             </eventTriggererPort>
-            <eventTriggererPort id="exitRange">
-                <description>this event is generated if the defined input range was left by the last input value</description>
+            <eventTriggererPort id="exitRangeBelow">
+                <description>this event is generated if the defined input range was left by the last input value, which was smaller than inMin</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="exitRangeAbove">
+                <description>this event is generated if the defined input range was left by the last input value, which was greater than inMax</description>
             </eventTriggererPort>
         </events>
         <properties>

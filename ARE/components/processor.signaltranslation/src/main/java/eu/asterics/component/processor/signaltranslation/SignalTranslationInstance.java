@@ -63,10 +63,12 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     // ports
     private InputPort ipIn = new InputPort(this);
     private OutputPort opOut = new OutputPort();
-    private final IRuntimeEventTriggererPort etpExitRange = new DefaultRuntimeEventTriggererPort();
+    private final IRuntimeEventTriggererPort etpExitRangeBelow = new DefaultRuntimeEventTriggererPort();
+    private final IRuntimeEventTriggererPort etpExitRangeAbove = new DefaultRuntimeEventTriggererPort();
     private final IRuntimeEventTriggererPort etpEnterRange = new DefaultRuntimeEventTriggererPort();
     
     private boolean inRange = false;
+    private double lastValue = 0;
 
     /**
      * An input port implementation that will use incoming data to set the
@@ -147,8 +149,11 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
         if ("enterRange".equalsIgnoreCase(eventPortID)) {
             return etpEnterRange;
         }
-        if ("exitRange".equalsIgnoreCase(eventPortID)) {
-            return etpExitRange;
+        if ("exitRangeBelow".equalsIgnoreCase(eventPortID)) {
+            return etpExitRangeBelow;
+        }
+        if ("exitRangeAbove".equalsIgnoreCase(eventPortID)) {
+            return etpExitRangeAbove;
         }
         return null;
     }
@@ -188,9 +193,11 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
         try {
             if (PROPERTY_KEY_IN_MIN.equalsIgnoreCase(propertyName)) {
                 propInMin = Double.parseDouble(newValue.toString());
+                processInput(lastValue);
                 AstericsErrorHandling.instance.reportInfo(this, String.format("Setting in_min to %f", propInMin));
             } else if (PROPERTY_KEY_IN_MAX.equalsIgnoreCase(propertyName)) {
                 propInMax = Double.parseDouble(newValue.toString());
+                processInput(lastValue);
                 AstericsErrorHandling.instance.reportInfo(this, String.format("Setting in_max to %f", propInMax));
             } else if (PROPERTY_KEY_OUT_MIN.equalsIgnoreCase(propertyName)) {
                 propOutMin = Double.parseDouble(newValue.toString());
@@ -229,29 +236,28 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
      * 
      * @param value
      */
-    public void processInput(double value) {
+    public synchronized void processInput(double originalValue) {
+        double value = originalValue;
         if (value > propInMax) {
             value = propInMax;
-            triggerRangeEvents(true);
+            if(lastValue < propInMax) {
+                inRange = false;
+                etpExitRangeAbove.raiseEvent();
+            }
         } else if (value < propInMin) {
             value = propInMin;
-            triggerRangeEvents(true);
-        } else {
-            triggerRangeEvents(false);
-        }
-
-        double out = (value - propInMin) / (propInMax - propInMin) * (propOutMax - propOutMin) + propOutMin;
-        opOut.sendData(out);
-    }
-    
-    private void triggerRangeEvents(boolean outOfRange) {
-        if(inRange && outOfRange) {
-            inRange = false;
-            etpExitRange.raiseEvent();
-        } else if (!inRange && !outOfRange) {
+            if(lastValue > propInMin) {
+                inRange = false;
+                etpExitRangeBelow.raiseEvent();
+            }
+        } else if(!inRange) {
             inRange = true;
             etpEnterRange.raiseEvent();
         }
+
+        lastValue = originalValue;
+        double out = (value - propInMin) / (propInMax - propInMin) * (propOutMax - propOutMin) + propOutMin;
+        opOut.sendData(out);
     }
 
     /**
