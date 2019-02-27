@@ -487,7 +487,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStopMoveAll = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if (propAutoColorAxis) gui.resetAxis();
+            if (propAutoColorAxis  && gui != null) gui.resetAxis();
             moveLeft = false;
             moveRight = false;
             moveUp = false;
@@ -511,7 +511,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
             propAutoColorAxis = false;
-            if (propEnabled) {
+            if (propEnabled && gui != null) {
                 gui.setXAxisHighlight(true);
                 gui.setYAxisHighlight(false);
             }
@@ -522,7 +522,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
             propAutoColorAxis = false;
-            if (propEnabled) {
+            if (propEnabled && gui != null) {
                 gui.setYAxisHighlight(true);
                 gui.setXAxisHighlight(false);
             }
@@ -542,7 +542,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             elapsedIdleTime = System.currentTimeMillis();
             if (propEnabled) {
                 etpClickEvent.raiseEvent();
-                if (propHighlightClick) {
+                if (propHighlightClick  && gui != null) {
                     gui.doAxisClickHighlight();
                 }
             }
