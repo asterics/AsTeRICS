@@ -57,12 +57,13 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
     private int propBufferSize = DEFAULT_BUFFER_SIZE;
     private boolean propEnabled = true;
     private int propMode = 0;
+    private int propAutoReenableTime = 3000;
 
     private final LinkedList<Double> buffer = new LinkedList<Double>();
     private long lastUpdate = 0;
     private double accu = 0;
-
     private double sum = 0;
+    private long disableTime = 0;
 
     /**
      * The class constructor.
@@ -130,6 +131,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
     private final IRuntimeEventListenerPort elpDisablePlugin = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             propEnabled = false;
+            disableTime = System.currentTimeMillis();
         }
     };
 
@@ -212,8 +214,11 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
      * samples are summed but not divided
      */
     private synchronized void process(final double in) {
-        if (!propEnabled) {
-            return;
+        if (!propEnabled && buffer.size() == propBufferSize) {
+            if (System.currentTimeMillis() - disableTime < propAutoReenableTime || propAutoReenableTime == 0) {
+                return;
+            }
+            propEnabled = true;
         }
         if (propMode == MODE_AVERAGE) {
             buffer.addFirst(in);
