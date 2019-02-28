@@ -240,17 +240,17 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
         double value = originalValue;
         if (value > propInMax) {
             value = propInMax;
-            if(lastValue < propInMax) {
+            if (lastValue <= propInMax) {
                 inRange = false;
                 etpExitRangeAbove.raiseEvent();
             }
         } else if (value < propInMin) {
             value = propInMin;
-            if(lastValue > propInMin) {
+            if (lastValue >= propInMin) {
                 inRange = false;
                 etpExitRangeBelow.raiseEvent();
             }
-        } else if(!inRange) {
+        } else if (!inRange) {
             inRange = true;
             etpEnterRange.raiseEvent();
         }
