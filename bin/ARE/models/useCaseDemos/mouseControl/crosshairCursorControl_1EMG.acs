@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\emg_CONTROL_cb_2019-02-28_1EMG.acs_2019_2_27_16_13" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_1EMG.acs_2019_2_28_10_6" version="20130320">
   <modelDescription>
     <shortDescription>Difference between two EMG Signals move cursor
 Difference is cubed in order to cause small movements for small values
@@ -386,10 +386,11 @@ Timer changes between horizontal/vertical</shortDescription>
         <property name="enabled" value="true" />
         <property name="bufferSize" value="50" />
         <property name="mode" value="0" />
+        <property name="autoReenableTime" value="3000" />
       </properties>
       <layout>
-        <posX>452</posX>
-        <posY>356</posY>
+        <posX>453</posX>
+        <posY>355</posY>
       </layout>
     </component>
     <component id="MathEvaluator.4.3" type_id="asterics.MathEvaluator">
