@@ -26,11 +26,12 @@
 			<li>
 				<STRONG>disablePlugin:</STRONG> Disables the functionality of this plugin. New values aren't accumulated anymore and no output is sent to the output port.
 				If property autoReenableTime set, the plugin is automatically re-enabled after the time defined by this property.
+				Generally disabling is delayed until the buffer of values is full, preventing any startup glitches.
 			</li>
 		</ul>
 		<H2>Properties</H2>
 		<ul>
-			<li><STRONG>enabled [boolean]:</STRONG> if true (default), the plugin is enabled, if false the plugin does nothing</li>
+			<li><STRONG>enabled [boolean]:</STRONG> if true (default), the plugin is enabled, if false the plugin does nothing. Generally disabling is delayed until the buffer of values is full, preventing any startup glitches.</li>
 			<li>
 				<STRONG>mode [integer]:</STRONG> Denotes the operating mode of the unit, three modes are available:
 				<ul>
