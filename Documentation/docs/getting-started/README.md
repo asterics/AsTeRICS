@@ -2,12 +2,24 @@
 
 AsTeRICS is a framework to build low-cost and customizable Assistive Technologies. You can select from many input devices and trigger actions on your computer or your environment:
 
-<Tile target="#" title="Test" image-url="/img/keyboard press key.png"></Tile>
+image link:
+![An Image](./img/quickstart01.jpg)
+
+relative link 1
+
+<Tile target="#" title="Test" image-url="./img/quickstart01.jpg"></Tile>
+
+relative link 2
+
+<Tile target="#" title="Test" image-url="./img/quickstart01.jpg"></Tile>
+
+absolute link
+<Tile target="#" title="Test" image-url="/img/ecg.png"></Tile>
 
 <TileGroup>
-<Tile target="#" title="Test" image-url="/img/keyboard press key.png"></Tile>
-<Tile target="#" title="Test" image-url="/img/keyboard press key.png"></Tile>
-<Tile target="#" title="Test" image-url="/img/keyboard press key.png"></Tile>
+<Tile target="#" title="Test" image-url="./img/keyboard press key.png"></Tile>
+<Tile target="#" title="Test" image-url="./img/keyboard press key.png"></Tile>
+<Tile target="#" title="Test" image-url="./img/keyboard press key.png"></Tile>
 </TileGroup>
 
 ## Input Devices
