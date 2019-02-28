@@ -2,22 +2,26 @@
 
 This pages explains the most important terms and elements of the AsTeRICS framework.
 
+::: warning TODO
+Add illustrative diagram!!
+:::
+
 ## Elements
 
 The framework consists of several elements you should know about.
 
 ### Model
 
-A model describes the logic of an Assistive Technology. It is used to define how plugins (components) are connected together and which input modalities to use.
+A model describes the logic of an Assistive Technology (AT). It is used to define how plugins (components) are connected together and which input modalities to use.
 
 ### Plugin (Component)
 
 A plugin represents a modular component that can be used within a model.
 It can be a sensor (incorporating data into the system), a processor (processing, modifying data) or an actuator (generating actions in the environment).
 
-### AsTeRICS Grid
+### Grid
 
-The AsTeRICS grid is a web-based user interface which can be used for Augmentative and Alternative Communication (AAC). It can be connected to a model and be used to trigger actions.
+The grid is a web-based user interface which can be used for Augmentative and Alternative Communication (AAC). It can be connected to a model and be used to trigger actions.
 
 ### AT Solution
 
@@ -27,16 +31,18 @@ An AT solution is a more complex Assistive Technology and may be comprised of se
 
 AsTeRICS consists of several executable programs.
 
-### ACS (WebACS)
+### ACS
 
-AsTeRICS Configuration Suite is a graphical editor for easy building and adapting
-"Assistive Technologies".
-For this purpose you use sensors, actuators and processors, which are included in
-the software. You can connect these elements and build your own individual setup
-(also called a "model"), which is specially adapted for your needs, easily and fast.
+The AsTeRICS Configuration Suite (ACS) is a graphical editor for easy designing and testing model files.
+
+### WebACS
+
+The WebACS is a new web-based version of the [ACS](#acs) program for designing and testing model files.
 
 ### ARE
 
-The AsTeRICS Runtime Environment is the basic software framework for all
-AsTeRICS applications and use-cases. The models built in the ACS will run in the
-ARE. The ACS can be seen as a configuration program for the ARE.
+The AsTeRICS Runtime Environment (ARE) executes a given model or AT solution.
+
+### APE
+
+The AsTeRICS Packaging Environment (APE) is needed for the development of an AT Solution. Fore more details, read the [developer docs](../develop/AT_solution_development.html).
