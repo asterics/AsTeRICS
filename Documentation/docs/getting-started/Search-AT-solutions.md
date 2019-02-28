@@ -1,4 +1,4 @@
-# Browse / Search AT solutions
+# Discover AT Solutions
 
 Show github project search results here?
 With preview??
