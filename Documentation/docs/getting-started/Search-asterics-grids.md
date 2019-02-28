@@ -1,3 +1,3 @@
-# Browse / Search AsTeRICS Grids
+# Discover Grids
 
  Link to [Manage Grids](https://asterics.github.io/AsTeRICS-Grid/package/static/#grids)
