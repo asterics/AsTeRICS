@@ -2,47 +2,45 @@
 
 AsTeRICS is a framework to build low-cost and customizable Assistive Technologies. You can select from many input devices and trigger actions on your computer or your environment:
 
-image link:
-![An Image](./img/quickstart01.jpg)
+## Input Devices
 
-Test in submodule
-
-relative link 1
-
-<Tile target="#" title="Test" image-url="./img/quickstart01.jpg"></Tile>
-
-relative link 2
-
-<Tile target="#" title="Test" image-url="./img/quickstart01.jpg"></Tile>
-
-absolute link
-<Tile target="#" title="Test" image-url="/img/ecg.png"></Tile>
+### Switch Control
 
 <TileGroup>
-<Tile target="#" title="Test" image-url="./img/keyboard press key.png"></Tile>
-<Tile target="#" title="Test" image-url="./img/keyboard press key.png"></Tile>
-<Tile target="#" title="Test" image-url="./img/keyboard press key.png"></Tile>
+<Tile target="#" title="Push Button" image-url="/img/keyboard press key.png"></Tile>
 </TileGroup>
-
-## Input Devices
-### Switches
-
 
 ### Camera-Based
 
+<TileGroup>
+<Tile target="#" title="Webcam" image-url="/img/keyboard press key.png"></Tile>
+<Tile target="#" title="Eyetracker" image-url="/img/keyboard press key.png"></Tile>
+</TileGroup>
+
 ## Actions
+
 ### Computer Control
+
+<TileGroup>
+<Tile target="#" title="Mouse Control" image-url="/img/keyboard press key.png"></Tile>
+</TileGroup>
 
 ### Environmental Control
 
+<TileGroup>
+<Tile target="#" title="Infrared (IrTrans)" image-url="/img/keyboard press key.png"></Tile>
+<Tile target="#" title="KNX" image-url="/img/keyboard press key.png"></Tile>
+<Tile target="#" title="Enocean" image-url="/img/keyboard press key.png"></Tile>
+</TileGroup>
+
 ### Gaming
 
-
-## Toy Helicopter
+<TileGroup>
 <iframe width="auto" height="auto" src="https://www.youtube.com/embed/JwL_zS3fpnU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</TileGroup>
 
-[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/JwL_zS3fpnU/0.jpg)](https://www.youtube.com/watch?v=JwL_zS3fpnU)
+### Playing Music
 
-## Chordion and FreakyTricky
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3_8TifCj0aU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<TileGroup>
+<iframe width="auto" height="auto" src="https://www.youtube.com/embed/3_8TifCj0aU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</TileGroup>
