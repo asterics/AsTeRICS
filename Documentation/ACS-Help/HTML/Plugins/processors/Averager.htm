@@ -20,8 +20,17 @@
 		<ul>
 			<li><STRONG>output [double]:</STRONG> This port provides the current average of the buffered inputs.</li>
 		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>enablePlugin:</STRONG> Enables the functionality of this plugin. </li>
+			<li>
+				<STRONG>disablePlugin:</STRONG> Disables the functionality of this plugin. New values aren't accumulated anymore and no output is sent to the output port.
+				If property autoReenableTime set, the plugin is automatically re-enabled after the time defined by this property.
+			</li>
+		</ul>
 		<H2>Properties</H2>
 		<ul>
+			<li><STRONG>enabled [boolean]:</STRONG> if true (default), the plugin is enabled, if false the plugin does nothing</li>
 			<li>
 				<STRONG>mode [integer]:</STRONG> Denotes the operating mode of the unit, three modes are available:
 				<ul>
@@ -31,6 +40,7 @@
 				</ul>
 			</li>
 			<li><STRONG>bufferSize [integer]:</STRONG> Specifies the size of the buffer in the averaging modes or the amount of milliseconds to accumulate in the accumulator mode.</li>
+			<li><STRONG>autoReenableTime [integer]:</STRONG> Time in ms, after the plugin automatically re-enables itself after being disabled. Set to zero (default) to deactivate this functionality (never auto re-enable).</li>
 		</ul>
 	</BODY>
 </HTML>

@@ -20,8 +20,14 @@
     <ul>
       <li><strong>received [string]:</strong> string which has been received (was sent from the microcontroller / embedded module)</li>
     </ul>
+    <H2>Event Listener Description</H2>
+    <ul>
+      <li><STRONG>enablePlugin:</STRONG> Enables the functionality of this plugin. </li>
+      <li><STRONG>disablePlugin:</STRONG> Disables the functionality of this plugin. Any open COM port is closed and no new values are received.</li>
+    </ul>
     <h2>Properties </h2>
     <ul>
+      <li><strong>enabled [boolean]:</strong> If true (default), the plugin is enabled, if false the plugin does nothing and doesn't attempt to open the given COM port.</li>
       <li><strong>ComPort [string]:</strong> Defines the COM Port of the target serial device. e.g. COM0</li>
       <li><strong>BaudRate [integer]:</strong> Defines the Baudrate for the communication. It must match the baudrate of the target device</li>
 	  <li><strong>ReceivedDataType [combobox selection]:</strong>can be used to indicate other data type like binary integer type etc. (currently, only string is supported)</li>
