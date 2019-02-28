@@ -32,6 +32,11 @@
 				</ul>
 			</li>
 		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>outX [double]:</STRONG> the current absolute x-value of the mouse, updated every time the mouse position is updated.</li>
+			<li><STRONG>outY [double]:</STRONG> the current absolute y-value of the mouse, updated every time the mouse position is updated.</li>
+		</ul>
 		<H2>Event Listener Description</H2>
 		<ul>
 			<li><STRONG>leftClick:</STRONG> An incoming event at this port creates a mouse button click. A left mouse button click will be generated, unless a valid "nextclick..." command has been received at the cmd input which changed the click type (see above).</li>
@@ -52,6 +57,7 @@
 			<li><strong>nextClickMiddle</strong>next left click event will create a middle button click</li>
 			<li><strong>nextClickDrag</strong> next left click event will hold the left mouse button.</li>
 			<li><strong>nextClickRelease</strong> next left click event will release the left mouse button.</li>
+			<li><STRONG>moveToLastStable:</STRONG> moves the cursor to last stable position (where no movement was made).</li>
 		</ul>
 		<H2>Properties</H2>
 		<ul>

@@ -1,0 +1,490 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\key_cursor.acs_2019_1_20_20_11" version="20130320">
+  <components>
+    <component id="Keyboard.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="{UP}" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>835</posX>
+        <posY>292</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="{DOWN}" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>839</posX>
+        <posY>460</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="30" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>425</posX>
+        <posY>289</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="31" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>425</posX>
+        <posY>463</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1.2" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="32" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>107</posX>
+        <posY>106</posY>
+      </layout>
+    </component>
+    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
+      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+      <ports>
+        <inputPort portTypeID="modelName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="model" value="useCaseDemos/mouseControl/crosshairCursorControl_2keys.acs" />
+      </properties>
+      <layout>
+        <posX>230</posX>
+        <posY>108</posY>
+      </layout>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="1000" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>293</posX>
+        <posY>358</posY>
+      </layout>
+    </component>
+    <component id="EventRouter.1" type_id="asterics.EventRouter">
+      <description>routes incoming events to one of 8 event trigger ports</description>
+      <ports>
+        <inputPort portTypeID="routeIndex">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="activeRoutes" value="2" />
+        <property name="wrapAround" value="true" />
+      </properties>
+      <layout>
+        <posX>557</posX>
+        <posY>349</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1.2" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="{RIGHT}" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>955</posX>
+        <posY>332</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1.3" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="{LEFT}" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>716</posX>
+        <posY>359</posY>
+      </layout>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="keyReleased_switchModel">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.2" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="modelSwitcher.1" />
+          <eventPort id="switchModel" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_start">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_start">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_selectNext">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventRouter.1" />
+          <eventPort id="selectNext" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_eventIn">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventRouter.1" />
+          <eventPort id="eventIn" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_eventIn2">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventRouter.1" />
+          <eventPort id="eventIn2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_eventIn3">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventRouter.1" />
+          <eventPort id="eventIn3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_eventIn4">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventRouter.1" />
+          <eventPort id="eventIn4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut1_holdKey">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut2_releaseKey">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut2_1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut3_holdKey">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut3_1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut4_releaseKey">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut4_1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut2_1_holdKey">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.3" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut2_2_releaseKey">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut2_2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.3" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut2_3_holdKey">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut3_2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.2" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut2_4_releaseKey">
+      <description />
+      <sources>
+        <source>
+          <component id="EventRouter.1" />
+          <eventPort id="eventOut4_2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.2" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>true</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>2000</width>
+      <height>889</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
