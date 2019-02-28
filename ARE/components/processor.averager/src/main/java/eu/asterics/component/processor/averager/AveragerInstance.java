@@ -57,7 +57,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
     private int propBufferSize = DEFAULT_BUFFER_SIZE;
     private boolean propEnabled = true;
     private int propMode = 0;
-    private int propAutoReenableTime = 3000;
+    private int propAutoReenableTime = 0;
 
     private final LinkedList<Double> buffer = new LinkedList<Double>();
     private long lastUpdate = 0;
@@ -150,6 +150,8 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
             return propBufferSize;
         } else if ("mode".equalsIgnoreCase(propertyName)) {
             return propMode;
+        } else if ("autoReenableTime".equalsIgnoreCase(propertyName)) {
+            return propAutoReenableTime;
         } else {
             return null;
         }
@@ -201,6 +203,10 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
                     throw new RuntimeException("Invalid property value for " + propertyName + ": " + newValue);
                 }
             }
+            return oldValue;
+        }  else if ("autoReenableTime".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propAutoReenableTime;
+            propAutoReenableTime = Integer.parseInt(newValue.toString());
             return oldValue;
         } else {
             return null;
