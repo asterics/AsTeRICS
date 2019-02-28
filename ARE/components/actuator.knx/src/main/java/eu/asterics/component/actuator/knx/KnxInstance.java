@@ -691,8 +691,8 @@ public class KnxInstance extends AbstractRuntimeComponentInstance {
 
             if (text.startsWith("@KNX:")) {
                 try {
-                    StringTokenizer st = new StringTokenizer(text.substring(5), " ,#");
-                    sendKNX(st.nextToken(), st.nextToken(), st.nextToken());
+                    StringTokenizer st = new StringTokenizer(text.substring(5), ",#");
+                    sendKNX(st.nextToken().trim(), st.nextToken().trim(), st.nextToken().trim());
                 } catch (Exception e) {
                     AstericsErrorHandling.instance.getLogger().severe(e.toString());
                 }

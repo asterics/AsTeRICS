@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-actuators.angularcursorcontrol
+Bundle-SymbolicName: eu.asterics.component.actuator.angularcursorcontrol
+Bundle-Version: 0.1.0
+DynamicImport-Package: *

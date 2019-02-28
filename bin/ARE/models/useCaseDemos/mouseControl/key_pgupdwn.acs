@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\pgupdwn.acs_2019_1_20_18_0" version="20130320">
+  <components>
+    <component id="Keyboard.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="{PAGEUP}" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>745</posX>
+        <posY>296</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="{PAGEDOWN}" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>749</posX>
+        <posY>464</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57419" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>541</posX>
+        <posY>295</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57421" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>539</posX>
+        <posY>461</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1.2" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57416" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>904</posX>
+        <posY>324</posY>
+      </layout>
+    </component>
+    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
+      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+      <ports>
+        <inputPort portTypeID="modelName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="model" value="useCaseDemos/mouseControl/crosshairCursorControl_2keys.acs" />
+      </properties>
+      <layout>
+        <posX>1027</posX>
+        <posY>326</posY>
+      </layout>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="keyPressed_holdKey">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_releaseKey">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_holdKey">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1" />
+          <eventPort id="holdKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_releaseKey">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1.1" />
+          <eventPort id="releaseKey" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_switchModel">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.2" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="modelSwitcher.1" />
+          <eventPort id="switchModel" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>true</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>2000</width>
+      <height>889</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

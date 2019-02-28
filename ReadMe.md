@@ -1,6 +1,5 @@
 # Welcome to AsTeRICS
 -------------------
-Commited from submodule
 
 AsTeRICS is a free and Open-Source graphical construction set for assistive technologies (AT).
 It allows the creation of flexible solutions for people with disabilities using a large set of sensors and actuators.

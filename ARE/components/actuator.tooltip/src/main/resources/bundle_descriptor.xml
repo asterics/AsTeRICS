@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Tooltip"
+                   canonical_name="eu.asterics.component.actuator.tooltip.TooltipInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>show tooltips next to mouse pointer for triggering various actions</description>
+        <ports>
+			<inputPort id="x">
+				<description>cursor movement x direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="y">
+				<description>cursor movement y direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+            <outputPort id="tooltip">
+                <description>the filename of the selected tooltip icon.</description>
+                <dataType>string</dataType>
+            </outputPort>
+        </ports>
+		<events>
+			<eventListenerPort id="activateTooltips">
+				<description>if available, show tooltip icons and activate tooltip mode</description>
+			</eventListenerPort>
+			<eventListenerPort id="deactivateTooltips">
+				<description>deactivate tooltip mode</description>
+			</eventListenerPort>
+			<eventListenerPort id="nextTooltip">
+				<description>navigates to next tooltip, if tooltips are currently activated</description>
+			</eventListenerPort>
+			<eventListenerPort id="previousTooltip">
+				<description>navigates to previous tooltip, if tooltips are currently activated</description>
+			</eventListenerPort>
+			<eventListenerPort id="selectTooltip">
+				<description>selects the currently shown tooltip and disables tooltip mode afterwards</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="tooltipActivated">
+				<description>this event is generated when the tooltip mode is activated</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="tooltipDeactivated">
+				<description>this event is generated when the tooltip mode is deactivated, either by event or by timeout of selectTime</description>
+			</eventTriggererPort>
+		</events>			
+        <properties>
+			<property name="initialX"
+				type="integer"
+				value="-1"
+				description="initial position in x-axis, "/>
+			<property name="initialY"
+				type="integer"
+				value="-1"
+				description="initial position in y-axis"/>
+			<property name="selectTime"
+				type="integer"
+				value="1000"
+				description="if not zero, the click event is created after n millseconds inactivity"/>
+			<property name="tooltipFolder"
+				type="string"
+				value="pictures/tooltips"
+				description="folder which contains tooltip icons in .png format"/>
+			<property name="tooltipStartIndex"
+				type="integer"
+				value="3"
+				description="start index for first shown tooltip"/>
+
+        </properties>
+    </componentType>
+</componentTypes>

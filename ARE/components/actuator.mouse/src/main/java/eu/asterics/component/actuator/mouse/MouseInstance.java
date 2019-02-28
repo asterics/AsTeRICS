@@ -43,6 +43,7 @@ import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 
 /**
  * Implements the Mouse plugin, which controls the local mouse using the Java
@@ -52,6 +53,9 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
  *         2:00:01 PM
  */
 public class MouseInstance extends AbstractRuntimeComponentInstance {
+    final IRuntimeOutputPort opOutX = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opOutY = new DefaultRuntimeOutputPort();
+
     private final String ACTION_STRING_PREFIX = "@MOUSE:";
 
     private final String ELP_LEFTCLICK_NAME = "leftClick";
@@ -96,6 +100,8 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
     private double mouseYPos = 0;
     private double mouseLastXPos = -1;
     private double mouseLastYPos = -1;
+    private double mouseLastStableXPos = -1;
+    private double mouseLastStableYPos = -1;
     private int mouseActive = 0;
     private int nextClick = CLK_LEFT;
 
@@ -140,6 +146,12 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("outX".equalsIgnoreCase(portID)) {
+            return opOutX;
+        }
+        if ("outY".equalsIgnoreCase(portID)) {
+            return opOutY;
+        }
         return null;
     }
 
@@ -190,6 +202,8 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
             return elpRelativePosition;
         } else if (ELP_ABSOLUTEPOSITION_NAME.equalsIgnoreCase(eventPortID)) {
             return elpAbsolutePosition;
+        } else if ("moveToLastStable".equalsIgnoreCase(eventPortID)) {
+            return elpMoveToLastStable;
         }
 
         return null;
@@ -294,8 +308,12 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
     }
 
     private void updateMousePosition() {
+        updateMousePosition(true);
+    }
 
-        if (!first) {
+    private void updateMousePosition(boolean doRoundingCorrection) {
+
+        if (!first && doRoundingCorrection) {
             Point p = MouseInfo.getPointerInfo().getLocation();
 
             mouseXPos -= ((int) mouseLastXPos - p.x);
@@ -317,6 +335,8 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
         }
 
         rob.mouseMove((int) mouseXPos, (int) mouseYPos);
+        opOutX.sendData(ConversionUtils.doubleToBytes((double) mouseXPos));
+        opOutY.sendData(ConversionUtils.doubleToBytes((double) mouseYPos));
 
         mouseLastXPos = mouseXPos;
         mouseLastYPos = mouseYPos;
@@ -330,11 +350,14 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveData(byte[] data) {
             if ((mouseActive == 1) && (propEnableMouse)) {
-
+                double value = ConversionUtils.doubleFromBytes(data);
+                if (value < 3) {
+                    mouseLastStableXPos = mouseXPos;
+                }
                 if (propAbsolutePosition == true) {
-                    mouseXPos = ConversionUtils.doubleFromBytes(data);
+                    mouseXPos = value;
                 } else {
-                    mouseXPos = mouseXPos + ConversionUtils.doubleFromBytes(data);
+                    mouseXPos = mouseXPos + value;
                 }
 
                 if (mouseXPos != mouseLastXPos) {
@@ -352,10 +375,14 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveData(byte[] data) {
             if ((mouseActive == 1) && (propEnableMouse)) {
+                double value = ConversionUtils.doubleFromBytes(data);
+                if (value < 3) {
+                    mouseLastStableYPos = mouseYPos;
+                }
                 if (propAbsolutePosition == true) {
-                    mouseYPos = ConversionUtils.doubleFromBytes(data);
+                    mouseYPos = value;
                 } else {
-                    mouseYPos += ConversionUtils.doubleFromBytes(data);
+                    mouseYPos += value;
                 }
 
                 if (mouseYPos != mouseLastYPos) {
@@ -643,6 +670,19 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
         }
     };
 
+    final IRuntimeEventListenerPort elpMoveToLastStable = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            double oldX = mouseXPos;
+            double oldY = mouseYPos;
+            mouseXPos = mouseLastStableXPos != -1 ? mouseLastStableXPos : mouseXPos;
+            mouseYPos = mouseLastStableYPos != -1 ? mouseLastStableYPos : mouseYPos;
+            if(oldX != mouseXPos || oldY != mouseYPos) {
+                updateMousePosition(false);
+            }
+        }
+    };
+
     /**
      * called when model is started.
      */
@@ -716,6 +756,12 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
             } else {
                 mouseXPos += inX;
                 mouseYPos += inY;
+                if (inX < 3) {
+                    mouseLastStableXPos = mouseXPos;
+                }
+                if (inY < 3) {
+                    mouseLastStableYPos = mouseYPos;
+                }
             }
 
             if (mouseXPos != mouseLastXPos || mouseYPos != mouseLastYPos) {
