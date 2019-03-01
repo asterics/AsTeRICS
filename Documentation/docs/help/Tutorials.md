@@ -1,6 +1,6 @@
 # Tutorials
 
-## Creating a Model
+## Camera Mouse Simple
 
 A model is a collection of 1 to n components, where a component represents a plugin
 of the ARE. These components are connected via cannels (for data connections) and
@@ -9,6 +9,8 @@ creation of a simple webcam mouse, using the position of the nose to control the
 cursor and opening the mouth to trigger a mouse click. This model requires a
 connected and installed webcam.
 
+### Add Facetracking
+
 In a first step, start the ACS and the ARE using the ACS.exe and ARE.exe short cuts.
 In the ACS window select the tab **Components**, then **Sensors** and within the
 sensors the menu item **Computer Vision**. There select the component
@@ -16,6 +18,8 @@ FacetrackerLK. The component is now on the drawing area and, if the component is
 selected, properties can be set (or changed) in the rightmost part of the ACS window.
 
 ![ACS - A first example (1/8)](./img/quickstart10.png)
+
+### Add Mouse
 
 The next needed component is the **Mouse**, it can be found by selecting **Actuators** -
 **Input Device Emulation**. After the insert, select the Mouse component and adapt
@@ -27,6 +31,8 @@ with the mouseX and mouseY inputs of the Mouse. Finally, it should look like the
 screenshot below.
 
 ![ACS - A first example (2/8)](./img/quickstart11.png)
+
+### Add Mouse Click
 
 The model now would be able to use the coordinates of the nose to control the
 mouse cursor, but the mouse click is still missing.
@@ -55,6 +61,8 @@ following screenshot:
 
 ![ACS - A first example (6/8)](./img/quickstart15.png)
 
+### Test Model
+
 Now, upload the model to the ARE and press the **Start Model** button. A window with
 the camera screen will appear, marking with a green and yellow circle - the position
 of nose and chin. Press the **Stop Model** button or press F7 to stop the model and
@@ -65,7 +73,7 @@ running.
 
 Congratulations, your first AsTeRICS model is running!
 
-## Reducing Tremor
+### Reducing Tremor
 
 You might have noticed that the mouse pointer has a tremor, because the head is
 always in movement to a certain extent. To reduce this tremor, an **Averager**
@@ -77,7 +85,7 @@ another **Averager** for the Y coordinates between the **FacetrackerLK** and the
 
 That's all, just upload the model and start it now.
 
-## Adjusting the Webcam
+### Adjusting the Webcam
 
 If you don't like the position of the webcam after starting the model, you can set a
 different start position. Select the **GUI Designer** tab above the drawing area and
@@ -88,10 +96,6 @@ the window can be adjusted.
 
 Upload and start the model to work with the changes.
 
-> For more examples and detailed descriptions of the features of ACS and ARE,
-> please refer to the AsTeRICS user manual!
+## Camera Mouse Advanced
 
-## Camera Mouse Step by Step
-
-<StaticLink href="https://github.com/asterics/AsTeRICS/blob/master/Documentation/AsTeRICS_CameraMouseCreation_StepbyStep_Tutorial.pdf" text="Camera Mouse Step by Step"/>
- 
+If your first model works, try this more [advanced step-by-step tutorial](https://github.com/asterics/AsTeRICS/blob/master/Documentation/AsTeRICS_CameraMouseCreation_StepbyStep_Tutorial.pdf) based on slides.
