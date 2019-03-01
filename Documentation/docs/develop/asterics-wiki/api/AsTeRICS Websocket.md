@@ -1,7 +1,7 @@
 # Websocket Tutorial
 In this tutorial you will learn how to use the AsTeRICS websocket functionality with Javascript from within a web client.
 
-# Introduction
+## Introduction
 A web socket is defined as a two-way communication between the servers and the clients, which mean both the parties communicate and exchange data at the same time. The Websocket protocol is specified in the [RFC6455](https://tools.ietf.org/html/rfc6455) and the corresponding client-side [Websocket API](https://www.w3.org/TR/websockets/) is defined by the W3C.
 For more information about web sockets see the following tutorials
 * [Mozilla - web sockets tutorial](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)
@@ -9,14 +9,14 @@ For more information about web sockets see the following tutorials
 
 The AsTeRICS Runtime Environment (ARE) provides a websocket at ```ws://localhost:8082/ws/astericsData``` which can be used to send data from a running AsTeRICS model to a web client or vice versa. 
 
-# Example 1 - Web socket echo
+## Example 1 - Web socket echo
 Sends a text message to the ARE model and echoes the sent message back to the web client.
 
-## Prerequisites
+### Prerequisites
 * [AsTeRICS 3.0 installed and ARE running](https://github.com/asterics/AsTeRICS/releases/tag/v3.0)
 * [WebSocket plugin](http://asterics.github.io/AsTeRICS/webapps/WebACS/help/index.html?plugins&processors/WebSocket.htm)
 
-## Create model with WebSocket plugin
+### Create model with WebSocket plugin
 
 1. Open the [WebACS](http://asterics.github.io/AsTeRICS/webapps/WebACS/?areBaseURI=http://localhost:8081)
 2. Add a WebSocket plugin (Components tab, Processors/Web/WebSocket)
@@ -27,7 +27,7 @@ Sends a text message to the ARE model and echoes the sent message back to the we
 
 ![Websocket plugin with output port OutA connected to input port InA](developer_guide/api/images/Websocket-echo-connection.JPG)
 
-## Create web page with web socket client
+### Create web page with web socket client
 Using a text editor, copy the following code and save it as websocket.html somewhere on your hard drive. Then simply open it in a browser. The page will automatically connect, send a message, display the response, and close the connection. 
 
 ```html
@@ -126,7 +126,7 @@ Using a text editor, copy the following code and save it as websocket.html somew
 </html>
 ```
 
-## Resulting output
+### Resulting output
 In case of success you should see something like this:
 ```
 WebSocket Test
@@ -142,11 +142,11 @@ DISCONNECTED
 
 In case of an error check if the ARE is running and the model with the WebSocket plugin is deployed and started.
 
-# Example 2 - Web socket demo with signal data live chart
+## Example 2 - Web socket demo with signal data live chart
 To try a more advanced web socket demo receiving signal data and visualizing it, please visit this [web socket demo](http://asterics.github.io/AsTeRICS/webapps/startpage/index.html#submenuSolutionDemos:asterics-networkio-websocket) to see how it works. 
 You can also clone and edit the corresponding [git repository](https://github.com/asterics/asterics-networkio-websocket).
 
-# References
+## References
 * [WebSocket plugin](http://asterics.github.io/AsTeRICS/webapps/WebACS/help/index.html?plugins&processors/WebSocket.htm)
 * [Mozilla - web sockets tutorial](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)
 * [Tutorialspoint - web sockets tutorial](https://www.tutorialspoint.com/websockets/websockets_overview.htm)

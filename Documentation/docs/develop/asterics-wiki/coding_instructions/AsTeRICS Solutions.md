@@ -1,13 +1,13 @@
 # AT Solution Tutorial
 In this tutorial you will learn how to use the [AsTeRICS Solution Template Repository](https://github.com/asterics/asterics-solution-template) to create your own AT-related software project.
 
-# Introduction
+## Introduction
 The AsTeRICS Packaging Environment (APE) provides the possibility to maintain an AsTeRICS solution as a dedicated software project, that can be hosted anywhere and also versioned as a git repository. 
 As an AsTeRICS solution not always consists of just one model file but also of config files, images, or web applications, APE provides a template repository, which acts as a starting point for a solution. The repository can be downloaded, cloned or forked as any other git repository. There are also other [AsTeRICS solution examples](https://github.com/asterics?utf8=%E2%9C%93&q=topic%3Aexample&type=&language=) derived from that repository.
 
 Before starting the tutorial, have a look at the [folder structure](https://github.com/asterics/asterics-solution-template/blob/master/README.md#folder-structure) of the template repository.
 
-# Prerequisites
+## Prerequisites
 You need at least
 1. [Java Development Kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). 
   * Ensure to set ```JAVA_HOME``` to the folder where you installed the Java JDK and add the JDK bin path to the  Environment Variable ```Path```
@@ -18,12 +18,12 @@ You need at least
 
 You can use an IDE for Java and Web Developers, e.g. [Eclipse for Java EE developers](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/oxygen3a). See [Eclipse installation and setup](#eclipse-installation-and-setup) for details.
 
-# Download / Clone template repository
+## Download / Clone template repository
 You can either clone the [template repository](https://github.com/asterics/asterics-solution-template/) or download it as a zipped file.
 
 You might also want to start based on an existing [AsTeRICS solution example](https://github.com/asterics?utf8=%E2%9C%93&q=topic%3Aexample&type=&language=) by downloading or forking it, if your application is similar to one of them.
 
-# Example 1 - Run project
+## Example 1 - Run project
 The template repository already contains a default autostart model at ```custom/bin/ARE/models/autostart.acs```, which opens the ARE webserver startpage with the system default browser.
 
 ```bash
@@ -34,7 +34,7 @@ For subsequent runs use the targets ```APE-copy``` and  ```run-quick``` to speed
 
 If you want use ```Eclipse```, please read the [Eclipse installation and setup](#eclipse-installation-and-setup) instructions.
 
-# Example 2 - Edit and test model
+## Example 2 - Edit and test model
 To edit and test the modifications immediately 
 
 1. Run project  (see [Example 1](#example-1---run-project))
@@ -45,7 +45,7 @@ To edit and test the modifications immediately
 6. Upload and run model
 7. To permanently save the modification, you **must save the file with the ACS** again, otherwise the modifications will be lost with the next run of the project.
 
-# AsTeRICS model + web application
+## AsTeRICS model + web application
 In many cases you want to provide a better user interface or allow the user to parametrize your asterics solution without the need to edit the model in the ACS program. As the end user or relatives of end users might not be very technically skilled, you should provide easy configuration pages with high usability. This can be very easily achieved with web technologies.
 
 The [AsTeRICS webserver document root specification](https://github.com/asterics/AsTeRICS/wiki/AsTeRICS-webserver-document-root-specification) defines the folder structure and paths on the webserver.
@@ -132,12 +132,12 @@ The template repository already contains a template folder for a web application
 ``` 
 4. Save files and run project
 
-# Eclipse installation and setup
+## Eclipse installation and setup
 As APE uses the ant build framework, the repository can also be used with your preferred IDE. Subsequently some recommendations of how to install and setup Eclipse for an asterics solution repository.
 
 1. Install [Eclipse for Java EE developers](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/oxygen3a) (Select **same bitness** as your JDK!! (x86 <-> x86 or x86_64 <-> x86_64))
 
-## Eclipse project setup
+### Eclipse project setup
 
 1. Click on ```File/New/Project```
 2. Then click on ```Next```, uncheck ```Use default location``` and browse to your asterics solution folder.
@@ -145,20 +145,20 @@ As APE uses the ant build framework, the repository can also be used with your p
 4. Click onto ```Finish```
 
 Now you have an eclipse project with ant support.
-## Configure editor for model files (.acs)
+#### Configure editor for model files (.acs)
 1. Right click on model file, select ```Open with/Other```
 2. Check ```External programs``` and browse to ```C:\Program Files (x86)\AsTeRICS\ACS\ACS.bat``` (Note: **ACS.bat**)
 3. Check ```Use it for all `*.acs file```
 4. Click onto ```Ok```
 
-## Using ant within eclipse
+### Using ant within eclipse
 
-### Run default target 
+#### Run default target 
 This is synonymous to ```ant``` on the command line:
 1. Right click onto file ```build.xml```
 2. Select ```Run As/Ant Build``` (first entry)
 
-### Run selected targets
+#### Run selected targets
 1. Right click onto file ```build.xml```
 2. Select ```Run As/Ant Build``` (second entry)
 3. Click onto targets to run
@@ -167,7 +167,7 @@ This is synonymous to ```ant``` on the command line:
 
 From now on, the selected targets are the default ones for subsequent calls.
 
-# References
+## References
 * [AsTeRICS Solution Template Repository](https://github.com/asterics/asterics-solution-template)
 * [AsTeRICS solution examples](https://github.com/asterics?utf8=%E2%9C%93&q=topic%3Aexample&type=&language=)
 * [webAppUtils.js and modelManipulation.js API documentation](http://asterics.github.io/AsTeRICS/webapps/startpage/doc/lib-js-api/index.html)
