@@ -10,6 +10,7 @@ The AsTeRICS installer on Windows contains the following executables
 * ACS
 * WebACS
 * ARE
+* APE
 
 ### Installation Steps
 
