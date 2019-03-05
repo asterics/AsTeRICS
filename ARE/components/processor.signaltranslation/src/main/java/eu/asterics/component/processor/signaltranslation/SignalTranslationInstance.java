@@ -25,6 +25,10 @@
 
 package eu.asterics.component.processor.signaltranslation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
@@ -59,6 +63,8 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     // properties
     double propInMin, propInMax;
     double propOutMin, propOutMax;
+    boolean propStepMode = false;
+    List<Integer> propThresholdList = Arrays.asList(10, 50, 90);
 
     // ports
     private InputPort ipIn = new InputPort(this);
@@ -68,7 +74,7 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     private final IRuntimeEventTriggererPort etpEnterRange = new DefaultRuntimeEventTriggererPort();
     
     private boolean inRange = false;
-    private double lastValue = 0;
+    private Double lastValue = null;
 
     /**
      * An input port implementation that will use incoming data to set the
@@ -175,6 +181,10 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
             return propOutMin;
         } else if (PROPERTY_KEY_OUT_MAX.equalsIgnoreCase(propertyName)) {
             return propOutMax;
+        } else if ("stepMode".equalsIgnoreCase(propertyName)) {
+            return propStepMode;
+        } else if ("thresholdList".equalsIgnoreCase(propertyName)) {
+            return propThresholdList.toString();
         }
         return null;
     }
@@ -193,11 +203,15 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
         try {
             if (PROPERTY_KEY_IN_MIN.equalsIgnoreCase(propertyName)) {
                 propInMin = Double.parseDouble(newValue.toString());
-                processInput(lastValue);
+                if (lastValue != null) {
+                    processInput(lastValue);
+                }
                 AstericsErrorHandling.instance.reportInfo(this, String.format("Setting in_min to %f", propInMin));
             } else if (PROPERTY_KEY_IN_MAX.equalsIgnoreCase(propertyName)) {
                 propInMax = Double.parseDouble(newValue.toString());
-                processInput(lastValue);
+                if (lastValue != null) {
+                    processInput(lastValue);
+                }
                 AstericsErrorHandling.instance.reportInfo(this, String.format("Setting in_max to %f", propInMax));
             } else if (PROPERTY_KEY_OUT_MIN.equalsIgnoreCase(propertyName)) {
                 propOutMin = Double.parseDouble(newValue.toString());
@@ -205,6 +219,16 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
             } else if (PROPERTY_KEY_OUT_MAX.equalsIgnoreCase(propertyName)) {
                 propOutMax = Double.parseDouble(newValue.toString());
                 AstericsErrorHandling.instance.reportInfo(this, String.format("Setting out_max to %f", propOutMax));
+            } else if ("stepMode".equalsIgnoreCase(propertyName)) {
+                propStepMode = Boolean.parseBoolean(newValue.toString());
+            } else if ("thresholdList".equalsIgnoreCase(propertyName)) {
+                propThresholdList = new ArrayList<>();
+                String baseString = newValue.toString().replace("[", "").replace("]", "");
+                String[] strings = baseString.split(",");
+                for(String s: strings) {
+                    propThresholdList.add(Integer.parseInt(s));
+                }
+                AstericsErrorHandling.instance.reportInfo(this, String.format("Setting thresholdList to %s", propThresholdList.toString()));
             }
         } catch (NumberFormatException nfe) {
             AstericsErrorHandling.instance.reportInfo(this,
@@ -240,13 +264,13 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
         double value = originalValue;
         if (value > propInMax) {
             value = propInMax;
-            if (lastValue <= propInMax) {
+            if (lastValue != null && lastValue <= propInMax) {
                 inRange = false;
                 etpExitRangeAbove.raiseEvent();
             }
         } else if (value < propInMin) {
             value = propInMin;
-            if (lastValue >= propInMin) {
+            if (lastValue != null && lastValue >= propInMin) {
                 inRange = false;
                 etpExitRangeBelow.raiseEvent();
             }
@@ -257,6 +281,15 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
 
         lastValue = originalValue;
         double out = (value - propInMin) / (propInMax - propInMin) * (propOutMax - propOutMin) + propOutMin;
+        if (propStepMode && out != propOutMin && !propThresholdList.isEmpty()) {
+            double rangeOut = (propOutMax - propOutMin);
+            double step = rangeOut / propThresholdList.size();
+            int index = (int) Math.floor(out / step);
+            if (index >= propThresholdList.size()) {
+                index = propThresholdList.size() - 1;
+            }
+            out = (rangeOut * propThresholdList.get(index) / 100) + propOutMin;
+        }
         opOut.sendData(out);
     }
 
