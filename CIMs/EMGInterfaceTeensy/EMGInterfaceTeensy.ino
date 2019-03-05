@@ -5,12 +5,14 @@
 #define USE_BUFFERED_AVG 1
 #define RXLED  17
 #define STARTBUTTON 14
-#define DELAYTIME 20
+#define DELAYTIME 50
+#define READ_TIME 5
 #define BLINKTIME 5
 #define MAX_INPUT_LENGTH 100
 
 int SENSORS[CHANNELS] = {A3, A0, A2, A1};
-const int N_AVERAGE = 1;
+int channel_values[CHANNELS] = {0, 0, 0, 0};
+const int N_AVERAGE = 10;
 long lastPrint = 0;
 
 typedef struct {
@@ -28,8 +30,8 @@ void setup() {
   Serial.begin(9600);
   Serial.setTimeout(2000);
 
-  pinMode(RXLED, OUTPUT);
-  digitalWrite(RXLED, HIGH);
+  //pinMode(RXLED, OUTPUT);
+  //digitalWrite(RXLED, HIGH);
 
   pinMode(SENSORS[0], INPUT);
   pinMode(SENSORS[1], INPUT);
@@ -51,6 +53,7 @@ char receiveBuffer[MAX_INPUT_LENGTH + 1];
 int lastPosX = -1;
 int lastPosY = -1;
 unsigned long lastrun = 0;
+unsigned long lastread = 0;
 
 // the loop routine runs over and over again forever:
 void loop() {
@@ -101,31 +104,28 @@ void loop() {
     Keyboard.releaseAll();
   }
 
+  if (runmode && millis() - lastread >= READ_TIME) {
+    lastread = millis();
+    for (int i = 0; i < CHANNELS; i++) {
+#ifdef USE_BUFFERED_AVG
+      channel_values[i] = getBufferedAvg(&bufAveragers[i], analogRead(SENSORS[i]));
+#else
+      channel_values[i] = getMovingAvg(&movAverage[i], analogRead(SENSORS[i]));
+#endif
+    }
+  }
+
   if (runmode && millis() - lastrun >= DELAYTIME) {
     //Serial.print("real delay: ");
     //Serial.println(millis() - lastrun);
     lastrun = millis();
-    // indicate send operation
-    cnt = (cnt + 1) % BLINKTIME;
-    if (!cnt)  digitalWrite(RXLED, !digitalRead(RXLED));
-
+    
     // process up to 4 channels
     for (int i = 0; i < CHANNELS; i++) {
-
-#ifdef USE_BUFFERED_AVG
-      value = getBufferedAvg(&bufAveragers[i], analogRead(SENSORS[i]));
-#else
-      value = getMovingAvg(&movAverage[i], analogRead(SENSORS[i]));
-#endif
-
-      Serial.print(value);
+      Serial.print(channel_values[i] * 1.0 / 4);
       Serial.print(",");
     }
     Serial.println(" ");
-
-  } else {
-    // indicate idle mode
-    digitalWrite(RXLED, HIGH);
   }
 }
 
