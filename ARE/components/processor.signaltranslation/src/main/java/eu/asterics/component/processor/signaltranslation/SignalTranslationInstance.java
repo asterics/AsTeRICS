@@ -225,8 +225,16 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
                 propThresholdList = new ArrayList<>();
                 String baseString = newValue.toString().replace("[", "").replace("]", "");
                 String[] strings = baseString.split(",");
-                for(String s: strings) {
-                    propThresholdList.add(Integer.parseInt(s));
+                for (String s : strings) {
+                    s = s.trim();
+                    if (s.equalsIgnoreCase("i")) { //interpolation mode => -1
+                        propThresholdList.add(-1);
+                    } else {
+                        int value = Integer.parseInt(s);
+                        value = value > 100 ? 100 : value;
+                        value = value < 0 ? 0 : value;
+                        propThresholdList.add(value);
+                    }
                 }
                 AstericsErrorHandling.instance.reportInfo(this, String.format("Setting thresholdList to %s", propThresholdList.toString()));
             }
@@ -281,16 +289,64 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
 
         lastValue = originalValue;
         double out = (value - propInMin) / (propInMax - propInMin) * (propOutMax - propOutMin) + propOutMin;
-        if (propStepMode && out != propOutMin && !propThresholdList.isEmpty()) {
+        if (propStepMode && !propThresholdList.isEmpty()) {
             double rangeOut = (propOutMax - propOutMin);
             double step = rangeOut / propThresholdList.size();
-            int index = (int) Math.floor(out / step);
-            if (index >= propThresholdList.size()) {
-                index = propThresholdList.size() - 1;
+
+            int index = (int) (Math.ceil(out / step) - 1);
+            index = index < 0 ? 0 : index;
+            index = index >= propThresholdList.size() ? propThresholdList.size() - 1 : index;
+            double percentage = propThresholdList.get(index);
+            if (percentage == -1) { //interpolate mode
+                int prevPercentage = getPrevRealPercentage(index); //40
+                int nextPercentage = getNextRealPercentage(index); //100
+                double interpolationPrecentRange = getInterpolationRange(index) * 1.0d / propThresholdList.size(); // 2/7
+                double minInterpolationRangePrecent = getMinInterpolationRangeIndex(index) * 1.0d / propThresholdList.size(); //5/7 ca. 70%
+                double maxInterpolationRangePrecent = minInterpolationRangePrecent + interpolationPrecentRange; //ca. 70% + 2/7 = 100%
+                double valuePercent = (out - propOutMin) / rangeOut; //z.B. 80%
+                double stepPercentage = ((valuePercent - minInterpolationRangePrecent) / (maxInterpolationRangePrecent - minInterpolationRangePrecent)); //(80 - 70) / 30% = 1/3
+                percentage = stepPercentage * (nextPercentage - prevPercentage) + prevPercentage; //1/3 * 60 + 40 = 20 + 40 = 60
             }
-            out = (rangeOut * propThresholdList.get(index) / 100) + propOutMin;
+            out = (rangeOut * percentage / 100) + propOutMin;
         }
         opOut.sendData(out);
+    }
+    
+    private int getNextRealPercentage(int index) {
+        for (int i = index; i < propThresholdList.size(); i++) {
+            if (propThresholdList.get(i) >= 0) {
+                return propThresholdList.get(i);
+            }
+        }
+        return 100;
+    }
+
+    private int getPrevRealPercentage(int index) {
+        for (int i = index; i >= 0; i--) {
+            if (propThresholdList.get(i) >= 0) {
+                return propThresholdList.get(i);
+            }
+        }
+        return 0;
+    }
+
+    private int getInterpolationRange(int index) {
+        int count = 1;
+        for (int i = index + 1; i < propThresholdList.size() && propThresholdList.get(i) == -1; i++) {
+            count ++;
+        }
+        for (int i = index-1; i >= 0 && propThresholdList.get(i) == -1; i--) {
+            count ++;
+        }
+        return count;
+    }
+
+    private int getMinInterpolationRangeIndex(int index) {
+        int returnIndex = index;
+        for (int i = index-1; i >= 0 && propThresholdList.get(i) == -1; i--) {
+            returnIndex = i;
+        }
+        return returnIndex;
     }
 
     /**
