@@ -13,7 +13,13 @@
 int SENSORS[CHANNELS] = {A3, A0, A2, A1};
 int channel_values[CHANNELS] = {0, 0, 0, 0};
 const int N_AVERAGE = 10;
-long lastPrint = 0;
+
+int runmode = 1;
+char receiveBuffer[MAX_INPUT_LENGTH + 1];
+int lastPosX = -1;
+int lastPosY = -1;
+unsigned long lastrun = 0;
+unsigned long lastread = 0;
 
 typedef struct {
   long sum;
@@ -40,20 +46,11 @@ void setup() {
   //pinMode(STARTBUTTON, INPUT_PULLUP);
   Keyboard.begin();
   Mouse.begin();
-  //Mouse.screenSize(1920, 1080);
-  Mouse.screenSize(3840, 1080);
+  Mouse.screenSize(1920, 1080);
+  //Mouse.screenSize(3840, 1080);
   analogReadResolution(12);
   delay(2);
 }
-
-int value;
-int cnt = 0;
-int runmode = 1;
-char receiveBuffer[MAX_INPUT_LENGTH + 1];
-int lastPosX = -1;
-int lastPosY = -1;
-unsigned long lastrun = 0;
-unsigned long lastread = 0;
 
 // the loop routine runs over and over again forever:
 void loop() {
