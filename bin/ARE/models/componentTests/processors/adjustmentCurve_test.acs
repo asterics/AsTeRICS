@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\adjustmentCurve_test.acs_2017_12_14_11_44" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\componentTests\processors\adjustmentCurve_test.acs_2019_3_6_13_9" version="20130320">
   <components>
     <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
       <description>Signal Generator</description>
@@ -27,12 +27,12 @@
         <inputPort portTypeID="in">
           <properties />
         </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
         <inputPort portTypeID="curveName">
           <properties />
         </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="filename" value="curve1" />
@@ -44,6 +44,8 @@
         <property name="mode" value="1" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Demo AdjustmentCurve" />
+        <property name="operationMode" value="0" />
+        <property name="curvePoints" value="(10,0),(10,10),(100,100)" />
       </properties>
       <layout>
         <posX>303</posX>
