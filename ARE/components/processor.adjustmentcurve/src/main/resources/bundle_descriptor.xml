@@ -66,7 +66,7 @@
                       type="integer"
                       value="1"
                       combobox="clip to min and max//autoupdate min and max"
-                      description="how to deal with input values exceeding min or max"/> 
+                      description="how to deal with input values exceeding min or max (GUI related only)"/>
             <property name="fontSize"
                       type="integer"
                       value="14"
