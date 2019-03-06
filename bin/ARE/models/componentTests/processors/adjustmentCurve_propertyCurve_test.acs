@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\componentTests\processors\adjustmentCurve_propertyCurve_test.acs_2019_3_6_13_23" version="20130320">
+  <components>
+    <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="20" />
+        <property name="waveForm" value="2" />
+        <property name="frequency" value="0.2" />
+        <property name="amplitude" value="10" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>385</posX>
+        <posY>303</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.Original" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>582</posX>
+        <posY>155</posY>
+      </layout>
+      <gui>
+        <posX>197</posX>
+        <posY>676</posY>
+        <width>5812</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="AdjustmentCurve.Percentage" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="mycurve" />
+        <property name="displayGui" value="False" />
+        <property name="inMin" value="0" />
+        <property name="inMax" value="10" />
+        <property name="outMin" value="0" />
+        <property name="outMax" value="100" />
+        <property name="mode" value="1" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="signal mapper" />
+        <property name="operationMode" value="1" />
+        <property name="curvePoints" value="(10,0),(10,5),(70,5),(90,100)" />
+      </properties>
+      <layout>
+        <posX>582</posX>
+        <posY>323</posY>
+      </layout>
+      <gui>
+        <posX>4072</posX>
+        <posY>1787</posY>
+        <width>4375</width>
+        <height>4556</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>761</posX>
+        <posY>334</posY>
+      </layout>
+      <gui>
+        <posX>197</posX>
+        <posY>1787</posY>
+        <width>5812</width>
+        <height>1778</height>
+      </gui>
+    </component>
+    <component id="AdjustmentCurve.Absolute" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="mycurve" />
+        <property name="displayGui" value="False" />
+        <property name="inMin" value="0" />
+        <property name="inMax" value="10" />
+        <property name="outMin" value="0" />
+        <property name="outMax" value="100" />
+        <property name="mode" value="1" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="signal mapper" />
+        <property name="operationMode" value="2" />
+        <property name="curvePoints" value="(1,0),(1,10),(7,10),(9,200)" />
+      </properties>
+      <layout>
+        <posX>585</posX>
+        <posY>492</posY>
+      </layout>
+      <gui>
+        <posX>4072</posX>
+        <posY>1787</posY>
+        <width>4375</width>
+        <height>4556</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.1.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>756</posX>
+        <posY>500</posY>
+      </layout>
+      <gui>
+        <posX>197</posX>
+        <posY>3676</posY>
+        <width>5812</width>
+        <height>1778</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.Original" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="AdjustmentCurve.Percentage" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="AdjustmentCurve.Percentage" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="AdjustmentCurve.Absolute" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="AdjustmentCurve.Absolute" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.1.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6750</width>
+      <height>6000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
