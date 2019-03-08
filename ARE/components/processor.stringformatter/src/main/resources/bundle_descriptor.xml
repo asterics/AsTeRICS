@@ -67,11 +67,27 @@
 			<property name="defaultIn4Integer"
 				type="integer"
 				value="0"
-				description="The default value of in4Integer. Used if there is no input port value."/>				
+				description="The default value of in4Integer. Used if there is no input port value."/>
 			<property name="sendOnlyByEvent"
 				type="boolean"
-				value="0"
-				description="Only sends the value of the formatted string, if the event sendFormattedStr is received."/>				
+				value="false"
+				description="Only sends the value of the formatted string, if the event sendFormattedStr is received."/>
+			<property name="port1ToDefaultAfterSend"
+					type="boolean"
+					value="false"
+					description="If true, input port 1 is reverted to default value, after value was sent."/>
+			<property name="port2ToDefaultAfterSend"
+					  type="boolean"
+					  value="false"
+					  description="If true, input port 2 is reverted to default value, after value was sent."/>
+			<property name="port3ToDefaultAfterSend"
+					  type="boolean"
+					  value="false"
+					  description="If true, input port 3 is reverted to default value, after value was sent."/>
+			<property name="port4ToDefaultAfterSend"
+					  type="boolean"
+					  value="false"
+					  description="If true, input port 4 is reverted to default value, after value was sent."/>
         </properties>
 
     </componentType>
