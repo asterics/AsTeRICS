@@ -6,7 +6,7 @@
                    canonical_name="eu.asterics.component.sensor.myocontroller.MyocontrollerInstance">
         <type subtype="Bioelectric Measurement">sensor</type>
         <singleton>false</singleton>
-        <description>This plugin receives a packet stream from the OttoBock Myocontroller device</description>
+        <description>This plugin receives a packet stream from the Myocontroller device</description>
         <ports>
 			<outputPort id="Channel1">
 				<description>output port for channel1 data</description>
