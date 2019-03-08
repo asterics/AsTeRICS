@@ -28,12 +28,10 @@ package eu.asterics.component.processor.averager;
 
 import java.util.LinkedList;
 
+import eu.asterics.mw.model.runtime.*;
 import org.apache.commons.math3.stat.StatUtils;
 
 import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 
@@ -57,13 +55,15 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
     private IRuntimeOutputPort opOutput = new OutputPort1();
 
     private int propBufferSize = DEFAULT_BUFFER_SIZE;
+    private boolean propEnabled = true;
     private int propMode = 0;
+    private int propAutoReenableTime = 0;
 
     private final LinkedList<Double> buffer = new LinkedList<Double>();
     private long lastUpdate = 0;
     private double accu = 0;
-
     private double sum = 0;
+    private long disableTime = 0;
 
     /**
      * The class constructor.
@@ -105,6 +105,37 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
     }
 
     /**
+     * returns an Event Listener Port.
+     *
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
+     */
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if ("enablePlugin".equalsIgnoreCase(eventPortID)) {
+            return elpEnablePlugin;
+        }
+        if ("disablePlugin".equalsIgnoreCase(eventPortID)) {
+            return elpDisablePlugin;
+        }
+
+        return null;
+    }
+
+    private final IRuntimeEventListenerPort elpEnablePlugin = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            propEnabled = true;
+        }
+    };
+
+    private final IRuntimeEventListenerPort elpDisablePlugin = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            propEnabled = false;
+            disableTime = System.currentTimeMillis();
+        }
+    };
+
+    /**
      * returns the value of the given property.
      * 
      * @param propertyName
@@ -113,10 +144,14 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public Object getRuntimePropertyValue(String propertyName) {
-        if ("bufferSize".equalsIgnoreCase(propertyName)) {
+        if ("enabled".equalsIgnoreCase(propertyName)) {
+            return propEnabled;
+        } else if ("bufferSize".equalsIgnoreCase(propertyName)) {
             return propBufferSize;
         } else if ("mode".equalsIgnoreCase(propertyName)) {
             return propMode;
+        } else if ("autoReenableTime".equalsIgnoreCase(propertyName)) {
+            return propAutoReenableTime;
         } else {
             return null;
         }
@@ -132,7 +167,11 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public synchronized Object setRuntimePropertyValue(String propertyName, Object newValue) {
-        if ("bufferSize".equalsIgnoreCase(propertyName)) {
+        if ("enabled".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propEnabled;
+            propEnabled = Boolean.parseBoolean((String) newValue);
+            return oldValue;
+        } else if ("bufferSize".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propBufferSize;
 
             if (newValue != null) {
@@ -165,6 +204,10 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
                 }
             }
             return oldValue;
+        }  else if ("autoReenableTime".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propAutoReenableTime;
+            propAutoReenableTime = Integer.parseInt(newValue.toString());
+            return oldValue;
         } else {
             return null;
         }
@@ -177,6 +220,12 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
      * samples are summed but not divided
      */
     private synchronized void process(final double in) {
+        if (!propEnabled && buffer.size() == propBufferSize) {
+            if (System.currentTimeMillis() - disableTime < propAutoReenableTime || propAutoReenableTime == 0) {
+                return;
+            }
+            propEnabled = true;
+        }
         if (propMode == MODE_AVERAGE) {
             buffer.addFirst(in);
             sum += in;
