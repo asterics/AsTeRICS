@@ -48,6 +48,14 @@
 				type="integer"
 				value="57600"
 				description="The baud rate for the P2 packet stream"/>
+			<property name="useFile"
+				type="boolean"
+				value="false"
+				description="If true, instead of the COM-port the given file is used as datasource"/>
+			<property name="filename"
+				type="string"
+				value=""
+				description="The filename to use, if 'useFile' is true (path relative to folder bin/ARE)."/>
 
         </properties>
 

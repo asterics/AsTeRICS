@@ -27,7 +27,7 @@ package eu.asterics.component.sensor.myocontroller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
+import java.net.URISyntaxException;
 
 import eu.asterics.mw.cimcommunication.CIMPortController;
 import eu.asterics.mw.cimcommunication.CIMPortManager;
@@ -35,31 +35,31 @@ import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.*;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 
 /**
- * 
  * Interfaces with the Myocontroller data acquisition device via bluetooth / Com port
- * 
- * 
- * 
+ *
  * @author Chris
  */
 public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
-    public final int NUMBER_OF_CHANNELS = 6;
-    public final String OP_CH_PREFIX = "Channel";
-    public final IRuntimeOutputPort[] opChannels = new DefaultRuntimeOutputPort[NUMBER_OF_CHANNELS];
+    private static final int NUMBER_OF_CHANNELS = 6;
+    private static final String OP_CH_PREFIX = "Channel";
+    private static final IRuntimeOutputPort[] opChannels = new DefaultRuntimeOutputPort[NUMBER_OF_CHANNELS];
 
+    String propComPort = "COM4";
+    int propBaudRate = 57600;
+    boolean propUseFile = false;
+    String propFilename = "";
+
+    // declare member variables here
     private InputStream in = null;
     private Thread readerThread = null;
     private boolean running = false;
-    String propComPort = "COM4";
-    int propBaudRate = 57600;
-
-    // declare member variables here
-    CIMPortController portController = null;
-
-    String ARCHIVEFILE = "output_2019-03-06_16-55-22.log";
-    RandomAccessFile filePointerInstance = null;
+    private CIMPortController portController = null;
+    private int parseState = 0;
+    private int parsedChannel = 0;
+    private int parsedValue = 0;
 
     /**
      * The class constructor.
@@ -142,6 +142,12 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
         if ("baudRate".equalsIgnoreCase(propertyName)) {
             return propBaudRate;
         }
+        if ("useFile".equalsIgnoreCase(propertyName)) {
+            return propUseFile;
+        }
+        if ("filename".equalsIgnoreCase(propertyName)) {
+            return propFilename;
+        }
 
         return null;
     }
@@ -166,75 +172,88 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
             propBaudRate = Integer.parseInt(newValue.toString());
             return oldValue;
         }
+        if ("useFile".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propUseFile;
+            propUseFile = Boolean.parseBoolean(newValue.toString());
+            return oldValue;
+        }
+        if ("filename".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propFilename;
+            propFilename = newValue.toString();
+            return oldValue;
+        }
 
         return null;
     }
 
     /**
-     * Called by the raw port controller if data is available
+     * method using to parse the arriving data (either from COM-port or from file)
      * 
-     * @param ev
-     *            a CIMEvent which can be ignored as it is only needed due to the interface specification
+     * @param data
+     *            the last received data byte
      */
+    private void handlePacketReceived(byte data) {
 
-    int state = 0;
-    int chn = 0;
-    int actvalue = 0;
-
-    public void handlePacketReceived(byte data) {
-
-        switch (state) {
+        switch (parseState) {
         case 0:
-            state = data == 'S' ? state + 1 : 0;
+            parseState = data == 'S' ? parseState + 1 : 0;
             break;
         case 1:
-            state = data == 'T' ? state + 1 : 0;
+            parseState = data == 'T' ? parseState + 1 : 0;
             break;
         case 2:
-            state = data == 'A' ? state + 1 : 0;
+            parseState = data == 'A' ? parseState + 1 : 0;
             break;
         case 3:
-            state = data == 0x0c ? state + 1 : 0; // discard the shorter (8) packages!
+            parseState = data == 0x0c ? parseState + 1 : 0; // discard the shorter (8) packages!
             break;
         case 13:
-            chn = (int) data;
-            state++;
+            parsedChannel = (int) data;
+            parseState++;
             break;
         case 15:
-            actvalue = ((int) data) & 0xff;
-            state++;
+            parsedValue = ((int) data) & 0xff;
+            parseState++;
             break;
         case 16:
-            actvalue |= ((((int) data) & 0xff) << 8);
-            if (chn < NUMBER_OF_CHANNELS) {
-                opChannels[chn].sendData(ConversionUtils.doubleToBytes((float) actvalue));
+            parsedValue |= ((((int) data) & 0xff) << 8);
+            if (parsedChannel < NUMBER_OF_CHANNELS) {
+                opChannels[parsedChannel].sendData(ConversionUtils.doubleToBytes((float) parsedValue));
             }
-            state = 0; // done ! look for next packet !
+            parseState = 0; // done ! look for next packet !
             break;
         default:
-            state++;
+            parseState++;
         }
     }
 
-    /**
-     * called when model is started.
-     */
-    @Override
-    public void start() {
+    private InputStream getFileInputStream() {
+        try {
+            return ResourceRegistry.getInstance().getResourceInputStream(propFilename, ResourceRegistry.RES_TYPE.DATA);
+        } catch (IOException | URISyntaxException e) {
+            AstericsErrorHandling.instance.getLogger().info("Error reading archive file  " + propFilename);
+        }
+        return null;
+    }
+
+    private InputStream getComportInputStream() {
         portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
-
         if (portController == null) {
-            AstericsErrorHandling.instance.reportInfo(this,
-                    "Myocontroller: Could not construct raw port controller, please verify that the COM port is valid. Trying Archive File.");
+            AstericsErrorHandling.instance.reportError(this,
+                    "Myocontroller: Could not construct raw port controller, please verify that the COM port is valid.");
+            return null;
+        }
+        return portController.getInputStream();
+    }
 
-            try {
-                filePointerInstance = new RandomAccessFile(ARCHIVEFILE, "r");
-            } catch (IOException e) {
-                AstericsErrorHandling.instance.getLogger().info("Error reading archive file  " + ARCHIVEFILE);
-            }
-
+    private void startInternal() {
+        if (!propUseFile) {
+            in = getComportInputStream();
         } else {
-            in = portController.getInputStream();
+            in = getFileInputStream();
+        }
+        if (in == null) {
+            return;
         }
 
         readerThread = new Thread(new Runnable() {
@@ -243,34 +262,22 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
             public void run() {
                 running = true;
                 while (running) {
-
-                    if (portController != null) {
-                        try {
-                            if (in.available() > 0) {
+                    try {
+                        if (!propUseFile) { // COM-port
+                            while (in.available() > 0) {
                                 handlePacketReceived((byte) in.read());
-                            } else {
-                                Thread.sleep(10);
                             }
-                        } catch (InterruptedException ie) {
-                            ie.printStackTrace();
-                        } catch (IOException io) {
-                            io.printStackTrace();
+                            Thread.sleep(10);
+                        } else { // Archive File
+                            for (int z = 0; z < 20; z++) {
+                                handlePacketReceived((byte) in.read());
+                            }
+                            Thread.sleep(2); // gives about 500 packets / second
                         }
-                    } else { // Archive File
-
-                        try {
-                            for (int z = 0; z < 20; z++)
-                                handlePacketReceived((byte) filePointerInstance.read());
-                        } catch (IOException e) {
-                            AstericsErrorHandling.instance.getLogger().info("Could not read from file");
-                            // filePointerInstance.seek(1); // go to the first position in the file
-                        }
-                        try {
-                            Thread.sleep(2);
-                        } // gives about 500 packets / second
-                        catch (InterruptedException e) {
-                        }
-                        ;
+                    } catch (IOException e) {
+                        String msg = String.format("MyoController: Could not read from %s.", propUseFile ? "file" : "COM-port");
+                        AstericsErrorHandling.instance.getLogger().info(msg);
+                    } catch (InterruptedException e) {
                     }
                 }
             }
@@ -279,17 +286,38 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
         super.start();
     }
 
-    /**
-     * called when model is paused.
-     */
-    @Override
-    public void pause() {
+    private void stopInternal() {
+        running = false;
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException e) {
+                AstericsErrorHandling.instance.reportError(this, "Myocontroller: error closing inputStream");
+            }
+            in = null;
+        }
         if (portController != null) {
             CIMPortManager.getInstance().closeRawConnection(propComPort);
             portController = null;
             AstericsErrorHandling.instance.reportInfo(this, "Myocontroller raw port controller closed");
         }
-        running = false;
+    }
+
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        startInternal();
+        super.start();
+    }
+
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        stopInternal();
         super.pause();
     }
 
@@ -298,12 +326,7 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void resume() {
-        portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
-        if (portController == null) {
-            AstericsErrorHandling.instance.reportError(this,
-                    "Could not construct Myocontroller raw port controller, please make sure that the COM port is valid.");
-        }
-        readerThread.start();
+        startInternal();
         super.resume();
     }
 
@@ -312,19 +335,7 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void stop() {
+        stopInternal();
         super.stop();
-        running = false;
-
-        if (portController != null) {
-            CIMPortManager.getInstance().closeRawConnection(propComPort);
-            portController = null;
-            AstericsErrorHandling.instance.reportInfo(this, "Myocontroller connection closed");
-        } else {
-            try {
-                filePointerInstance.close();
-            } catch (IOException e) {
-                AstericsErrorHandling.instance.getLogger().severe("Error closing file: " + ARCHIVEFILE);
-            }
-        }
     }
 }

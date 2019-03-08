@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\myocontroller_test.acs_2019_3_8_2_18" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\componentTests\sensors\Myocontroller_test.acs_2019_3_8_13_8" version="20130320">
   <components>
     <component id="myocontroller.1" type_id="asterics.myocontroller">
       <description>This plugin receives a packet stream from the OttoBock Myocontroller device</description>
@@ -24,12 +24,14 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="ComPort" value="COM4" />
+        <property name="ComPort" value="COM123" />
         <property name="BaudRate" value="57600" />
+        <property name="useFile" value="True" />
+        <property name="filename" value="output_2019-03-06_16-55-22.log" />
       </properties>
       <layout>
-        <posX>0</posX>
-        <posY>132</posY>
+        <posX>307</posX>
+        <posY>214</posY>
       </layout>
     </component>
     <component id="Oscilloscope.1.2" type_id="asterics.Oscilloscope">
@@ -54,8 +56,8 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>133</posX>
-        <posY>0</posY>
+        <posX>440</posX>
+        <posY>82</posY>
       </layout>
       <gui>
         <posX>260</posX>
@@ -86,8 +88,8 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>251</posX>
-        <posY>81</posY>
+        <posX>558</posX>
+        <posY>163</posY>
       </layout>
       <gui>
         <posX>260</posX>
@@ -118,8 +120,8 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>271</posX>
-        <posY>235</posY>
+        <posX>578</posX>
+        <posY>317</posY>
       </layout>
       <gui>
         <posX>260</posX>
@@ -150,8 +152,8 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>139</posX>
-        <posY>307</posY>
+        <posX>446</posX>
+        <posY>389</posY>
       </layout>
       <gui>
         <posX>197</posX>
@@ -177,8 +179,8 @@
         <property name="time" value="1000" />
       </properties>
       <layout>
-        <posX>419</posX>
-        <posY>40</posY>
+        <posX>726</posX>
+        <posY>122</posY>
       </layout>
     </component>
     <component id="TextDisplay.1" type_id="asterics.TextDisplay">
@@ -197,8 +199,8 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>566</posX>
-        <posY>46</posY>
+        <posX>873</posX>
+        <posY>128</posY>
       </layout>
       <gui>
         <posX>7885</posX>
