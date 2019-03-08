@@ -56,14 +56,6 @@
                       type="double"
                       value="10.0"
                       description="Defines the maximal value of the output range"/>
-            <property name="stepMode"
-                      type="boolean"
-                      value="false"
-                      description="If true, stepMode is activated and stepwise output according to property 'thresholdList' is generated."/>
-            <property name="thresholdList"
-                      type="string"
-                      value="[10,50,90]"
-                      description="If 'stepMode' is true, the given list of values define a stepwise output function. The output range is split up to [n] parts and each value defines the percentage of the output range that is outputted for the corresponding part."/>
         </properties>
         
     </componentType>

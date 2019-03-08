@@ -25,10 +25,6 @@
 
 package eu.asterics.component.processor.signaltranslation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
@@ -40,14 +36,11 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- * SignalTranslationInstance incorporates a processor which transforms a signal
- * from within one range of values on the input to a different value range on
- * the output proportionally. The processor provides an translated output signal
- * for each input. It also incorporates two input ports which allow setting the
+ * SignalTranslationInstance incorporates a processor which transforms a signal from within one range of values on the input to a different value range on the
+ * output proportionally. The processor provides an translated output signal for each input. It also incorporates two input ports which allow setting the
  * minimum and maximum of the input value range.
  * 
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
- *         Time: 02:22:08 PM
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010 Time: 02:22:08 PM
  */
 public class SignalTranslationInstance extends AbstractRuntimeComponentInstance {
     private final String NAME_INPUT = "in";
@@ -63,8 +56,6 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     // properties
     double propInMin, propInMax;
     double propOutMin, propOutMax;
-    boolean propStepMode = false;
-    List<Integer> propThresholdList = Arrays.asList(10, 50, 90);
 
     // ports
     private InputPort ipIn = new InputPort(this);
@@ -72,13 +63,12 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     private final IRuntimeEventTriggererPort etpExitRangeBelow = new DefaultRuntimeEventTriggererPort();
     private final IRuntimeEventTriggererPort etpExitRangeAbove = new DefaultRuntimeEventTriggererPort();
     private final IRuntimeEventTriggererPort etpEnterRange = new DefaultRuntimeEventTriggererPort();
-    
+
     private boolean inRange = false;
     private Double lastValue = null;
 
     /**
-     * An input port implementation that will use incoming data to set the
-     * minimum input value of the component
+     * An input port implementation that will use incoming data to set the minimum input value of the component
      */
     private final IRuntimeInputPort ipSetMin = new DefaultRuntimeInputPort() {
         @Override
@@ -90,8 +80,7 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     };
 
     /**
-     * An input port implementation that will use incoming data to set the
-     * maximum input value of the component
+     * An input port implementation that will use incoming data to set the maximum input value of the component
      */
     private final IRuntimeInputPort ipSetMax = new DefaultRuntimeInputPort() {
         @Override
@@ -181,10 +170,6 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
             return propOutMin;
         } else if (PROPERTY_KEY_OUT_MAX.equalsIgnoreCase(propertyName)) {
             return propOutMax;
-        } else if ("stepMode".equalsIgnoreCase(propertyName)) {
-            return propStepMode;
-        } else if ("thresholdList".equalsIgnoreCase(propertyName)) {
-            return propThresholdList.toString();
         }
         return null;
     }
@@ -219,28 +204,9 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
             } else if (PROPERTY_KEY_OUT_MAX.equalsIgnoreCase(propertyName)) {
                 propOutMax = Double.parseDouble(newValue.toString());
                 AstericsErrorHandling.instance.reportInfo(this, String.format("Setting out_max to %f", propOutMax));
-            } else if ("stepMode".equalsIgnoreCase(propertyName)) {
-                propStepMode = Boolean.parseBoolean(newValue.toString());
-            } else if ("thresholdList".equalsIgnoreCase(propertyName)) {
-                propThresholdList = new ArrayList<>();
-                String baseString = newValue.toString().replace("[", "").replace("]", "");
-                String[] strings = baseString.split(",");
-                for (String s : strings) {
-                    s = s.trim();
-                    if (s.equalsIgnoreCase("i")) { //interpolation mode => -1
-                        propThresholdList.add(-1);
-                    } else {
-                        int value = Integer.parseInt(s);
-                        value = value > 100 ? 100 : value;
-                        value = value < 0 ? 0 : value;
-                        propThresholdList.add(value);
-                    }
-                }
-                AstericsErrorHandling.instance.reportInfo(this, String.format("Setting thresholdList to %s", propThresholdList.toString()));
             }
         } catch (NumberFormatException nfe) {
-            AstericsErrorHandling.instance.reportInfo(this,
-                    "Invalid property value for " + propertyName + ": " + newValue);
+            AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
         }
         return null;
     }
@@ -289,69 +255,11 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
 
         lastValue = originalValue;
         double out = (value - propInMin) / (propInMax - propInMin) * (propOutMax - propOutMin) + propOutMin;
-        if (propStepMode && !propThresholdList.isEmpty()) {
-            double rangeOut = (propOutMax - propOutMin);
-            double step = rangeOut / propThresholdList.size();
-
-            int index = (int) (Math.ceil(out / step) - 1);
-            index = index < 0 ? 0 : index;
-            index = index >= propThresholdList.size() ? propThresholdList.size() - 1 : index;
-            double percentage = propThresholdList.get(index);
-            if (percentage == -1) { //interpolate mode
-                int prevPercentage = getPrevRealPercentage(index); //40
-                int nextPercentage = getNextRealPercentage(index); //100
-                double interpolationPrecentRange = getInterpolationRange(index) * 1.0d / propThresholdList.size(); // 2/7
-                double minInterpolationRangePrecent = getMinInterpolationRangeIndex(index) * 1.0d / propThresholdList.size(); //5/7 ca. 70%
-                double maxInterpolationRangePrecent = minInterpolationRangePrecent + interpolationPrecentRange; //ca. 70% + 2/7 = 100%
-                double valuePercent = (out - propOutMin) / rangeOut; //z.B. 80%
-                double stepPercentage = ((valuePercent - minInterpolationRangePrecent) / (maxInterpolationRangePrecent - minInterpolationRangePrecent)); //(80 - 70) / 30% = 1/3
-                percentage = stepPercentage * (nextPercentage - prevPercentage) + prevPercentage; //1/3 * 60 + 40 = 20 + 40 = 60
-            }
-            out = (rangeOut * percentage / 100) + propOutMin;
-        }
         opOut.sendData(out);
-    }
-    
-    private int getNextRealPercentage(int index) {
-        for (int i = index; i < propThresholdList.size(); i++) {
-            if (propThresholdList.get(i) >= 0) {
-                return propThresholdList.get(i);
-            }
-        }
-        return 100;
-    }
-
-    private int getPrevRealPercentage(int index) {
-        for (int i = index; i >= 0; i--) {
-            if (propThresholdList.get(i) >= 0) {
-                return propThresholdList.get(i);
-            }
-        }
-        return 0;
-    }
-
-    private int getInterpolationRange(int index) {
-        int count = 1;
-        for (int i = index + 1; i < propThresholdList.size() && propThresholdList.get(i) == -1; i++) {
-            count ++;
-        }
-        for (int i = index-1; i >= 0 && propThresholdList.get(i) == -1; i--) {
-            count ++;
-        }
-        return count;
-    }
-
-    private int getMinInterpolationRangeIndex(int index) {
-        int returnIndex = index;
-        for (int i = index-1; i >= 0 && propThresholdList.get(i) == -1; i--) {
-            returnIndex = i;
-        }
-        return returnIndex;
     }
 
     /**
-     * An input port implementation which will initiate the translation of an
-     * input value to an output value in another value range
+     * An input port implementation which will initiate the translation of an input value to an output value in another value range
      * 
      * @author weissch
      *
@@ -383,8 +291,7 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     }
 
     /**
-     * An output port implementation which will transfer doubles to the next
-     * component
+     * An output port implementation which will transfer doubles to the next component
      * 
      * @author weissch
      *
