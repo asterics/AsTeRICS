@@ -66,7 +66,7 @@
                       type="integer"
                       value="1"
                       combobox="clip to min and max//autoupdate min and max"
-                      description="how to deal with input values exceeding min or max"/> 
+                      description="how to deal with input values exceeding min or max (GUI related only)"/>
             <property name="fontSize"
                       type="integer"
                       value="14"
@@ -74,7 +74,16 @@
             <property name="caption"
                       type="string"
                       value="signal mapper"
-                      description="caption of the curve window"/>                                                       
+                      description="caption of the curve window"/>
+            <property name="operationMode"
+                      type="integer"
+                      value="0"
+                      combobox="use file and GUI//use property curvePoints (percent values)//use property curvePoints (absolute values)"
+                      description="operation mode, either use file and GUI or property curvePoints"/>
+            <property name="curvePoints"
+                      type="string"
+                      value="(10,0),(10,10),(100,100)"
+                      description="curvePoints (x/y) for operationMode 'curve points from property'"/>
         </properties>
         <gui>
             <width>5000</width>
