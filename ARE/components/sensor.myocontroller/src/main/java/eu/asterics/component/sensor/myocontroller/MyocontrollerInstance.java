@@ -218,7 +218,7 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
         case 16:
             parsedValue |= ((((int) data) & 0xff) << 8);
             if (parsedChannel >= 0 && parsedChannel < NUMBER_OF_CHANNELS) {
-                opChannels[parsedChannel].sendData(ConversionUtils.doubleToBytes((float) parsedValue));
+                opChannels[parsedChannel].sendData(ConversionUtils.intToBytes(parsedValue));
             }
             parseState = 0; // done ! look for next packet !
             break;
