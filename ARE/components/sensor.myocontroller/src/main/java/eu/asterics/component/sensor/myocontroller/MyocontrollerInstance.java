@@ -185,28 +185,16 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
 
         switch (state) {
         case 0:
-            if (data == 'S') state++;
+            state = data == 'S' ? state + 1 : 0;
             break;
         case 1:
-            if (data == 'T') {
-                state++;
-            } else {
-                state = 0;
-            }
+            state = data == 'T' ? state + 1 : 0;
             break;
         case 2:
-            if (data == 'A') {
-                state++;
-            } else {
-                state = 0;
-            }
+            state = data == 'A' ? state + 1 : 0;
             break;
         case 3:
-            if (data == 0x0c) {
-                state++;
-            } else {
-                state = 0; // discard the shorter (8) packages!
-            }
+            state = data == 0x0c ? state + 1 : 0; // discard the shorter (8) packages!
             break;
         case 13:
             chn = (int) data;
@@ -218,9 +206,6 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
             break;
         case 16:
             actvalue |= ((((int) data) & 0xff) << 8);
-            state++;
-            break;
-        case 18:
             if (chn < NUMBER_OF_CHANNELS) {
                 opChannels[chn].sendData(ConversionUtils.doubleToBytes((float) actvalue));
             }
