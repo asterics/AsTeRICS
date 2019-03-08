@@ -1,0 +1,27 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Myocontroller</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Myocontroller</H1>
+		<span class="componentType">Component Type: Sensor (Subcategory: Bioelectric Measurement)</span>
+		<p>This component provides an interface to the Myocontroller (OttoBock), which is used to transmit EMG signals to the computer via Bluetooth. Data can be either provided by a COM Port or from a recorded logfile.</p>
+		<figure>
+			<img class="image" src="img/Myocontroller.jpg" alt="Screenshot: Myocontroller plugin" title="Screenshot: Myocontroller plugin" />
+			<figcaption>Myocontroller plugin</figcaption>
+		</figure>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>Channel1 to Channel6 [integer]:</STRONG> Each output corresponds to the sampled data from its corresponding channel. The values range for 0 to 65535 (16 bit integer).</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>COMPort [string]:</STRONG> The name of the COM port, for example COM2 or COM17.</li>
+			<li><STRONG>Baudrate [integer]:</STRONG> The baud rate for the transmission. Standard is 57600.</li>
+			<li><STRONG>useFile [boolean]:</STRONG> If false (default) the COM port is used for communication, if true the file defined by property 'filename' is opened and provides the data.</li>
+			<li><STRONG>filename [string]:</STRONG> The filename/path of the file to open, if 'useFile' is true. The path is relative to the bin/ARE/data folder</li>
+		</ul>
+	</BODY>
+</HTML>
