@@ -25,20 +25,14 @@
 
 package eu.asterics.component.sensor.myocontroller;
 
-import java.io.File;
-import java.io.RandomAccessFile;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
+import java.io.RandomAccessFile;
 
 import eu.asterics.mw.cimcommunication.CIMPortController;
 import eu.asterics.mw.cimcommunication.CIMPortManager;
 import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.*;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
@@ -66,12 +60,12 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
 
     String ARCHIVEFILE = "output_2019-03-06_16-55-22.log";
     RandomAccessFile filePointerInstance = null;
-    
+
     /**
      * The class constructor.
      */
     public MyocontrollerInstance() {
-        for (int i = 0; i < NUMBER_OF_CHANNELS; i++) 
+        for (int i = 0; i < NUMBER_OF_CHANNELS; i++)
             opChannels[i] = new DefaultRuntimeOutputPort();
     }
 
@@ -96,10 +90,10 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
      * @return the output port or null if not found
      */
     @Override
-    public IRuntimeOutputPort getOutputPort(String portID) { 
+    public IRuntimeOutputPort getOutputPort(String portID) {
         String s;
         for (int i = 0; i < NUMBER_OF_CHANNELS; i++) {
-            s = OP_CH_PREFIX + (i+1);
+            s = OP_CH_PREFIX + (i + 1);
             if (s.equalsIgnoreCase(portID)) {
                 return opChannels[i];
             }
@@ -180,38 +174,60 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
      * Called by the raw port controller if data is available
      * 
      * @param ev
-     *            a CIMEvent which can be ignored as it is only needed due to
-     *            the interface specification
+     *            a CIMEvent which can be ignored as it is only needed due to the interface specification
      */
 
     int state = 0;
     int chn = 0;
-    int actvalue=0;
+    int actvalue = 0;
 
     public void handlePacketReceived(byte data) {
 
         switch (state) {
-            case 0: if (data == 'S') state++;
-                    break;
-            case 1: if (data == 'T') state++; else state = 0;
-                    break;
-            case 2: if (data == 'A') state++; else state = 0;
-                    break;
-            case 3: if (data == 0x0c) state++; else state = 0;   // discard the shorter (8) packages!
-                    break;
-            case 13: chn=(int)data;  state++;
-                     break;
-            case 15: actvalue = ((int) data) & 0xff; state++;
-                     break;
-            case 16: actvalue |= ((((int) data) & 0xff) << 8);
-                     state++;
-                     break;
-            case 18: if (chn < NUMBER_OF_CHANNELS)
-                         opChannels[chn].sendData(ConversionUtils.doubleToBytes((float)actvalue));
-                     state = 0; // done ! look for next packet !
-                     break;
-            default:
-                   state++;
+        case 0:
+            if (data == 'S') state++;
+            break;
+        case 1:
+            if (data == 'T') {
+                state++;
+            } else {
+                state = 0;
+            }
+            break;
+        case 2:
+            if (data == 'A') {
+                state++;
+            } else {
+                state = 0;
+            }
+            break;
+        case 3:
+            if (data == 0x0c) {
+                state++;
+            } else {
+                state = 0; // discard the shorter (8) packages!
+            }
+            break;
+        case 13:
+            chn = (int) data;
+            state++;
+            break;
+        case 15:
+            actvalue = ((int) data) & 0xff;
+            state++;
+            break;
+        case 16:
+            actvalue |= ((((int) data) & 0xff) << 8);
+            state++;
+            break;
+        case 18:
+            if (chn < NUMBER_OF_CHANNELS) {
+                opChannels[chn].sendData(ConversionUtils.doubleToBytes((float) actvalue));
+            }
+            state = 0; // done ! look for next packet !
+            break;
+        default:
+            state++;
         }
     }
 
@@ -225,24 +241,26 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
         if (portController == null) {
             AstericsErrorHandling.instance.reportInfo(this,
                     "Myocontroller: Could not construct raw port controller, please verify that the COM port is valid. Trying Archive File.");
-            
+
             try {
                 filePointerInstance = new RandomAccessFile(ARCHIVEFILE, "r");
             } catch (IOException e) {
                 AstericsErrorHandling.instance.getLogger().info("Error reading archive file  " + ARCHIVEFILE);
             }
-            
-        } else in = portController.getInputStream();
-    
+
+        } else {
+            in = portController.getInputStream();
+        }
+
         readerThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
                 running = true;
                 while (running) {
-                    
+
                     if (portController != null) {
-                         try {
+                        try {
                             if (in.available() > 0) {
                                 handlePacketReceived((byte) in.read());
                             } else {
@@ -253,19 +271,21 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
                         } catch (IOException io) {
                             io.printStackTrace();
                         }
-                    }
-                    else  {  // Archive File
-                    
+                    } else { // Archive File
+
                         try {
-                            for (int z=0;z<20;z++)
-                               handlePacketReceived((byte) filePointerInstance.read());
-                        } 
-                        catch (IOException e) {
+                            for (int z = 0; z < 20; z++)
+                                handlePacketReceived((byte) filePointerInstance.read());
+                        } catch (IOException e) {
                             AstericsErrorHandling.instance.getLogger().info("Could not read from file");
                             // filePointerInstance.seek(1); // go to the first position in the file
-                        }; 
-                        try { Thread.sleep(2); }  // gives about 500 packets / second
-                        catch (InterruptedException e) {};
+                        }
+                        try {
+                            Thread.sleep(2);
+                        } // gives about 500 packets / second
+                        catch (InterruptedException e) {
+                        }
+                        ;
                     }
                 }
             }
@@ -292,12 +312,12 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
      * called when model is resumed.
      */
     @Override
-    public void resume() { 
+    public void resume() {
         portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
         if (portController == null) {
             AstericsErrorHandling.instance.reportError(this,
                     "Could not construct Myocontroller raw port controller, please make sure that the COM port is valid.");
-        } 
+        }
         readerThread.start();
         super.resume();
     }
@@ -314,8 +334,7 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
             CIMPortManager.getInstance().closeRawConnection(propComPort);
             portController = null;
             AstericsErrorHandling.instance.reportInfo(this, "Myocontroller connection closed");
-        }
-        else {
+        } else {
             try {
                 filePointerInstance.close();
             } catch (IOException e) {
