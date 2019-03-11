@@ -47,6 +47,7 @@ You need:
 * The ```git``` command line tool must be available from within ant, ensure to set the Environment Variable ```Path``` to the respective ```bin``` folder.
 
 See below an example of how to set the environment variable ```JAVA_HOME``` on Windows 7.
+
 ![Setting Environment Variable JAVA_HOME on Windows 7](./images/DeveloperManual_html_e0e56374eade1421.png)
 
 ## Build
