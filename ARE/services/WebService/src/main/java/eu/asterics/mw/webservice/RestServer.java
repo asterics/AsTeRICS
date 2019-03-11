@@ -296,6 +296,31 @@ public class RestServer {
 
         return response;
     }
+    
+    @Path("/runtime/model/components/{componentId}/properties/{componentKey}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getRuntimeComponentPropertyValues(@PathParam("componentId") String componentId,
+	        @PathParam("componentKey") String componentKey) {
+    	
+    	List<String> l = null;
+    	String response = "";
+    	String errorMessage = "";
+    	String decodedId = "", decodedKey = "";
+    	
+    	try {
+    		decodedId = astericsAPIEncoding.decodeString(componentId);
+            decodedKey = astericsAPIEncoding.decodeString(componentKey);
+            l = asapiSupport.getRuntimePropertyList(decodedId, decodedKey);
+            response = ObjectTransformation.objectToJSON(l);   	
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		errorMessage = "Couldn't retrieve " + componentKey + " property values from " + componentId + " (" + e.getMessage() + ")";
+    		response = "error:" + errorMessage;
+    	}
+    	
+	    return response;
+    }
 
     @Path("/runtime/model/components/{componentId}/{componentKey}")
     @GET
