@@ -9,6 +9,7 @@
 #define READ_TIME 5
 #define BLINKTIME 5
 #define MAX_INPUT_LENGTH 100
+#define MODE_ONLYHID 1
 
 int SENSORS[CHANNELS] = {A3, A0, A2, A1};
 int channel_values[CHANNELS] = {0, 0, 0, 0};
@@ -101,7 +102,7 @@ void loop() {
     Keyboard.releaseAll();
   }
 
-  if (runmode && millis() - lastread >= READ_TIME) {
+  if (!MODE_ONLYHID && runmode && millis() - lastread >= READ_TIME) {
     lastread = millis();
     for (int i = 0; i < CHANNELS; i++) {
 #ifdef USE_BUFFERED_AVG
@@ -112,7 +113,7 @@ void loop() {
     }
   }
 
-  if (runmode && millis() - lastrun >= DELAYTIME) {
+  if (!MODE_ONLYHID && runmode && millis() - lastrun >= DELAYTIME) {
     //Serial.print("real delay: ");
     //Serial.println(millis() - lastrun);
     lastrun = millis();
