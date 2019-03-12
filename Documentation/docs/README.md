@@ -36,8 +36,8 @@ footer: GPLv3.0 | Copyright © 2018-present
     <p>
         Are you disabled and want to use a computer to work, browse the internet or write E-Mails?
     </p>
-    <b-button variant="primary" href="#">Discover Solutions</b-button>
-    <b-button variant="success" href="#">Use AsTeRICS</b-button>
+    <b-button variant="primary" href="/getting-started/Discover">Discover Solutions</b-button>
+    <b-button variant="success" href="/getting-started/">Use AsTeRICS</b-button>
   </b-jumbotron>
 </div>
 
