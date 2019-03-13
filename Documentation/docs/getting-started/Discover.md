@@ -1,13 +1,13 @@
-# Discover Models
+# Discover Solutions
 
-Here you can find a selection of AsTeRICS models that can be used directly or as a starting point for a customization.
+Here you can find a selection of AsTeRICS solutions that can be used directly or as a starting point for a customization.
 
-::: tip Start Model
+::: tip Start
 1. Start the **ARE** program on your computer
 2. Click onto `Start`
 :::
 
-If you want to customize a model, click onto `Edit`.
+If you want to customize a solution, click onto `Edit` or go to [**Customize**](/help/) to learn how to do that.
 
 
 ## Computer Control
