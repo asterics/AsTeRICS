@@ -13,8 +13,8 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
 ## Computer Control
 
 <TileGroup>
-<ModelTile target="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-cameramouse" v-bind:buttons='[{ href: "", text: "Start" }, { href: "", text: "Settings" },{ href: "", text: "Edit" }]' title="Camera Mouse (Configurable)" image-url="/img/keyboard press key.png" shortDesc="Mouse control according to your head movements with configurable settings."></ModelTile>
-<ModelTile target="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-eyecontrol" v-bind:buttons='[{ href: "", text: "Start" }, { href: "", text: "Settings" },{ href: "", text: "Edit" }]' title="Eye Tracking (Configurable)" image-url="/img/keyboard press key.png" shortDesc="Mouse control by eye tracking with configurable settings."></ModelTile>
+<ModelTile target="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-cameramouse" v-bind:buttons='[{ href: "", text: "Start" }, { href: "", text: "Settings" },{ href: "", text: "Edit" }]' title="Camera Mouse (Configurable)" image-url="/img/keyboard press key.png" shortDesc="Mouse control according to your head movements with configurable settings." v-bind:tags='[{ href: "#", text: "webcam" }]'></ModelTile>
+<ModelTile target="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-eyecontrol" v-bind:buttons='[{ href: "", text: "Start" }, { href: "", text: "Settings" },{ href: "", text: "Edit" }]' title="Eye Tracking (Configurable)" image-url="/img/keyboard press key.png" shortDesc="Mouse control by eye tracking with configurable settings." v-bind:tags='[{ href: "https://gaming.tobii.com/product/tobii-eye-tracker-4c/", text: "eye-tracker" }]'></ModelTile>
 <ModelTile title="EMG-controlled Scanning" image-url="/img/keyboard press key.png" shortDesc="Provides mouse control using 1 EMG signal with muscle contraction."></ModelTile>
 </TileGroup>
 
