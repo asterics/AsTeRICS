@@ -4,8 +4,8 @@
     <p>
         Are you disabled and want to use a computer to work, browse the internet or write E-Mails?
     </p>
-    <b-button variant="primary" href="/getting-started/Discover">Discover Solutions</b-button>
-    <b-button variant="success" href="/getting-started/">Get Started</b-button>
+    <b-button variant="primary" href="/solutions/">Discover Solutions</b-button>
+    <b-button variant="success" href="/get-started/">Get Started</b-button>
   </b-jumbotron>
 </div>
 
