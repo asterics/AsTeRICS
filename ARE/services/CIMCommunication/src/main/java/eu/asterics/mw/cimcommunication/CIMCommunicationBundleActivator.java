@@ -31,17 +31,11 @@ import org.osgi.framework.BundleContext;
 import eu.asterics.mw.are.AREProperties;
 
 public class CIMCommunicationBundleActivator implements BundleActivator {
-
-    private final String PROPERTY_CIMSCAN_AT_START = "CIM.scan.at.start";
     
     @Override
     public void start(BundleContext arg0) throws Exception {
         System.out.println("cim start");
-        AREProperties.instance.setDefaultPropertyValue(PROPERTY_CIMSCAN_AT_START, "true", "If true the CIM port scanning is performed at start of ARE");
-        boolean doScan = Boolean.valueOf(AREProperties.instance.getProperty(PROPERTY_CIMSCAN_AT_START));
-        if (doScan) {
-            CIMPortManager.getInstance().rescan();
-        }
+        CIMPortManager.getInstance().rescan();
     }
 
     @Override

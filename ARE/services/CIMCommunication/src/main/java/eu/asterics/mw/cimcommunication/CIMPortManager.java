@@ -26,10 +26,8 @@
 package eu.asterics.mw.cimcommunication;
 
 import eu.asterics.mw.are.AREProperties;
-import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
-import eu.asterics.mw.services.IAREEventListener;
 import eu.asterics.mw.systemstatechange.SystemChangeListener;
 import eu.asterics.mw.systemstatechange.SystemChangeNotifier;
 import gnu.io.CommPortIdentifier;
@@ -72,6 +70,7 @@ public class CIMPortManager implements SystemChangeListener {
     private final String IGNORE_PORT_FILNAME = "data/cimcommunication/ignore_ports.txt";
     private final String CIMID_FILENAME = "data/cimcommunication/cimids.txt";
     private final String PROPERTY_CIM_RAW_MODE = "CIM.mode.raw";
+    private final String PROPERTY_CIMSCAN_ACTIVE = "CIM.scan.active";
     private Set<String> ignoredComPorts = new HashSet<>();
     private HashMap<Long, String> cimIdToName = new HashMap<Long, String>();
     private HashMap<Short, String> cimIdToComPortName = new HashMap<>();
@@ -86,6 +85,7 @@ public class CIMPortManager implements SystemChangeListener {
     private CIMPortManager() {
         logger = AstericsErrorHandling.instance.getLogger();
         AREProperties.instance.setDefaultPropertyValue(PROPERTY_CIM_RAW_MODE, "false", "If true the CIMPortManager starts in raw mode, where COM connections can be used directly without CIM protocol");
+        AREProperties.instance.setDefaultPropertyValue(PROPERTY_CIMSCAN_ACTIVE, "true", "If true the CIM port scanning is enabled");
         this.cimRawMode = Boolean.valueOf(AREProperties.instance.getProperty(PROPERTY_CIM_RAW_MODE));
         logger.info("started CIMPortManager with rawMode = " + cimRawMode);
 
@@ -113,6 +113,11 @@ public class CIMPortManager implements SystemChangeListener {
      * Rescan is done in an own thread so this call is non-blocking
      */
     public void rescan() {
+        boolean doScan = Boolean.valueOf(AREProperties.instance.getProperty(PROPERTY_CIMSCAN_ACTIVE));
+        if (!doScan) {
+            logger.log(Level.INFO, "do not CIM-scan because property <{0}> is false.", PROPERTY_CIMSCAN_ACTIVE);
+            return;
+        }
         if(System.currentTimeMillis() - scanStartTime < 500) {
             logger.log(Level.INFO, "do not rescan because last rescan was started only {0}ms ago", System.currentTimeMillis() - scanStartTime);
             return;
