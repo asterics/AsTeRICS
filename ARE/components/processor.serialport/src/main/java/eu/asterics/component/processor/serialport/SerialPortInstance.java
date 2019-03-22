@@ -25,7 +25,9 @@
 
 package eu.asterics.component.processor.serialport;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -34,16 +36,13 @@ import java.util.logging.Logger;
 
 import eu.asterics.mw.cimcommunication.CIMPortController;
 import eu.asterics.mw.cimcommunication.CIMPortManager;
-//import eu.asterics.component.sensor.acceleration.AccelerationInstance.OutputPort;
 import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.*;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
+
+//import eu.asterics.component.sensor.acceleration.AccelerationInstance.OutputPort;
 
 /**
  * 
@@ -426,13 +425,13 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
                 running = true;
                 try {
                     while (running) {
-                        Byte read = portController.poll();
-                        if (read != null) {
-                            handlePacketReceived(read);
+                        while (in.available() > 0) {
+                            handlePacketReceived((byte) in.read());
                         }
+                        Thread.sleep(10);
                     }
-                } catch (IOException e) {
-                    logger.log(Level.WARNING, "IOException in polling data in SerialPort module.");
+                } catch (IOException | InterruptedException e) {
+                    logger.log(Level.WARNING, "Exception in polling data in SerialPort module.");
                     closeAll();
                 }
                 logger.log(Level.FINE, "SerialPort module: stopped reading thread.");
