@@ -1,11 +1,11 @@
 <div>
-  <b-jumbotron header="AsTeRICS" lead="Create Customized Low-Cost Assistive Technologies for People with Disabilities.">
+  <b-jumbotron class="myjumbotron" header="AsTeRICS" lead="Create Customized Low-Cost Assistive Technologies for People with Disabilities.">
     <hr class="my-4" />
     <p>
         Are you disabled and want to use a computer to work, browse the internet or write E-Mails?
     </p>
-    <b-button variant="primary" href="/solutions/">Discover Solutions</b-button>
-    <b-button variant="success" href="/get-started/">Get Started</b-button>
+    <b-button variant="primary" href="./solutions/">Discover Solutions</b-button>
+    <b-button variant="success" href="get-started/">Get Started</b-button>
   </b-jumbotron>
 </div>
 
