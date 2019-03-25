@@ -69,7 +69,7 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     private InputStream in = null;
     private OutputStream out = null;
     private Thread readerThread = null;
-    private boolean running = false;
+    private volatile boolean running = false;
     private String propComPort = "COM4";
     private int propBaudRate = 9600;
     private int propSendStringTerminator = 0;
@@ -480,6 +480,7 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void pause() {
+        stopReaderThread();
         closeAll();
         running = false;
         super.pause();
@@ -491,12 +492,7 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void resume() {
-        portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
-        if (portController == null) {
-            AstericsErrorHandling.instance.reportError(this,
-                    "Could not construct SerialPort controller, please make sure that the COM port is valid.");
-        }
-        readerThread.start();
+        init();
         super.resume();
     }
 
@@ -506,16 +502,20 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void stop() {
         super.stop();
+        stopReaderThread();
         closeAll();
         running = false;
     }
 
-    private void closeAll() {
+    private void stopReaderThread() {
         running = false;
         if(readerThread != null) {
             readerThread.interrupt();
             readerThread = null;
-        }
+        }        
+    }
+    
+    private synchronized void closeAll() {
         if (portController != null) {
             CIMPortManager.getInstance().closeRawConnection(propComPort);
             portController.closePort();
