@@ -1,21 +1,28 @@
 # AsTeRICS Installation
 
-The AsTeRICS provides installer for Windows, Linux and Mac OSX, but only on
+If you are new to AsTeRICS, please read the [Overview](Overview) section first to know about important terms and programs.
+
+The AsTeRICS provides installer for [Windows](#windows), [Linux](#linux) and [Mac OSX](#mac-os-x), but only on
 Windows the full AsTeRICS suite is supported. On the other platforms the installer
 only contains the ARE.
 
 ## Windows
 
-The AsTeRICS installer on Windows contains the following executables
+The installer for Windows (```Setup_AsTeRICS_x_y_z.exe```) contains the following programs:
+
 * ACS
 * WebACS
 * ARE
-* APE
+* [AsTeRICS Packaging Environment (APE)](/develop/)
+
+### Download
+
+Please go to the [download page](https://github.com/asterics/AsTeRICS/releases/latest) and download the installer.
 
 ### Installation Steps
 
-Start the setup file.
-You should see the welcome window. It informs you which version of the software
+1. Start the setup file.
+2. You should see the welcome window. It informs you which version of the software
 you are installing. Click the button **Next**.
 
 ![AsTeRICS Setup Wizard](./img/quickstart01.png)
@@ -90,17 +97,34 @@ the start-files.
 
 ## Mac OS X
 
-On Mac OS X you can use the ARE-only `.dmg` installer with Java embedded. It was tested on Mac OS X 10.9.1 (Mavericks).
+The installer for Mac OS X (```asterics-are-javaembedded-x.y.dmg```) contains the following programs:
+
+* WebACS
+* ARE
+
+It was tested on Mac OS X 10.9.1 (Mavericks) and has Java embedded.
+
+### Download
+
+Please go to the [download page](https://github.com/asterics/AsTeRICS/releases/latest) and download the installer.
 
 ### Installation Steps
 
-1. Download the **[Mac OSX installer](https://github.com/asterics/AsTeRICS/releases/download/v3.0/asterics-are-javaembedded-3.0.dmg)**
-2. Double-click onto the `.dmg` file and follow the instructions.
+1. Double-click onto the `.dmg` file and follow the instructions.
 
 ## Linux
 
-On Linux you can use the ARE-only [.deb installer](https://github.com/asterics/AsTeRICS/releases/download/v3.0/asterics-are-3.0.deb) for Ubuntu, Debian and ARM/Raspberry Pi.
+The installer for Linux (```asterics-are-x.y.deb```) contains the following programs:
+
+* WebACS
+* ARE
+
+It is compatible with Ubuntu, Debian and ARM/Raspberry Pi.
 The installer was tested on Debian 16.04 LTS and Raspberry Pi 3 with Raspbian Jessie.
+
+### Download
+
+Please go to the [download page](https://github.com/asterics/AsTeRICS/releases/latest) and download the installer.
 
 ### Installation Steps
 
@@ -118,7 +142,7 @@ sudo apt-get install oracle-java8-installer
 
 Another possibility is to download the java package directly from oracle and install it: [Oracle Java](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
-#### Install the ARE
+#### Install AsTeRICS
 
 ```
 sudo dpkg -i asterics-are-3.0.deb
