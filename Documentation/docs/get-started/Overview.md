@@ -2,47 +2,65 @@
 
 This pages explains the most important terms and elements of the AsTeRICS framework.
 
-::: warning TODO
-Add illustrative diagram!!
-:::
+## Solutions
 
-## Elements
+The AsTeRICS framework provides some selected [solutions](/solutions/) which can be used out of the box. The solutions are grouped by **use cases** and can be directly started from the solutions page. Some solutions depend on certain [input devices](#input-device) or other hardware and software. Just click onto the ```Read More``` button in a solution's tile to get a detailed step by step instruction of how to install and use it.
 
-The framework consists of several elements you should know about.
+A solution can be categorized by the AsTeRICS technology used. It can be a [model](#model), a [grid](#grid) or an [AT solution](#at-solution).
+
+## Terms
+
+The most important terms are described below.
 
 ### Model
 
-A model describes the logic of an Assistive Technology (AT). It is used to define how plugins (components) are connected together and which input modalities to use.
+A model represents a simple Assistive Technology (AT). It is used to define **what** should be done (e.g. mouse control, switching light on/off) and **how** this can be done (e.g. button-press, head movement,...). A model uses [plugins](#plugin) to support input devices (e.g. webcam, switch,...) and required actions.
 
-### Plugin (Component)
+![Model with a webcam plugin as input device and a mouse action plugin](./img/simple-model-labelled.png)
+
+### Plugin
 
 A plugin represents a modular component that can be used within a model.
-It can be a sensor (incorporating data into the system), a processor (processing, modifying data) or an actuator (generating actions in the environment).
+It can be an input device (sensor), a processor (processing, modifying data) or an action (actuator).
+
+### Input Device
+
+AsTeRICS supports numerous input devices like a switch, a webcam or an eye-tracker. The list of supported devices can be found under [Plugins/Sensors](/plugins/).
+
+### Action
+
+The actions that are executed by a model are implemented using actuator plugins, which can be found under [Plugins/Actuators](/plugins/).
 
 ### Grid
 
-The grid is a web-based user interface which can be used for Augmentative and Alternative Communication (AAC). It can be connected to a model and be used to trigger actions.
+The grid is a web-based user interface which can be used for Augmentative and Alternative Communication (AAC). It is organized as grid of rows and columns with cells acting as buttons. The cells support texts and images/symbols and can speak a defined text (text-to-speech) or execute a defined action. A grid can be connected to a model and be used to trigger actions like switching lights on/off.
+
+![Grid with symbols for Alternative and Augmentative Communication](/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg)
 
 ### AT Solution
 
-An AT solution is a more complex Assistive Technology and may be comprised of several models, grids, images or web user interfaces.
+An AT solution is a more complex Assistive Technology and may be comprised of several models, grids, images or web user interfaces. An AT solution can be seen as a standalone SW application, that allows easier customization and configuration for the end user.
 
-## Executables
+## Programs
 
 AsTeRICS consists of several executable programs.
 
+![Diagram showing ACS and ARE interaction.](./img/asterics-program-overview.svg)
+
 ### ACS
 
-The AsTeRICS Configuration Suite (ACS) is a graphical editor for easy designing and testing model files.
+The AsTeRICS Configuration Suite (ACS) is a graphical editor for easy designing and testing model files. A model file can be saved to a file or uploaded to the [ARE](#are) to execute it. Likewise, a model can be downloaded from the ARE to be changed or customized. Furthermore, the ACS allows to remote control the ARE program and to start and stop a model. For more information about how to use the ACS, please read the [ACS user manual](/manuals/ACS/).
+
+![Screenshot of ACS program with a simple model.](../customize/img/quickstart11.png)
 
 ### WebACS
 
-The WebACS is a new web-based version of the [ACS](#acs) program for designing and testing model files.
+The WebACS is a new web-based version of the [ACS](#acs) program for designing and testing model files. For more information about how to use the WebACS, please read the [WebACS user manual](/manuals/WebACS/).
+
+![Screenshot of ACS program with a simple model.](./img/web-acs-empty.png)
 
 ### ARE
 
-The AsTeRICS Runtime Environment (ARE) executes a given model or AT solution.
+The AsTeRICS Runtime Environment (ARE) executes a given model. The screenshot below shows the autostart model running after starting the ARE. You can click the ```Play```, ```Pause``` or ```Stop``` button of the control panel to start, pause or stop a model. Alternatively, you can use the respective shortcuts ```F5```,```F6```,```F7```. Furthermore, you can open a new model file by clicking onto the ```Open``` button. For more information about how to use the ARE, please read the [ARE user manual](/manuals/ARE/).
 
-### APE
-
-The AsTeRICS Packaging Environment (APE) is needed for the development of an AT Solution. Fore more details, read the [developer docs](../develop/AT_solution_development.html).
+![Screenshot of AsTeRICS Runtime Environment](./img/ARE-startscreen.png)
