@@ -10,5 +10,5 @@ In this section you will get an overview of AsTeRICS elements and learn how to i
 
 * [**Overview**](./Overview) to get an overview of AsTeRICS elements and executables.
 * [**Installation**](./Installation) to learn how to install AsTeRICS on your platform.
-* [**Solutions**](./Discover) to discover existing solutions for people with disabilities.
-* [**Customize**](/help/) to modify existing solutions or create new ones.
+* [**Solutions**](/solutions/) to discover existing solutions for people with disabilities.
+* [**Customize**](/customize/) to modify existing solutions or create new ones.
