@@ -8,7 +8,7 @@ Contributions from the community are absolutely welcome and could be in form of 
 
 This web page is orchestrated in the [asterics-web](https://github.com/asterics/asterics-web) repository, which again uses the [asterics-docs](https://github.com/asterics/asterics-docs) repository to orchestrate data from other repositories of the AsTeRICS framework. Most of the content is documented in the [AsTeRICS repository](https://github.com/asterics/AsTeRICS/tree/pre-3.1/Documentation/docs).
 
-If you see any typo, missing or wrong information on a page, please click onto the ![Help us improve this page](img/help-us-improve-this-page.png) link, which can be found on the bottom of each page. You will be autmatically redirected to the respective markdown document in the source repository. After editing please send a pull request to the respective repository.
+If you see any typo, missing or wrong information on a page, please click onto the ![Help us improve this page](./img/help-us-improve-this-page.png) link, which can be found on the bottom of each page. You will be autmatically redirected to the respective markdown document in the source repository. After editing please send a pull request to the respective repository.
 
 ## Issue / Bug Report
 
