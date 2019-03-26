@@ -3,6 +3,8 @@
 *.log
 *.log.*
 *.exe
+*.backup
+*.lnk
 
 .settings/
 .project
@@ -13,6 +15,7 @@ Installer/asterics-are/build/
 /bin/ARE/*.jar
 /bin/ARE/areProperties
 /bin/ARE/tmp/
+/bin/ARE/storage/
 /bin/ARE/log/
 /bin/ARE/profile/org.eclipse.osgi/
 /bin/ARE/profile/loader_componentlist.ini
@@ -25,6 +28,8 @@ Installer/asterics-are/build/
 /bin/APE/*.sh
 /bin/APE/*.jar
 /bin/APE/LICENSE/APE*.txt
+
+/bin/ACS/layout.lay
 
 /ARE/services/asterics.*.jar
 /ARE/services/javacv*.jar
@@ -128,7 +133,6 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
 [Oo]bj/
 [Ll]og/
 
