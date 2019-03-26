@@ -61,6 +61,18 @@ The WebACS is a new web-based version of the [ACS](#acs) program for designing a
 
 ### ARE
 
-The AsTeRICS Runtime Environment (ARE) executes a given model. The screenshot below shows the autostart model running after starting the ARE. You can click the ```Play```, ```Pause``` or ```Stop``` button of the control panel to start, pause or stop a model. Alternatively, you can use the respective shortcuts ```F5```,```F6```,```F7```. Furthermore, you can open a new model file by clicking onto the ```Open``` button. For more information about how to use the ARE, please read the [ARE user manual](/manuals/ARE/).
+The AsTeRICS Runtime Environment (ARE) executes a given model. The screenshot below shows the autostart model running after starting the ARE. You can click the ```Play```, ```Pause``` or ```Stop``` button of the control panel to start, pause or stop a model. Alternatively, you can use the respective shortcuts ```F5```,```F6```,```F7```. Furthermore, you can open a new model file by clicking onto the ```Open``` button. Additionally, a model can be uploaded, if opened in the ACS/WebACS programs or directly from the [solutions](/solutions/) page. The ARE also provides a remote interface For more information about how to use the ARE, please read the [ARE user manual](/manuals/ARE/).
 
 ![Screenshot of AsTeRICS Runtime Environment](./img/ARE-startscreen.png)
+
+## User Interfaces
+
+AsTeRICS provides two different types of user interfaces, which can be used for a model.
+
+### ARE GUI
+
+The ARE provides a Graphical User Interface (GUI) desktop (see [ARE screenshot](#are)). When designing a model with the ACS or WebACS you can use plugins which provide user interface elements like a slider or a button. You can then define where the element should be shown on the ARE desktop. Furthermore you can define actions depending on user input.
+
+### Grid
+
+The [grid](#grid) is a new way of defining a user interface for AsTeRICS.
