@@ -1,101 +1,38 @@
 # Model Customization
 
-## Camera Mouse Simple
+In this tutorial you will learn how to do simple modifications to a model like changing a plugin property. This can be useful if you want to change the camera device to be used or want to change the key triggering a user action.
 
-A model is a collection of 1 to n components, where a component represents a plugin
-of the ARE. These components are connected via cannels (for data connections) and
-event channels (representing events). The following example will illustrate the
-creation of a simple webcam mouse, using the position of the nose to control the
-cursor and opening the mouth to trigger a mouse click. This model requires a
-connected and installed webcam.
+## Open model
 
-### Add Facetracking
+First you have to open the model. There are two ways to do this:
 
-In a first step, start the ACS and the ARE using the ACS.exe and ARE.exe short cuts.
-In the ACS window select the tab **Components**, then **Sensors** and within the
-sensors the menu item **Computer Vision**. There select the component
-FacetrackerLK. The component is now on the drawing area and, if the component is
-selected, properties can be set (or changed) in the rightmost part of the ACS window.
+### Model of Solutions
 
-![ACS - A first example (1/8)](./img/quickstart10.png)
+If you want to customize a model of the [solutions](/solutions/) page, click the ```Edit``` button of it. This opens the WebACS with the given model in a new browser tab.
 
-### Add Mouse
+### Deployed Model
 
-The next needed component is the **Mouse**, it can be found by selecting **Actuators** -
-**Input Device Emulation**. After the insert, select the Mouse component and adapt
-the properties. Deactivate absolutePosition and set the `xMax` and `yMax` to your
-screen resolution.
+If the ARE is running, you can press ```F8``` or click the ![Edit button](./img/are-model-edit.png) button in the control panel. This opens the WebACS with the given model in a new browser tab.
 
-In the next step, connect the noseX and the noseY outputs of the **FacetrackerLKd**
-with the mouseX and mouseY inputs of the Mouse. Finally, it should look like the
-screenshot below.
+## Change Plugin Property
 
-![ACS - A first example (2/8)](./img/quickstart11.png)
+As soon as the model is opened, you can click onto a plugin to change it's property values. A property is a configuration item to modify the behaviour of that plugin.
 
-### Add Mouse Click
+![Screenshot of WebACS with steps for changing a property value](./img/model-property-change.png)
 
-The model now would be able to use the coordinates of the nose to control the
-mouse cursor, but the mouse click is still missing.
-For the mouse clicking functionality, we first need the **MathEvaluatord** (**Processorsd** -
-**Basic Mathd**) plugin. We connect the noseY output of the **FacetrackerLKd** the with
-the inA input of the **MathEvaluatord** and likewise the chinY with inB. In the properties
-of the **MathEvaluatord**, we set the property expression to **b-ad**.
+### Change Property Value
 
-![ACS - A first example (3/8)](./img/quickstart12.png)
+1. Click on plugin symbol
+2. Press ```F1``` to read about supported properties and their values
+3. Click into the property editor (right panel)
+4. Change value
 
-We will **Differentiate** (**Processorsd** -> **Basic Mathd**) the out value to react on a fast
-change of the nose to chin distance.
+### Test Change
 
-![ACS - A first example (4/8)](./img/quickstart13.png)
+5. Connect to ARE
+6. Upload Model
+7. Start Model
 
-This processed value will then be forwarded to a **Threshold** (**Processors** -> **Basic
-Math**) component. Set the thresholdLow and thresholdHigh values to 30.
+## Conclusion
 
-![ACS - A first example (5/8)](./img/quickstart14.png)
-
-As a final step, connect the event trigger output of the **Threshold** with the event
-listener input of the **Mouse** – the event triggers and listeners are at the bottom of the
-components. After the connection has been made, set the leftClick to eventPosEdge
-in the property editor at the right. If everything was done right, it should look like the
-following screenshot:
-
-![ACS - A first example (6/8)](./img/quickstart15.png)
-
-### Test Model
-
-Now, upload the model to the ARE and press the **Start Model** button. A window with
-the camera screen will appear, marking with a green and yellow circle - the position
-of nose and chin. Press the **Stop Model** button or press F7 to stop the model and
-get the control of the mouse back. Below is a screenshot of the system, when
-running.
-
-![ACS - A first example (7/8)](./img/quickstart16.png)
-
-Congratulations, your first AsTeRICS model is running!
-
-### Reducing Tremor
-
-You might have noticed that the mouse pointer has a tremor, because the head is
-always in movement to a certain extent. To reduce this tremor, an **Averager**
-(**Processors** -> **Basic Math**) will be used to smoothen the X coordinates and
-another **Averager** for the Y coordinates between the **FacetrackerLK** and the
-**Mouse**. The bufferSize in the properties will be set to 5.
-
-![ACS - A first example (8/8)](./img/quickstart17.png)
-
-That's all, just upload the model and start it now.
-
-### Adjusting the Webcam
-
-If you don't like the position of the webcam after starting the model, you can set a
-different start position. Select the **GUI Designer** tab above the drawing area and
-move the webcam window to an area, which is comfortable to you. Also the size of
-the window can be adjusted.
-
-![GUI Designer](./img/quickstart18.png)
-
-Upload and start the model to work with the changes.
-
-## Camera Mouse Advanced
-
-If your first model works, try this more [advanced step-by-step tutorial](https://github.com/asterics/AsTeRICS/blob/master/Documentation/AsTeRICS_CameraMouseCreation_StepbyStep_Tutorial.pdf) based on slides.
+Now you know how to change a property value of a plugin, to learn how to create a new model, try the [model creation tutorials](./Model-Creation). If you want to know more about the WebACS or ACS, check the respective [manuals](/manuals/).
