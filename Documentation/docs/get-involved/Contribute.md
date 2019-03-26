@@ -12,7 +12,7 @@ If you see any typo, missing or wrong information on a page, please click onto t
 
 ## Issue / Bug Report
 
-If you find a big or would like to suggest a feature, please go to the issue tracking page of the respective repository.
+If you find a bug or would like to suggest a feature, please go to the issue tracking page of the respective repository.
 
 Please use the following issue tracker, regarding
 
@@ -28,8 +28,8 @@ If you want to contribute code, please fork the respective respository and send 
 
 Please use the following repositories, regarding
 
-* [Plugins](https://github.com/asterics/AsTeRICS/issues)
-* [ARE](https://github.com/asterics/AsTeRICS/issues)
-* [ACS](https://github.com/asterics/AsTeRICS/issues)
-* [WebACS](https://github.com/asterics/WebACS/issues)
-* [Grid](https://github.com/asterics/AsTeRICS-Grid/issues)
+* [Plugins](https://github.com/asterics/AsTeRICS/)
+* [ARE](https://github.com/asterics/AsTeRICS/)
+* [ACS](https://github.com/asterics/AsTeRICS/)
+* [WebACS](https://github.com/asterics/WebACS/)
+* [Grid](https://github.com/asterics/AsTeRICS-Grid/)
