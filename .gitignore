@@ -33,11 +33,14 @@ Installer/asterics-are/build/
 /ARE/tools/APE/APE.jar
 
 .idea/
+$Recycle.Bin/
+AsTeRICS-release-dependencies/
+/AsTeRICSCIMs*
+/out/
 
 # Eclipse ignore files
 
 .metadata
-bin/
 tmp/
 *.tmp
 *.bak
