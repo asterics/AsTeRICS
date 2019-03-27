@@ -1,5 +1,5 @@
 <div>
-  <b-jumbotron class="myjumbotron" header="AsTeRICS" lead="Create Customized Low-Cost Assistive Technologies for People with Disabilities.">
+  <b-jumbotron class="myjumbotron" header="AsTeRICS" lead="Create Customized Low-Cost Assistive Technologies for People with Disabilities." fluid>
     <hr class="my-4" />
     <p>
         Are you disabled and want to use a computer to work, browse the internet or write E-Mails?
