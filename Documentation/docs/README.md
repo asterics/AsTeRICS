@@ -13,7 +13,7 @@
 
 <TileGroup>
 <Tile target="#" title="Accessible Computer Control" image-url="/img/Harry-shutterstock_213119035.jpg"></Tile>
-<Tile target="#" title="Accessible Environmental Control" image-url="/img/Harry-shutterstock_213119035.jpg"></Tile>
+<Tile target="#" title="Accessible Environmental Control" image-url="/img/stock-photo-hand-holding-white-mobile-smart-phone-with-smart-home-application-on-the-screen-over-blurred-house-304964420.jpg"></Tile>
 <Tile target="#" title="Alternative and Augmentative Communication" image-url="/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"></Tile>
 <Tile target="#" title="Accessible Gaming &amp; Toys" image-url="https://www.youtube.com/embed/JwL_zS3fpnU" is-video></Tile>
 <Tile target="#" title="Accessible Music" image-url="https://www.youtube.com/embed/3_8TifCj0aU" is-video></Tile>
