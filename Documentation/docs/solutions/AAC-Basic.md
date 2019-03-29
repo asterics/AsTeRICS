@@ -1,0 +1,6 @@
+# AAC Basic Grid Solution
+
+::: warning TODO
+Add objective and requirements here.
+This page could/should later be a blog page or automatically extracted from the grid in markdown? or it could also be the README.md of a solution repository??
+:::
