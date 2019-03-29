@@ -36,33 +36,26 @@ There are many Assistive Technologies available on the market, but in many cases
 
 The creation of the web page was funded by the City of Vienna, MA23, in course of the project **StudyATHome Internationally** (Grant Nr. 22-07). The underlying technologies were funded by several other projects, see [About Us](/get-involved/About-us).
 
-## Funding
 <div>
-  <b-card-group deck>
-    <b-row no-gutters>
-      <b-col>
-        <b-card img-src="/img/studyAThome_noir.svg" img-alt="StudyATHome project logo" img-top footer="Grant nr. 22-07"     style="width: 20rem;"
-        class="mb-2">
-        </b-card>
-      </b-col>
-      <b-col>
-        <b-card img-src="/img/ma23_logo.jpg" img-alt="StudyATHome project logo" img-top>
-        </b-card>
-        <b-card img-src="/img/torades_logo_mini-300x120.png" img-alt="ToRaDes project logo" img-top footer="Grant nr. 18-04">
-        </b-card>
-      </b-col>
-    </b-row>
-  </b-card-group>  
-</div>
-
-## Partner Organizations
-<div>
-  <b-card-group deck>
-    <b-card img-src="/img/uas-technikum-wien-logo-300x160.png" img-alt="StudyATHome project logo" img-top>
-    </b-card>
-    <b-card img-src="/img/ki-i_logo.png" img-alt="StudyATHome project logo" img-top>
-    </b-card>
-  </b-card-group>  
+<b-container fluid class="p-4">
+  <b-row>
+    <b-col>
+      <b-img thumbnail fluid src="/img/studyAThome_noir.svg" alt="StudyATHome project logo"></b-img>
+    </b-col>
+    <b-col>
+      <b-img thumbnail fluid src="/img/ma23_logo.jpg" alt="MA23, City of Vienna, project logo"></b-img>
+    </b-col>
+    <b-col>
+      <b-img thumbnail fluid src="/img/torades_logo_mini-300x120.png" alt="ToRaDes project logo"></b-img>    
+    </b-col>
+    <b-col>
+      <b-img thumbnail fluid src="/img/uas-technikum-wien-logo-300x160.png" alt="UAS Technikum Wien logo"></b-img>    
+    </b-col>
+    <b-col>
+      <b-img thumbnail fluid src="/img/ki-i_logo.png" alt="KI-I logo"></b-img>    
+    </b-col>
+  </b-row>
+</b-container>
 </div>
 
 # AsTeRICS Project Web Page
