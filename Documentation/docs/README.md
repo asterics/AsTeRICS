@@ -33,3 +33,38 @@ There are many Assistive Technologies available on the market, but in many cases
  * is Open Source, which means that it is free forever and others can contribute to the framework.
 
 ## Partners & Funding
+
+The creation of the web page was funded by the City of Vienna, MA23, in course of the project **StudyATHome Internationally** (Grant Nr. 22-07). The underlying technologies were funded by several other projects, see [About Us](/get-involved/About-us).
+
+## Funding
+<div>
+  <b-card-group deck>
+    <b-row no-gutters>
+      <b-col>
+        <b-card img-src="/img/studyAThome_noir.svg" img-alt="StudyATHome project logo" img-top footer="Grant nr. 22-07"     style="width: 20rem;"
+        class="mb-2">
+        </b-card>
+      </b-col>
+      <b-col>
+        <b-card img-src="/img/ma23_logo.jpg" img-alt="StudyATHome project logo" img-top>
+        </b-card>
+        <b-card img-src="/img/torades_logo_mini-300x120.png" img-alt="ToRaDes project logo" img-top footer="Grant nr. 18-04">
+        </b-card>
+      </b-col>
+    </b-row>
+  </b-card-group>  
+</div>
+
+## Partner Organizations
+<div>
+  <b-card-group deck>
+    <b-card img-src="/img/uas-technikum-wien-logo-300x160.png" img-alt="StudyATHome project logo" img-top>
+    </b-card>
+    <b-card img-src="/img/ki-i_logo.png" img-alt="StudyATHome project logo" img-top>
+    </b-card>
+  </b-card-group>  
+</div>
+
+# AsTeRICS Project Web Page
+
+This is a newly created web page to present AsTeRICS technologies and corresponding documentation. If you are looking for the web page of the original AsTeRICS project, please go to [project.asterics.eu](http://project.asterics.eu).
