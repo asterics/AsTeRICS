@@ -40,19 +40,19 @@ The creation of the web page was funded by the City of Vienna, MA23, in course o
 <b-container fluid class="p-4">
   <b-row>
     <b-col>
-      <b-img thumbnail fluid src="/img/studyAThome_noir.svg" alt="StudyATHome project logo"></b-img>
+      <b-img thumbnail fluid :src="$withBase('/img/studyAThome_noir.svg')" alt="StudyATHome project logo"></b-img>
     </b-col>
     <b-col>
-      <b-img thumbnail fluid src="/img/ma23_logo.jpg" alt="MA23, City of Vienna, project logo"></b-img>
+      <b-img thumbnail fluid :src="$withBase('/img/ma23_logo.jpg')" alt="MA23, City of Vienna, project logo"></b-img>
     </b-col>
     <b-col>
-      <b-img thumbnail fluid src="/img/torades_logo_mini-300x120.png" alt="ToRaDes project logo"></b-img>    
+      <b-img thumbnail fluid :src="$withBase('/img/torades_logo_mini-300x120.png')" alt="ToRaDes project logo"></b-img>    
     </b-col>
     <b-col>
-      <b-img thumbnail fluid src="/img/uas-technikum-wien-logo-300x160.png" alt="UAS Technikum Wien logo"></b-img>    
+      <b-img thumbnail fluid :src="$withBase('/img/uas-technikum-wien-logo-300x160.png')" alt="UAS Technikum Wien logo"></b-img>    
     </b-col>
     <b-col>
-      <b-img thumbnail fluid src="/img/ki-i_logo.png" alt="KI-I logo"></b-img>    
+      <b-img thumbnail fluid :src="$withBase('/img/ki-i_logo.png')" alt="KI-I logo"></b-img>
     </b-col>
   </b-row>
 </b-container>
