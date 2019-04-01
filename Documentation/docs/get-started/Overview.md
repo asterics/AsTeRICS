@@ -69,6 +69,6 @@ AsTeRICS provides two different types of user interfaces, which can be used for 
 
 The ARE provides a Graphical User Interface (GUI) desktop (see [ARE screenshot](#are)). When designing a model with the ACS or WebACS you can use plugins which provide user interface elements like a slider or a button. You can then define where the element should be shown on the ARE desktop. Furthermore you can define actions depending on user input.
 
-### Grid
+### AsTeRICS Grid
 
-The [grid](#grid) is a new way of defining a user interface for AsTeRICS.
+The [AsTeRICS Grid](#grid) is a new way of defining a user interface for AsTeRICS.
