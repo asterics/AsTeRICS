@@ -1,9 +1,6 @@
 <div>
   <b-jumbotron class="myjumbotron" header="AsTeRICS" lead="Create Customized Low-Cost Assistive Technologies for People with Disabilities." fluid>
     <hr class="my-4" />
-    <p>
-        Are you disabled and want to use a computer to work, browse the internet or write E-Mails?
-    </p>
     <b-button variant="primary" href="./solutions/">Discover Solutions</b-button>
     <b-button variant="success" href="get-started/">Get Started</b-button>
   </b-jumbotron>
@@ -21,20 +18,18 @@
 
 ## Why AsTeRICS?
 
-There are many Assistive Technologies available on the market, but in many cases they are too expensive or not suitable for a certain combination of disabilities.
+There are many Assistive Technologies available on the market, but in many cases they are too expensive or not suitable for a certain combination of disabilities. **AsTeRICS** improves this situation:
 
-**AsTeRICS**
-
- * provides support for many consumer devices which can be used as input devices (e.g. switches, eye-tracker, webcam, ...).
- * let's you combine several input devices depending on your capabilities (e.g. 2 switches + 1 eye-tracker).
- * provides support for many use cases (e.g. computer control, environmental control).
- * has more than 160 plugins.
- * allows easily customizing existing solutions or designing new ones.
- * is Open Source, which means that it is free forever and others can contribute to the framework.
+ * provides support for many consumer devices which can be used as input devices (e.g. switches, eye-tracker, webcam, ...)
+ * possibilities to combine several input devices depending on your capabilities (e.g. 2 switches + 1 eye-tracker)
+ * flexibility allows many different use cases (e.g. computer control, environmental control)
+ * more than 160 plugins can be combined in order to create individually tailored solutions
+ * allows easily customizing existing solutions or designing new ones
+ * is Open Source, and therefore free forever and open for contributions by anyone
 
 ## Partners & Funding
 
-The creation of the web page was funded by the City of Vienna, MA23, in course of the project **StudyATHome Internationally** (Grant Nr. 22-07). The underlying technologies were funded by several other projects, see [About Us](/get-involved/About-us).
+The creation of this web page was funded by the City of Vienna, MA23, in course of the project **StudyATHome Internationally** (Grant Nr. 22-07). The underlying technologies were funded by several other projects (see [About Us](/get-involved/About-us)).
 
 <div>
 <b-container fluid class="p-4">
