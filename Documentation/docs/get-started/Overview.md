@@ -8,10 +8,6 @@ The AsTeRICS framework provides some selected [solutions](/solutions/) which can
 
 A solution can be categorized by the AsTeRICS technology used. It can be a [model](#model), a [grid](#grid) or an [AT solution](#at-solution).
 
-## Terms
-
-The most important terms are described below.
-
 ### Model
 
 A model represents a simple Assistive Technology (AT). It is used to define **what** should be done (e.g. mouse control, switching light on/off) and **how** this can be done (e.g. button-press, head movement,...). A model uses [plugins](#plugin) to support input devices (e.g. webcam, switch,...) and required actions.
