@@ -16,9 +16,8 @@ pause
 REM git clone -b v2.8RC1 https://github.com/asterics/AsTeRICS
 REM clone Asterics including submodules and submodules of submodules
 REM git clone --recurse-submodules https://github.com/asterics/AsTeRICS.git
-git clone -b Branch_Bugfixes_v3.0.1 --recurse-submodules https://github.com/asterics/AsTeRICS.git
+git clone -b Branch_Bugfixes_v3.0.1
 cd AsTeRICS/bin/ARE/web/webapps/WebACS/
-git submodule update --init
 cd ../../../../../../
 
 rm -r AsTeRICS/NativeASAPIlibraries
@@ -40,8 +39,6 @@ mv AsTeRICS/bin/APE AsTeRICS/APE
 mv AsTeRICS/bin/OSKA AsTeRICS/OSKA
 rm -rf AsTeRICS/bin
 rm -rf AsTeRICS/.git
-cp AsTeRICS/Documentation/ACS-Help/HTML/ACS_Help.chm AsTeRICS/ACS/
-rm -rf AsTeRICS/Documentation/ACS-Help
 rm -rf AsTeRICS/bin
 rm AsTeRICS/*.xml
 rm AsTeRICS/.*.yml

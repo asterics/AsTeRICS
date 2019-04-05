@@ -14,9 +14,6 @@
 # bash -ex jenkins-release-script.sh
 # --------------------------------------------------------
 
-# init and updated git submodules
-git submodule update --init
-
 # build release with ant
 ant buildAll-release
 
