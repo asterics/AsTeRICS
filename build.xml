@@ -6,16 +6,9 @@
 	<property name="web.docroot" location="${runtime}/web/"/>
 	<property name="WebACS.bin" location="${web.docroot}/webapps/WebACS"/>
 
-	<target name="clean" description="Clean the whole project" depends="cleanHelpFiles">
+	<target name="clean" description="Clean the whole project">
 		<subant target="clean">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
-		</subant>
-	</target>
-	
-	<target name="cleanHelpFiles" description="Cleans the help_files folders in the help folders">
-				<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
-		<subant target="cleanHelpFiles" failonerror="true">
-			<fileset dir="ARE" includes="build.xml"></fileset>
 		</subant>
 	</target>
 
@@ -24,29 +17,19 @@
 		<subant target="buildAllNoClean">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
-		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
 	
 	<target name="buildAll" description="Build the whole project with prior cleaning">
 		<subant target="buildAll">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
-		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
 
-	<target name="buildAll-release" depends="replaceVersion, clean, copyHelpFiles" description="Build the whole project with prior cleaning and no debug information. Other steps for a release might be done as well.">
+	<target name="buildAll-release" depends="replaceVersion, clean" description="Build the whole project with prior cleaning and no debug information. Other steps for a release might be done as well.">
 		<subant target="buildAll-release">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
-		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
-	</target>
-		
-	<target name="copyHelpFiles" description="Copy all help files to the webserver document root help path, the WebACS/help/ and the legacy ACS/help.">
-		<!-- copy help files of ARE and WebACS help system -->		
-		<subant target="copyHelpFiles" failonerror="true">
-			<fileset dir="ARE" includes="build.xml"></fileset>
-		</subant>		
-	</target>
+	</target>	
 
 	<target name="run" description="Peforms buildAllNoClean in the ARE directory and starts the ARE.">
 		<subant target="run" failonerror="true">
