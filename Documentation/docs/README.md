@@ -58,6 +58,6 @@ The creation of the web page was funded by the City of Vienna, MA23, in course o
 </b-container>
 </div>
 
-# AsTeRICS Project Web Page
+## AsTeRICS Project Web Page
 
-This is a newly created web page to present AsTeRICS technologies and corresponding documentation. If you are looking for the web page of the original AsTeRICS project, please go to [project.asterics.eu](http://project.asterics.eu).
+This is a newly created web page to present AsTeRICS technologies and corresponding documentation. If you are looking for the web page of the original AsTeRICS project, please go to [project.asterics.eu](https://project.asterics.eu).
