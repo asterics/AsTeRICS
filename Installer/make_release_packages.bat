@@ -33,6 +33,8 @@ rm -r AsTeRICS/ARE
 rm -rf AsTeRICS/bin/ARE/javacv-*-linux.jar
 rm -rf AsTeRICS/bin/ARE/javacv-*-macosx.jar
 
+rm -rf AsTeRICS/tmp/
+
 mv AsTeRICS/bin/ACS AsTeRICS/ACS
 mv AsTeRICS/bin/ARE AsTeRICS/ARE
 mv AsTeRICS/bin/APE AsTeRICS/APE
@@ -74,6 +76,7 @@ rm -r AsTeRICS/CIMs/HID_actuator/Mouse_Keyboard_Joystick
 rm -r AsTeRICS/CIMs/HID_actuator/Tools
 rm -r AsTeRICS/Tests
 rm -r AsTeRICS/CIMs/HID_actuator/USB_Specifications
+
 cd AsTeRICS\CIMs\HID_actuator
 wget http://www.pjrc.com/teensy/teensy.exe
 cd ..
