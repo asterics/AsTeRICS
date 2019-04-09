@@ -113,6 +113,10 @@ import eu.asterics.mw.utils.OSUtils;
  */
 
 public class AREServices implements IAREServices {
+    public static final String WEB_ACS_EDIT_MODEL_URL_KEY = "WebACS.editModel.URL";
+    public static final String LOCAL_WEB_ACS_EDIT_MODEL_URL="http://localhost:{0}/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
+    public static final String ONLINE_WEB_ACS_EDIT_MODEL_URL="https://webacs.asterics.eu/index.html?autoConnect=true&autoDownloadModel=true";
+    
     private final String STORAGE_FOLDER = "storage";
     private Logger logger = null;
 
@@ -126,6 +130,8 @@ public class AREServices implements IAREServices {
         logger = AstericsErrorHandling.instance.getLogger();
         areEventListenerObjects = new ArrayList<IAREEventListener>();
         runtimeDataListenerObjects = new ArrayList<RuntimeDataListener>();
+        
+        AREProperties.instance.setDefaultPropertyValue(WEB_ACS_EDIT_MODEL_URL_KEY, ONLINE_WEB_ACS_EDIT_MODEL_URL, "The URL which is used to open the currently deployed model for editing within the WebACS. Use '"+LOCAL_WEB_ACS_EDIT_MODEL_URL+"' if you prefer the locally deployed WebACS. The {0} will be automatically substituted by the configured REST port.");
     }
 
     /**
@@ -494,13 +500,14 @@ public class AREServices implements IAREServices {
      * Opens the currently deployed model in the WebACS for editing. 
      */
     public void editModel() {
-        String webACSPath = "webapps/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
-        String url = MessageFormat.format("http://localhost:{0}/{1}", AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY), webACSPath);
+        String url=AREProperties.instance.getProperty(WEB_ACS_EDIT_MODEL_URL_KEY);
+        //If the url value contains {0} replace it with the currently configured REST port.
+        url = MessageFormat.format(url, AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
         try {
             OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
         } catch (IOException e) {
             logger.log(Level.SEVERE, "error opening WebACS for current model.", e);
-        }        
+        }
     }    
 
     /**
