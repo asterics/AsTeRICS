@@ -56,20 +56,20 @@ import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import eu.asterics.mw.are.AREProperties;
+import static eu.asterics.mw.are.AREProperties.*;
 import eu.asterics.mw.utils.OSUtils;
 import org.osgi.framework.BundleContext;
 
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class ControlPane extends JPanel {
 
     private static final int CONTROLPANEL_WIDTH = 30;
-    private Logger logger = AstericsErrorHandling.instance.getLogger();
-    private static final String DEFAULT_REST_PORT = "8081";
-    private static final String PROPTERTY_REST_PORT = "ARE.webservice.port.REST";
+    private Logger logger = AstericsErrorHandling.instance.getLogger();    
 
     private BundleContext bundleContext;
     private JPanel jplPanel, iconPanel, mainPanel;
@@ -267,20 +267,14 @@ public class ControlPane extends JPanel {
             pencilLabel = new ControlPanelLabel(getFullURL(PENCIL_ICON_PATH), getFullURL(PENCIL_ICON_PATH_RO), "Edit current model in WebACS") {
                 @Override
                 public void onMouseClick() {
-                    String webACSPath = "webapps/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
-                    String url = MessageFormat.format("http://localhost:{0}/{1}", getCurrentRestPort(), webACSPath);
-                    try {
-                        OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
-                    } catch (IOException e) {
-                        logger.log(Level.SEVERE, "error opening WebACS for current model.", e);
-                    }
+                    AREServices.instance.editModel();                    
                 }
             };
 
             globeLabel = new ControlPanelLabel(getFullURL(GLOBE_ICON_PATH), getFullURL(GLOBE_ICON_PATH_RO), "Open ARE Webserver Startpage") {
                 @Override
                 public void onMouseClick() {
-                    String url = MessageFormat.format("http://localhost:{0}/", getCurrentRestPort());
+                    String url = MessageFormat.format("http://localhost:{0}/",AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
                     try {
                         OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
                     } catch (IOException e) {
@@ -697,13 +691,5 @@ public class ControlPane extends JPanel {
 
     private URL getFullURL(String relativePath) {
         return bundleContext.getBundle().getResource(relativePath);
-    }
-
-    private String getCurrentRestPort() {
-        String port = AREProperties.instance.getProperty(PROPTERTY_REST_PORT);
-        if(port == null || port.isEmpty()) {
-            port = DEFAULT_REST_PORT;
-        }
-        return port;
     }
 }

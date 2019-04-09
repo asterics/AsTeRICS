@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import eu.asterics.mw.are.AREProperties;
+import static eu.asterics.mw.are.AREProperties.*;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
@@ -43,14 +44,14 @@ public class ServerRepository {
     private static ServerRepository instance;
 
     // Rest Server configuration
-    public static final String ARE_WEBSERVICE_PORT_REST_KEY = "ARE.webservice.port.REST";
+    
     public static final String PATH_REST = "/rest";
     public static final int DEFAULT_PORT_REST = 8081;
 
     // Web Socket Server configuration
     public static final String PATH_WEBSOCKET = "/ws";
     public static final String PATH_WEBSOCKET_ASTERICS_DATA = "/astericsData";
-    public static final String ARE_WEBSERVICE_PORT_WEBSOCKET_KEY = "ARE.webservice.port.websocket";
+
     public static final int DEFAULT_PORT_WEBSOCKET = 8082;
 
     // member variables holding property values
@@ -63,14 +64,16 @@ public class ServerRepository {
     private ServerRepository() {
         // init ports and paths with property values
         try {
-            portREST = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY, String.valueOf(DEFAULT_PORT_REST)));
+            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_PORT_REST_KEY, String.valueOf(DEFAULT_PORT_REST), "The port to use for the REST API.");
+            portREST = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
         } catch (NumberFormatException e) {
             AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
                     "Configured port for REST service invalid: " + e.getMessage(), e);
         }
         // init ports and paths with property values
         try {
-            portWebsocket = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_PORT_WEBSOCKET)));
+            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_PORT_WEBSOCKET), "The port to use for websocket communication.");
+            portWebsocket = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY));
         } catch (NumberFormatException e) {
             AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
                     "Configured port for Websocket service invalid: " + e.getMessage(), e);
