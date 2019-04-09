@@ -82,7 +82,7 @@ import eu.asterics.mw.services.IAREEventListener;
  *         Time: 2:14:37 PM
  */
 public class AstericsGUI implements IAREEventListener {
-    private static int DEFAULT_FONT_SIZE = 18;
+    private final static int DEFAULT_FONT_SIZE = 18;
     private static String DEFAULT_FONT_SIZE_PROPERTY = "ARE.gui.font.size";
     public final static String ARE_VERSION = "#{APPLICATION_VERSION_NUMBER}#";
     static int DEFAULT_SCREEN_X = 0;
@@ -121,49 +121,57 @@ public class AstericsGUI implements IAREEventListener {
     public AstericsGUI(BundleContext bundleContext) {
         super();
 
-        DEFAULT_FONT_SIZE = new Integer(AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY, String.valueOf(DEFAULT_FONT_SIZE)));
-        AstericsErrorHandling.instance.getLogger().info(DEFAULT_FONT_SIZE_PROPERTY + "=" + DEFAULT_FONT_SIZE);
-        AREProperties.instance.setProperty(DEFAULT_FONT_SIZE_PROPERTY, Integer.toString(DEFAULT_FONT_SIZE));
+        AREProperties.instance.setDefaultPropertyValue(DEFAULT_FONT_SIZE_PROPERTY, String.valueOf(DEFAULT_FONT_SIZE), "The default font size for the ARE GUI.");
+        Integer fontSize = DEFAULT_FONT_SIZE;
+        try {
+            fontSize = new Integer(AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().warning("Could not parse numeric fontSize for ARE GUI: key: " + DEFAULT_FONT_SIZE_PROPERTY + "="
+                    + AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY));
+        }
 
-        UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
+        AstericsErrorHandling.instance.getLogger().info(DEFAULT_FONT_SIZE_PROPERTY + "=" + fontSize);
+        AREProperties.instance.setProperty(DEFAULT_FONT_SIZE_PROPERTY, Integer.toString(fontSize));
+
+        UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Arial", Font.PLAIN, fontSize));
 
         UIManager.get("messageFont");
-        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
+        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, fontSize));
 
         UIManager.get("messageForeground");
         UIManager.put("OptionPane.messageForeground", Color.black);
 
-        UIManager.put("Button.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("ToggleButton.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("RadioButton.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("CheckBox.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("ColorChooser.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("ComboBox.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("Label.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("List.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("MenuBar.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("MenuItem.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("RadioButtonMenuItem.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("CheckBoxMenuItem.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("Menu.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("PopupMenu.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("OptionPane.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("Panel.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("ProgressBar.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("ScrollPane.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("Viewport.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("TabbedPane.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("Table.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("TableHeader.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("TextField.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("PasswordField.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("TextArea.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("TextPane.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("EditorPane.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("TitledBorder.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("ToolBar.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("ToolTip.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
-        UIManager.put("Tree.font", new Font("Arial", Font.PLAIN, DEFAULT_FONT_SIZE));
+        UIManager.put("Button.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("ToggleButton.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("RadioButton.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("CheckBox.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("ColorChooser.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("ComboBox.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("Label.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("List.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("MenuBar.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("MenuItem.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("RadioButtonMenuItem.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("CheckBoxMenuItem.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("Menu.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("PopupMenu.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("OptionPane.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("Panel.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("ProgressBar.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("ScrollPane.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("Viewport.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("TabbedPane.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("Table.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("TableHeader.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("TextField.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("PasswordField.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("TextArea.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("TextPane.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("EditorPane.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("TitledBorder.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("ToolBar.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("ToolTip.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("Tree.font", new Font("Arial", Font.PLAIN, fontSize));
 
         // logger = AstericsErrorHandling.instance.getLogger();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -525,10 +533,10 @@ public class AstericsGUI implements IAREEventListener {
         });
 
     }
-    
+
     public void cleanupPanel() {
         SwingUtilities.invokeLater(new Runnable() {
-            
+
             @Override
             public void run() {
                 AstericsErrorHandling.instance.getLogger().fine("Cleaning Desktop panel...");
