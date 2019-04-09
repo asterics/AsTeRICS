@@ -56,6 +56,8 @@ import eu.asterics.mw.model.deployment.IRuntimeModel;
  *         Date: Oct 10, 2011
  */
 public class TabbedPane extends JPanel {
+    public static final String SHOW_ERROR_DIALOGS = "showErrorDialogs";
+    public static final String BACKGROUND_COLOR = "background_color";
     private static final Color DEFAULT_BACKGROUND_COLOR = new Color(-11435361);
 
     private AstericsGUI parent;
@@ -154,8 +156,8 @@ public class TabbedPane extends JPanel {
 
         AREProperties props = AREProperties.instance;
 
-        if (props.containsKey("showErrorDialogs")) {
-            if (Integer.parseInt(props.getProperty("showErrorDialogs")) == 1) {
+        if (props.containsKey(SHOW_ERROR_DIALOGS)) {
+            if (Integer.parseInt(props.getProperty(SHOW_ERROR_DIALOGS)) == 1) {
                 showErrorGuiBox.setSelected(true);
             } else {
                 showErrorGuiBox.setSelected(false);
@@ -175,8 +177,8 @@ public class TabbedPane extends JPanel {
 
         JPanel colorPanel = new JPanel();
         colorPanel.setLayout(new BoxLayout(colorPanel, BoxLayout.Y_AXIS));
-        if (props.containsKey("background_color")) {
-            tcc = new JColorChooser(new Color(Integer.parseInt(props.getProperty("background_color"))));
+        if (props.containsKey(BACKGROUND_COLOR)) {
+            tcc = new JColorChooser(new Color(Integer.parseInt(props.getProperty(BACKGROUND_COLOR))));
         } else {
             tcc = new JColorChooser(DEFAULT_BACKGROUND_COLOR); // default
         }
@@ -189,27 +191,20 @@ public class TabbedPane extends JPanel {
 
     void storeDefaultProperties() {
         AREProperties props = AREProperties.instance;
-
-        if (!props.containsKey("background_color")) {
-            props.setProperty("background_color", Integer.toString(DEFAULT_BACKGROUND_COLOR.getRGB()));
-        }
-
-        if (!props.containsKey("showErrorDialogs")) {
-            props.setProperty("showErrorDialogs", "1");
-        }
-
-        props.storeProperties();
+       
+        props.setDefaultPropertyValue(BACKGROUND_COLOR, Integer.toString(DEFAULT_BACKGROUND_COLOR.getRGB()), "The background colour of the ARE desktop. Please change the value in the ARE GUI.");
+        props.setDefaultPropertyValue(SHOW_ERROR_DIALOGS, "1", "Flag to turn off showing the error dialog. 1=show errors, 0=don't show errors");
     }
 
     void storeProperties() {
         AREProperties props = AREProperties.instance;
 
-        props.setProperty("background_color", Integer.toString(tcc.getColor().getRGB()));
+        props.setProperty(BACKGROUND_COLOR, Integer.toString(tcc.getColor().getRGB()));
 
         if (showErrorGuiBox.isSelected()) {
-            props.setProperty("showErrorDialogs", "1");
+            props.setProperty(SHOW_ERROR_DIALOGS, "1");
         } else {
-            props.setProperty("showErrorDialogs", "0");
+            props.setProperty(SHOW_ERROR_DIALOGS, "0");
         }
 
         props.storeProperties();
