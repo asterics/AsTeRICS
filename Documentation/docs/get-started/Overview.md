@@ -2,19 +2,19 @@
 
 This pages explains the most important terms and elements of the AsTeRICS framework.
 
-## Solutions
-
-The AsTeRICS framework provides some selected [solutions](/solutions/) which can be used out of the box. The solutions are grouped by **use cases** and can be directly started from the solutions page. Some solutions depend on certain [input devices](#input-device) or other hardware and software. Just click onto the ```Read More``` button in a solution's tile to get a detailed step by step instruction of how to install and use it.
-
-A solution can be categorized by the AsTeRICS technology used. It can be a [model](#model), a [grid](#grid) or an [AT solution](#at-solution).
-
 ## Terms
 
 The most important terms are described below.
 
+### Solutions
+
+The AsTeRICS framework provides some selected [solutions](/solutions/) which can be used out of the box. The solutions are grouped by **use cases** and can be directly started from the solutions page. Some solutions depend on certain [input devices](#input-device) or other hardware and software. Just click on the ```Read More``` button in a solution's tile to get a detailed step by step instruction of how to install and use it.
+
+A solution can be categorized by the AsTeRICS technology used. It can be a [model](#model), an [AsTERICS Grid](#asterics-grid) or an [AT solution](#at-solution).
+
 ### Model
 
-A model represents a simple Assistive Technology (AT). It is used to define **what** should be done (e.g. mouse control, switching light on/off) and **how** this can be done (e.g. button-press, head movement,...). A model uses [plugins](#plugin) to support input devices (e.g. webcam, switch,...) and required actions.
+A model represents a simple Assistive Technology (AT). It is used to define **what** should be done (e.g. mouse control, switching light on/off) and **how** this can be done (e.g. button-press, head movement,...). A model uses [plugins](#plugin) to support input devices (e.g. webcam, switch,...) and required actions. On the image below you can see the XFaceTrackerLK plugin which uses the webcam to track the movements of your head. This gesture is directly translated to mouse movements by connecting the XFaceTrackerLK plugin to the Mouse plugin.
 
 ![Model with a webcam plugin as input device and a mouse action plugin](./img/simple-model-labelled.png)
 
@@ -31,11 +31,11 @@ AsTeRICS supports numerous input devices like a switch, a webcam or an eye-track
 
 The actions that are executed by a model are implemented using actuator plugins, which can be found under [Plugins/Actuators](/plugins/).
 
-### Grid
+### AsTeRICS Grid
 
-The grid is a web-based user interface which can be used for Augmentative and Alternative Communication (AAC). It is organized as grid of rows and columns with cells acting as buttons. The cells support texts and images/symbols and can speak a defined text (text-to-speech) or execute a defined action. A grid can be connected to a model and be used to trigger actions like switching lights on/off.
+The AsTeRICS Grid is a web-based user interface which can be used for Augmentative and Alternative Communication (AAC). Grids can be defined in a flexible layout of cells acting as buttons. The cells show text and images/symbols and if one of them is selected a defined phrase can be spoken (text-to-speech). A grid can also be connected to a model and be used to trigger actions like switching lights on/off.
 
-![Grid with symbols for Alternative and Augmentative Communication](/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg)
+![Grid with symbols for Alternative and Augmentative Communication](../img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg)
 
 ### AT Solution
 
@@ -61,7 +61,7 @@ The WebACS is a new web-based version of the [ACS](#acs) program for designing a
 
 ### ARE
 
-The AsTeRICS Runtime Environment (ARE) executes a given model. The screenshot below shows the autostart model running after starting the ARE. You can click the ```Play```, ```Pause``` or ```Stop``` button of the control panel to start, pause or stop a model. Alternatively, you can use the respective shortcuts ```F5```,```F6```,```F7```. Furthermore, you can open a new model file by clicking onto the ```Open``` button. Additionally, a model can be uploaded, if opened in the ACS/WebACS programs or directly from the [solutions](/solutions/) page. The ARE also provides a remote interface For more information about how to use the ARE, please read the [ARE user manual](/manuals/ARE/).
+The AsTeRICS Runtime Environment (ARE) executes a given model. The screenshot below shows the autostart model running after starting the ARE. You can click the ```Play```, ```Pause``` or ```Stop``` button of the control panel to start, pause or stop a model. Alternatively, you can use the respective shortcuts ```F5```,```F6```,```F7```. Furthermore, you can open a new model file by clicking on the ```Open``` button. Additionally, a model can be uploaded, if opened in the ACS/WebACS programs or directly from the [solutions](/solutions/) page. The ARE also provides a remote interface. For more information about how to use the ARE, please read the [ARE user manual](/manuals/ARE/).
 
 ![Screenshot of AsTeRICS Runtime Environment](./img/ARE-startscreen.png)
 
@@ -73,6 +73,6 @@ AsTeRICS provides two different types of user interfaces, which can be used for 
 
 The ARE provides a Graphical User Interface (GUI) desktop (see [ARE screenshot](#are)). When designing a model with the ACS or WebACS you can use plugins which provide user interface elements like a slider or a button. You can then define where the element should be shown on the ARE desktop. Furthermore you can define actions depending on user input.
 
-### Grid
+### AsTeRICS Grid
 
-The [grid](#grid) is a new way of defining a user interface for AsTeRICS.
+The [AsTeRICS Grid](#asterics-grid) is a new way of defining a user interface for AsTeRICS.
