@@ -2,7 +2,11 @@
 
 This pages explains the most important terms and elements of the AsTeRICS framework.
 
-## Solutions
+## Terms
+
+The most important terms are described below.
+
+### Solutions
 
 The AsTeRICS framework provides some selected [solutions](/solutions/) which can be used out of the box. The solutions are grouped by **use cases** and can be directly started from the solutions page. Some solutions depend on certain [input devices](#input-device) or other hardware and software. Just click on the ```Read More``` button in a solution's tile to get a detailed step by step instruction of how to install and use it.
 
@@ -10,7 +14,7 @@ A solution can be categorized by the AsTeRICS technology used. It can be a [mode
 
 ### Model
 
-A model represents a simple Assistive Technology (AT). It is used to define **what** should be done (e.g. mouse control, switching light on/off) and **how** this can be done (e.g. button-press, head movement,...). A model uses [plugins](#plugin) to support input devices (e.g. webcam, switch,...) and required actions.
+A model represents a simple Assistive Technology (AT). It is used to define **what** should be done (e.g. mouse control, switching light on/off) and **how** this can be done (e.g. button-press, head movement,...). A model uses [plugins](#plugin) to support input devices (e.g. webcam, switch,...) and required actions. On the image below you can see the XFaceTrackerLK plugin which uses the webcam to track the movements of your head. This gesture is directly translated to mouse movements by connecting the XFaceTrackerLK plugin to the Mouse plugin.
 
 ![Model with a webcam plugin as input device and a mouse action plugin](./img/simple-model-labelled.png)
 
@@ -57,7 +61,7 @@ The WebACS is a new web-based version of the [ACS](#acs) program for designing a
 
 ### ARE
 
-The AsTeRICS Runtime Environment (ARE) executes a given model. The screenshot below shows the autostart model running after starting the ARE. You can click the ```Play```, ```Pause``` or ```Stop``` button of the control panel to start, pause or stop a model. Alternatively, you can use the respective shortcuts ```F5```,```F6```,```F7```. Furthermore, you can open a new model file by clicking onto the ```Open``` button. Additionally, a model can be uploaded, if opened in the ACS/WebACS programs or directly from the [solutions](/solutions/) page. The ARE also provides a remote interface. For more information about how to use the ARE, please read the [ARE user manual](/manuals/ARE/).
+The AsTeRICS Runtime Environment (ARE) executes a given model. The screenshot below shows the autostart model running after starting the ARE. You can click the ```Play```, ```Pause``` or ```Stop``` button of the control panel to start, pause or stop a model. Alternatively, you can use the respective shortcuts ```F5```,```F6```,```F7```. Furthermore, you can open a new model file by clicking on the ```Open``` button. Additionally, a model can be uploaded, if opened in the ACS/WebACS programs or directly from the [solutions](/solutions/) page. The ARE also provides a remote interface. For more information about how to use the ARE, please read the [ARE user manual](/manuals/ARE/).
 
 ![Screenshot of AsTeRICS Runtime Environment](./img/ARE-startscreen.png)
 
