@@ -188,26 +188,6 @@ public class AstericsModelExecutionThreadPool {
     }
 
     /**
-     * Submits (blocking) the given Callable and waits until completion either in the modelExecutorLifecycle thread (single threaded approach) or in a thread
-     * pool of userdefined size.
-     * 
-     * @Note: In single threaded approach: the taks is operated off a bounded queue of size DEFAULT_EXECUTOR_QUEUE_SIZE. If the queue is full, the task is
-     *        rejected to prevent knocking out the ARE.
-     * @param r
-     */
-    // Removed submit method because, the user should either use .execute to
-    // asynchronously call a task or execAndWaitOnModelExecutorLifecycleThread
-    // synchronously with timeout.
-    /*
-     * public <V> V submit(Callable<V> r) throws InterruptedException, ExecutionException, TimeoutException { try{
-     * if(Thread.currentThread().getName().startsWith(MODEL_EXECUTOR_LIFECYCLE)) { return r.call(); } else { //System.out.print("s"); Future<V>
-     * f=pool.submit(r); try{ return f.get(TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS); }catch(TimeoutException e) {
-     * logger.warning("["+Thread.currentThread().getName()+ "]: Task execution timeouted, trying to cancel task"); if(f!=null) { f.cancel(true); } throw(e); } }
-     * }catch(RejectedExecutionException re) { System.out.print("-"); return null; }catch(InterruptedException | ExecutionException | TimeoutException re) {
-     * throw re; }catch(Exception e) { throw new ExecutionException(e); } }
-     */
-
-    /**
      * Executes (blocking, waits for termination) the given Runnable by the Thread instance "ModelExecutor". If the execution hangs a timeout arises after
      * TASK_SUBMIT_TIMEOUT.
      * 
