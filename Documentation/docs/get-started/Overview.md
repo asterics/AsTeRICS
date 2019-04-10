@@ -10,7 +10,7 @@ The most important terms are described below.
 
 The AsTeRICS framework provides some selected [solutions](/solutions/) which can be used out of the box. The solutions are grouped by **use cases** and can be directly started from the solutions page. Some solutions depend on certain [input devices](#input-device) or other hardware and software. Just click on the ```Read More``` button in a solution's tile to get a detailed step by step instruction of how to install and use it.
 
-A solution can be categorized by the AsTeRICS technology used. It can be a [model](#model), a [grid](#grid) or an [AT solution](#at-solution).
+A solution can be categorized by the AsTeRICS technology used. It can be a [model](#model), an [AsTERICS Grid](#asterics-grid) or an [AT solution](#at-solution).
 
 ### Model
 
@@ -31,11 +31,11 @@ AsTeRICS supports numerous input devices like a switch, a webcam or an eye-track
 
 The actions that are executed by a model are implemented using actuator plugins, which can be found under [Plugins/Actuators](/plugins/).
 
-### Grid
+### AsTeRICS Grid
 
 The AsTeRICS Grid is a web-based user interface which can be used for Augmentative and Alternative Communication (AAC). Grids can be defined in a flexible layout of cells acting as buttons. The cells show text and images/symbols and if one of them is selected a defined phrase can be spoken (text-to-speech). A grid can also be connected to a model and be used to trigger actions like switching lights on/off.
 
-![Grid with symbols for Alternative and Augmentative Communication](/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg)
+![Grid with symbols for Alternative and Augmentative Communication](../img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg)
 
 ### AT Solution
 
@@ -75,4 +75,4 @@ The ARE provides a Graphical User Interface (GUI) desktop (see [ARE screenshot](
 
 ### AsTeRICS Grid
 
-The [AsTeRICS Grid](#grid) is a new way of defining a user interface for AsTeRICS.
+The [AsTeRICS Grid](#asterics-grid) is a new way of defining a user interface for AsTeRICS.
