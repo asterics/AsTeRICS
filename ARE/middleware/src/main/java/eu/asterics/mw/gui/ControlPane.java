@@ -69,7 +69,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class ControlPane extends JPanel {
 
     private static final int CONTROLPANEL_WIDTH = 30;
-    private Logger logger = AstericsErrorHandling.instance.getLogger();    
+    private Logger logger = AstericsErrorHandling.instance.getLogger();
 
     private BundleContext bundleContext;
     private JPanel jplPanel, iconPanel, mainPanel;
@@ -267,14 +267,14 @@ public class ControlPane extends JPanel {
             pencilLabel = new ControlPanelLabel(getFullURL(PENCIL_ICON_PATH), getFullURL(PENCIL_ICON_PATH_RO), "Edit current model in WebACS") {
                 @Override
                 public void onMouseClick() {
-                    AREServices.instance.editModel();                    
+                    AREServices.instance.editModel();
                 }
             };
 
             globeLabel = new ControlPanelLabel(getFullURL(GLOBE_ICON_PATH), getFullURL(GLOBE_ICON_PATH_RO), "Open ARE Webserver Startpage") {
                 @Override
                 public void onMouseClick() {
-                    String url = MessageFormat.format("http://localhost:{0}/",AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
+                    String url = MessageFormat.format("http://localhost:{0}/", AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
                     try {
                         OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
                     } catch (IOException e) {
@@ -465,8 +465,7 @@ public class ControlPane extends JPanel {
         exitLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                int n = JOptionPane.showConfirmDialog(null, "Are you sure to stop and close the ARE?", "ARE Exit",
-                        JOptionPane.YES_NO_OPTION);
+                int n = JOptionPane.showConfirmDialog(null, "Are you sure to stop and close the ARE?", "ARE Exit", JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION) {
                     astericsGUI.closeAction();
                 }
@@ -600,9 +599,8 @@ public class ControlPane extends JPanel {
         // cpWrapperPanel.setLayout(new BoxLayout(cpWrapperPanel,axis));
         iconPanel.setLayout(new BoxLayout(iconPanel, axis));
         /*
-         * if (axis==BoxLayout.Y_AXIS) setPreferredSize(new Dimension
-         * (VERTICAL_BAR_WIDTH,VERTICAL_BAR_HEIGHT)); else setPreferredSize(new
-         * Dimension (HORIZONTAL_BAR_WIDTH,HORIZONTAL_BAR_HEIGHT));
+         * if (axis==BoxLayout.Y_AXIS) setPreferredSize(new Dimension (VERTICAL_BAR_WIDTH,VERTICAL_BAR_HEIGHT)); else setPreferredSize(new Dimension
+         * (HORIZONTAL_BAR_WIDTH,HORIZONTAL_BAR_HEIGHT));
          */
         mainPanel.revalidate();
 
