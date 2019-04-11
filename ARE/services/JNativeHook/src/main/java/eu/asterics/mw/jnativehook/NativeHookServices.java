@@ -30,9 +30,12 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.MessageFormat;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import eu.asterics.mw.services.IAREKeyboardListener;
 import eu.asterics.mw.utils.OSUtils;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -73,6 +76,8 @@ public class NativeHookServices implements NativeKeyListener {
     public static NativeHookServices instance = null;
 
     private AsapiSupport as;
+
+    private Set<IAREKeyboardListener> keyboardListeners = new HashSet<>();
 
     private NativeHookServices() {
         AstericsErrorHandling.instance.getLogger().fine("Registering native hooks...");
@@ -205,15 +210,17 @@ public class NativeHookServices implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nke) {
-        // TODO Auto-generated method stub
-
+        for(IAREKeyboardListener listener : keyboardListeners) {
+            listener.keyPressed(nke);
+        }
     }
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent nke) {
-        // TODO Auto-generated method stub
-        // System.out.println("Native key released:
-        // "+nke.getKeyText(nke.getKeyCode()));
+
+        for(IAREKeyboardListener listener : keyboardListeners) {
+            listener.keyReleased(nke);
+        }
         if (nke.getKeyCode() == keyCodeStartModel) {
             try {
                 as.runModel();
@@ -248,6 +255,24 @@ public class NativeHookServices implements NativeKeyListener {
     public void nativeKeyTyped(NativeKeyEvent nke) {
         // TODO Auto-generated method stub
         // System.out.println("Native key typed: "+nke);
+    }
+
+    /**
+     * register a new keyboard listener
+     * @param listener
+     * @return
+     */
+    public boolean registerAREKeyboardListener(IAREKeyboardListener listener) {
+        return this.keyboardListeners.add(listener);
+    }
+
+    /**
+     * deregisters a keyboard listener
+     * @param listener
+     * @return
+     */
+    public boolean unregisterAREKeyboardListener(IAREKeyboardListener listener) {
+        return this.keyboardListeners.remove(listener);
     }
 
     private String getCurrentRestPort() {

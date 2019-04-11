@@ -16,6 +16,7 @@
         <pathelement location="${middleware}/asterics.ARE.jar"/>
        	<pathelement location="${services}/grizzly-httpservice-bundle-2.3.23.jar"/>
        	<pathelement location="${services}/org.eclipse.osgi.services_3.2.100.v20100503.jar"/>
+        <pathelement location="${services}/asterics.mw.jnativehook.jar"/>
         <pathelement location="src/main/resources/lib/hk2-api-2.4.0-b06.jar"/>
        	<pathelement location="src/main/resources/lib/hk2-locator-2.4.0-b06.jar"/>
         <pathelement location="src/main/resources/lib/hk2-utils-2.4.0-b06.jar"/>
