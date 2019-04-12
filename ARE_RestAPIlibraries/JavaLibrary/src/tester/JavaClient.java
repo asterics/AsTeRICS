@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.glassfish.jersey.media.sse.EventListener;
@@ -18,7 +19,7 @@ public class JavaClient {
 	public static void main(String[] args) throws Exception {
 		ARECommunicator areCommunicator = new ARECommunicator("http://localhost:8081/rest/");
 
-		String localModel = JavaClient.readModel("models/demomenu.acs");
+		String localModel = JavaClient.readModel("JavaLibrary/models/demomenu.acs");
 		String areModel = "";
 		String filename = "myModel.acs";
 		String response = "";
@@ -85,7 +86,7 @@ public class JavaClient {
 		
 		//deploy from file
 		System.out.println("\nDeploy model from file\n-------------------------------------");
-		response = areCommunicator.deployModelFromFile("autostart.acs");
+		response = areCommunicator.deployModelFromFile("HeadSound.acs");
 		System.out.println(response + "\n");
 		
 		//get Runtime Component Ids
@@ -110,6 +111,11 @@ public class JavaClient {
 		System.out.println("\nGet runtime component property (" + componentId +": " + componentPorpertyKey + ")\n-------------------------------------");
 		response = areCommunicator.getRuntimeComponentProperty(componentId, componentPorpertyKey);
 		System.out.println(response + "\n");
+		
+        //get component dynamic property
+        System.out.println("\nGet runtime component dynamic property (" + componentId +": " + componentPorpertyKey + ")\n-------------------------------------");
+        String[] responseList = areCommunicator.getRuntimeComponentPropertyDynamic("MidiPlayer.1", "toneScale");
+        System.out.println(Arrays.toString(responseList) + "\n");		
 		
 		//set component property
 		System.out.println("\nSet runtime component property (" + componentId +": " + componentPorpertyKey + " = 15)\n-------------------------------------");
