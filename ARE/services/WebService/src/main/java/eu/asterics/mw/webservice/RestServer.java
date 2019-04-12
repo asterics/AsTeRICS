@@ -297,11 +297,11 @@ public class RestServer {
         return response;
     }
     
-    @Path("/runtime/model/components/{componentId}/properties/{componentKey}")
+    @Path("/runtime/model/components/{componentId}/{propertyKey}/dynamicproperty")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getRuntimeComponentPropertyValues(@PathParam("componentId") String componentId,
-	        @PathParam("componentKey") String componentKey) {
+    public String getRuntimeComponentPropertyDynamic(@PathParam("componentId") String componentId,
+	        @PathParam("propertyKey") String propertyKey) {
     	
     	List<String> l = null;
     	String response = "";
@@ -310,34 +310,34 @@ public class RestServer {
     	
     	try {
     		decodedId = astericsAPIEncoding.decodeString(componentId);
-            decodedKey = astericsAPIEncoding.decodeString(componentKey);
+            decodedKey = astericsAPIEncoding.decodeString(propertyKey);
             l = asapiSupport.getRuntimePropertyList(decodedId, decodedKey);
             response = ObjectTransformation.objectToJSON(l);   	
     	} catch (Exception e) {
     		e.printStackTrace();
-    		errorMessage = "Couldn't retrieve " + componentKey + " property values from " + componentId + " (" + e.getMessage() + ")";
+    		errorMessage = "Couldn't retrieve " + propertyKey + " property values from " + componentId + " (" + e.getMessage() + ")";
     		response = "error:" + errorMessage;
     	}
     	
 	    return response;
     }
 
-    @Path("/runtime/model/components/{componentId}/{componentKey}")
+    @Path("/runtime/model/components/{componentId}/{propertyKey}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getRuntimeComponentProperty(@PathParam("componentId") String componentId,
-            @PathParam("componentKey") String componentKey) {
+            @PathParam("propertyKey") String propertyKey) {
         String response;
         String errorMessage = "";
         String decodedId = "", decodedKey = "";
 
         try {
             decodedId = astericsAPIEncoding.decodeString(componentId);
-            decodedKey = astericsAPIEncoding.decodeString(componentKey);
+            decodedKey = astericsAPIEncoding.decodeString(propertyKey);
             response = asapiSupport.getComponentProperty(decodedId, decodedKey);
         } catch (Exception e) {
             e.printStackTrace();
-            errorMessage = "Couldn't retrieve '" + componentKey + "' property from '" + componentId + "' ("
+            errorMessage = "Couldn't retrieve '" + decodedKey + "' property from '" + decodedId + "' ("
                     + e.getMessage() + ")";
             response = "error:" + errorMessage;
         }
@@ -345,19 +345,19 @@ public class RestServer {
         return response;
     }
 
-    @Path("/runtime/model/components/{componentId}/{componentKey}")
+    @Path("/runtime/model/components/{componentId}/{propertyKey}")
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String setRuntimeComponentProperty(String value, @PathParam("componentId") String componentId,
-            @PathParam("componentKey") String componentKey) {
+            @PathParam("propertyKey") String propertyKey) {
         String response;
         String errorMessage = "";
         String decodedId = "", decodedKey = "";
 
         try {
             decodedId = astericsAPIEncoding.decodeString(componentId);
-            decodedKey = astericsAPIEncoding.decodeString(componentKey);
+            decodedKey = astericsAPIEncoding.decodeString(propertyKey);
             response = asapiSupport.setComponentProperty(decodedId, decodedKey, value);
         } catch (Exception e) {
             e.printStackTrace();
@@ -385,11 +385,11 @@ public class RestServer {
 
             for (String componentId: propertyMap.keySet()) {
             	Map<String, String> componentPropertyMap = propertyMap.get(componentId);
-	            for (String componentKey: componentPropertyMap.keySet()) {
-	            	String newValue = componentPropertyMap.get(componentKey);
+	            for (String propertyKey: componentPropertyMap.keySet()) {
+	            	String newValue = componentPropertyMap.get(propertyKey);
 	            	try {
-	            		asapiSupport.setComponentProperty(componentId, componentKey, newValue);
-	            		changedValues.add(componentId+"#"+componentKey);
+	            		asapiSupport.setComponentProperty(componentId, propertyKey, newValue);
+	            		changedValues.add(componentId+"#"+propertyKey);
 	            	}
 	            	catch (Exception ex) {
 	            		ex.printStackTrace();
