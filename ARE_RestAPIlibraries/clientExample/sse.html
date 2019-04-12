@@ -63,8 +63,9 @@
 			//subscribe to eventChannel events
 			function SUBSCRIBE_EVENTCHANNEL_EVENTS() {
 				var eventType = ServerEventTypes.EVENT_CHANNEL_TRANSMISSION;
+				var channelId = document.getElementById("SECEid").value;
 
-				subscribe(SECE_successCallback, consoleErrorCallback, eventType);
+				subscribe(SECE_successCallback, consoleErrorCallback, eventType,channelId);
 			}
 
 			function SECE_successCallback(data, HTTPstatus) {
@@ -74,7 +75,9 @@
 			
 			function UNSUBSCRIBE_EVENTCHANNEL_EVENTS() {
 				var eventType = ServerEventTypes.EVENT_CHANNEL_TRANSMISSION;
-				unsubscribe(eventType);
+				var channelId = document.getElementById("SECEid").value;
+
+				unsubscribe(eventType,channelId);
 			}
 
 			//subscribe to dataChannel events
@@ -152,6 +155,7 @@
 			<h4 class="inlineText"> EventChannel events: </h4>
 			<button onclick="SUBSCRIBE_EVENTCHANNEL_EVENTS()" title="Description: Opens a persistent connection with ARE and listens for EventChannel Transmissions &#013;Ouput: box below"> Subscribe</button>
 			<button onclick="UNSUBSCRIBE_EVENTCHANNEL_EVENTS()" title="Description: Stops receiving the events &#013;"> Unsubscribe </button>
+			<input placeholder="channelId" type="text" id="SECEid"/>
 			<div id="eventBox3" class="eventDisplay"> </div>
 
 			<br/>
