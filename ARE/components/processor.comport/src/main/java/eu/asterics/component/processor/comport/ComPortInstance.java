@@ -61,6 +61,7 @@ public class ComPortInstance extends AbstractRuntimeComponentInstance {
     int propBaudRate = 57600;
     int propReceivedDataType = 0;
     int propSendDataType = 1;
+    boolean propEnabled = true;
 
     // declare member variables here
     private InputStream in = null;
@@ -122,7 +123,12 @@ public class ComPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
-
+        if ("enablePlugin".equalsIgnoreCase(eventPortID)) {
+            return elpEnablePlugin;
+        }
+        if ("disablePlugin".equalsIgnoreCase(eventPortID)) {
+            return elpDisablePlugin;
+        }
         return null;
     }
 
@@ -135,7 +141,6 @@ public class ComPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
-
         return null;
     }
 
@@ -148,6 +153,9 @@ public class ComPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public Object getRuntimePropertyValue(String propertyName) {
+        if ("enabled".equalsIgnoreCase(propertyName)) {
+            return propEnabled;
+        }
         if ("comPort".equalsIgnoreCase(propertyName)) {
             return propComPort;
         }
@@ -174,6 +182,11 @@ public class ComPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("enabled".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propEnabled;
+            propEnabled = Boolean.parseBoolean((String) newValue);
+            return oldValue;
+        }
         if ("comPort".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propComPort;
             propComPort = (String) newValue;
@@ -197,6 +210,24 @@ public class ComPortInstance extends AbstractRuntimeComponentInstance {
 
         return null;
     }
+
+    final IRuntimeEventListenerPort elpEnablePlugin = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            if (!propEnabled) {
+                propEnabled = true;
+                start();
+            }
+        }
+    };
+
+    final IRuntimeEventListenerPort elpDisablePlugin = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            if (propEnabled) {
+                propEnabled = false;
+                stop();
+            }
+        }
+    };
 
     /**
      * Input Ports for receiving values.
@@ -254,6 +285,9 @@ public class ComPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void start() {
+        if (!propEnabled) {
+            return;
+        }
         portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
 
         if (portController == null) {
