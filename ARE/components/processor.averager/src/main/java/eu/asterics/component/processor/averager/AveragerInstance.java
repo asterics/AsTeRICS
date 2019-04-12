@@ -220,7 +220,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance {
      * samples are summed but not divided
      */
     private synchronized void process(final double in) {
-        if (!propEnabled && buffer.size() == propBufferSize) {
+        if (!propEnabled) {
             if (System.currentTimeMillis() - disableTime < propAutoReenableTime || propAutoReenableTime == 0) {
                 return;
             }
