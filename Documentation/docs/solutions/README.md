@@ -19,22 +19,75 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
 ## Computer Control
 
 <TileGroup>
-<ModelTile target="./Camera-Mouse" title="Camera Mouse" image-url="/img/stock-photo-biometric-verification-woman-face-recognition-security-613853963.jpg" shortDesc="Mouse control according to your head movements with configurable settings." v-bind:buttons='[{ href: "http://asterics.github.io/AsTeRICS/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs", text: "Start" }, { href: "http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-cameramouse", text: "Settings" },{ href: "http://asterics.github.io/AsTeRICS/webapps/WebACS/?areBaseURI=http://localhost:8081&openFile=http://asterics.github.io/AsTeRICS/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs", text: "Edit" }]'  v-bind:tags='[{ href: "", text: "webcam" }]'></ModelTile>
+<ModelTile 
+    target="./Camera-Mouse" 
+    v-bind:buttons='[
+        { href: "https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs", text: "Start" },
+        { href: "http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-cameramouse", text: "Settings" },
+        { href: "http://asterics.github.io/AsTeRICS/webapps/WebACS/?areBaseURI=http://localhost:8081&openFile=https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs", text: "Edit" }
+    ]'
+    title="Camera Mouse"
+    image-url="/img/stock-photo-biometric-verification-woman-face-recognition-security-613853963.jpg"
+    shortDesc="Mouse control according to your head movements with configurable settings."
+    v-bind:tags='[
+        { href: "#", text: "webcam" }
+    ]'
+>
+</ModelTile>
 
-<ModelTile target="./Eye-Tracking-Mouse" title="Eye Tracking Mouse" image-url="/img/stock-photo-eye-monitoring-virtual-reality-700122865.jpg" shortDesc="Mouse control by eye tracking with configurable settings." v-bind:buttons='[{ href: "http://asterics.github.io/AsTeRICS/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs", text: "Start" }, { href: "http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-eyecontrol", text: "Settings" },{ href: "http://asterics.github.io/AsTeRICS/webapps/WebACS/?areBaseURI=http://localhost:8081&openFile=http://asterics.github.io/AsTeRICS/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs", text: "Edit" }]' v-bind:tags='[{ href: "https://gaming.tobii.com/product/tobii-eye-tracker-4c/", text: "eye-tracker" },{ href: "", text: "windows" }]'></ModelTile>
+<ModelTile
+    target="./Eye-Tracking-Mouse"
+    v-bind:buttons='[
+        { href: "https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs", text: "Start" },
+        { href: "http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-eyecontrol", text: "Settings" },
+        { href: "http://asterics.github.io/AsTeRICS/webapps/WebACS/?areBaseURI=http://localhost:8081&openFile=http://asterics.github.io/AsTeRICS/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs", text: "Edit" }
+    ]'
+    title="Eye Tracking Mouse"
+    image-url="/img/stock-photo-eye-monitoring-virtual-reality-700122865.jpg"
+    shortDesc="Mouse control by eye tracking with configurable settings."
+    v-bind:tags='[
+        { href: "https://gaming.tobii.com/product/tobii-eye-tracker-4c/", text: "eye-tracker" },
+        { href: "", text: "windows" }
+    ]'
+>
+</ModelTile>
 
-<ModelTile target="./Switch-Mouse" title="Switch-controlled Mouse" image-url="/img/fabi-switches.jpg" shortDesc="Provides mouse control using AT switches." v-bind:buttons='[{ href: "https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/useCaseDemos/mouseControl/crosshairCursorControl_2keys_wraparound.acs", text: "Start" }]'></ModelTile>
-
+<ModelTile
+    target="./Switch-Mouse"
+    title="Switch-controlled Mouse"
+    image-url="/img/fabi-switches.jpg"
+    shortDesc="Provides mouse control using AT switches."
+    :buttons='[
+        { href: "https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/HeadSound.acs", text: "Start" }
+    ]'
+>
+</ModelTile>
 </TileGroup>
 
 ## AAC
 
 <TileGroup>
-<ModelTile target="./AAC-Basic" v-bind:buttons='[{ href: "https://asterics.github.io/AsTeRICS-Grid/package/static/#grid/grid-data-1539356163042-54?date=1551382911842", text: "Start" },{ href: "https://asterics.github.io/AsTeRICS-Grid/package/static/#grid/edit/grid-data-1539356163042-54", text: "Edit" }]' title="Basic AAC Grid" image-url="/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg" shortDesc="Basic communication and simple keyboard with speech synthesis."></ModelTile>
+<ModelTile
+    target="./AAC-Basic"
+    v-bind:buttons='[
+        { href: "https://asterics.github.io/AsTeRICS-Grid/package/static/#grid/grid-data-1539356163042-54?date=1551382911842", text: "Start" },
+        { href: "https://asterics.github.io/AsTeRICS-Grid/package/static/#grid/edit/grid-data-1539356163042-54", text: "Edit" }
+    ]'
+    title="Basic AAC Grid"
+    image-url="/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"
+    shortDesc="Basic communication and simple keyboard with speech synthesis."
+>
+</ModelTile>
 </TileGroup>
 
 ## Occupational Therapy
 
-<ModelTile target="./Head-Sound" title="Sounds by Head Movement" image-url="/img/stock-photo--d-illustration-of-musical-notes-and-musical-signs-of-abstract-music-sheet-songs-and-melody-concept-761313844.jpg" shortDesc="Creates sounds according to head movement." v-bind:buttons='[{ href: "https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/HeadSound.acs", text: "Start" }]'></ModelTile>
+<ModelTile
+    target="./Head-Sound"
+    title="Sounds by Head Movement"
+    image-url="/img/stock-photo--d-illustration-of-musical-notes-and-musical-signs-of-abstract-music-sheet-songs-and-melody-concept-761313844.jpg"
+    shortDesc="Creates sounds according to head movement."
+>
+</ModelTile>
 
 <EditLink/>
