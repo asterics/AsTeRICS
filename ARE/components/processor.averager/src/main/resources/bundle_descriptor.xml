@@ -18,7 +18,19 @@
                 <dataType>double</dataType>
             </outputPort>
         </ports>
-        <properties>
+    <events>
+        <eventListenerPort id="enablePlugin">
+            <description>enables the functionality of this plugin</description>
+        </eventListenerPort>
+        <eventListenerPort id="disablePlugin">
+            <description>disables the functionality of this plugin</description>
+        </eventListenerPort>
+    </events>
+    <properties>
+            <property name="enabled"
+                      type="boolean"
+                      value="true"
+                      description="if true, the plugin is enabled, if false the plugin does nothing"/>
             <property name="bufferSize"
                       type="integer"
                       value="50"
@@ -28,6 +40,10 @@
                       value="0"
                       combobox="average//averager with integer output//accumulate for n milliseconds//median"
                       description="The averager or accumulator mode"/>
+            <property name="autoReenableTime"
+                      type="integer"
+                      value="0"
+                      description="time in ms, after the plugin automatically re-enables itself after being disabled. Set to zero to deactivate this functionality (never auto re-enable)."/>
         </properties>
     </componentType>
 
