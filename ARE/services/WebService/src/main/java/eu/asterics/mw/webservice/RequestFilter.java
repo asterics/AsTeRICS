@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -101,11 +102,14 @@ public class RequestFilter implements ContainerRequestFilter {
         origin = origin.trim();
         origin = origin.replace("https://", "");
         origin = origin.replace("http://", "");
+        
+        AstericsErrorHandling.instance.getLogger().log(Level.FINE,"Requested origin <{0}>, allowed origins <{1}>",new Object[] {origin,allowedOrigins.toString()});
         if (origin.contains(":")) {
             origin = origin.substring(0, origin.indexOf(':')); // remove port
         }
         for (String testOrigin : this.allowedOrigins) {
             if (origin.equals(testOrigin) || origin.endsWith("." + testOrigin)) {
+                AstericsErrorHandling.instance.getLogger().log(Level.FINE,"Allowed: <{0}>",origin);
                 return true;
             }
         }
