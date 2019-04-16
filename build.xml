@@ -23,13 +23,13 @@
 	</target>
 
 	<!-- Build the whole AsTeRICS framework including ACS and help specific tasks  -->
-	<target name="buildAllNoClean" description="Build the whole project without prior cleaning">
+	<target name="buildAllNoClean" depends="installWebACS" description="Build the whole project without prior cleaning">
 		<subant target="buildAllNoClean">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
 	</target>
 	
-	<target name="buildAll" description="Build the whole project with prior cleaning">
+	<target name="buildAll" depends="installWebACS" description="Build the whole project with prior cleaning">
 		<subant target="buildAll">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
@@ -54,6 +54,7 @@
 		     dest="${tmp.dir}/"
 		     verbose="true"
 		     usetimestamp="true"
+		     ignoreerrors="true"
 			tryGzipEncoding="true"/>
 		<unzip src="${tmp.dir}/WebACS-${WebACS.version}.zip" dest="${WebACS.bin}/"/>
 	</target>
