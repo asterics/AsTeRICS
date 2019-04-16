@@ -41,7 +41,7 @@
 		</subant>
 	</target>	
 
-	<target name="run" description="Peforms buildAllNoClean in the ARE directory and starts the ARE.">
+	<target name="run" depends="installWebACS" description="Peforms buildAllNoClean in the ARE directory and starts the ARE.">
 		<subant target="run" failonerror="true">
 			<fileset dir="ARE" includes="build.xml"></fileset>
 		</subant>
