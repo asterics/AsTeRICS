@@ -31,6 +31,7 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -45,7 +46,11 @@ public class AREProperties extends Properties {
     public static AREProperties instance = new AREProperties();
     static final String PROPERTY_FILENAME = ARE_PROPERTIES_NAME;
     private static Logger logger;
-    private Map<String, String> propertyComments = new HashMap<String, String>();
+    private Map<String, String> propertyComments = new LinkedHashMap<String, String>();
+
+    // Property key constants
+    public static final String ARE_WEBSERVICE_PORT_REST_KEY = "ARE.webservice.port.REST";
+    public static final String ARE_WEBSERVICE_PORT_WEBSOCKET_KEY = "ARE.webservice.port.websocket";
 
     private AREProperties() {
         logger = AstericsErrorHandling.instance.getLogger();
@@ -65,7 +70,7 @@ public class AREProperties extends Properties {
      * @see java.util.Properties#getProperty(java.lang.String, java.lang.String)
      */
     @Override
-    public String getProperty(String key, String defaultValue) {
+    public synchronized String getProperty(String key, String defaultValue) {
         String propValue = super.getProperty(key, defaultValue);
         // Store back current property value to ensure that it will be saved to a file with storeProperties.
         setProperty(key, propValue);
@@ -73,9 +78,8 @@ public class AREProperties extends Properties {
     }
 
     /**
-     * This method saves the given default value, if the property was not set. Additionally, the given
-     * propertyComment is registered for being stored right before the property in the {{@link #PROPERTY_FILENAME} file when {{@link #storeProperties()} is
-     * called.
+     * This method saves the given default value, if the property was not set. Additionally, the given propertyComment is registered for being stored right
+     * before the property in the {{@link #PROPERTY_FILENAME} file when {{@link #storeProperties()} is called.
      *
      * @param key
      * @param defaultValue
@@ -94,26 +98,39 @@ public class AREProperties extends Properties {
      * @param defaultValue
      * @return
      */
+    /*
     public void setDefaultPropertyValue(String key, String defaultValue) {
         getProperty(key, defaultValue);
-    }
+    }*/
 
     /**
      * Saves the properties of this instance to the file {@see AREProperties#PROPERTY_FILENAME}.
      */
     public void storeProperties() {
         StringBuilder propertiesStringBuilder = new StringBuilder();
+        propertiesStringBuilder.append("# ARE properties, generated at " + new Date(System.currentTimeMillis()) + "\n\n");
+
+        // First add properties with comment with insertion order using the commentsMap (LinkedHashMap).
+        for (Map.Entry<String, String> entry : propertyComments.entrySet()) {
+            String key = entry.getKey();
+            propertiesStringBuilder.append("# " + entry.getValue());
+            propertiesStringBuilder.append("\n");
+
+            propertiesStringBuilder.append(key + "=" + getProperty(key));
+            propertiesStringBuilder.append("\n\n");
+        }
+
+        // Now add properties without comment which were not printed yet.
+        propertiesStringBuilder.append("\n");
         Enumeration<?> propertiesNames = propertyNames();
-        propertiesStringBuilder.append("# ARE properties, generated at " + new Date(System.currentTimeMillis()) + "\n");
         while (propertiesNames.hasMoreElements()) {
             String key = (String) propertiesNames.nextElement();
-            if (propertyComments.containsKey(key)) {
-                propertiesStringBuilder.append("# " + propertyComments.get(key));
+            if (!propertyComments.containsKey(key)) {
+                propertiesStringBuilder.append(key + "=" + getProperty(key));
                 propertiesStringBuilder.append("\n");
             }
-            propertiesStringBuilder.append(key + "=" + getProperty(key));
-            propertiesStringBuilder.append("\n");
         }
+
         try {
             ResourceRegistry.getInstance().storeResource(propertiesStringBuilder.toString(), ARE_PROPERTIES_NAME, RES_TYPE.ANY);
         } catch (URISyntaxException | IOException e) {

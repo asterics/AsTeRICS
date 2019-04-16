@@ -43,6 +43,7 @@ import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
@@ -56,9 +57,6 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 public class NativeHookServices implements NativeKeyListener {
     private static Logger logger = AstericsErrorHandling.instance.getLogger();
-
-    private static final String DEFAULT_REST_PORT = "8081";
-    private static final String PROPTERTY_REST_PORT = "ARE.webservice.port.REST";
 
     private static final String ARE_HOT_KEY_START_MODEL = "ARE.hotKey.startModel";
     private static final String ARE_HOT_KEY_PAUSE_MODEL = "ARE.hotKey.pauseModel";
@@ -167,12 +165,10 @@ public class NativeHookServices implements NativeKeyListener {
     private void storeDefaultProperties() {
         AREProperties props = AREProperties.instance;
 
-        props.setDefaultPropertyValue(ARE_HOT_KEY_START_MODEL, "VC_F5");
-        props.setDefaultPropertyValue(ARE_HOT_KEY_PAUSE_MODEL, "VC_F6");
-        props.setDefaultPropertyValue(ARE_HOT_KEY_STOP_MODEL, "VC_F7");
-        props.setDefaultPropertyValue(ARE_HOT_KEY_EDIT_MODEL, "VC_F8");
-
-        props.storeProperties();
+        props.setDefaultPropertyValue(ARE_HOT_KEY_START_MODEL, "VC_F5","Hotkey to start model");
+        props.setDefaultPropertyValue(ARE_HOT_KEY_PAUSE_MODEL, "VC_F6","Hotkey to pause model");
+        props.setDefaultPropertyValue(ARE_HOT_KEY_STOP_MODEL, "VC_F7","Hotkey to stop model");
+        props.setDefaultPropertyValue(ARE_HOT_KEY_EDIT_MODEL, "VC_F8","Hotkey to edit model");
     }
 
     public static NativeHookServices getInstance() {
@@ -234,13 +230,7 @@ public class NativeHookServices implements NativeKeyListener {
                 logger.log(Level.WARNING, "error stop model by F-key", e);
             }
         } else if (nke.getKeyCode() == keyCodeEditModel) {
-            try {
-                String webACSPath = "webapps/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
-                String url = MessageFormat.format("http://localhost:{0}/{1}", getCurrentRestPort(), webACSPath);
-                OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
-            } catch (IOException e) {
-                logger.log(Level.WARNING, "error opening WebACS for current model by F-key.", e);
-            }
+                AREServices.instance.editModel();
         }
     }
 
@@ -248,13 +238,5 @@ public class NativeHookServices implements NativeKeyListener {
     public void nativeKeyTyped(NativeKeyEvent nke) {
         // TODO Auto-generated method stub
         // System.out.println("Native key typed: "+nke);
-    }
-
-    private String getCurrentRestPort() {
-        String port = AREProperties.instance.getProperty(PROPTERTY_REST_PORT);
-        if(port == null || port.isEmpty()) {
-            port = DEFAULT_REST_PORT;
-        }
-        return port;
     }
 }

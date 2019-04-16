@@ -49,8 +49,7 @@ import eu.asterics.mw.utils.OSUtils;
 /**
  * Starting point for ARE middleware
  *
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 23, 2010 Time:
- *         11:36:14 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 23, 2010 Time: 11:36:14 AM
  */
 public class Main implements BundleActivator {
     public static final String ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY = "ASAPI.enableAREAutoDetection";
@@ -73,13 +72,22 @@ public class Main implements BundleActivator {
     public void start(final BundleContext context) throws Exception {
         logger = AstericsErrorHandling.instance.getLogger();
 
-        //set default uncaught exception handler to get logged messages in case of exception.
+        // set default uncaught exception handler to get logged messages in case of exception.
         Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
                 logger.log(Level.SEVERE, "in Thread <" + t.getName() + ">: " + e.getMessage(), e);
             }
         });
+
+        // Set default values for ASAPI interface which is used for ACS to ARE connection
+        AREProperties.instance.setDefaultPropertyValue(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1",
+                "Enables/Disables ASAPI port registration for ACS. 1=ACS may connect to ARE through the port specified with the key '"
+                        + Activator.ASAPI_ACS_PORT_NUMBER_PROPKEY + "'. 0=ACS may not connect to the ARE.");
+        AREProperties.instance.setDefaultPropertyValue(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY, "1",
+                "Enables/Disables ARE autodetection by the ACS. 1=Autodetection enabled, 0=Autodetection disabled");
+        AREProperties.instance.setDefaultPropertyValue(Activator.ASAPI_ACS_PORT_NUMBER_PROPKEY, String.valueOf(Activator.ASAPI_ACS_PORT_NUMBER_DEFAULT),
+                "Sets the ASAPI port number which is used by the ACS to connect to the ARE.");
 
         // Check if not 32bit
         String bits = System.getProperty("sun.arch.data.model");
@@ -123,10 +131,7 @@ public class Main implements BundleActivator {
                     DeploymentManager.instance.setStatus(AREStatus.OK);
                     AstericsErrorHandling.instance.setStatusObject(AREStatus.OK.toString(), "", "");
 
-                    if (!AREProperties.instance.containsKey(ASAPI_ENABLE_ACS_PORT_CONNECTION)
-                            || AREProperties.instance.checkProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1")) {
-                        // set default value, if property was not in file.
-                        AREProperties.instance.setProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1");
+                    if (AREProperties.instance.checkProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1")) {
                         logger.info("ASAPI: Enabling ACS port connection");
                         Thread asapiServerThread = new Thread(new Activator());
                         asapiServerThread.start();
@@ -134,11 +139,7 @@ public class Main implements BundleActivator {
                         logger.info("ASAPI: ACS port connection disabled");
                     }
 
-                    if (!AREProperties.instance.containsKey(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY)
-                            || AREProperties.instance.checkProperty(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY, "1")) {
-                        // set default value, if property was not in file.
-                        AREProperties.instance.setProperty(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY, "1");
-
+                    if (AREProperties.instance.checkProperty(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY, "1")) {
                         logger.info("ASAPI: Enabling ARE auto detection");
                         Thread udpThread = new Thread(new UDPThread());
                         udpThread.start();
@@ -177,8 +178,7 @@ public class Main implements BundleActivator {
     }
 
     /**
-     * Show non-modal info/warning/error message not disable-able by
-     * areProperties.
+     * Show non-modal info/warning/error message not disable-able by areProperties.
      * 
      * @param message
      * @param messageType

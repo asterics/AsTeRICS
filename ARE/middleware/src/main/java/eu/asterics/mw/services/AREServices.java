@@ -39,6 +39,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.Callable;
@@ -65,6 +66,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import eu.asterics.mw.are.AREProperties;
+import static eu.asterics.mw.are.AREProperties.*;
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
@@ -76,6 +79,7 @@ import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.model.deployment.impl.ModelState;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
+import eu.asterics.mw.utils.OSUtils;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -485,6 +489,19 @@ public class AREServices implements IAREServices {
             AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
         }
     }
+    
+    /**
+     * Opens the currently deployed model in the WebACS for editing. 
+     */
+    public void editModel() {
+        String webACSPath = "webapps/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
+        String url = MessageFormat.format("http://localhost:{0}/{1}", AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY), webACSPath);
+        try {
+            OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "error opening WebACS for current model.", e);
+        }        
+    }    
 
     /**
      * Creates an error message for an error dialog and internally logs the
