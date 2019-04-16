@@ -43,7 +43,14 @@
 				var modelInXML = document.getElementById("UMmodel").value;
 				uploadModel(defaultSuccessCallback, defaultErrorCallback, modelInXML);
 			}
-			
+
+			//storeModel
+			function STORE_MODEL() {
+				var filepath = document.getElementById("STOREfilepath").value;
+				var modelInXML = document.getElementById("STOREmodel").value;
+				storeModel(defaultSuccessCallback, defaultErrorCallback, filepath, modelInXML);
+			}			
+
 			//storeData
 			function STORE_DATA() {
 				var filepath = document.getElementById("storeData_filepath").value;

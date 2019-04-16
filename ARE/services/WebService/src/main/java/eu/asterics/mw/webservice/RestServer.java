@@ -25,6 +25,9 @@
 
 package eu.asterics.mw.webservice;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +61,9 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.ResourceRegistry;
 import eu.asterics.mw.webservice.serverUtils.AstericsAPIEncoding;
 import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
+import eu.asterics.mw.webservice.serverUtils.RestFunction;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
+import eu.asterics.mw.webservice.serverUtils.RestFunction.Description;
 
 /**
  * The implementation of the Rest Server class.
@@ -75,8 +80,9 @@ public class RestServer {
     @Path("/restfunctions")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns a list with all the available rest functions")
     public String getRestFunctions() {
-        String JSONresponse = ObjectTransformation.objectToJSON(ServerRepository.restFunctions);
+        String JSONresponse = ObjectTransformation.objectToJSON(ServerRepository.getInstance().createListOfRestFunctions());
         if (JSONresponse.equals("")) {
             JSONresponse = "{'error':'Could not retrieve the rest function signatures (Object serialization failure)'}";
         }
@@ -91,6 +97,7 @@ public class RestServer {
     @Path("/runtime/model")
     @GET
     @Produces(MediaType.TEXT_XML)
+    @Description("Retrieves the currently deployed model in XML")
     public String getModel() {
         String response = null;
         String errorMessage = "";
@@ -110,6 +117,7 @@ public class RestServer {
     @PUT
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Deploys the model given as XML body parameter")
     public String deployModel(String modelInXML) {
         String response;
         String errorMessage = "";
@@ -129,6 +137,7 @@ public class RestServer {
     @Path("/runtime/model/{filepath}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Deploys the model located at {filepath}.")
     public String deployFile(@PathParam("filepath") String filepath) {
         String response;
         String errorMessage = "";
@@ -151,6 +160,7 @@ public class RestServer {
     @Path("/runtime/model/state/{state}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Changes the state of the deployed model to STARTED, PAUSED, STOPPED")
     public String runModel(@PathParam("state") String state) {
         String response;
         String errorMessage = "";
@@ -193,6 +203,7 @@ public class RestServer {
     @Path("/runtime/model/state")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Returns the state of the deployed model")
     public String getModelState() {
         String response;
         String errorMessage = "";
@@ -211,6 +222,7 @@ public class RestServer {
     @Path("/runtime/model/name")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Returns the name (ID) of the deployed model")
     public String getCurrentModelName() {
         String response;
         String errorMessage;
@@ -229,6 +241,7 @@ public class RestServer {
     @Path("/runtime/model/autorun/{filepath}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Deploys and starts the model of the given filepath")
     public String autorun(@PathParam("filepath") String filepath) {
         String response;
         String errorMessage = "";
@@ -251,6 +264,7 @@ public class RestServer {
     @Path("/runtime/model/components/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the component ids contained in the currently deployed model")
     public String getRuntimeComponentIds() {
         String response = "";
         String errorMessage = "";
@@ -274,6 +288,7 @@ public class RestServer {
     @Path("/runtime/model/components/{componentId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns all property keys of the specified runtime component")
     public String getRuntimeComponentPropertyKeys(@PathParam("componentId") String componentId) {
         String response;
         String errorMessage = "";
@@ -297,58 +312,81 @@ public class RestServer {
         return response;
     }
 
-    @Path("/runtime/model/components/{componentId}/{componentKey}")
+    @Path("/runtime/model/components/{componentId}/{propertyKey}/dynamicproperty")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the value list of the dynamic property")
+    public String getRuntimeComponentPropertyDynamic(@PathParam("componentId") String componentId, @PathParam("propertyKey") String propertyKey) {
+
+        List<String> l = null;
+        String response = "";
+        String errorMessage = "";
+        String decodedId = "", decodedKey = "";
+
+        try {
+            decodedId = astericsAPIEncoding.decodeString(componentId);
+            decodedKey = astericsAPIEncoding.decodeString(propertyKey);
+            l = asapiSupport.getRuntimePropertyList(decodedId, decodedKey);
+            response = ObjectTransformation.objectToJSON(l);
+        } catch (Exception e) {
+            e.printStackTrace();
+            errorMessage = "Couldn't retrieve " + propertyKey + " property values from " + componentId + " (" + e.getMessage() + ")";
+            response = "error:" + errorMessage;
+        }
+
+        return response;
+    }
+
+    @Path("/runtime/model/components/{componentId}/{propertyKey}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getRuntimeComponentProperty(@PathParam("componentId") String componentId,
-            @PathParam("componentKey") String componentKey) {
+    @Description("Returns the property value of a model component")
+    public String getRuntimeComponentProperty(@PathParam("componentId") String componentId, @PathParam("propertyKey") String propertyKey) {
         String response;
         String errorMessage = "";
         String decodedId = "", decodedKey = "";
 
         try {
             decodedId = astericsAPIEncoding.decodeString(componentId);
-            decodedKey = astericsAPIEncoding.decodeString(componentKey);
+            decodedKey = astericsAPIEncoding.decodeString(propertyKey);
             response = asapiSupport.getComponentProperty(decodedId, decodedKey);
         } catch (Exception e) {
             e.printStackTrace();
-            errorMessage = "Couldn't retrieve '" + componentKey + "' property from '" + componentId + "' ("
-                    + e.getMessage() + ")";
+            errorMessage = "Couldn't retrieve '" + decodedKey + "' property from '" + decodedId + "' (" + e.getMessage() + ")";
             response = "error:" + errorMessage;
         }
 
         return response;
     }
 
-    @Path("/runtime/model/components/{componentId}/{componentKey}")
+    @Path("/runtime/model/components/{componentId}/{propertyKey}")
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String setRuntimeComponentProperty(String value, @PathParam("componentId") String componentId,
-            @PathParam("componentKey") String componentKey) {
+    @Description("Changes a property value of a model component")
+    public String setRuntimeComponentProperty(String value, @PathParam("componentId") String componentId, @PathParam("propertyKey") String propertyKey) {
         String response;
         String errorMessage = "";
         String decodedId = "", decodedKey = "";
 
         try {
             decodedId = astericsAPIEncoding.decodeString(componentId);
-            decodedKey = astericsAPIEncoding.decodeString(componentKey);
+            decodedKey = astericsAPIEncoding.decodeString(propertyKey);
             response = asapiSupport.setComponentProperty(decodedId, decodedKey, value);
         } catch (Exception e) {
             e.printStackTrace();
-            errorMessage = "Couldn't set '" + value + "' value to '" + decodedKey + "' from '" + decodedId + "' ("
-                    + e.getMessage() + ")";
+            errorMessage = "Couldn't set '" + value + "' value to '" + decodedKey + "' from '" + decodedId + "' (" + e.getMessage() + ")";
             response = "error:" + errorMessage;
         }
 
         return response;
     }
-
 
     @Path("/runtime/model/components/properties")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Changes multiple property value(s) of a runtime component(s) (propertyMap – see JSON objects)")
     public String setRuntimeComponentProperties(String bodyContent) {
         String response = "";
         String errorMessage = "";
@@ -358,18 +396,17 @@ public class RestServer {
             Map<String, Map<String, String>> propertyMap = new HashMap<String, Map<String, String>>();
             propertyMap = (Map<String, Map<String, String>>) ObjectTransformation.JSONToObject(bodyContent, Map.class);
 
-            for (String componentId: propertyMap.keySet()) {
-            	Map<String, String> componentPropertyMap = propertyMap.get(componentId);
-	            for (String componentKey: componentPropertyMap.keySet()) {
-	            	String newValue = componentPropertyMap.get(componentKey);
-	            	try {
-	            		asapiSupport.setComponentProperty(componentId, componentKey, newValue);
-	            		changedValues.add(componentId+"#"+componentKey);
-	            	}
-	            	catch (Exception ex) {
-	            		ex.printStackTrace();
-	            	}
-	            }
+            for (String componentId : propertyMap.keySet()) {
+                Map<String, String> componentPropertyMap = propertyMap.get(componentId);
+                for (String propertyKey : componentPropertyMap.keySet()) {
+                    String newValue = componentPropertyMap.get(propertyKey);
+                    try {
+                        asapiSupport.setComponentProperty(componentId, propertyKey, newValue);
+                        changedValues.add(componentId + "#" + propertyKey);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
 
         } catch (Exception e) {
@@ -379,17 +416,16 @@ public class RestServer {
         }
 
         try {
-        	return ObjectTransformation.objectToJSON(changedValues);
-        }
-        catch (Exception ex) {
-        	return "";
+            return ObjectTransformation.objectToJSON(changedValues);
+        } catch (Exception ex) {
+            return "";
         }
     }
-
 
     @Path("/runtime/model/components/{componentId}/ports/input/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the input port ids of the specified component")
     public String getComponentInputPortIds(@PathParam("componentId") String componentId) {
         String response;
         String errorMessage = "";
@@ -416,6 +452,7 @@ public class RestServer {
     @Path("/runtime/model/components/{componentId}/ports/output/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the output port ids of the specified component")
     public String getComponentOutputPorts(@PathParam("componentId") String componentId) {
         String response;
         String errorMessage = "";
@@ -442,6 +479,7 @@ public class RestServer {
     @Path("/runtime/model/components/{componentId}/ports/{portId}/datatype")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Returns the datatype of the specified port")
     public String getPortDatatype(@PathParam("componentId") String componentId, @PathParam("portId") String portId) {
         String response;
         String errorMessage = "";
@@ -466,6 +504,7 @@ public class RestServer {
     @Path("/runtime/model/components/{componentId}/channels/event/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the event channel ids of the current model")
     public String getComponentEventChannelsIds(@PathParam("componentId") String componentId) {
         String response = "";
         String errorMessage = "";
@@ -500,6 +539,7 @@ public class RestServer {
     @Path("/runtime/model/components/{componentId}/channels/data/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the data channel ids of the specified component")
     public String getComponentDataChannelsIds(@PathParam("componentId") String componentId) {
         String response = "";
         String errorMessage = "";
@@ -534,6 +574,7 @@ public class RestServer {
     @Path("/runtime/model/channels/event/{channelId}/source")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the source of a specific event channel")
     public String getEventChannelSource(@PathParam("channelId") String channelId) {
         String response = "";
         String errorMessage = "";
@@ -558,8 +599,7 @@ public class RestServer {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            errorMessage = "Could not retrieve the source of the event channel " + channelId + " (" + e.getMessage()
-                    + ")";
+            errorMessage = "Could not retrieve the source of the event channel " + channelId + " (" + e.getMessage() + ")";
             response = "{'error':'" + errorMessage + "'}";
         }
 
@@ -569,6 +609,7 @@ public class RestServer {
     @Path("/runtime/model/channels/event/{channelId}/target")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the target of a specific event channel")
     public String getEventChannelTarget(@PathParam("channelId") String channelId) {
         String response = "";
         String errorMessage = "";
@@ -593,8 +634,7 @@ public class RestServer {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            errorMessage = "Could not retrieve the target of the event channel " + channelId + " (" + e.getMessage()
-                    + ")";
+            errorMessage = "Could not retrieve the target of the event channel " + channelId + " (" + e.getMessage() + ")";
             response = "{'error':'" + errorMessage + "'}";
         }
 
@@ -604,6 +644,7 @@ public class RestServer {
     @Path("/runtime/model/channels/event/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the event channel ids of the current model")
     public String getEventChannelsIds() {
         String response = "";
         String errorMessage = "";
@@ -633,6 +674,7 @@ public class RestServer {
     @Path("/runtime/model/channels/data/{channelId}/source")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the source of a specific data channel")
     public String getDataChannelSource(@PathParam("channelId") String channelId) {
         String response = "";
         String errorMessage = "";
@@ -657,8 +699,7 @@ public class RestServer {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            errorMessage = "Could not retrieve the source of the data channel " + channelId + " (" + e.getMessage()
-                    + ")";
+            errorMessage = "Could not retrieve the source of the data channel " + channelId + " (" + e.getMessage() + ")";
             response = "{'error':'" + errorMessage + "'}";
         }
 
@@ -668,6 +709,7 @@ public class RestServer {
     @Path("/runtime/model/channels/data/{channelId}/target")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the target of a specific data channel")
     public String getDataChannelTarget(@PathParam("channelId") String channelId) {
         String response = "";
         String errorMessage = "";
@@ -692,8 +734,7 @@ public class RestServer {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            errorMessage = "Could not retrieve the target of the data channel " + channelId + " (" + e.getMessage()
-                    + ")";
+            errorMessage = "Could not retrieve the target of the data channel " + channelId + " (" + e.getMessage() + ")";
             response = "{'error':'" + errorMessage + "'}";
         }
 
@@ -703,6 +744,7 @@ public class RestServer {
     @Path("/runtime/model/channels/data/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns the data channel ids of the current model")
     public String getDataChannelsIds() {
         String response = "";
         String errorMessage = "";
@@ -736,6 +778,7 @@ public class RestServer {
     @Path("/storage/models/{filepath}")
     @GET
     @Produces(MediaType.TEXT_XML)
+    @Description("Returns an xml representation of a model in a specific file")
     public String getModelFromFile(@PathParam("filepath") String filepath) {
         String response = null;
         String errorMessage;
@@ -757,6 +800,7 @@ public class RestServer {
     @POST
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Stores a model (XML body parameter) at the given filepath.")
     public String storeModel(@PathParam("filepath") String filepath, String modelInXML) {
         String response;
         String errorMessage;
@@ -784,6 +828,7 @@ public class RestServer {
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Stores data (body parameter) to a given filepath in the ARE/data folder")
     public String storeData(@PathParam("filepath") String filepath, String data) {
         String response;
         String errorMessage;
@@ -810,6 +855,7 @@ public class RestServer {
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Stores data (body parameter) for a specific webapp.")
     public String storeWebappData(@PathParam("webappName") String webappName, @PathParam("filepath") String filepath, String data) {
         String response;
         String errorMessage;
@@ -836,6 +882,7 @@ public class RestServer {
     @Path("/storage/webapps/{webappName}/{filepath}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Returns saved data for a webapp")
     public String getWebappData(@PathParam("webappName") String webappName, @PathParam("filepath") String filepath) {
         String response;
         String errorMessage;
@@ -862,6 +909,7 @@ public class RestServer {
     @Path("/storage/models/{filepath}")
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
+    @Description("Deletes the model with the given filename")
     public String deleteModelFile(@PathParam("filepath") String filepath) {
         String response;
         String errorMessage;
@@ -888,6 +936,7 @@ public class RestServer {
     @Path("/storage/models/names")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Retrieves the model names that are saved in the ARE repository")
     public String listAllStoredModels() {
         String response = null;
         String errorMessage;
@@ -911,6 +960,7 @@ public class RestServer {
     @Path("/storage/components/descriptors/xml")
     @GET
     @Produces(MediaType.TEXT_XML)
+    @Description("Returns an xml string containing the descriptors of the created components with some modifications in order to be used by the webACS")
     public String getComponentDescriptorsAsXml() {
         String response = null;
         String errorMessage;
@@ -933,6 +983,7 @@ public class RestServer {
     @Path("/storage/components/descriptors/json")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Description("Retrieves the exact content of the component descriptors contained in the ARE repository")
     public String getComponentDescriptorsAsJSON() {
         String response = null;
         String errorMessage;
@@ -956,8 +1007,8 @@ public class RestServer {
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String sendDataToInputPort(String value, @PathParam("componentId") String componentId,
-            @PathParam("portId") String portId) {
+    @Description("Sends data to a specific port of a component in the running model")
+    public String sendDataToInputPort(String value, @PathParam("componentId") String componentId, @PathParam("portId") String portId) {
         String response;
         String errorMessage = "";
         String decodedCompId = "", decodedPortId = "";
@@ -979,14 +1030,13 @@ public class RestServer {
     }
 
     /**
-     * this method is the same as sendDataToInputPort(), but with HTTP GET for compatibility reasons for clients
-     * which do not support HTTP PUT
+     * this method is the same as sendDataToInputPort(), but with HTTP GET for compatibility reasons for clients which do not support HTTP PUT
      */
     @Path("/runtime/model/components/{componentId}/ports/{portId}/data/{value}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String sendDataToInputPortGet(@PathParam("value")String value, @PathParam("componentId") String componentId,
-                                      @PathParam("portId") String portId) {
+    @Description("Sends data to a specific port of a component in the running model using the GET method. Note this is actually not conforming to a RESTful interface but needed for client devices (old feature phones) which do not support HTTP PUT")
+    public String sendDataToInputPortGet(@PathParam("value") String value, @PathParam("componentId") String componentId, @PathParam("portId") String portId) {
 
         String decodedValue = astericsAPIEncoding.decodeString(value);
         return sendDataToInputPort(decodedValue, componentId, portId);
@@ -995,8 +1045,8 @@ public class RestServer {
     @Path("/runtime/model/components/{componentId}/events/{eventId}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
-    public String triggerEvent(@PathParam("componentId") String componentId,
-                               @PathParam("eventId") String eventId) {
+    @Description("Triggers an event on the given component/port")
+    public String triggerEvent(@PathParam("componentId") String componentId, @PathParam("eventId") String eventId) {
         String response;
         String errorMessage = "";
         String decodedCompId = "", decodedEventId = "";
@@ -1006,13 +1056,13 @@ public class RestServer {
             decodedEventId = astericsAPIEncoding.decodeString(eventId);
             logger.info(MessageFormat.format("trigger event on component <{0}>, eventId <{1}>", decodedCompId, decodedEventId));
 
-            //send event with empty data because sending data with event is currently not supported in ACS / model XML
+            // send event with empty data because sending data with event is currently not supported in ACS / model XML
             asapiSupport.triggerEvent(decodedCompId, decodedEventId, "");
             response = "success";
         } catch (Exception e) {
             logger.log(Level.WARNING, "could not send data!", e);
-            errorMessage = MessageFormat.format("Couldnt trigger event on eventPort <{0}> of component <{1}> with data <{2}> (Exception: {3})", decodedEventId, decodedCompId,
-                    "", e.getMessage());
+            errorMessage = MessageFormat.format("Couldnt trigger event on eventPort <{0}> of component <{1}> with data <{2}> (Exception: {3})", decodedEventId,
+                    decodedCompId, "", e.getMessage());
             response = "error:" + errorMessage;
         }
 

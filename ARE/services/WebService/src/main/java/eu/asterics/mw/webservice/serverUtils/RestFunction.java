@@ -25,16 +25,18 @@
 
 package eu.asterics.mw.webservice.serverUtils;
 
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * This class is just a container that holds the information describing a
- * restfull function.
+ * This class is just a container that holds the information describing a restfull function.
  * 
- * It contains data like the HTTP Type of a function (GET, POST, PUT...), the
- * resource path (storage/model/...), the parameters required etc.
+ * It contains data like the HTTP Type of a function (GET, POST, PUT...), the resource path (storage/model/...), the parameters required etc.
  * 
  * @author Marios Komodromos (mkomod05@cs.ucy.ac.cy)
  *
@@ -42,6 +44,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement()
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RestFunction {
+
+    /**
+     * This annotation is used to describe the meaning of a REST function.
+     * 
+     * @author mad <deinhofe@technikum-wien.at>
+     * @date Apr 15, 2019
+     *
+     */
+    @Retention(RUNTIME)
+    public @interface Description {
+        String value() default "";
+    }
+
     private String httpRequestType;
     private String path;
     private String consumes;
@@ -58,8 +73,7 @@ public class RestFunction {
         this.description = "";
     }
 
-    public RestFunction(String httpRequestType, String path, String consumes, String produces, String bodyParameter,
-            String description) {
+    public RestFunction(String httpRequestType, String path, String consumes, String produces, String bodyParameter, String description) {
         this.httpRequestType = httpRequestType;
         this.path = path;
         this.consumes = consumes;

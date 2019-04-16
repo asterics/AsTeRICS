@@ -41,17 +41,24 @@
 			//getRuntimeComponentProperty
 			function GET_RUNTIME_COMPONENT_PROPERTY() {
 				var componentId = document.getElementById("GRCPid").value;
-				var componentKey = document.getElementById("GRCPkey").value;
-				getRuntimeComponentProperty(defaultSuccessCallback, defaultErrorCallback, componentId, componentKey);
+				var propertyKey = document.getElementById("GRCPkey").value;
+				getRuntimeComponentProperty(defaultSuccessCallback, defaultErrorCallback, componentId, propertyKey);
 			}
+
+			//getRuntimeComponentProperty
+			function GET_RUNTIME_COMPONENT_PROPERTY_DYNAMIC() {
+				var componentId = document.getElementById("GRCPid").value;
+				var propertyKey = document.getElementById("GRCPkey").value;
+				getRuntimeComponentPropertyDynamic(defaultSuccessCallback, defaultErrorCallback, componentId, propertyKey);
+			}			
 
 			
 			//setRuntimeComponentProperty
 			function SET_RUNTIME_COMPONENT_PROPERTY() {
 				var componentId = document.getElementById("SRCPid").value;
-				var componentKey = document.getElementById("SRCPkey").value;
-				var componentValue = document.getElementById("SRCPvalue").value;
-				setRuntimeComponentProperty(defaultSuccessCallback, defaultErrorCallback, componentId, componentKey, componentValue);
+				var propertyKey = document.getElementById("SRCPkey").value;
+				var propertyValue = document.getElementById("SRCPvalue").value;
+				setRuntimeComponentProperty(defaultSuccessCallback, defaultErrorCallback, componentId, propertyKey, propertyValue);
 			}
 
 
@@ -144,13 +151,18 @@
 			
 			<button onclick="GET_RUNTIME_COMPONENT_PROPERTY()" title="Description: Retrieves property value of a specific component, in the currently deployed model &#013;Ouput: alert"> Get runtime component property </button>
 			<input placeholder="componentId" type="text" id="GRCPid"/>
-			<input placeholder="componentKey"type="text" id="GRCPkey"/>
+			<input placeholder="propertyKey"type="text" id="GRCPkey"/>
+			<br/>
+
+			<button onclick="GET_RUNTIME_COMPONENT_PROPERTY_DYNAMIC()" title="Description: Retrieves the dynamic property values of a specific component, in the currently deployed model &#013;Ouput: alert"> Get runtime component dynamic property </button>
+			<input placeholder="componentId" type="text" id="GRCPid"/>
+			<input placeholder="propertyKey"type="text" id="GRCPkey"/>
 			<br/>
 			
 			<button onclick="SET_RUNTIME_COMPONENT_PROPERTY()" title="Description: Changes a property value of a specific component,  in the currently deployed model &#013;Ouput: alert"> Set runtime component property </button>
 			<input placeholder="componentId" type="text" id="SRCPid"/>
-			<input placeholder="componentKey" type="text" id="SRCPkey"/>
-			<input placeholder="componentKeyValue" type="text" id="SRCPvalue"/>
+			<input placeholder="propertyKey" type="text" id="SRCPkey"/>
+			<input placeholder="propertyValue" type="text" id="SRCPvalue"/>
 			<br/>
 
 			<button onclick="SET_RUNTIME_COMPONENT_PROPERTIES()" title=""> Set runtime component properties </button>
