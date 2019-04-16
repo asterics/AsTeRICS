@@ -2549,10 +2549,12 @@ namespace Asterics.ACS {
         /// <param name="e"></param>
         private void Help_Click(object sender, RoutedEventArgs e)
         {
-            String htmlHelpPath = @"help/index.html";
+            String acsManualURL = GetACSManualURL();
+            String pluginHelpBaseURL = GetPluginHelpBaseURL();
+
             if (sender is RibbonButton)
             {
-                OpenBrowserHelp(htmlHelpPath, "");
+                OpenBrowserHelp(acsManualURL, "");
             }
             else
             {
@@ -2560,45 +2562,38 @@ namespace Asterics.ACS {
                 {
                     ACS2.componentTypesComponentType comp = (ACS2.componentTypesComponentType)componentList[focusedComponent.type_id];
                     String id = focusedComponent.type_id;
-                    if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length - 9); // eleminiate prefix
-                    OpenBrowserHelp(htmlHelpPath, "?plugins&" + comp.type.Value + "s/" + "/" + id + ".htm");
+                    OpenBrowserHelp(pluginHelpBaseURL, CreatePluginHelpQueryString(comp.type.Value.ToString(),id));
                 }
                 else
                 {
                     if (selectedComponentList.Count == 0)
                     {
-                        OpenBrowserHelp(htmlHelpPath, "");
+                        OpenBrowserHelp(acsManualURL, "");
                     }
                     else
                     {
                         ACS2.componentTypesComponentType comp = (ACS2.componentTypesComponentType)componentList[selectedComponentList.First.Value.type_id];
                         String id = selectedComponentList.First.Value.type_id;
-                        if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length - 9); // eleminiate prefix
-                        OpenBrowserHelp(htmlHelpPath, "?plugins&" + comp.type.Value + "s/" + "/" + id + ".htm");
+                        OpenBrowserHelp(pluginHelpBaseURL, CreatePluginHelpQueryString(comp.type.Value.ToString(), id));
                     }
                 }
             }
         }
 
-        private void OpenBrowserHelp(String relativeHelpPath, String queryString)
+        private String CreatePluginHelpQueryString(String compTypeValue, String id)
+        {
+            if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length - 9); // eleminiate prefix
+            return compTypeValue + "s/" + id + ".html";
+        }
+
+        private void OpenBrowserHelp(String pluginHelpBaseURL, String queryString)
         {
             String browserPath = GetStandardBrowserPath();
-            //If the ACS is connected to the ARE, open the hosted version of the help system, otherwise the local file.
             try
             {
-                if (areStatus.Status != AREStatus.ConnectionStatus.Disconnected)
-                {
-                    String absoluteURL = "http://" + AREHost + ":" + AREWebserverPort + "/" + relativeHelpPath + queryString;
-                    logger.Log(LogLevel.Debug, "ACS is connected, so starting help of ARE with URL " + absoluteURL);
-                    Process.Start(browserPath, absoluteURL);
-                }
-                else
-                {
-                    String baseURL = ini.IniReadValue("Options", "acsOnlineHelpBaseURL");
-                    String absoluteURL = baseURL + relativeHelpPath + queryString;
+                    String absoluteURL = pluginHelpBaseURL + queryString;
                     logger.Log(LogLevel.Debug, "ACS is not connected, so starting online help with URL " + absoluteURL);
                     Process.Start(browserPath, absoluteURL);
-                }
             } catch (Exception ex)
             {
                 MessageBox.Show(Properties.Resources.OpenHelpError, Properties.Resources.ErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -7923,6 +7918,26 @@ namespace Asterics.ACS {
             //Return default browsers path
             String path = ini.IniReadValue("Options", "helpBrowserCommand");
             return String.IsNullOrEmpty(path) ? "explorer" : path;
+        }
+
+        /// <summary>
+        /// Finds the URL to the ACS manual.
+        /// </summary>
+        /// <returns>String, containing that path.</returns>
+        private string GetACSManualURL()
+        {
+            String path = ini.IniReadValue("Options", "ACSManualURL");
+            return String.IsNullOrEmpty(path) ? @"https://www.asterics.eu/manuals/ACS/" : path;
+        }
+
+        /// <summary>
+        /// Finds the base URL to the plugin help system.
+        /// </summary>
+        /// <returns>String, containing that path.</returns>
+        private string GetPluginHelpBaseURL()
+        {           
+            String path = ini.IniReadValue("Options", "pluginHelpBaseURL");
+            return String.IsNullOrEmpty(path) ? @"https://www.asterics.eu/plugins/" : path;
         }
 
         #endregion // Internal functions
