@@ -117,7 +117,7 @@ public class RestServer {
     @PUT
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
-    @Description("Deploys the model given as a parameter")
+    @Description("Deploys the model given as XML body parameter")
     public String deployModel(String modelInXML) {
         String response;
         String errorMessage = "";
@@ -137,7 +137,7 @@ public class RestServer {
     @Path("/runtime/model/{filepath}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
-    @Description("Deploys the model contained in the given filename")
+    @Description("Deploys the model located at {filepath}.")
     public String deployFile(@PathParam("filepath") String filepath) {
         String response;
         String errorMessage = "";
@@ -241,7 +241,7 @@ public class RestServer {
     @Path("/runtime/model/autorun/{filepath}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
-    @Description("Deploys and starts the model in the given filename")
+    @Description("Deploys and starts the model of the given filepath")
     public String autorun(@PathParam("filepath") String filepath) {
         String response;
         String errorMessage = "";
@@ -340,7 +340,7 @@ public class RestServer {
     @Path("/runtime/model/components/{componentId}/{propertyKey}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Description("Returns the property value of the runtime component")
+    @Description("Returns the property value of a model component")
     public String getRuntimeComponentProperty(@PathParam("componentId") String componentId, @PathParam("propertyKey") String propertyKey) {
         String response;
         String errorMessage = "";
@@ -363,7 +363,7 @@ public class RestServer {
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    @Description("Changes a property value of a runtime component")
+    @Description("Changes a property value of a model component")
     public String setRuntimeComponentProperty(String value, @PathParam("componentId") String componentId, @PathParam("propertyKey") String propertyKey) {
         String response;
         String errorMessage = "";
@@ -574,7 +574,7 @@ public class RestServer {
     @Path("/runtime/model/channels/event/{channelId}/source")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Description("Returns the source (channel edge – se JSON objects) of a specific event channel")
+    @Description("Returns the source of a specific event channel")
     public String getEventChannelSource(@PathParam("channelId") String channelId) {
         String response = "";
         String errorMessage = "";
@@ -609,7 +609,7 @@ public class RestServer {
     @Path("/runtime/model/channels/event/{channelId}/target")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Description("Returns the target (channel edge – see JSON objects) of a specific event channel")
+    @Description("Returns the target of a specific event channel")
     public String getEventChannelTarget(@PathParam("channelId") String channelId) {
         String response = "";
         String errorMessage = "";
@@ -674,7 +674,7 @@ public class RestServer {
     @Path("/runtime/model/channels/data/{channelId}/source")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Description("Returns the source (channel edge – se JSON objects) of a specific data channel")
+    @Description("Returns the source of a specific data channel")
     public String getDataChannelSource(@PathParam("channelId") String channelId) {
         String response = "";
         String errorMessage = "";
@@ -709,7 +709,7 @@ public class RestServer {
     @Path("/runtime/model/channels/data/{channelId}/target")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Description("Returns the target (channel edge – se JSON objects) of a specific data channel")
+    @Description("Returns the target of a specific data channel")
     public String getDataChannelTarget(@PathParam("channelId") String channelId) {
         String response = "";
         String errorMessage = "";

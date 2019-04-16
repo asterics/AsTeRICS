@@ -115,7 +115,7 @@ public class SseResource {
     @Path("/runtime/deployment/listener")
     @GET
     @Produces(SseFeature.SERVER_SENT_EVENTS)
-    @Description("Subscribes for deployment events. The events are delivered using SSE.")
+    @Description("Subscribes for model deployment events.")
     public EventOutput subscribe_AREDeploymentEvents() {
         final EventOutput eventOutput = new EventOutput();
 
@@ -127,7 +127,7 @@ public class SseResource {
     @Path("/runtime/model/state/listener")
     @GET
     @Produces(SseFeature.SERVER_SENT_EVENTS)
-    @Description("Subscribes for state change events. The events are delivered using SSE.")
+    @Description("Subscribes for model state events.")
     public EventOutput subscribe_modelStateEvents() {
         final EventOutput eventOutput = new EventOutput();
 
@@ -139,7 +139,7 @@ public class SseResource {
     @Path("/runtime/model/channels/event/listener")
     @GET
     @Produces(SseFeature.SERVER_SENT_EVENTS)
-    @Description("Subscribes for model events. The events are delivered using SSE.")
+    @Description("Subscribes for event channel events.")
     public EventOutput subscribe_eventChannelsEvents() {
         final EventOutput eventOutput = new EventOutput();
 
@@ -151,7 +151,7 @@ public class SseResource {
     @Path("/runtime/model/channels/data/{channelId}/listener")
     @GET
     @Produces(SseFeature.SERVER_SENT_EVENTS)
-    @Description("Subscribes for receiving data which is sent through the given data channelId. The events are delivered using SSE.")
+    @Description("Subscribes for the data of the data channel with the given {channelId}.")
     public EventOutput subscribe_dataChannelsEvents(@PathParam("channelId") String channelId) {
         final EventOutput eventOutput = new EventOutput();
 
@@ -173,7 +173,7 @@ public class SseResource {
     @Path("/runtime/model/components/properties/listener")
     @GET
     @Produces(SseFeature.SERVER_SENT_EVENTS)
-    @Description("Subscribes for component property change events of the currently deployed model. The events are delivered using SSE.")
+    @Description("Subscribes for component property change events.")
     public EventOutput subscribe_propertyChangeEvents() {
         final EventOutput eventOutput = new EventOutput();
 
