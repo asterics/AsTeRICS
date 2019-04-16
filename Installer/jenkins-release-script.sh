@@ -14,9 +14,6 @@
 # bash -ex jenkins-release-script.sh
 # --------------------------------------------------------
 
-# init and updated git submodules
-git submodule update --init
-
 # build release with ant
 ant buildAll-release
 
@@ -92,6 +89,9 @@ rm -r AsTeRICS/CIMs/Sensorboard/firmware
 rm -r AsTeRICS/CIMs/Sensorboard/GL850PCB
 rm -r AsTeRICS/CIMs/Sensorboard/WiiCamPCB
 rm -rf AsTeRICS/AsTeRICS-release-dependencies
+
+# remove tmp folder
+rm -rf AsTeRICS/tmp/
 
 # copy dependencies
 if [ -d  ./AsTeRICS-release-dependencies ]; then 

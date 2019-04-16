@@ -4,19 +4,22 @@
 	<property name="debug" value="true"/>
 	<property name="runtime" location="bin/ARE"/>
 	<property name="web.docroot" location="${runtime}/web/"/>
-	<property name="WebACS.bin" location="${web.docroot}/webapps/WebACS"/>
+	<property name="WebACS.bin" location="${web.docroot}/WebACS"/>
+	<property name="WebACS.version" value="v1.0.0"/>
+	<property name="tmp.dir" location="tmp"/>
 
-	<target name="clean" description="Clean the whole project" depends="cleanHelpFiles">
+	<target name="clean" description="Clean the whole project">
 		<subant target="clean">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
-	</target>
-	
-	<target name="cleanHelpFiles" description="Cleans the help_files folders in the help folders">
-				<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
-		<subant target="cleanHelpFiles" failonerror="true">
-			<fileset dir="ARE" includes="build.xml"></fileset>
-		</subant>
+		<!-- clean tmp dir with cache files -->
+		<delete includeemptydirs="true" failonerror="false">
+		  <fileset dir="${tmp.dir}" includes="**/*"/>
+		</delete>
+		<!-- clean WebACS install dir -->
+		<delete includeemptydirs="true" failonerror="false">
+		  <fileset dir="${WebACS.bin}"/>
+		</delete>
 	</target>
 
 	<!-- Build the whole AsTeRICS framework including ACS and help specific tasks  -->
@@ -24,29 +27,19 @@
 		<subant target="buildAllNoClean">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
-		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
 	
 	<target name="buildAll" description="Build the whole project with prior cleaning">
 		<subant target="buildAll">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
-		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
 
-	<target name="buildAll-release" depends="replaceVersion, clean, copyHelpFiles" description="Build the whole project with prior cleaning and no debug information. Other steps for a release might be done as well.">
+	<target name="buildAll-release" depends="clean, replaceVersion, installWebACS" description="Build the whole project with prior cleaning and no debug information. Other steps for a release might be done as well.">
 		<subant target="buildAll-release">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 		</subant>
-		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
-	</target>
-		
-	<target name="copyHelpFiles" description="Copy all help files to the webserver document root help path, the WebACS/help/ and the legacy ACS/help.">
-		<!-- copy help files of ARE and WebACS help system -->		
-		<subant target="copyHelpFiles" failonerror="true">
-			<fileset dir="ARE" includes="build.xml"></fileset>
-		</subant>		
-	</target>
+	</target>	
 
 	<target name="run" description="Peforms buildAllNoClean in the ARE directory and starts the ARE.">
 		<subant target="run" failonerror="true">
@@ -54,6 +47,16 @@
 		</subant>
 	</target>
 	
+	<target name="installWebACS" description="Downloads the WebACS release from github and installs it to the ARE document root">
+		<mkdir dir="${tmp.dir}"/>
+		<!-- Checks, if there is a local file already and if the remote file does not have a newer timestamp -->
+		<get src="https://github.com/asterics/WebACS/releases/download/${WebACS.version}/WebACS-${WebACS.version}.zip"
+		     dest="${tmp.dir}/"
+		     verbose="true"
+		     usetimestamp="true"
+			tryGzipEncoding="true"/>
+		<unzip src="${tmp.dir}/WebACS-${WebACS.version}.zip" dest="${WebACS.bin}/"/>
+	</target>
 	
 	<!-- This is the default test target, which calls unit tests -->
 	<!-- Is also used by travis ci service to execute tests -->
@@ -113,6 +116,7 @@
 		<getversionnumber text="${env.VERSION}" property="app_version_number" />
 		<replace file="./Installer/setup.iss" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
 		<replace file="./Installer/asterics-are/package/linux/control" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
+		<replace file="./Installer/asterics-are/APE.properties" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
 		<replace file="./ARE/middleware/src/main/java/eu/asterics/mw/gui/AstericsGUI.java" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
 	</target>
 	
