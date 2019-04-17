@@ -48,6 +48,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -740,6 +741,10 @@ public class AREServices implements IAREServices {
 
         return DeploymentManager.instance.getComponentPosition(componentInstance);
 
+    }
+    
+    public float calcMaxFontSize(JComponent component, Dimension widgetDim, String testString) {
+        return DeploymentManager.instance.calcMaxFontSize(component, widgetDim, testString);
     }
 
     public Dimension getScreenDimension() {

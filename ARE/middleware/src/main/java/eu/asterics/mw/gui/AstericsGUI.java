@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -25,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.URL;
@@ -56,6 +58,7 @@ import java.net.UnknownHostException;
  */
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -882,6 +885,31 @@ public class AstericsGUI implements IAREEventListener {
 
     public void setEditKeyName(String key) {
         controlPane.setEditKeyName(key);
+    }
+
+    public float calcMaxFontSize(JComponent component, Dimension widgetDim, String testString) {
+        float fontSize = 0;
+        boolean finish = false;
+        final float fontSizeMax = 150;
+        final float fontIncrementStep = 0.5f;
+
+        do {
+            fontSize = fontSize + fontIncrementStep;
+
+            Font font = component.getFont();
+            font = font.deriveFont(fontSize);
+            FontMetrics fontMetrics = component.getFontMetrics(font);
+            Rectangle2D tmpFontSize = fontMetrics.getStringBounds(testString, component.getGraphics());
+
+            double fontHeight = tmpFontSize.getHeight();
+            double fontWidth=tmpFontSize.getWidth();
+
+            if (fontHeight >= widgetDim.getHeight() || fontWidth >= widgetDim.getWidth()||fontSize > fontSizeMax) {
+                finish = true;
+                fontSize = fontSize - 2;
+            } 
+        } while (!finish);
+        return fontSize;
     }
 
 }

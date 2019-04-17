@@ -1,6 +1,7 @@
 package eu.asterics.mw.are;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.io.PrintWriter;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -1505,5 +1507,12 @@ public class DeploymentManager {
                 }
             }
         }
+    }
+
+    public float calcMaxFontSize(JComponent component, Dimension widgetDim, String testString) {
+        if(gui!=null) {
+            return gui.calcMaxFontSize(component, widgetDim, testString);
+        }
+        return 15;
     }
 }
