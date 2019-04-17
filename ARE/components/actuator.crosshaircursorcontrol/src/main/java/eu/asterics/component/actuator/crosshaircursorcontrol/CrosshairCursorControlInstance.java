@@ -35,6 +35,7 @@ import eu.asterics.mw.model.runtime.*;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
@@ -554,13 +555,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
      */
     @Override
     public void start() {
-
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        int width = gd.getDisplayMode().getWidth();
-        int height = gd.getDisplayMode().getHeight();
-        Dimension screenSize = new Dimension(width, height);
-
-        // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = AREServices.instance.getScreenDimension();
         screenWidth = (int) screenSize.getWidth();
         screenHeight = (int) screenSize.getHeight();
         // System.out.println("Screen width:" + screenWidth + " height:" + screenHeight);

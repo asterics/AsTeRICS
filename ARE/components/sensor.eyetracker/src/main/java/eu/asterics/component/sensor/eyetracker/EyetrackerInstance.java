@@ -258,7 +258,7 @@ public class EyetrackerInstance extends AbstractRuntimeComponentInstance {
 
             propXMax = Integer.parseInt(newValue.toString());
             if (propXMax == 0) {
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                Dimension screenSize = AREServices.instance.getScreenDimension();
                 propXMax = screenSize.width;
             }
             calib.updateCalibParams(propXMin, propXMax, propYMin, propYMax, propCalibColumns, propCalibRows);
@@ -272,7 +272,7 @@ public class EyetrackerInstance extends AbstractRuntimeComponentInstance {
             final Object oldValue = propYMax;
             propYMax = Integer.parseInt(newValue.toString());
             if (propYMax == 0) {
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                Dimension screenSize = AREServices.instance.getScreenDimension();
                 propYMax = screenSize.height;
             }
             calib.updateCalibParams(propXMin, propXMax, propYMin, propYMax, propCalibColumns, propCalibRows);
