@@ -1263,7 +1263,7 @@ public class DeploymentManager {
         return (gui.getAREWindowLocation());
     }
 
-    public Point getAREWindowDimension() {
+    public Dimension getAREWindowDimension() {
         return (gui.getAREWindowDimension());
     }
 

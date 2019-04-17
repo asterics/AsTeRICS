@@ -78,6 +78,7 @@ import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.IAREEventListener;
+import eu.asterics.mw.utils.OSUtils;
 
 /**
  * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Konstantinos Kakousis [kakousis@cs.ucy.ac.cy] Chris Veigl [veigl@technikum-wien.at] Date: Aug 20, 2010
@@ -354,9 +355,20 @@ public class AstericsGUI implements IAREEventListener {
         }
     }
 
+    /**
+     * This method returns the screen size to use for layout and size calculations of gui elements and plugins.
+     * In a multi display environment the screen size of the primary device is used.
+     * 
+     * @return
+     */
     public Dimension getScreenDimension() {
+        //When using Toolkit, there are differences between Linux and Windows. On Windows the primary screen size is returned, 
+        //on Linux the virtual screen size (size of all displays) is returned. 
         //Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
+        
         if(primaryScreenSize==null) {
+            //This returns the screen size of the primary display only. But this method invocation is very slow, that's
+            //why we cache the result in primaryScreenSize.
             GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             int width = gd.getDisplayMode().getWidth();
             int height = gd.getDisplayMode().getHeight();
@@ -365,11 +377,12 @@ public class AstericsGUI implements IAREEventListener {
         return primaryScreenSize;
     }
 
-    public Point getAREWindowDimension() {
-        Point p = new Point();
-        p.x = mainFrame.getWidth();
-        p.y = mainFrame.getHeight();
-        return (p);
+    /**
+     * Returns the current size of the ARE GUI window.
+     * @return
+     */
+    public Dimension getAREWindowDimension() {
+        return mainFrame.getSize();
     }
 
     public Point getAREWindowLocation() {
@@ -388,8 +401,19 @@ public class AstericsGUI implements IAREEventListener {
         mainFrame.setState(state);
     }
 
+    /**
+     * This method brings the ARE window to front.
+     */
     public void setAREWindowToFront() {
-        mainFrame.toFront();
+        //at least on Linux, hopefully also on Mac, the standard approach works.
+        if(!OSUtils.isWindows()) {
+            mainFrame.setVisible(true);
+            mainFrame.toFront();
+        } else {
+            //on Windows, only this trick works
+            mainFrame.setState(Frame.ICONIFIED);
+            mainFrame.setState(Frame.NORMAL);
+        }
         mainFrame.repaint();
     }
 

@@ -746,7 +746,7 @@ public class AREServices implements IAREServices {
         return DeploymentManager.instance.getScreenDimension();
     }
 
-    public Point getAREWindowDimension() {
+    public Dimension getAREWindowDimension() {
         return DeploymentManager.instance.getAREWindowDimension();
     }
 
