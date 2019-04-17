@@ -71,6 +71,9 @@ public class Main implements BundleActivator {
     @Override
     public void start(final BundleContext context) throws Exception {
         logger = AstericsErrorHandling.instance.getLogger();
+        
+        System.setProperty("awt.useSystemAAFontSettings","on");
+        System.setProperty("swing.aatext", "true");
 
         // set default uncaught exception handler to get logged messages in case of exception.
         Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
