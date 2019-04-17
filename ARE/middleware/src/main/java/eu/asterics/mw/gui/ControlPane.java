@@ -176,7 +176,7 @@ public class ControlPane extends JPanel {
         JComponent controlPanel = makeControlPanel("", axis);
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, axis));
-        mainPanel.setPreferredSize(new Dimension(CONTROLPANEL_WIDTH, astericsGUI.getScreenDimension().y));
+        mainPanel.setPreferredSize(new Dimension(CONTROLPANEL_WIDTH, astericsGUI.getScreenDimension().height));
         mainPanel.add(controlPanel);
         add(mainPanel);
     }
@@ -552,7 +552,7 @@ public class ControlPane extends JPanel {
 
     public void resizeLabels(int orientation) {
         int newSize = mainFrame.getHeight() / 8;
-        int maxSize = astericsGUI.getScreenDimension().x / 30;
+        int maxSize = astericsGUI.getScreenDimension().width / 30;
 
         if (newSize > maxSize) {
             newSize = maxSize;
@@ -583,9 +583,9 @@ public class ControlPane extends JPanel {
             globeLabel.resizeImage(newSize);
 
             if (orientation == BoxLayout.Y_AXIS) {
-                mainPanel.setPreferredSize(new Dimension(newSize, astericsGUI.getScreenDimension().y));
+                mainPanel.setPreferredSize(new Dimension(newSize, astericsGUI.getScreenDimension().height));
             } else {
-                mainPanel.setPreferredSize(new Dimension(astericsGUI.getScreenDimension().y, newSize));
+                mainPanel.setPreferredSize(new Dimension(astericsGUI.getScreenDimension().height, newSize));
             }
 
             iconPanel.revalidate();

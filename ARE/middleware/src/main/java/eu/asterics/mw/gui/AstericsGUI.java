@@ -8,6 +8,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.Point;
@@ -93,6 +95,8 @@ public class AstericsGUI implements IAREEventListener {
     static String ICON_PATH = "/images/icon.gif";
     static String TRAY_ICON_PATH = "/images/tray_icon.gif";
     static String ARE_OPTIONS = ".options";
+    //cache the screen size of the primary monitor.
+    Dimension primaryScreenSize;
 
     public AstericsDesktop desktop;
 
@@ -350,12 +354,15 @@ public class AstericsGUI implements IAREEventListener {
         }
     }
 
-    public Point getScreenDimension() {
-        Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
-        Point p = new Point();
-        p.x = d.width;
-        p.y = d.height;
-        return (p);
+    public Dimension getScreenDimension() {
+        //Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
+        if(primaryScreenSize==null) {
+            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+            int width = gd.getDisplayMode().getWidth();
+            int height = gd.getDisplayMode().getHeight();
+            primaryScreenSize = new Dimension(width, height);
+        }
+        return primaryScreenSize;
     }
 
     public Point getAREWindowDimension() {
@@ -486,9 +493,9 @@ public class AstericsGUI implements IAREEventListener {
             @Override
             public void run() {
 
-                Point p=getScreenDimension();
-                int realX = p.x;
-                int realY = p.y;
+                Dimension screenSize=getScreenDimension();
+                int realX = screenSize.width;
+                int realY = screenSize.height;
 
                 int nposX = (int) (realX * posX / 10000f);
                 int nposY = (int) (realY * posY / 10000f);
@@ -657,8 +664,8 @@ public class AstericsGUI implements IAREEventListener {
         int decorationPadding = 0;
         int controlPanelPaddingW = 0;
         int controlPanelPaddingH = 0;
-        Point p=getScreenDimension();
-        Dimension screenSize=new Dimension(p.x,p.y);
+        
+        Dimension screenSize=getScreenDimension();
 
         if (!modelGUIInfo.isDecoration()) {
             // decorationPadding=0;

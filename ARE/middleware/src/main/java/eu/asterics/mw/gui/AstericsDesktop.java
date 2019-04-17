@@ -57,9 +57,8 @@ public class AstericsDesktop extends JPanel implements ActionListener, MouseMoti
         if (props.checkProperty("fullscreen", "1")) {
         } else {
         }
-
-        Point p=frame.getScreenDimension();
-        setPreferredSize(new Dimension(p.x, p.y));
+        
+        setPreferredSize(frame.getScreenDimension());
         // setBorder(BorderFactory.createTitledBorder(
         // "Desktop"));
         addMouseMotionListener(this);

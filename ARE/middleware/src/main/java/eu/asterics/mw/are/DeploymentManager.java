@@ -1244,8 +1244,8 @@ public class DeploymentManager {
         IRuntimeModel model = getCurrentRuntimeModel();
         IComponentInstance component = model.getComponentInstance(componentInstanceID);
         AREGUIElement el = component.getAREGUIElement();
-        if (el != null) {
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        if (el != null) {            
+            Dimension screenSize = getScreenDimension();
             int width = (int) (screenSize.width * el.width / 10000f);
             int height = (int) (screenSize.height * el.height / 10000f);
             return new Dimension(width, height);
@@ -1255,7 +1255,7 @@ public class DeploymentManager {
 
     }
 
-    public Point getScreenDimension() {
+    public Dimension getScreenDimension() {
         return (gui.getScreenDimension());
     }
 
@@ -1296,7 +1296,7 @@ public class DeploymentManager {
         AREGUIElement el = component.getAREGUIElement();
 
         if (el != null) {
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            Dimension screenSize = getScreenDimension();            
             gui.getDesktop();
             // int x = ((screenSize.width*el.posX/100) +
             // desktop.getLocationOnScreen().x);
