@@ -5,7 +5,7 @@
         Are you disabled and want to use a computer to work, browse the internet or write E-Mails?
     </p>
     <b-button variant="primary" href="./solutions/">Discover Solutions</b-button>
-    <b-button variant="success" href="get-started/">Get Started</b-button>
+    <b-button variant="info" href="get-started/">Get Started</b-button>
   </b-jumbotron>
 </div>
 
@@ -32,7 +32,7 @@ There are many Assistive Technologies available on the market, but in many cases
  * allows easily customizing existing solutions or designing new ones.
  * is Open Source, which means that it is free forever and others can contribute to the framework.
 
-## Partners & Funding
+## Partners & Fundinga
 
 The creation of the web page was funded by the City of Vienna, MA23, in course of the project **StudyATHome Internationally** (Grant Nr. 22-07). The underlying technologies were funded by several other projects, see [About Us](/get-involved/About-us).
 
@@ -61,3 +61,5 @@ The creation of the web page was funded by the City of Vienna, MA23, in course o
 ## AsTeRICS Project Web Page
 
 This is a newly created web page to present AsTeRICS technologies and corresponding documentation. If you are looking for the web page of the original AsTeRICS project, please go to [project.asterics.eu](https://project.asterics.eu).
+
+<EditLink/>
