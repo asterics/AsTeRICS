@@ -368,7 +368,10 @@ public class AstericsGUI implements IAREEventListener {
             int width = gd.getDisplayMode().getWidth();
             int height = gd.getDisplayMode().getHeight();
             primaryScreenSize = new Dimension(width, height);
+    
+            AstericsErrorHandling.instance.getLogger().info("Primary Screen Size: " + primaryScreenSize);
         }
+
         return primaryScreenSize;
     }
 
