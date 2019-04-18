@@ -67,8 +67,3 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     image="/assets/img/solutions/head-sound.1.jpg"
     docs="/solutions/Head-Sound.html"
 />
-
-<EditLink/>
-
-
-<EditLink/>
