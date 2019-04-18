@@ -22,7 +22,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     title="Camera Mouse"
     :tags='[{href:"#", text:"webcam"}, {href:"#", text:"feature"}, {href:"#", text:"world"}]'
     description="Mouse control according to your head movements with configurable settings."
-    image="/img/stock-photo-biometric-verification-woman-face-recognition-security-613853963.jpg"
+    image="/assets/img/solutions/camera-mouse.1.jpg"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs"
     webapp="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-cameramouse"
     docs="/solutions/Camera-Mouse.html"
@@ -32,7 +32,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     title="Eye Tracking Mouse"
     :tags='[{href:"https://gaming.tobii.com/product/tobii-eye-tracker-4c/", text:"eye-tracker"}, {href:"#", text:"windows"}]'
     description="Mouse control by eye tracking with configurable settings."
-    image="/img/stock-photo-eye-monitoring-virtual-reality-700122865.jpg"
+    image="/assets/img/solutions/eye-tracking-mouse.2.jpg"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs"
     webapp="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-eyecontrol"
     docs="/solutions/Eye-Tracking-Mouse.html"
@@ -42,7 +42,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     title="Switch-controlled Mouse"
     :tags='[{href:"#", text:"mouse"}]'
     description="Provides mouse control using AT switches."
-    image="/img/fabi-switches.jpg"
+    image="/assets/img/solutions/switch-mouse.1.png"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/HeadSound.acs"
     docs="/solutions/Switch-Mouse.html"
 />
@@ -64,9 +64,11 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     title="Sounds by Head Movement"
     :tags='[{href:"#", text:"music"}]'
     description="Creates sounds according to head movement."
-    image="/img/stock-photo--d-illustration-of-musical-notes-and-musical-signs-of-abstract-music-sheet-songs-and-melody-concept-761313844.jpg"
-    model="https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/HeadSound.acs"
+    image="/assets/img/solutions/head-sound.1.jpg"
     docs="/solutions/Head-Sound.html"
 />
+
+<EditLink/>
+
 
 <EditLink/>
