@@ -103,7 +103,7 @@ public class ServerRepository {
      * @return the baseUriRest
      */
     public URI getBaseUriREST() {
-        return URI.create("http://0.0.0.0:" + getPortREST() + PATH_REST);
+        return URI.create("https://0.0.0.0:" + getPortREST() + PATH_REST);
     }
 
     /**
@@ -113,7 +113,7 @@ public class ServerRepository {
      * @return the baseUriWs
      */
     public URI getBaseUriWebsocket() {
-        return URI.create("http://0.0.0.0:" + getPortWebsocket() + PATH_WEBSOCKET);
+        return URI.create("https://0.0.0.0:" + getPortWebsocket() + PATH_WEBSOCKET);
     }
 
     /**

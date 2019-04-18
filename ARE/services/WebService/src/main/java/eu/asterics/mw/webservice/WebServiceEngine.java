@@ -40,6 +40,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
+import org.glassfish.grizzly.ssl.SSLContextConfigurator;
+import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
 import org.glassfish.grizzly.websockets.WebSocketAddOn;
 import org.glassfish.grizzly.websockets.WebSocketEngine;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -69,6 +71,8 @@ public class WebServiceEngine {
 
     private Logger logger = AstericsErrorHandling.instance.getLogger();
     private AstericsDataApplication astericsApplication = null;
+    private static String KEYSTORE_LOC;
+    private static final String KEYSTORE_PASS= "asterics";
 
     /**
      * Method that returns the instance of this class, based on the Singleton Design pattern.
@@ -90,16 +94,20 @@ public class WebServiceEngine {
      * @throws URISyntaxException 
      */
     public void initGrizzlyHttpService(BundleContext bc) throws IOException, URISyntaxException {
-
         logger.fine("Starting REST API at " + ServerRepository.getInstance().getBaseUriREST());
 
+        KEYSTORE_LOC=ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("keystore/keystore_server", RES_TYPE.PROFILE));
+        SSLContextConfigurator sslCon = new SSLContextConfigurator();
+        sslCon.setKeyStoreFile(KEYSTORE_LOC);
+        sslCon.setKeyStorePass(KEYSTORE_PASS);        
+        
         ResourceConfig rc = new ResourceConfig();
 
         // REST SERVER CONFIGURATION
         rc.registerClasses(RestServer.class, SseResource.class, SseFeature.class);
         rc.register(new RequestFilter());
         rc.register(new ResponseFilter());
-        restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.getInstance().getBaseUriREST(), rc);
+        restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.getInstance().getBaseUriREST(), rc,true,new SSLEngineConfigurator(sslCon).setClientMode(false).setNeedClientAuth(false));
  
         // Normal Web server configuration (document root)
         String docRoot=ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource(RES_TYPE.WEB_DOCUMENT_ROOT));
