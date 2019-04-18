@@ -41,6 +41,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import eu.asterics.component.sensor.eyetracker.jni.BridgePOSIT;
+import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class POSIT {
@@ -147,7 +148,7 @@ public class POSIT {
     protected synchronized void startEvaluation() {
         sendEyeCoordinates = 1;
         int errormsg;
-        Dimension screenResolution = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenResolution = AREServices.instance.getScreenDimension();
         errormsg = bridgePOSIT.startEval(screenResolution.width, screenResolution.height);
         if (errormsg != 1) {
             AstericsErrorHandling.instance.reportInfo(this.owner,

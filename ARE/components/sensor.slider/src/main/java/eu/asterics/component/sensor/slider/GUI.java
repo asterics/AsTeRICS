@@ -79,7 +79,7 @@ public class GUI extends JPanel implements ChangeListener {
      * @param height
      */
     private void design(int width, int height) {
-        Font actFont = new Font("Arial", 0, owner.propFontSize);
+        Font actFont = new Font("Arial", 0, Math.min(owner.propFontSize,AREServices.instance.getMaxFontSize()));
 
         // Create Panels
         sliderPanel = new JPanel(new BorderLayout());
@@ -111,7 +111,6 @@ public class GUI extends JPanel implements ChangeListener {
         slider.addChangeListener(this);
         slider.setFont(actFont);
         sliderPanel.add(slider, BorderLayout.CENTER);
-        AREServices.instance.adjustFonts(sliderPanel, 24, 6, 0);
         sliderPanel.setVisible(true);
 
         this.setLayout(new BorderLayout());

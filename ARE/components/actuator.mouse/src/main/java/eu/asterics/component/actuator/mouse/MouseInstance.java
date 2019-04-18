@@ -44,6 +44,7 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.services.AREServices;
 
 /**
  * Implements the Mouse plugin, which controls the local mouse using the Java
@@ -284,6 +285,8 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
 
             propXMax = Integer.parseInt(newValue.toString());
             if (propXMax == 0) {
+                //On Linux the Toolkit returns the virtual screen size, should we use that one for max, or change to 
+                //the screensize of the primary display? --> AREServices.instance.getScreenDimension();
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 propXMax = screenSize.width;
             }
@@ -298,6 +301,8 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
             final Object oldValue = propYMax;
             propYMax = Integer.parseInt(newValue.toString());
             if (propYMax == 0) {
+                //On Linux the Toolkit returns the virtual screen size, should we use that one for max, or change to 
+                //the screensize of the primary display? --> AREServices.instance.getScreenDimension();
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 propYMax = screenSize.height;
             }

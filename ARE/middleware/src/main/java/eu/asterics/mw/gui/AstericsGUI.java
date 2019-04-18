@@ -7,7 +7,10 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.Point;
@@ -23,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.URL;
@@ -54,6 +58,7 @@ import java.net.UnknownHostException;
  */
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -76,13 +81,14 @@ import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.IAREEventListener;
+import eu.asterics.mw.utils.OSUtils;
 
 /**
  * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Konstantinos Kakousis [kakousis@cs.ucy.ac.cy] Chris Veigl [veigl@technikum-wien.at] Date: Aug 20, 2010
  *         Time: 2:14:37 PM
  */
 public class AstericsGUI implements IAREEventListener {
-    private final static int DEFAULT_FONT_SIZE = 18;
+    public final static int DEFAULT_FONT_SIZE = 18;
     private static String DEFAULT_FONT_SIZE_PROPERTY = "ARE.gui.font.size";
     public final static String ARE_VERSION = "#{APPLICATION_VERSION_NUMBER}#";
     static int DEFAULT_SCREEN_X = 0;
@@ -93,6 +99,8 @@ public class AstericsGUI implements IAREEventListener {
     static String ICON_PATH = "/images/icon.gif";
     static String TRAY_ICON_PATH = "/images/tray_icon.gif";
     static String ARE_OPTIONS = ".options";
+    // cache the screen size of the primary monitor.
+    Dimension primaryScreenSize;
 
     public AstericsDesktop desktop;
 
@@ -105,7 +113,6 @@ public class AstericsGUI implements IAREEventListener {
     private Container pane;
 
     private final AsapiSupport as;
-    Dimension screenSize;
     private JFrame mainFrame;
     OptionsFrame optionsFrame;
     // private AboutFrame aboutFrame;
@@ -122,59 +129,50 @@ public class AstericsGUI implements IAREEventListener {
         super();
 
         AREProperties.instance.setDefaultPropertyValue(DEFAULT_FONT_SIZE_PROPERTY, String.valueOf(DEFAULT_FONT_SIZE), "The default font size for the ARE GUI.");
-        Integer fontSize = DEFAULT_FONT_SIZE;
-        try {
-            fontSize = new Integer(AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY));
-        } catch (NumberFormatException e) {
-            AstericsErrorHandling.instance.getLogger().warning("Could not parse numeric fontSize for ARE GUI: key: " + DEFAULT_FONT_SIZE_PROPERTY + "="
-                    + AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY));
-        }
-
-        AstericsErrorHandling.instance.getLogger().info(DEFAULT_FONT_SIZE_PROPERTY + "=" + fontSize);
-        AREProperties.instance.setProperty(DEFAULT_FONT_SIZE_PROPERTY, Integer.toString(fontSize));
-
-        UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Arial", Font.PLAIN, fontSize));
+        int fontSize = (int) getMaxFontSize();
+        AstericsErrorHandling.instance.getLogger().info("Using overall fontSize: " + fontSize);
+        Font customFont = new Font("Arial", Font.PLAIN, fontSize);
+        UIManager.getLookAndFeelDefaults().put("defaultFont", customFont);
 
         UIManager.get("messageFont");
-        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("OptionPane.messageFont", customFont);
 
         UIManager.get("messageForeground");
         UIManager.put("OptionPane.messageForeground", Color.black);
 
-        UIManager.put("Button.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("ToggleButton.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("RadioButton.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("CheckBox.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("ColorChooser.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("ComboBox.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("Label.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("List.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("MenuBar.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("MenuItem.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("RadioButtonMenuItem.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("CheckBoxMenuItem.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("Menu.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("PopupMenu.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("OptionPane.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("Panel.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("ProgressBar.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("ScrollPane.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("Viewport.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("TabbedPane.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("Table.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("TableHeader.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("TextField.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("PasswordField.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("TextArea.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("TextPane.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("EditorPane.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("TitledBorder.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("ToolBar.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("ToolTip.font", new Font("Arial", Font.PLAIN, fontSize));
-        UIManager.put("Tree.font", new Font("Arial", Font.PLAIN, fontSize));
+        UIManager.put("Slider.font", customFont);
+        UIManager.put("Button.font", customFont);
+        UIManager.put("ToggleButton.font", customFont);
+        UIManager.put("RadioButton.font", customFont);
+        UIManager.put("CheckBox.font", customFont);
+        UIManager.put("ColorChooser.font", customFont);
+        UIManager.put("ComboBox.font", customFont);
+        UIManager.put("Label.font", customFont);
+        UIManager.put("List.font", customFont);
+        UIManager.put("MenuBar.font", customFont);
+        UIManager.put("MenuItem.font", customFont);
+        UIManager.put("RadioButtonMenuItem.font", customFont);
+        UIManager.put("CheckBoxMenuItem.font", customFont);
+        UIManager.put("Menu.font", customFont);
+        UIManager.put("PopupMenu.font", customFont);
+        UIManager.put("OptionPane.font", customFont);
+        UIManager.put("Panel.font", customFont);
+        UIManager.put("ProgressBar.font", customFont);
+        UIManager.put("ScrollPane.font", customFont);
+        UIManager.put("Viewport.font", customFont);
+        UIManager.put("TabbedPane.font", customFont);
+        UIManager.put("Table.font", customFont);
+        UIManager.put("TableHeader.font", customFont);
+        UIManager.put("TextField.font", customFont);
+        UIManager.put("PasswordField.font", customFont);
+        UIManager.put("TextArea.font", customFont);
+        UIManager.put("TextPane.font", customFont);
+        UIManager.put("EditorPane.font", customFont);
+        UIManager.put("TitledBorder.font", customFont);
+        UIManager.put("ToolBar.font", customFont);
+        UIManager.put("ToolTip.font", customFont);
+        UIManager.put("Tree.font", customFont);
 
-        // logger = AstericsErrorHandling.instance.getLogger();
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         AREServices.instance.registerAREEventListener(this);
 
         this.bundleContext = bundleContext;
@@ -352,18 +350,38 @@ public class AstericsGUI implements IAREEventListener {
         }
     }
 
-    public Point getScreenDimension() {
-        Point p = new Point();
-        p.x = screenSize.width;
-        p.y = screenSize.height;
-        return (p);
+    /**
+     * This method returns the screen size to use for layout and size calculations of gui elements and plugins. In a multi display environment the screen size
+     * of the primary device is used.
+     * 
+     * @return
+     */
+    public Dimension getScreenDimension() {
+        // When using Toolkit, there are differences between Linux and Windows. On Windows the primary screen size is returned,
+        // on Linux the virtual screen size (size of all displays) is returned.
+        // Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
+
+        if (primaryScreenSize == null) {
+            // This returns the screen size of the primary display only. But this method invocation is very slow, that's
+            // why we cache the result in primaryScreenSize.
+            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+            int width = gd.getDisplayMode().getWidth();
+            int height = gd.getDisplayMode().getHeight();
+            primaryScreenSize = new Dimension(width, height);
+    
+            AstericsErrorHandling.instance.getLogger().info("Primary Screen Size: " + primaryScreenSize);
+        }
+
+        return primaryScreenSize;
     }
 
-    public Point getAREWindowDimension() {
-        Point p = new Point();
-        p.x = mainFrame.getWidth();
-        p.y = mainFrame.getHeight();
-        return (p);
+    /**
+     * Returns the current size of the ARE GUI window.
+     * 
+     * @return
+     */
+    public Dimension getAREWindowDimension() {
+        return mainFrame.getSize();
     }
 
     public Point getAREWindowLocation() {
@@ -382,8 +400,19 @@ public class AstericsGUI implements IAREEventListener {
         mainFrame.setState(state);
     }
 
+    /**
+     * This method brings the ARE window to front.
+     */
     public void setAREWindowToFront() {
-        mainFrame.toFront();
+        // at least on Linux, hopefully also on Mac, the standard approach works.
+        if (!OSUtils.isWindows()) {
+            mainFrame.setVisible(true);
+            mainFrame.toFront();
+        } else {
+            // on Windows, only this trick works
+            mainFrame.setState(Frame.ICONIFIED);
+            mainFrame.setState(Frame.NORMAL);
+        }
         mainFrame.repaint();
     }
 
@@ -487,6 +516,7 @@ public class AstericsGUI implements IAREEventListener {
             @Override
             public void run() {
 
+                Dimension screenSize = getScreenDimension();
                 int realX = screenSize.width;
                 int realY = screenSize.height;
 
@@ -657,6 +687,8 @@ public class AstericsGUI implements IAREEventListener {
         int decorationPadding = 0;
         int controlPanelPaddingW = 0;
         int controlPanelPaddingH = 0;
+
+        Dimension screenSize = getScreenDimension();
 
         if (!modelGUIInfo.isDecoration()) {
             // decorationPadding=0;
@@ -849,6 +881,71 @@ public class AstericsGUI implements IAREEventListener {
 
     public void setEditKeyName(String key) {
         controlPane.setEditKeyName(key);
+    }
+
+    /**
+     * This method returns the property value for the font size configured in areProperties ({@link AstericsGUI#DEFAULT_FONT_SIZE_PROPERTY}).
+     * @return
+     */
+    private int getFontSizePropertyValue() {
+        Integer fontSize = DEFAULT_FONT_SIZE;
+        try {
+            fontSize = new Integer(AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().warning("Could not parse numeric fontSize for ARE GUI: key: " + DEFAULT_FONT_SIZE_PROPERTY + "="
+                    + AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY));
+        }
+        return fontSize;
+    }
+
+    /**
+     * This method returns the maximum allowed font size to use for all ARE GUI elements. The maximum font size is dependent on the configured size in
+     * areProperties ({@link AstericsGUI#DEFAULT_FONT_SIZE_PROPERTY}) and overridden in case of a low screen resolution.
+     * 
+     * @return
+     */
+    public int getMaxFontSize() {
+        int tmpFontSize=DEFAULT_FONT_SIZE*2;
+        // Override configured fontSize in case of a low screen resolution
+        if (getScreenDimension().width < 1440 || getScreenDimension().height < 900) {
+            AstericsErrorHandling.instance.getLogger().info("Overriding fontSize because of low screen resolution");
+            tmpFontSize = 10;
+        }
+        return Math.min(getFontSizePropertyValue(), tmpFontSize);
+    }
+
+    /**
+     * This method calculates the maximum font size for the given component and depending on the requested widgetDim dimension and the given testString.
+     * 
+     * @param component
+     * @param widgetDim
+     * @param testString
+     * @return
+     */
+    public float calcMaxFontSize(JComponent component, Dimension widgetDim, String testString) {
+        float fontSize = 0;
+        boolean finish = false;
+        final float fontSizeMax = 150;
+        final float fontIncrementStep = 0.5f;
+
+        do {
+            fontSize = fontSize + fontIncrementStep;
+
+            Font font = component.getFont();
+            font = font.deriveFont(fontSize);
+            FontMetrics fontMetrics = component.getFontMetrics(font);
+            Rectangle2D tmpFontSize = fontMetrics.getStringBounds(testString, component.getGraphics());
+
+            double fontHeight = tmpFontSize.getHeight();
+            double fontWidth = tmpFontSize.getWidth();
+
+            if (fontHeight >= widgetDim.getHeight() || fontWidth >= widgetDim.getWidth() || fontSize > fontSizeMax) {
+                finish = true;
+                fontSize = fontSize - 2;
+            }
+        } while (!finish);
+
+        return fontSize;
     }
 
 }

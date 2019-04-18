@@ -43,6 +43,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.services.AREServices;
 
 /**
  * Implements the Graphical User Interface for the Text Display plugin
@@ -57,8 +58,6 @@ public class GUI extends JPanel {
     private JLabel textLabel = null;
 
     // private final double verticalOffset=1;
-    private final float fontSizeMax = 150;
-    private final float fontIncrementStep = 0.5f;
 
     private final TextDisplayInstance owner;
     final IRuntimeEventTriggererPort etpClicked;
@@ -129,38 +128,13 @@ public class GUI extends JPanel {
         textLabel.setPreferredSize(labelDimension);
         textLabel.setMinimumSize(labelDimension);
         textLabel.setMaximumSize(labelDimension);
-
-        String testString = "THIS IS TEST STRING";
-
-        float fontSize = 0;
-        boolean finish = false;
-
-        do {
-            fontSize = fontSize + fontIncrementStep;
-
-            Font font = textLabel.getFont();
-            font = font.deriveFont(fontSize);
-            FontMetrics fontMetrics = textLabel.getFontMetrics(font);
-            Rectangle2D tmpFontSize = fontMetrics.getStringBounds(testString, textLabel.getGraphics());
-
-            double fontHeight = tmpFontSize.getHeight();
-            // double fontWidth=tmpFontSize.getWidth();
-
-            if (fontHeight >= labelHeight) {
-                finish = true;
-                fontSize = fontSize - 1;
-            } else {
-
-                if (fontSize > fontSizeMax) {
-                    finish = true;
-                }
-            }
-        } while (!finish);
-
+   
         textLabel.setOpaque(true);
         textLabel.setForeground(getColorProperty(owner.getTextColor()));
         textLabel.setBackground(getColorProperty(owner.getBackgroundColor()));
 
+        String testString = owner.getDefaultText()!= "" ? owner.getDefaultText() : "THIS IS TEST STRING";
+        float fontSize=AREServices.instance.calcMaxFontSize(textLabel, labelDimension, testString);
         Font font = textLabel.getFont();
         font = font.deriveFont(fontSize);
         textLabel.setFont(font);

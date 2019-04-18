@@ -26,6 +26,7 @@
 
 package eu.asterics.component.actuator.arewindow;
 
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 
@@ -264,10 +265,10 @@ public class AREWindowInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveEvent(final String data) {
             Point pos = AREServices.instance.getAREWindowPosition();
-            Point dim = AREServices.instance.getAREWindowDimension();
-            Point screen = AREServices.instance.getScreenDimension();
+            Dimension dim = AREServices.instance.getAREWindowDimension();
+            Dimension screen = AREServices.instance.getScreenDimension();
 
-            pos.y = screen.y - dim.y + propYPos;
+            pos.y = screen.height - dim.height + propYPos;
             AREServices.instance.setAREWindowPosition(pos.x + propXPos, pos.y);
         }
     };
@@ -283,10 +284,10 @@ public class AREWindowInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveEvent(final String data) {
             Point pos = AREServices.instance.getAREWindowPosition();
-            Point dim = AREServices.instance.getAREWindowDimension();
-            Point screen = AREServices.instance.getScreenDimension();
+            Dimension dim = AREServices.instance.getAREWindowDimension();
+            Dimension screen = AREServices.instance.getScreenDimension();
 
-            pos.x = screen.x - dim.x + propXPos;
+            pos.x = screen.width - dim.width + propXPos;
             AREServices.instance.setAREWindowPosition(pos.x, pos.y + propYPos);
         }
     };
@@ -294,11 +295,11 @@ public class AREWindowInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveEvent(final String data) {
             Point pos = AREServices.instance.getAREWindowPosition();
-            Point dim = AREServices.instance.getAREWindowDimension();
-            Point screen = AREServices.instance.getScreenDimension();
+            Dimension dim = AREServices.instance.getAREWindowDimension();
+            Dimension screen = AREServices.instance.getScreenDimension();
 
-            pos.x = screen.x / 2 - dim.x / 2 + propXPos;
-            pos.y = screen.y / 2 - dim.y / 2 + propYPos;
+            pos.x = screen.width / 2 - dim.width / 2 + propXPos;
+            pos.y = screen.height / 2 - dim.height / 2 + propYPos;
             AREServices.instance.setAREWindowPosition(pos.x, pos.y);
         }
     };
@@ -318,10 +319,7 @@ public class AREWindowInstance extends AbstractRuntimeComponentInstance {
     final IRuntimeEventListenerPort elpBringToFront = new IRuntimeEventListenerPort() {
         @Override
         public void receiveEvent(final String data) {
-            AREServices.instance.setAREWindowState(Frame.ICONIFIED);
-            AREServices.instance.setAREWindowState(Frame.NORMAL);
-
-            // AREServices.instance.setAREWindowToFront();
+            AREServices.instance.setAREWindowToFront();
         }
     };
 
