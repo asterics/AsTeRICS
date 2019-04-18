@@ -65,6 +65,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     :tags='[{href:"#", text:"music"}]'
     description="Creates sounds according to head movement."
     image="/img/stock-photo--d-illustration-of-musical-notes-and-musical-signs-of-abstract-music-sheet-songs-and-melody-concept-761313844.jpg"
+    model="https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/HeadSound.acs"
     docs="/solutions/Head-Sound.html"
 />
 
