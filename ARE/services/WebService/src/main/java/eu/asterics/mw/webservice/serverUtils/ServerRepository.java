@@ -64,16 +64,20 @@ public class ServerRepository {
     
     public static final String PATH_REST = "/rest";
     public static final int DEFAULT_PORT_REST = 8081;
+    public static final int DEFAULT_SSL_PORT_REST = 8086;
 
     // Web Socket Server configuration
     public static final String PATH_WEBSOCKET = "/ws";
     public static final String PATH_WEBSOCKET_ASTERICS_DATA = "/astericsData";
 
     public static final int DEFAULT_PORT_WEBSOCKET = 8082;
+    public static final int DEFAULT_SSL_PORT_WEBSOCKET = 8087;
 
     // member variables holding property values
     private int portREST = DEFAULT_PORT_REST;
     private int portWebsocket = DEFAULT_PORT_WEBSOCKET;
+    private int sslPortREST = DEFAULT_SSL_PORT_REST;
+    private int sslPortWebsocket = DEFAULT_SSL_PORT_WEBSOCKET;
 
     /**
      * Private ctor used for initializing the class.
@@ -95,6 +99,22 @@ public class ServerRepository {
             AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
                     "Configured port for Websocket service invalid: " + e.getMessage(), e);
         }
+        // init ports and paths with property values for SSL
+        try {
+            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_SSL_PORT_REST_KEY, String.valueOf(DEFAULT_SSL_PORT_REST), "The port to use for the SSL REST API.");
+            sslPortREST = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_SSL_PORT_REST_KEY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+                    "Configured port for SSL REST service invalid: " + e.getMessage(), e);
+        }
+        // init ports and paths with property values
+        try {
+            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_SSL_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_SSL_PORT_WEBSOCKET), "The port to use for SSL websocket communication.");
+            sslPortWebsocket = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_SSL_PORT_WEBSOCKET_KEY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+                    "Configured port for SSL Websocket service invalid: " + e.getMessage(), e);
+        }        
     }
 
     /**
@@ -103,7 +123,7 @@ public class ServerRepository {
      * @return the baseUriRest
      */
     public URI getBaseUriREST() {
-        return URI.create("https://0.0.0.0:" + getPortREST() + PATH_REST);
+        return URI.create("http://0.0.0.0:" + getPortREST() + PATH_REST);
     }
 
     /**
@@ -113,7 +133,7 @@ public class ServerRepository {
      * @return the baseUriWs
      */
     public URI getBaseUriWebsocket() {
-        return URI.create("https://0.0.0.0:" + getPortWebsocket() + PATH_WEBSOCKET);
+        return URI.create("http://0.0.0.0:" + getPortWebsocket() + PATH_WEBSOCKET);
     }
 
     /**
@@ -140,6 +160,50 @@ public class ServerRepository {
     public int getPortWebsocket() {
         return portWebsocket;
     }
+    
+    /**
+     * Returns the baseURI for the SSL REST API.
+     *
+     * @return the baseUriRest
+     */
+    public URI getBaseUriSSLREST() {
+        return URI.create("https://0.0.0.0:" + getSSLPortREST() + PATH_REST);
+    }
+
+    /**
+     * Returns the baseURI for the SSL websocket functionality. The actual websocket channels must be subpaths of it, e.g.
+     * {@link ServerRepository#PATH_WEBSOCKET_ASTERICS_DATA}
+     *
+     * @return the baseUriWs
+     */
+    public URI getBaseUriSSLWebsocket() {
+        return URI.create("https://0.0.0.0:" + getSSLPortWebsocket() + PATH_WEBSOCKET);
+    }
+
+    /**
+     * Returns the configured port number for the SSL REST API.
+     *
+     * @return
+     */
+    public int getSSLPortREST() {
+        return sslPortREST;
+    }
+
+    /**
+     * Returns the configured port number for the SSL webserver, which should be the same as the one for the REST API.
+     */
+    public int getSSLPortWebserver() {
+        return getSSLPortREST();
+    }
+
+    /**
+     * Returns the configured port number for the SSL Websocket functionality.
+     *
+     * @return
+     */
+    public int getSSLPortWebsocket() {
+        return sslPortWebsocket;
+    }    
 
     /**
      * Returns a singleton instance of the ServerRepository class

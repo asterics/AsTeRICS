@@ -26,9 +26,11 @@ package eu.asterics.mw.webservice;
  */
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.*;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -66,8 +68,7 @@ import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 public class WebServiceEngine {
     private static WebServiceEngine instance = null;
 
-    private HttpServer restServer = null;
-    private HttpServer wsServer = null;
+    private List<HttpServer> httpServer = new ArrayList<HttpServer>();
 
     private Logger logger = AstericsErrorHandling.instance.getLogger();
     private AstericsDataApplication astericsApplication = null;
@@ -94,12 +95,20 @@ public class WebServiceEngine {
      * @throws URISyntaxException 
      */
     public void initGrizzlyHttpService(BundleContext bc) throws IOException, URISyntaxException {
-        logger.fine("Starting REST API at " + ServerRepository.getInstance().getBaseUriREST());
-
-        KEYSTORE_LOC=ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("keystore/keystore_server", RES_TYPE.PROFILE));
-        SSLContextConfigurator sslCon = new SSLContextConfigurator();
-        sslCon.setKeyStoreFile(KEYSTORE_LOC);
-        sslCon.setKeyStorePass(KEYSTORE_PASS);        
+        initGrizzlyHttpService(
+                ServerRepository.getInstance().getBaseUriREST(),
+                ServerRepository.getInstance().getPortREST(),
+                ServerRepository.getInstance().getBaseUriWebsocket(),
+                ServerRepository.getInstance().getPortWebsocket(),false);
+        initGrizzlyHttpService(
+                ServerRepository.getInstance().getBaseUriSSLREST(),
+                ServerRepository.getInstance().getSSLPortREST(),
+                ServerRepository.getInstance().getBaseUriSSLWebsocket(),
+                ServerRepository.getInstance().getSSLPortWebsocket(),true);
+    }
+    
+    private void initGrizzlyHttpService(URI baseURIREST, int portREST, URI baseURIWS, int portWS, boolean useSSL) throws URISyntaxException, IOException {
+        logger.fine("Starting REST API at " + baseURIREST);
         
         ResourceConfig rc = new ResourceConfig();
 
@@ -107,7 +116,18 @@ public class WebServiceEngine {
         rc.registerClasses(RestServer.class, SseResource.class, SseFeature.class);
         rc.register(new RequestFilter());
         rc.register(new ResponseFilter());
-        restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.getInstance().getBaseUriREST(), rc,true,new SSLEngineConfigurator(sslCon).setClientMode(false).setNeedClientAuth(false));
+        
+        HttpServer restServer;
+        if (useSSL) {
+            KEYSTORE_LOC = ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("keystore/keystore_server", RES_TYPE.PROFILE));
+            SSLContextConfigurator sslCon = new SSLContextConfigurator();
+            sslCon.setKeyStoreFile(KEYSTORE_LOC);
+            sslCon.setKeyStorePass(KEYSTORE_PASS);
+            restServer = GrizzlyHttpServerFactory.createHttpServer(baseURIREST, rc, true,
+                    new SSLEngineConfigurator(sslCon).setClientMode(false).setNeedClientAuth(false));
+        } else {
+            restServer = GrizzlyHttpServerFactory.createHttpServer(baseURIREST, rc);
+        }
  
         // Normal Web server configuration (document root)
         String docRoot=ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource(RES_TYPE.WEB_DOCUMENT_ROOT));
@@ -123,11 +143,25 @@ public class WebServiceEngine {
         }
 
         restServer.start();
+        httpServer.add(restServer);
 
         // Websocket configuration
         logger.fine("Initializing Websocket... ");
-        wsServer = HttpServer.createSimpleServer(docRoot, "0.0.0.0", ServerRepository.getInstance().getPortWebsocket());
-
+        HttpServer wsServer = HttpServer.createSimpleServer(docRoot, "0.0.0.0", portWS);
+        
+//        HttpServer wsServer;
+//        if (useSSL) {
+//            KEYSTORE_LOC = ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("keystore/keystore_server", RES_TYPE.PROFILE));
+//            SSLContextConfigurator sslCon = new SSLContextConfigurator();
+//            sslCon.setKeyStoreFile(KEYSTORE_LOC);
+//            sslCon.setKeyStorePass(KEYSTORE_PASS);
+//            wsServer = GrizzlyHttpServerFactory.createHttpServer(baseURIWS, rc, true,
+//                    new SSLEngineConfigurator(sslCon).setClientMode(false).setNeedClientAuth(false));
+//        } else {
+//            wsServer = GrizzlyHttpServerFactory.createHttpServer(baseURIWS, rc);
+//        }
+        wsServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(docRoot), "/");
+        
         final WebSocketAddOn addon = new WebSocketAddOn();
         for (NetworkListener listener : wsServer.getListeners()) {
             logger.fine("listener: " + listener.getHost() + ":" + listener.getPort());
@@ -135,10 +169,11 @@ public class WebServiceEngine {
         }
         astericsApplication = new AstericsDataApplication();
 
-        logger.fine("Registering Websocket URI: " + ServerRepository.getInstance().getBaseUriWebsocket() + ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA);
+        logger.fine("Registering Websocket URI: " + baseURIWS + ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA);
         WebSocketEngine.getEngine().register(ServerRepository.PATH_WEBSOCKET, ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA, astericsApplication);
 
         wsServer.start();
+        httpServer.add(wsServer);
     }
 
     /**
@@ -185,12 +220,8 @@ public class WebServiceEngine {
     }
 
     public void stop() {
-        // TODO Auto-generated method stub
-        if (restServer != null) {
-            restServer.shutdownNow();
-        }
-        if (wsServer != null) {
-            wsServer.shutdownNow();
+        for(HttpServer server : httpServer) {
+            server.shutdownNow();
         }
     }
 }
