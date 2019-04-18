@@ -43,7 +43,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     :tags='[{href:"#", text:"mouse"}]'
     description="Provides mouse control using AT switches."
     image="/assets/img/solutions/switch-mouse.1.png"
-    model="https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/HeadSound.acs"
+    model="https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/useCaseDemos/mouseControl/crosshairCursorControl_2keys_wraparound.acs"
     docs="/solutions/Switch-Mouse.html"
 />
 
@@ -65,5 +65,6 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     :tags='[{href:"#", text:"music"}]'
     description="Creates sounds according to head movement."
     image="/assets/img/solutions/head-sound.1.jpg"
+    model="https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/HeadSound.acs"
     docs="/solutions/Head-Sound.html"
 />
