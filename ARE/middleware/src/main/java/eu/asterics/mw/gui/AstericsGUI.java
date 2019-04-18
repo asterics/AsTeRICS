@@ -88,7 +88,7 @@ import eu.asterics.mw.utils.OSUtils;
  *         Time: 2:14:37 PM
  */
 public class AstericsGUI implements IAREEventListener {
-    private final static int DEFAULT_FONT_SIZE = 18;
+    public final static int DEFAULT_FONT_SIZE = 18;
     private static String DEFAULT_FONT_SIZE_PROPERTY = "ARE.gui.font.size";
     public final static String ARE_VERSION = "#{APPLICATION_VERSION_NUMBER}#";
     static int DEFAULT_SCREEN_X = 0;
@@ -99,7 +99,7 @@ public class AstericsGUI implements IAREEventListener {
     static String ICON_PATH = "/images/icon.gif";
     static String TRAY_ICON_PATH = "/images/tray_icon.gif";
     static String ARE_OPTIONS = ".options";
-    //cache the screen size of the primary monitor.
+    // cache the screen size of the primary monitor.
     Dimension primaryScreenSize;
 
     public AstericsDesktop desktop;
@@ -127,20 +127,11 @@ public class AstericsGUI implements IAREEventListener {
 
     public AstericsGUI(BundleContext bundleContext) {
         super();
-        
+
         AREProperties.instance.setDefaultPropertyValue(DEFAULT_FONT_SIZE_PROPERTY, String.valueOf(DEFAULT_FONT_SIZE), "The default font size for the ARE GUI.");
-        Integer fontSize = DEFAULT_FONT_SIZE;
-        try {
-            fontSize = new Integer(AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY));
-        } catch (NumberFormatException e) {
-            AstericsErrorHandling.instance.getLogger().warning("Could not parse numeric fontSize for ARE GUI: key: " + DEFAULT_FONT_SIZE_PROPERTY + "="
-                    + AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY));
-        }
-
-        AstericsErrorHandling.instance.getLogger().info(DEFAULT_FONT_SIZE_PROPERTY + "=" + fontSize);
-        AREProperties.instance.setProperty(DEFAULT_FONT_SIZE_PROPERTY, Integer.toString(fontSize));
-
-        Font customFont=new Font("Arial", Font.PLAIN, fontSize);
+        int fontSize = (int) getMaxFontSize();
+        AstericsErrorHandling.instance.getLogger().info("Using overall fontSize: " + fontSize);
+        Font customFont = new Font("Arial", Font.PLAIN, fontSize);
         UIManager.getLookAndFeelDefaults().put("defaultFont", customFont);
 
         UIManager.get("messageFont");
@@ -149,6 +140,7 @@ public class AstericsGUI implements IAREEventListener {
         UIManager.get("messageForeground");
         UIManager.put("OptionPane.messageForeground", Color.black);
 
+        UIManager.put("Slider.font", customFont);
         UIManager.put("Button.font", customFont);
         UIManager.put("ToggleButton.font", customFont);
         UIManager.put("RadioButton.font", customFont);
@@ -359,19 +351,19 @@ public class AstericsGUI implements IAREEventListener {
     }
 
     /**
-     * This method returns the screen size to use for layout and size calculations of gui elements and plugins.
-     * In a multi display environment the screen size of the primary device is used.
+     * This method returns the screen size to use for layout and size calculations of gui elements and plugins. In a multi display environment the screen size
+     * of the primary device is used.
      * 
      * @return
      */
     public Dimension getScreenDimension() {
-        //When using Toolkit, there are differences between Linux and Windows. On Windows the primary screen size is returned, 
-        //on Linux the virtual screen size (size of all displays) is returned. 
-        //Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
-        
-        if(primaryScreenSize==null) {
-            //This returns the screen size of the primary display only. But this method invocation is very slow, that's
-            //why we cache the result in primaryScreenSize.
+        // When using Toolkit, there are differences between Linux and Windows. On Windows the primary screen size is returned,
+        // on Linux the virtual screen size (size of all displays) is returned.
+        // Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
+
+        if (primaryScreenSize == null) {
+            // This returns the screen size of the primary display only. But this method invocation is very slow, that's
+            // why we cache the result in primaryScreenSize.
             GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             int width = gd.getDisplayMode().getWidth();
             int height = gd.getDisplayMode().getHeight();
@@ -382,6 +374,7 @@ public class AstericsGUI implements IAREEventListener {
 
     /**
      * Returns the current size of the ARE GUI window.
+     * 
      * @return
      */
     public Dimension getAREWindowDimension() {
@@ -408,12 +401,12 @@ public class AstericsGUI implements IAREEventListener {
      * This method brings the ARE window to front.
      */
     public void setAREWindowToFront() {
-        //at least on Linux, hopefully also on Mac, the standard approach works.
-        if(!OSUtils.isWindows()) {
+        // at least on Linux, hopefully also on Mac, the standard approach works.
+        if (!OSUtils.isWindows()) {
             mainFrame.setVisible(true);
             mainFrame.toFront();
         } else {
-            //on Windows, only this trick works
+            // on Windows, only this trick works
             mainFrame.setState(Frame.ICONIFIED);
             mainFrame.setState(Frame.NORMAL);
         }
@@ -520,7 +513,7 @@ public class AstericsGUI implements IAREEventListener {
             @Override
             public void run() {
 
-                Dimension screenSize=getScreenDimension();
+                Dimension screenSize = getScreenDimension();
                 int realX = screenSize.width;
                 int realY = screenSize.height;
 
@@ -691,8 +684,8 @@ public class AstericsGUI implements IAREEventListener {
         int decorationPadding = 0;
         int controlPanelPaddingW = 0;
         int controlPanelPaddingH = 0;
-        
-        Dimension screenSize=getScreenDimension();
+
+        Dimension screenSize = getScreenDimension();
 
         if (!modelGUIInfo.isDecoration()) {
             // decorationPadding=0;
@@ -887,6 +880,45 @@ public class AstericsGUI implements IAREEventListener {
         controlPane.setEditKeyName(key);
     }
 
+    /**
+     * This method returns the property value for the font size configured in areProperties ({@link AstericsGUI#DEFAULT_FONT_SIZE_PROPERTY}).
+     * @return
+     */
+    private int getFontSizePropertyValue() {
+        Integer fontSize = DEFAULT_FONT_SIZE;
+        try {
+            fontSize = new Integer(AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().warning("Could not parse numeric fontSize for ARE GUI: key: " + DEFAULT_FONT_SIZE_PROPERTY + "="
+                    + AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY));
+        }
+        return fontSize;
+    }
+
+    /**
+     * This method returns the maximum allowed font size to use for all ARE GUI elements. The maximum font size is dependent on the configured size in
+     * areProperties ({@link AstericsGUI#DEFAULT_FONT_SIZE_PROPERTY}) and overridden in case of a low screen resolution.
+     * 
+     * @return
+     */
+    public int getMaxFontSize() {
+        int tmpFontSize=DEFAULT_FONT_SIZE*2;
+        // Override configured fontSize in case of a low screen resolution
+        if (getScreenDimension().width < 1440 || getScreenDimension().height < 900) {
+            AstericsErrorHandling.instance.getLogger().info("Overriding fontSize because of low screen resolution");
+            tmpFontSize = 10;
+        }
+        return Math.min(getFontSizePropertyValue(), tmpFontSize);
+    }
+
+    /**
+     * This method calculates the maximum font size for the given component and depending on the requested widgetDim dimension and the given testString.
+     * 
+     * @param component
+     * @param widgetDim
+     * @param testString
+     * @return
+     */
     public float calcMaxFontSize(JComponent component, Dimension widgetDim, String testString) {
         float fontSize = 0;
         boolean finish = false;
@@ -902,13 +934,14 @@ public class AstericsGUI implements IAREEventListener {
             Rectangle2D tmpFontSize = fontMetrics.getStringBounds(testString, component.getGraphics());
 
             double fontHeight = tmpFontSize.getHeight();
-            double fontWidth=tmpFontSize.getWidth();
+            double fontWidth = tmpFontSize.getWidth();
 
-            if (fontHeight >= widgetDim.getHeight() || fontWidth >= widgetDim.getWidth()||fontSize > fontSizeMax) {
+            if (fontHeight >= widgetDim.getHeight() || fontWidth >= widgetDim.getWidth() || fontSize > fontSizeMax) {
                 finish = true;
                 fontSize = fontSize - 2;
-            } 
+            }
         } while (!finish);
+
         return fontSize;
     }
 

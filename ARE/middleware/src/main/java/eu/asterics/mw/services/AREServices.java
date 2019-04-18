@@ -747,6 +747,10 @@ public class AREServices implements IAREServices {
         return DeploymentManager.instance.calcMaxFontSize(component, widgetDim, testString);
     }
 
+    public int getMaxFontSize() {
+        return DeploymentManager.instance.getMaxFontSize();
+    }
+    
     public Dimension getScreenDimension() {
         return DeploymentManager.instance.getScreenDimension();
     }

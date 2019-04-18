@@ -1513,6 +1513,13 @@ public class DeploymentManager {
         if(gui!=null) {
             return gui.calcMaxFontSize(component, widgetDim, testString);
         }
-        return 15;
+        return AstericsGUI.DEFAULT_FONT_SIZE;
+    }
+
+    public int getMaxFontSize() {
+        if(gui!=null) {
+            return gui.getMaxFontSize();
+        }
+        return AstericsGUI.DEFAULT_FONT_SIZE;
     }
 }
