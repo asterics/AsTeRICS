@@ -369,7 +369,17 @@ public class AstericsGUI implements IAREEventListener {
             int height = gd.getDisplayMode().getHeight();
             primaryScreenSize = new Dimension(width, height);
     
-            AstericsErrorHandling.instance.getLogger().info("Primary Screen Size: " + primaryScreenSize);
+            AstericsErrorHandling.instance.getLogger().info("Primary Screen Size: " + primaryScreenSize+", Tookit.screenSize: "+Toolkit.getDefaultToolkit().getScreenSize()+", screenResolution: "+Toolkit.getDefaultToolkit().getScreenResolution());
+            Dimension toolKitScreenSize=Toolkit.getDefaultToolkit().getScreenSize();
+            
+            //As we use Java 8, the screen size and resolution handling is not done in a good way, with Java 9 this should be better: http://openjdk.java.net/jeps/263
+            //On Windows the toolkit size is smaller than the primary screen size, if the desktop is scaled up (e.g. 125% or 150%). 
+            //On Linux the toolkit size seems to be the whole virtual screen size when having multiple monitors, on windows not.
+            //--> if the toolkit screen size is smaller than the primary one, use the smaller one.
+            if(toolKitScreenSize.getWidth() < primaryScreenSize.getWidth() || toolKitScreenSize.getHeight() < primaryScreenSize.getHeight()) {
+            	AstericsErrorHandling.instance.getLogger().info("Using Toolkit screenSize as it is smaller than the primary screen size, probably System desktop is scaled up on Windows?");
+            	primaryScreenSize=toolKitScreenSize;
+            }            
         }
 
         return primaryScreenSize;
