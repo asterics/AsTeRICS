@@ -26,7 +26,9 @@
 
 package eu.asterics.component.sensor.mousecapture;
 
+import eu.asterics.component.sensor.mousecapture.jni.AbstractBridge;
 import eu.asterics.component.sensor.mousecapture.jni.Bridge;
+import eu.asterics.component.sensor.mousecapture.jni.JNativeHookBridge;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
@@ -35,6 +37,8 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.utils.OSUtils;
+
 import java.awt.MouseInfo;
 
 /**
@@ -56,15 +60,19 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
     private final EventTriggerPort etpWheelUp = new EventTriggerPort();
     private final EventTriggerPort etpWheelDown = new EventTriggerPort();
 
-    private final Bridge bridge = new Bridge(opMouseX, opMouseY, etpLeftButtonPressed, etpLeftButtonReleased,
-            etpRightButtonPressed, etpRightButtonReleased, etpMiddleButtonPressed, etpMiddleButtonReleased, etpWheelUp,
-            etpWheelDown);
+    private final AbstractBridge bridge;
 
     /**
      * The class constructor.
      */
     public MouseCaptureInstance() {
-        // empty constructor - needed for OSGi service factory operations
+        if (OSUtils.isWindows()) {
+            bridge = new Bridge(opMouseX, opMouseY, etpLeftButtonPressed, etpLeftButtonReleased, etpRightButtonPressed, etpRightButtonReleased,
+                    etpMiddleButtonPressed, etpMiddleButtonReleased, etpWheelUp, etpWheelDown);
+        } else {
+            bridge = new JNativeHookBridge(opMouseX, opMouseY, etpLeftButtonPressed, etpLeftButtonReleased, etpRightButtonPressed, etpRightButtonReleased,
+                    etpMiddleButtonPressed, etpMiddleButtonReleased, etpWheelUp, etpWheelDown);
+        }
     }
 
     /**
