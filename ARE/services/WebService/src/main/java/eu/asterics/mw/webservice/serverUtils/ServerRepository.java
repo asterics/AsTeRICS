@@ -61,17 +61,18 @@ public class ServerRepository {
     private static ServerRepository instance;
 
     // Rest Server configuration
-    
+
     public static final String PATH_REST = "/rest";
     public static final int DEFAULT_PORT_REST = 8081;
-    public static final int DEFAULT_SSL_PORT_REST = 8086;
+    public static final int DEFAULT_SSL_PORT_REST = 8083;
 
     // Web Socket Server configuration
     public static final String PATH_WEBSOCKET = "/ws";
     public static final String PATH_WEBSOCKET_ASTERICS_DATA = "/astericsData";
 
     public static final int DEFAULT_PORT_WEBSOCKET = 8082;
-    public static final int DEFAULT_SSL_PORT_WEBSOCKET = 8087;
+    // this is disabled for now, as it did not work as expected
+    public static final int DEFAULT_SSL_PORT_WEBSOCKET = -1;
 
     // member variables holding property values
     private int portREST = DEFAULT_PORT_REST;
@@ -85,7 +86,8 @@ public class ServerRepository {
     private ServerRepository() {
         // init ports and paths with property values
         try {
-            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_PORT_REST_KEY, String.valueOf(DEFAULT_PORT_REST), "The port to use for the REST API.");
+            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_PORT_REST_KEY, String.valueOf(DEFAULT_PORT_REST),
+                    "The port to use for the REST API or -1 to disable it.");
             portREST = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
         } catch (NumberFormatException e) {
             AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
@@ -93,7 +95,8 @@ public class ServerRepository {
         }
         // init ports and paths with property values
         try {
-            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_PORT_WEBSOCKET), "The port to use for websocket communication.");
+            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_PORT_WEBSOCKET),
+                    "The port to use for websocket communication or -1 to disable it.");
             portWebsocket = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY));
         } catch (NumberFormatException e) {
             AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
@@ -101,20 +104,22 @@ public class ServerRepository {
         }
         // init ports and paths with property values for SSL
         try {
-            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_SSL_PORT_REST_KEY, String.valueOf(DEFAULT_SSL_PORT_REST), "The port to use for the SSL REST API.");
+            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_SSL_PORT_REST_KEY, String.valueOf(DEFAULT_SSL_PORT_REST),
+                    "The port to use for the SSL REST API or -1 to disable it.");
             sslPortREST = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_SSL_PORT_REST_KEY));
         } catch (NumberFormatException e) {
             AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
                     "Configured port for SSL REST service invalid: " + e.getMessage(), e);
         }
         // init ports and paths with property values
-        try {
-            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_SSL_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_SSL_PORT_WEBSOCKET), "The port to use for SSL websocket communication.");
-            sslPortWebsocket = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_SSL_PORT_WEBSOCKET_KEY));
-        } catch (NumberFormatException e) {
-            AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
-                    "Configured port for SSL Websocket service invalid: " + e.getMessage(), e);
-        }        
+        // try {
+        // AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_SSL_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_SSL_PORT_WEBSOCKET), "The port to use
+        // for SSL websocket communication or -1 to disable it.");
+        // sslPortWebsocket = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_SSL_PORT_WEBSOCKET_KEY));
+        // } catch (NumberFormatException e) {
+        // AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+        // "Configured port for SSL Websocket service invalid: " + e.getMessage(), e);
+        // }
     }
 
     /**
@@ -133,7 +138,7 @@ public class ServerRepository {
      * @return the baseUriWs
      */
     public URI getBaseUriWebsocket() {
-        return URI.create("http://0.0.0.0:" + getPortWebsocket() + PATH_WEBSOCKET);
+        return URI.create("ws://0.0.0.0:" + getPortWebsocket() + PATH_WEBSOCKET);
     }
 
     /**
@@ -160,7 +165,7 @@ public class ServerRepository {
     public int getPortWebsocket() {
         return portWebsocket;
     }
-    
+
     /**
      * Returns the baseURI for the SSL REST API.
      *
@@ -177,7 +182,7 @@ public class ServerRepository {
      * @return the baseUriWs
      */
     public URI getBaseUriSSLWebsocket() {
-        return URI.create("https://0.0.0.0:" + getSSLPortWebsocket() + PATH_WEBSOCKET);
+        return URI.create("wss://0.0.0.0:" + getSSLPortWebsocket() + PATH_WEBSOCKET);
     }
 
     /**
@@ -203,7 +208,43 @@ public class ServerRepository {
      */
     public int getSSLPortWebsocket() {
         return sslPortWebsocket;
-    }    
+    }
+
+    /**
+     * Returns true if the REST service is configured for being enabled.
+     * 
+     * @return
+     */
+    public boolean isRESTEnabled() {
+        return portREST > -1;
+    }
+
+    /**
+     * Returns true if the SSL REST service is configured for being enabled.
+     * 
+     * @return
+     */
+    public boolean isSSLRESTEnabled() {
+        return sslPortREST > -1;
+    }
+
+    /**
+     * Returns true if the Websocket service is configured for being enabled.
+     * 
+     * @return
+     */
+    public boolean isWebsocketEnabled() {
+        return portWebsocket > -1;
+    }
+
+    /**
+     * Returns true if the SSL Websocket service is configured for being enabled.
+     * 
+     * @return
+     */
+    public boolean isSSLWebsocketEnabled() {
+        return sslPortWebsocket > -1;
+    }
 
     /**
      * Returns a singleton instance of the ServerRepository class
@@ -228,7 +269,6 @@ public class ServerRepository {
         Method[] allMethods = restClass.getDeclaredMethods();
         for (Method method : allMethods) {
             if (Modifier.isPublic(method.getModifiers())) {
-                System.out.println(method);
                 // use the method
                 RestFunction restFunction = new RestFunction();
                 for (Annotation annotation : method.getDeclaredAnnotations()) {
@@ -249,7 +289,6 @@ public class ServerRepository {
                     } else if (annotation instanceof Description) {
                         restFunction.setDescription(((Description) annotation).value());
                     }
-                    System.out.println("annotType: " + annotation.annotationType() + ", string: " + annotation);
                 }
                 List<String> pathParams = new ArrayList<String>();
                 for (Annotation[] annotations : method.getParameterAnnotations()) {

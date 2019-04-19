@@ -30,7 +30,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -101,9 +100,8 @@ public class AREProperties extends Properties {
      * @return
      */
     /*
-    public void setDefaultPropertyValue(String key, String defaultValue) {
-        getProperty(key, defaultValue);
-    }*/
+     * public void setDefaultPropertyValue(String key, String defaultValue) { getProperty(key, defaultValue); }
+     */
 
     /**
      * Saves the properties of this instance to the file {@see AREProperties#PROPERTY_FILENAME}.

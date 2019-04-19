@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>WebSocket Test</title>
+    <script language="javascript" type="text/javascript">
+
+    //Set URI of AsTERICS websocket.
+    var wsUri = "ws://localhost:8082/ws/astericsData";
+    var output;
+
+    /*
+      This method is called on page load.
+    */
+    function init()
+    {
+    output = document.getElementById("output");
+    testWebSocket();
+    }
+
+    /*
+      Opens a connection to the specified web socket and defines callback functions.
+    */
+    function testWebSocket()
+    {
+    //Instantiates and opens  web socket. 
+		writeToScreen(wsUri);
+    websocket = new WebSocket(wsUri);
+    websocket.onopen = function(evt) { onOpen(evt) };
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+    }
+
+    /*
+      Called as soon as the web socket was opened successfully.
+    */
+    function onOpen(evt)
+    {
+    writeToScreen("CONNECTED");
+    doSend("WebSocket rocks");
+    }
+
+    /*
+      Called as soon as the web socket was closed.
+    */
+    function onClose(evt)
+    {
+    writeToScreen("DISCONNECTED");
+    }
+
+    /*
+      Called in case of a received message from the web socket server.
+    */ 
+    function onMessage(evt)
+    {
+    writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+    websocket.close();
+    }
+
+    /*
+      Called in case of an error during connect or send.
+    */
+    function onError(evt)
+    {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+    }
+
+    function doSend(message)
+    {
+    writeToScreen("SENT: " + message);
+    //Actually sends the message to the web socket.
+    websocket.send(message);
+    }
+
+    function writeToScreen(message)
+    {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+    }
+
+    //Register function init to be called on page load.
+    window.addEventListener("load", init, false);
+
+    </script>
+  </head>
+  <body>
+    <h2>WebSocket Test</h2>
+
+    <div id="output"></div>
+  </body>
+</html>
