@@ -143,12 +143,12 @@ public class JNativeHookBridge extends AbstractBridge implements NativeMouseInpu
             eventLButtonPressed.raiseEvent();
             break;
         case NativeMouseEvent.BUTTON2:
-            // right
-            eventRButtonPressed.raiseEvent();
-            break;
-        case NativeMouseEvent.BUTTON3:
             // middle
             eventMButtonPressed.raiseEvent();
+            break;
+        case NativeMouseEvent.BUTTON3:
+            // right
+            eventRButtonPressed.raiseEvent();
             break;
         }
     }
@@ -165,12 +165,12 @@ public class JNativeHookBridge extends AbstractBridge implements NativeMouseInpu
             eventLButtonReleased.raiseEvent();
             break;
         case NativeMouseEvent.BUTTON2:
-            // right
-            eventRButtonReleased.raiseEvent();
-            break;
-        case NativeMouseEvent.BUTTON3:
             // middle
             eventMButtonReleased.raiseEvent();
+            break;
+        case NativeMouseEvent.BUTTON3:
+            // right
+            eventRButtonReleased.raiseEvent();
             break;
         }
     }
