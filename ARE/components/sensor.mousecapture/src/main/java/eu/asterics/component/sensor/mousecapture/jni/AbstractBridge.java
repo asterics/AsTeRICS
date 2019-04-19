@@ -96,7 +96,7 @@ public abstract class AbstractBridge {
      *            [Int.MIN_VALUE, Int.MAX_VALUE])
      */
     protected void newButtons_callback(final int buttonstate) {
-        System.out.println("Java: Callback buttonstate = " + Integer.toBinaryString(buttonstate));
+        //System.out.println("Java: Callback buttonstate = " + Integer.toBinaryString(buttonstate));
     
         if (((oldButtonstate & 1) == 0) && ((buttonstate & 1) != 0)) {
             eventLButtonPressed.raiseEvent();

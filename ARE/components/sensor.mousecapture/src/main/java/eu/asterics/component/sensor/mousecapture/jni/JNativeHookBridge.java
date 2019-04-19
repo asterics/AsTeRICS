@@ -24,31 +24,38 @@
  */
 package eu.asterics.component.sensor.mousecapture.jni;
 
+import java.lang.reflect.Field;
+
 import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeInputEvent;
 import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseInputListener;
-import org.jnativehook.mouse.NativeMouseListener;
-import org.jnativehook.mouse.NativeMouseMotionListener;
 import org.jnativehook.mouse.NativeMouseWheelEvent;
 import org.jnativehook.mouse.NativeMouseWheelListener;
 
 import eu.asterics.component.sensor.mousecapture.MouseCaptureInstance;
 import eu.asterics.mw.jnativehook.NativeHookServices;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- * <Describe purpose of this module>
+ * This class provides a bridge for Mouse Capturing using the jnativehook library.
+ * @see https://github.com/kwhat/jnativehook
  * 
  * @author mad <e-mail address>
  * @date Apr 19, 2019
  *
  */
 public class JNativeHookBridge extends AbstractBridge implements NativeMouseInputListener, NativeMouseWheelListener {
+    private boolean propBlockEvents = false;
 
     public JNativeHookBridge(final MouseCaptureInstance.OutputPort mouse_x, final MouseCaptureInstance.OutputPort mouse_y,
             final MouseCaptureInstance.EventTriggerPort eventLButtonPressed, final MouseCaptureInstance.EventTriggerPort eventLButtonReleased,
             final MouseCaptureInstance.EventTriggerPort eventRButtonPressed, final MouseCaptureInstance.EventTriggerPort eventRButtonReleased,
             final MouseCaptureInstance.EventTriggerPort eventMButtonPressed, final MouseCaptureInstance.EventTriggerPort eventMButtonReleased,
             final MouseCaptureInstance.EventTriggerPort eventWheelUp, final MouseCaptureInstance.EventTriggerPort eventWheelDown) {
+
+        AstericsErrorHandling.instance.getLogger().fine("Initializing JNativeHookBridge for mouse capturing...");
+
         this.mouseX = mouse_x;
         this.mouseY = mouse_y;
         this.eventLButtonPressed = eventLButtonPressed;
@@ -93,22 +100,28 @@ public class JNativeHookBridge extends AbstractBridge implements NativeMouseInpu
     /*
      * (non-Javadoc)
      * 
-     * @see eu.asterics.component.sensor.mousecapture.jni.AbstractBridge#getProperty(java.lang.String)
+     * @see eu.asterics.component.sensor.mousecapture.jni.AbstractBridge#getProperty(java .lang.String)
      */
     @Override
     public String getProperty(String key) {
-        // TODO Auto-generated method stub
+        if ("blockEvents".equals(key)) {
+            return Boolean.toString(propBlockEvents);
+        }
         return null;
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see eu.asterics.component.sensor.mousecapture.jni.AbstractBridge#setProperty(java.lang.String, java.lang.String)
+     * @see eu.asterics.component.sensor.mousecapture.jni.AbstractBridge#setProperty(java .lang.String, java.lang.String)
      */
     @Override
     public String setProperty(String key, String value) {
-        // TODO Auto-generated method stub
+        if ("blockEvents".equals(key)) {
+            propBlockEvents = Boolean.parseBoolean(value);
+            return Boolean.toString(propBlockEvents);
+        }
+
         return null;
     }
 
@@ -120,37 +133,45 @@ public class JNativeHookBridge extends AbstractBridge implements NativeMouseInpu
 
     @Override
     public void nativeMousePressed(NativeMouseEvent arg0) {
-        switch(arg0.getButton()) {
+        if(blockedEvent(arg0)) {
+            return;
+        }
+        
+        switch (arg0.getButton()) {
         case NativeMouseEvent.BUTTON1:
-            //left
-            newButtons_callback(0x1);
+            // left
+            eventLButtonPressed.raiseEvent();
             break;
         case NativeMouseEvent.BUTTON2:
-            //right
-            newButtons_callback(0x4);
+            // right
+            eventRButtonPressed.raiseEvent();
             break;
         case NativeMouseEvent.BUTTON3:
-            //middle
-            newButtons_callback(0x2);
-            break;            
+            // middle
+            eventMButtonPressed.raiseEvent();
+            break;
         }
     }
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent arg0) {
-        switch(arg0.getButton()) {
+        if(blockedEvent(arg0)) {
+            return;
+        }
+        
+        switch (arg0.getButton()) {
         case NativeMouseEvent.BUTTON1:
-            //left
-            newButtons_callback(0x1);
+            // left
+            eventLButtonReleased.raiseEvent();
             break;
         case NativeMouseEvent.BUTTON2:
-            //right
-            newButtons_callback(0x4);
+            // right
+            eventRButtonReleased.raiseEvent();
             break;
         case NativeMouseEvent.BUTTON3:
-            //middle
-            newButtons_callback(0x2);
-            break;            
+            // middle
+            eventMButtonReleased.raiseEvent();
+            break;
         }
     }
 
@@ -162,12 +183,42 @@ public class JNativeHookBridge extends AbstractBridge implements NativeMouseInpu
 
     @Override
     public void nativeMouseMoved(NativeMouseEvent arg0) {
+        if(blockedEvent(arg0)) {
+            return;
+        }
+        
         newCoordinates_callback(arg0.getX(), arg0.getY());
     }
 
     @Override
     public void nativeMouseWheelMoved(NativeMouseWheelEvent arg0) {
+        if(blockedEvent(arg0)) {
+            return;
+        }
+        
         newWheel_callback(arg0.getWheelRotation());
     }
+    
+    /**
+     * This method does the blocking trick. Unfortunately this is not supported on all platforms. On Windows it works :-)
+     * @param arg0
+     * @return
+     */
 
+    private boolean blockedEvent(NativeInputEvent arg0) {
+        if (propBlockEvents) {
+            try {
+                //System.out.println("blocking event: "+arg0);
+                Field f = NativeInputEvent.class.getDeclaredField("reserved");
+                f.setAccessible(true);
+                f.setShort(arg0, (short) 0x01);
+                return true;
+            } catch (NoSuchFieldException nsfe) {
+                AstericsErrorHandling.instance.getLogger().warning("Error blocking keycode --> NativeInputField not found");
+            } catch (IllegalAccessException iae) {
+                AstericsErrorHandling.instance.getLogger().warning("Error blocking keycode --> IllegalAccess on NativeInputfield");
+            }
+        }
+        return false;
+    }
 }

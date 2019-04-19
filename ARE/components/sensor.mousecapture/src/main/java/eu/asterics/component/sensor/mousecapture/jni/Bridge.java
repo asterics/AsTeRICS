@@ -53,6 +53,8 @@ public class Bridge extends AbstractBridge {
             final MouseCaptureInstance.EventTriggerPort eventMButtonReleased,
             final MouseCaptureInstance.EventTriggerPort eventWheelUp,
             final MouseCaptureInstance.EventTriggerPort eventWheelDown) {
+    	AstericsErrorHandling.instance.getLogger().fine("Initializing native windows Bridge for mouse capturing...");
+    	
         this.mouseX = mouse_x;
         this.mouseY = mouse_y;
         this.eventLButtonPressed = eventLButtonPressed;
