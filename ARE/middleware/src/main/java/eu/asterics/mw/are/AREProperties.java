@@ -30,7 +30,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -51,6 +50,8 @@ public class AREProperties extends Properties {
     // Property key constants
     public static final String ARE_WEBSERVICE_PORT_REST_KEY = "ARE.webservice.port.REST";
     public static final String ARE_WEBSERVICE_PORT_WEBSOCKET_KEY = "ARE.webservice.port.websocket";
+    public static final String ARE_WEBSERVICE_SSL_PORT_REST_KEY = "ARE.webservice.ssl.port.REST";
+    public static final String ARE_WEBSERVICE_SSL_PORT_WEBSOCKET_KEY = "ARE.webservice.ssl.port.websocket";
 
     private AREProperties() {
         logger = AstericsErrorHandling.instance.getLogger();
@@ -99,9 +100,8 @@ public class AREProperties extends Properties {
      * @return
      */
     /*
-    public void setDefaultPropertyValue(String key, String defaultValue) {
-        getProperty(key, defaultValue);
-    }*/
+     * public void setDefaultPropertyValue(String key, String defaultValue) { getProperty(key, defaultValue); }
+     */
 
     /**
      * Saves the properties of this instance to the file {@see AREProperties#PROPERTY_FILENAME}.
