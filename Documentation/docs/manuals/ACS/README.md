@@ -1,7 +1,3 @@
----
-title: ACS Basic Functions
----
-
 # ACS Basic Functions
 
 The figure below shows the main panel of the AsTeRICS Configuration Suite after the application has started. The screen is divided in four main areas, the menu area (1), the _Deployment_ area (2) (where the drawing will be done), the _GUI Designer_ area (3), switchable with the _Deployment_ area and the _Properties_ area (4), where the settings of the components can be adapted.
