@@ -16,13 +16,9 @@ In Feb. 2017 the [AsTeRICS Foundation](https://www.asterics-foundation.org/) was
 
 New contributions are managed by the [members](https://www.asterics-foundation.org/about-us/) of the foundation.
 
-If you have any questions, comments, suggestions about the AsTeRICS framework or this web page, feel free to [contact us](https://www.asterics-foundation.org/about-us/).
+If you have any questions, comments, suggestions about the AsTeRICS framework, feel free to [contact us](https://www.asterics-foundation.org/about-us/).
 
 If you want to contribute to the project, please read the [contribute page](Contribute) first.
-
-::: danger TODO
-Responsible for the page and the contents
-:::
 
 ## Partner Organizations
 
