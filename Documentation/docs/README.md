@@ -15,8 +15,8 @@
 <Tile target="#" title="Accessible Computer Control" image-url="/img/Harry-shutterstock_213119035.jpg">Control your computer by switches, head movements or eyetracking, depending on your capabilities.</Tile>
 <Tile target="#" title="Accessible Environmental Control" image-url="/img/stock-photo-hand-holding-white-mobile-smart-phone-with-smart-home-application-on-the-screen-over-blurred-house-304964420.jpg">Switch on/off lights or control your TV and stereo.</Tile>
 <Tile target="#" title="Alternative and Augmentative Communication" image-url="/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg">Create your own communication grid and use it on all your devices.</Tile>
-<Tile target="#" title="Accessible Gaming &amp; Toys" image-url="<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/JwL_zS3fpnU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>" is-video >Emulate mouse, keyboard or joystick for playing games or remote control toy helicopters or cars.</Tile>
-<Tile target="#" title="Accessible Music" image-url="<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/3_8TifCj0aU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>" is-video>Generate sounds or play adapted music instruments.</Tile>
+<Tile target="#" title="Accessible Gaming &amp; Toys" image-url="https://www.youtube-nocookie.com/embed/JwL_zS3fpnU" is-video >Emulate mouse, keyboard or joystick for playing games or remote control toy helicopters or cars.</Tile>
+<Tile target="#" title="Accessible Music" image-url="https://www.youtube-nocookie.com/embed/3_8TifCj0aU" is-video>Generate sounds or play adapted music instruments.</Tile>
 </TileGroup>
 
 ## Why AsTeRICS?
