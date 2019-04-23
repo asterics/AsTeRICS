@@ -25,6 +25,8 @@
 
 package eu.asterics.mw.webservice.serverUtils;
 
+import static eu.asterics.mw.are.AREProperties.*;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -34,17 +36,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 
 import eu.asterics.mw.are.AREProperties;
-import static eu.asterics.mw.are.AREProperties.*;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.webservice.RestServer;
 import eu.asterics.mw.webservice.SseResource;
@@ -264,7 +258,7 @@ public class ServerRepository {
      * @param restClass
      * @return
      */
-    private ArrayList<RestFunction> createListOfRestFunctions(Class restClass) {
+    private ArrayList<RestFunction> createListOfRestFunctions(Class restClass, boolean includeDeprecated) {
         ArrayList<RestFunction> restFunctions = new ArrayList<RestFunction>();
         Method[] allMethods = restClass.getDeclaredMethods();
         for (Method method : allMethods) {
@@ -288,6 +282,8 @@ public class ServerRepository {
                         restFunction.setHttpRequestType("DELETE");
                     } else if (annotation instanceof Description) {
                         restFunction.setDescription(((Description) annotation).value());
+                    }  else if (annotation instanceof Deprecated) {
+                        restFunction.setDeprecated(true);
                     }
                 }
                 List<String> pathParams = new ArrayList<String>();
@@ -304,7 +300,9 @@ public class ServerRepository {
                     // If there is not @Path or no @HTTRequestType it cannot be a REST function, so skip it.
                     continue;
                 }
-                restFunctions.add(restFunction);
+                if (!restFunction.isDeprecated() || includeDeprecated) {
+                    restFunctions.add(restFunction);
+                }
             }
         }
         return restFunctions;
@@ -316,8 +314,20 @@ public class ServerRepository {
      * @return
      */
     public ArrayList<RestFunction> createListOfRestFunctions() {
-        ArrayList<RestFunction> restFunctions = createListOfRestFunctions(RestServer.class);
-        restFunctions.addAll(createListOfRestFunctions(SseResource.class));
+        ArrayList<RestFunction> restFunctions = createListOfRestFunctions(RestServer.class, false);
+        restFunctions.addAll(createListOfRestFunctions(SseResource.class, false));
+        return restFunctions;
+    }
+
+    /**
+     * Generates a list of {@link RestFunction} entries with all REST functions of the ARE.
+     * @param includeDeprecated if true also deprecated REST functions are returned
+     *
+     * @return
+     */
+    public ArrayList<RestFunction> createListOfRestFunctions(boolean includeDeprecated) {
+        ArrayList<RestFunction> restFunctions = createListOfRestFunctions(RestServer.class, includeDeprecated);
+        restFunctions.addAll(createListOfRestFunctions(SseResource.class, includeDeprecated));
         return restFunctions;
     }
 }
