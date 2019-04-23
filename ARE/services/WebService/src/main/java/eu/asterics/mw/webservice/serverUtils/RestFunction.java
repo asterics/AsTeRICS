@@ -1,26 +1,26 @@
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
- * 
- * 
- *        d8888      88888888888       8888888b.  8888888 .d8888b.   .d8888b. 
+ *
+ *
+ *        d8888      88888888888       8888888b.  8888888 .d8888b.   .d8888b.
  *       d88888          888           888   Y88b   888  d88P  Y88b d88P  Y88b
- *      d88P888          888           888    888   888  888    888 Y88b.     
- *     d88P 888 .d8888b  888   .d88b.  888   d88P   888  888         "Y888b.  
+ *      d88P888          888           888    888   888  888    888 Y88b.
+ *     d88P 888 .d8888b  888   .d88b.  888   d88P   888  888         "Y888b.
  *    d88P  888 88K      888  d8P  Y8b 8888888P"    888  888            "Y88b.
  *   d88P   888 "Y8888b. 888  88888888 888 T88b     888  888    888       "888
  *  d8888888888      X88 888  Y8b.     888  T88b    888  Y88b  d88P Y88b  d88P
- * d88P     888  88888P' 888   "Y8888  888   T88b 8888888 "Y8888P"   "Y8888P" 
+ * d88P     888  88888P' 888   "Y8888  888   T88b 8888888 "Y8888P"   "Y8888P"
  *
  *
- *                    homepage: http://www.asterics.org 
+ *                    homepage: http://www.asterics.org
  *
- *         This project has been funded by the European Commission, 
+ *         This project has been funded by the European Commission,
  *                      Grant Agreement Number 247730
- *  
- *  
+ *
+ *
  *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
  *         (please refer to the folder LICENSE)
- * 
+ *
  */
 
 package eu.asterics.mw.webservice.serverUtils;
@@ -35,9 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * This class is just a container that holds the information describing a restfull function.
- * 
+ *
  * It contains data like the HTTP Type of a function (GET, POST, PUT...), the resource path (storage/model/...), the parameters required etc.
- * 
+ *
  * @author Marios Komodromos (mkomod05@cs.ucy.ac.cy)
  *
  */
@@ -47,7 +47,7 @@ public class RestFunction {
 
     /**
      * This annotation is used to describe the meaning of a REST function.
-     * 
+     *
      * @author mad <deinhofe@technikum-wien.at>
      * @date Apr 15, 2019
      *
@@ -63,7 +63,7 @@ public class RestFunction {
     private String produces;
     private String bodyParameter;
     private String description;
-    private boolean isDeprecated;
+    private boolean deprecated;
 
     public RestFunction() {
         this.httpRequestType = "";
@@ -72,17 +72,17 @@ public class RestFunction {
         this.produces = "";
         this.bodyParameter = "";
         this.description = "";
-        this.isDeprecated = false;
+        this.deprecated = false;
     }
 
-    public RestFunction(String httpRequestType, String path, String consumes, String produces, String bodyParameter, String description) {
+    public RestFunction(String httpRequestType, String path, String consumes, String produces, String bodyParameter, String description, boolean deprecated) {
         this.httpRequestType = httpRequestType;
         this.path = path;
         this.consumes = consumes;
         this.produces = produces;
         this.bodyParameter = bodyParameter;
         this.description = description;
-        this.isDeprecated = false;
+        this.deprecated = deprecated;
     }
 
     public String getHttpRequestType() {
@@ -133,11 +133,11 @@ public class RestFunction {
         this.description = description;
     }
 
-    public boolean isDeprecated() {
-        return this.isDeprecated;
+    public boolean getDeprecated() {
+        return this.deprecated;
     }
 
     public void setDeprecated(boolean deprecated) {
-        this.isDeprecated = deprecated;
+        this.deprecated = deprecated;
     }
 }
