@@ -300,7 +300,7 @@ public class ServerRepository {
                     // If there is not @Path or no @HTTRequestType it cannot be a REST function, so skip it.
                     continue;
                 }
-                if (!restFunction.isDeprecated() || includeDeprecated) {
+                if (!restFunction.getDeprecated() || includeDeprecated) {
                     restFunctions.add(restFunction);
                 }
             }
