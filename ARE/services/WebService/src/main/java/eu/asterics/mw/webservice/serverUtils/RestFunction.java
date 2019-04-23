@@ -63,6 +63,7 @@ public class RestFunction {
     private String produces;
     private String bodyParameter;
     private String description;
+    private boolean isDeprecated;
 
     public RestFunction() {
         this.httpRequestType = "";
@@ -71,6 +72,7 @@ public class RestFunction {
         this.produces = "";
         this.bodyParameter = "";
         this.description = "";
+        this.isDeprecated = false;
     }
 
     public RestFunction(String httpRequestType, String path, String consumes, String produces, String bodyParameter, String description) {
@@ -80,6 +82,7 @@ public class RestFunction {
         this.produces = produces;
         this.bodyParameter = bodyParameter;
         this.description = description;
+        this.isDeprecated = false;
     }
 
     public String getHttpRequestType() {
@@ -130,4 +133,11 @@ public class RestFunction {
         this.description = description;
     }
 
+    public boolean isDeprecated() {
+        return this.isDeprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.isDeprecated = deprecated;
+    }
 }
