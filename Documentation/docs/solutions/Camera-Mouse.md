@@ -18,7 +18,7 @@ By moving the head up/down or left/right the mouse cursor should move accordingl
 
 ## Related Videos
 
-<b-embed type="iframe" aspect="16by9" src="https://www.youtube-nocookie.com/embed/P9qJAWegkFM" allowfullscreen/>
+<b-embed type="iframe" aspect="16by9" src="https://www.youtube-nocookie.com/embed/P9qJAWegkFM?start=2227" allowfullscreen/>
 
 ## Major Plugins
 
