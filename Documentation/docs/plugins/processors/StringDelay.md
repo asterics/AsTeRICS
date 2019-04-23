@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Event and String Processing)
 
 This plugin passes received string values after a defined delay.
 
-![Screenshot: StringDelay plugin](img/stringdelay.jpg "Screenshot: StringDelay plugin")
+![Screenshot: StringDelay plugin](./img/stringdelay.jpg "Screenshot: StringDelay plugin")
 
 StringDelay plugin
 

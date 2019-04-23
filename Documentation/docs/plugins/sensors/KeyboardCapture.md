@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Standard Input Devices)
 
 This component provides access to keystrokes input via a standard keyboard. The keystroke capture does not depend on a particular window or text field to have the input focus. The keycodes of the pressed keys and accumulated words (multiple keys separated by ) are provided at the output ports of this component. Possible applications include triggering functions by keyboard input, interfacing to speech recognition software or remapping keys to other keycodes.
 
-![Screenshot: KeyboardCapture plugin](img/keyboardcapture.jpg "Screenshot: KeyboardCapture plugin")
+![Screenshot: KeyboardCapture plugin](./img/keyboardcapture.jpg "Screenshot: KeyboardCapture plugin")
 
 KeyboardCapture plugin
 

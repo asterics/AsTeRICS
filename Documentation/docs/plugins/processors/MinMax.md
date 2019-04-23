@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 This component stores maximum and minimum of an incoming signal and provides these values at the output ports. Together with the signaltranslation component, the minmax component can be used to auto-scale input values to a desired signal range.
 
-![Screenshot: MinMax plugin](img/minmax.jpg "Screenshot: MinMax plugin")
+![Screenshot: MinMax plugin](./img/minmax.jpg "Screenshot: MinMax plugin")
 
 MinMax plugin
 

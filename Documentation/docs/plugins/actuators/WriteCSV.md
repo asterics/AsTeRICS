@@ -10,7 +10,7 @@ This plugin writes incoming strings into an .csv file.
 
 The data gets live recorded, so it can be viewed simultaneously in an oscilloscope.
 
-![Screenshot: WriteCSV plugin](img/writecsv.png "Screenshot: WriteCSV plugin")
+![Screenshot: WriteCSV plugin](./img/writecsv.png "Screenshot: WriteCSV plugin")
 
 WriteCSV
 

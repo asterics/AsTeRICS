@@ -8,11 +8,11 @@ Component Type: Processor (Subcategory: Signal Shaping)
 
 The AdjustmentCurve component allows transformation of an incoming signal to an outgoing signal. The signal mapping can be freely arranged in a drawing window (GUI) during runtime of the model. The resulting mapping can be saved as a curve file. The GUI is optional - an existing curve can be loaded to perform the signal mapping without the GUI.
 
-![Screenshot: AdjustmentCurve plugin](img/adjustmentcurve.jpg "Screenshot: AdjustmentCurve plugin")
+![Screenshot: AdjustmentCurve plugin](./img/adjustmentcurve.jpg "Screenshot: AdjustmentCurve plugin")
 
 AdjustmentCurve plugin
 
-![Screenshot: AdjustmentCurve GUI during runtime](img/adjustmentcurve1.jpg "Screenshot: AdjustmentCurve GUI during runtime")
+![Screenshot: AdjustmentCurve GUI during runtime](./img/adjustmentcurve1.jpg "Screenshot: AdjustmentCurve GUI during runtime")
 
 AdjustmentCurve GUI during runtime
 
@@ -40,6 +40,11 @@ AdjustmentCurve GUI during runtime
 *   **outMax \[double\]:** Sets the maximum value of the input range.
 *   **outMin \[double\]:** Sets the minimum value of the output range.
 *   **outMax \[double\]:** Sets the maximum value of the output range.
-*   **mode \[combobox\]:** "autoupdate min and max" modifies the input range if incoming values exceed the current minimum or maximum, "clip to min and max" which keeps the values as set by the min/max properties.
+*   **mode \[combobox\]:** GUI mode: "autoupdate min and max" modifies the shown input range of the GUI if incoming values exceed the current minimum or maximum, "clip to min and max" which keeps the values as set by the min/max properties.
 *   **fontSize \[integer\]:** The size of the font for dispaying text in the GUI.
 *   **caption \[string\]:** The caption of the AdjustmentCurve GUI.
+*   **operationMode \[integer\]:** Selects the mode of operation of the adjustment curve component, following modes are available:
+    *   _"use file and GUI":_ Default mode. The x/y points of the adjustment curve are defined using the graphical user interface and are stored and loaded from a file, defined by property 'filename'.
+    *   _"use property curvePoints (percent values)":_ No GUI is shown, x/y points of the adjustmentcurve are defined by property 'curvePoints' and interpreted as relative percentatge values of given in/out min/max values. In this mode no external file is needed or used.
+    *   _"use property curvePoints (absolute values)":_ Same mode as before, using property 'curvePoints' with the difference that x/y values are defined as absolute values.
+*   **curvePoints \[string\]:** For operation mode 'use property curvePoints' this property defines the x/y points of the adjustment curve. The expected format are comma-separated tuples of double or integer values like e.g. '(10.0,0.0),(10,10),(100,100)' defining 3 x/y points.

@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Bioelectric Measurement)
 
 The Tobi TiC plugin allows obtaining data from a connection to the [Tobi Framework][1] (Tools for Brain Computer Interaction). Tobi defined standard for BCI interfaces, e.g. beteween classification and actuator modues. Tobi supports a wide range of biosignal and EEG acquisition devices. The TiC interface is dedicated to transfer classifier results to actuators. This plugin implements a simple TiC reader via a TCP socket. Up to 5 TOBI class labels can be defined which will be used to extract values from incoming TiC-compatible xml messages. These class labels and the sever socket which is openend by the plugin can be defined viy plugin properties.
 
-![Screenshot: Tobi TiC plugin](img/tobi_tic.jpg "Screenshot: Tobi TiC plugin")
+![Screenshot: Tobi TiC plugin](./img/tobi_tic.jpg "Screenshot: Tobi TiC plugin")
 
 Tobi TiC plugin
 
@@ -16,13 +16,13 @@ Tobi TiC plugin
 
 TiC-compatible messages must be sent to the server port which is opened by the plugin.
 
-![Screenshot: Internal strcuture of a TOBI iC message](img/tobi_ic_message.jpg "Screenshot: Internal structure of a TOBI iC message")
+![Screenshot: Internal strcuture of a TOBI iC message](./img/tobi_ic_message.jpg "Screenshot: Internal structure of a TOBI iC message")
 
 Internal structure of a TOBI iC message
 
 ### Example iC message:
 
-![example TOBI iC message](img/tobi_example_ic.jpg "example TOBI iC message")
+![example TOBI iC message](./img/tobi_example_ic.jpg "example TOBI iC message")
 
 Example TOBI iC message
 

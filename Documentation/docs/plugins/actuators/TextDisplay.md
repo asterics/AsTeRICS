@@ -8,7 +8,7 @@ title: TextDisplay
 
 The Text Display is the GUI component, which displays the text information.
 
-![Screenshot: TextDisplay plugin](img/textdisplay.jpg "Screenshot: TextDisplay plugin")
+![Screenshot: TextDisplay plugin](./img/textdisplay.jpg "Screenshot: TextDisplay plugin")
 
 TextDisplay plugin
 

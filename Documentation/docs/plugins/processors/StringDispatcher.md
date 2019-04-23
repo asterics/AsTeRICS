@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Event and String Processing)
 
 This component has twenty slots for text strings. These strings can be sent to the output port via incoming events or by directly addressing a slot number using the input port.
 
-![Screenshot: StringDispatcher plugin](img/stringdispatcher.jpg "Screenshot: StringDispatcher plugin")
+![Screenshot: StringDispatcher plugin](./img/stringdispatcher.jpg "Screenshot: StringDispatcher plugin")
 
 StringDispatcher plugin
 

@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: File System)
 
 The **FolderBrowser** component allows to browse and select files in a given folder or subfolders of it. The navigation can be controlled by events.
 
-![Screenshot: FolderBrowser plugin](img/folderbrowser.jpg "Screenshot: FolderBrowser plugin")
+![Screenshot: FolderBrowser plugin](./img/folderbrowser.jpg "Screenshot: FolderBrowser plugin")
 
 The FolderBrowser plugin block element of the ACS.
 

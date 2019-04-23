@@ -12,7 +12,7 @@ Contains WiiYourself! wiimote code by gl.tter - see [http://gl.tter.org][1]
 
 For Wiimote connection and pairing, please see e.g. [here][2].
 
-![Screenshot: WiiMote plugin](img/wiimote.jpg "Screenshot: WiiMote plugin")
+![Screenshot: WiiMote plugin](./img/wiimote.jpg "Screenshot: WiiMote plugin")
 
 WiiMote plugin
 
@@ -20,7 +20,7 @@ WiiMote plugin
 
 A Wiimote controller has to be available and paired with the Bluetooth radio module of the system.
 
-![WiiMote and Nunchuk](img/wiimote_picture.jpg "WiiMote and Nunchuk")
+![WiiMote and Nunchuk](./img/wiimote_picture.jpg "WiiMote and Nunchuk")
 
 WiiMote and Nunchuk
 

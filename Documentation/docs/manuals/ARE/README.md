@@ -1,3 +1,5 @@
 # ARE Manual
 
-Here is some help content about the ARE.
+::: tip Note
+This is the user manual of the ARE program.
+:::

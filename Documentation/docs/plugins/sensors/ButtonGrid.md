@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Graphical User Interface)
 
 The Button Grid component is a simple GUI on-screen keyboard. It sends events after buttons have been pressed.
 
-![Screenshot: ButtonGrid plugin](img/buttongrid.jpg "Screenshot: ButtonGrid plugin")
+![Screenshot: ButtonGrid plugin](./img/buttongrid.jpg "Screenshot: ButtonGrid plugin")
 
 ButtonGrid plugin
 

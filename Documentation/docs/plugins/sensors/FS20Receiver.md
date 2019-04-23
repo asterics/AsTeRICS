@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Home Control)
 
 The FS20Receiver receives commands of the home automation system FS20 for ELV Electronics. Depending on the received commands, events will be fired.
 
-![FS20 Receiver Plugin](img/fs20receiver.jpg "FS20 Receiver Plugin")
+![FS20 Receiver Plugin](./img/fs20receiver.jpg "FS20 Receiver Plugin")
 
 FS20 Receiver Plugin
 
@@ -16,7 +16,7 @@ FS20 Receiver Plugin
 
 This component requires the [FS20 PCE Receiver][1] connected to a USB port.
 
-![FS20 PCE Receiver](img/fs20pce.jpg "FS20 PCE Receiver")
+![FS20 PCE Receiver](./img/fs20pce.jpg "FS20 PCE Receiver")
 
 FS20 PCE Receiver
 

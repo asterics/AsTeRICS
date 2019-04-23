@@ -29,7 +29,7 @@ The sendData method of the output variables has to be called with a string. If n
   
 For more information please see a demo script in the plugin source code!  
 
-![Screenshot: ECMAScriptInterpreter plugin](img/ecmascriptinterpreter.jpg "Screenshot: ECMAScriptInterpreter plugin")
+![Screenshot: ECMAScriptInterpreter plugin](./img/ecmascriptinterpreter.jpg "Screenshot: ECMAScriptInterpreter plugin")
 
 ECMAScriptInterpreter plugin
 

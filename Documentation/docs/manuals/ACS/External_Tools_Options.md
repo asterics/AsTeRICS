@@ -4,7 +4,7 @@ title: External Tools Options
 
 # External Tools Settings
 
-![Screenshot: External Tools Settings](img/external_tools_settings.png "Screenshot: External Tools Settings")
+![Screenshot: External Tools Settings](./img/external_tools_settings.png "Screenshot: External Tools Settings")
 
 Options Dialog, External Tools Settings
 

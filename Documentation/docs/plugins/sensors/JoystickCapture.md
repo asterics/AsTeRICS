@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Standard Input Devices)
 
 The JoystickCapture component provides data from the first detected Joystick controller which is available on the local system. Six Joystick analog positions (axis), the Point-Of-View angle and up to 20 Buttons are available as output ports and event triggers.
 
-![Screenshot: JoystickCapture plugin](img/joystickcapture.jpg "Screenshot: JoystickCapture plugin")
+![Screenshot: JoystickCapture plugin](./img/joystickcapture.jpg "Screenshot: JoystickCapture plugin")
 
 JoystickCapture plugin
 
@@ -16,7 +16,7 @@ JoystickCapture plugin
 
 A joystick has to be connected and available to the operating system.
 
-![PC compatible GamePad](img/gamepad.jpg "PC compatible GamePad")
+![PC compatible GamePad](./img/gamepad.jpg "PC compatible GamePad")
 
 PC compatible GamePad
 

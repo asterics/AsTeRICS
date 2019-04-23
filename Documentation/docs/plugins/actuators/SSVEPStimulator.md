@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Brain Computer Interface)
 
 This plug-in allows the user to interact with the SW-generated flickering surfaces (panels) for SSVEP stimulation. The stimulation frequency of the panels can be modified before the stimulation is started.
 
-![Screenshot: SSVEPStimulator application](img/ssvepstimulator.jpg "Screenshot: SSVEPStimulator application")
+![Screenshot: SSVEPStimulator application](./img/ssvepstimulator.jpg "Screenshot: SSVEPStimulator application")
 
 SSVEPStimulator application
 

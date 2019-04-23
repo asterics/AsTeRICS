@@ -6,13 +6,13 @@ title: Control the ARE
 
 In the system-tab, the group ARE handles the functionalities for connecting to and communicating with the ARE. The connection to the ARE is handled by the AsTeRICS Application Programming Interface (ASAPI).
 
-![Screenshot: System Tab, ARE and ARE Storage Group](img/are_and_are_storage_group.png "Screenshot: System Tab, ARE and ARE Storage Group")
+![Screenshot: System Tab, ARE and ARE Storage Group](./img/are_and_are_storage_group.png "Screenshot: System Tab, ARE and ARE Storage Group")
 
 System Tab, ARE and ARE Storage Group
 
 *   _Connect to ARE_ connects the ACS with the ARE. The Connect to ARE dialog appears, asking for the connection data. The host name (IP-address of the host) can be found in the ARE configuration, the default port should be 9090. Beside this connection dialog, also auto connection can be used, see the section Options / General Settings.
     
-    ![Screenshot: The ARE Connection Dialog](img/are_connection_dialog.jpg "Screenshot: The ARE Connection Dialog")
+    ![Screenshot: The ARE Connection Dialog](./img/are_connection_dialog.jpg "Screenshot: The ARE Connection Dialog")
     
     The ARE Connection Dialog
     
@@ -34,7 +34,7 @@ The group ARE Storage deals with the storage on the ARE. The storage is an area 
 
 Starting and stopping a model can be done with the buttons in the group Model.
 
-![Screenshot: The Model Group in the System Tab](img/model_group_in_system_tab.jpg "Screenshot: The Model Group in the System Tab")
+![Screenshot: The Model Group in the System Tab](./img/model_group_in_system_tab.jpg "Screenshot: The Model Group in the System Tab")
 
 The Model Group in the System Tab
 

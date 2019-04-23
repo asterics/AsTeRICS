@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Input Device Emulation)
 
 The RemoteJoystick component interfaces the AsTeRICS Personal Platform to a second computer via the HID actuator CIM (USB dongle, plugged into the target computer). The HID actuator emulates a standard HID Joystick device on the target computer (no special driver software is needed). The Joystick controller is compatible to the Playstation3 SixAxis controller and can be used for PS3 game interfacing. The X/Y axis represent the left stick, the Z/R axis represent the right sick. The button numbers correspond to the PS3-controller buttons as labeled in the event port descriptions. The Joystick analog positions, the Point-Of-View angle and up to 13 Buttons can be emulated via desired input values and event triggers. Note that multiple instances of the Remote-components (RemoteJoystick, RemoteKeyboard and RemoteMouse) can be used concurrently with one HID actuator USB dongle, e.g. to provide different actions from up to three different input devices on the target computer.
 
-![Screenshot: RemoteJoystick plugin](img/remotejoystick.jpg "Screenshot: RemoteJoystick plugin")
+![Screenshot: RemoteJoystick plugin](./img/remotejoystick.jpg "Screenshot: RemoteJoystick plugin")
 
 RemoteJoystick plugin
 
@@ -16,7 +16,7 @@ RemoteJoystick plugin
 
 The HID Actuator CIM (CIM ID 0x0101) has to be plugged into a free USB port of the target computer and the cable has to be connected to the AsTeRICS platform.
 
-![HID Actuator CIM](img/hid_cim.jpg "HID Actuator CIM")
+![HID Actuator CIM](./img/hid_cim.jpg "HID Actuator CIM")
 
 The HID Actuator plugs into the target computer and connects via Bluetooth wirelessly to the ARE
 

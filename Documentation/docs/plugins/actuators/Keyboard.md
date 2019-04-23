@@ -8,7 +8,7 @@ title: Keyboard
 
 The Keyboard component generates local keyboard input on the computer that the ARE is running on (per software emulation). The component supports key press/hold/release actions and sending key sequences and special keycodes. special or non-printable characters can be sent using curly braces and key identifier strings, e.g. {UP} {ENTER} {ALT} {DELETE} etc. - see description of the property keyCodeString. Multiple instances of the Keyboard component can be used to provide different key actions.
 
-![Screenshot: Keyboard plugin](img/keyboard.jpg "Screenshot: Keyboard plugin")
+![Screenshot: Keyboard plugin](./img/keyboard.jpg "Screenshot: Keyboard plugin")
 
 Keyboard plugin
 

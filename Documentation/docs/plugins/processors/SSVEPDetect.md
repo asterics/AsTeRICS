@@ -6,7 +6,7 @@ title: SSVEP Detect
 
 This component is in charge of evaluating the SSVEP response (up to 4 different frequencies) among the frequencies defined by the user. It also calculates the config file based on previously recorded training files that will be used to evaluate the detection, and is also in charge of updating its parameters according to the config file Component Type: Processor (Subcategory: DSP and Feauture extraction)
 
-![Screenshot: SSVEPDetect plugin](img/ssvepdetect.jpg "Screenshot: SSVEPDetect plugin")
+![Screenshot: SSVEPDetect plugin](./img/ssvepdetect.jpg "Screenshot: SSVEPDetect plugin")
 
 SSVEPDetect plugin
 

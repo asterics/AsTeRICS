@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Data Converters)
 
 This component converts the incoming string values into the integer values at the output port.
 
-![Screenshot: StringToInt plugin](img/stringtoint.jpg "Screenshot: StringToInt plugin")
+![Screenshot: StringToInt plugin](./img/stringtoint.jpg "Screenshot: StringToInt plugin")
 
 StringToInt plugin
 

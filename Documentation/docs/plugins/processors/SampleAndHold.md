@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 This component provides a sample-and-hold function for up to 4 input signals. This can be useful for storing a particular sensor values (e.g. for sensor calibration purpose).
 
-![Screenshot: SampleAndHold plugin](img/sampleandhold.jpg "Screenshot: SampleAndHold plugin")
+![Screenshot: SampleAndHold plugin](./img/sampleandhold.jpg "Screenshot: SampleAndHold plugin")
 
 SampleAndHold plugin
 

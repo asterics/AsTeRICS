@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Sensor Modules)
 
 This component provides an interface to the eShoe which is an insole for shoes with sensor inlays, capabale of measuring multiple degrees of freedom (pressure, acceleration and angular velocity) for gait analysis and rehabilitation purposes. See: [eShoe-info (german)][1]. The COM Port number for the device must be specified in the plugin properties.
 
-![Screenshot: EShoe plugin](img/eshoe.jpg "Screenshot: EShoe plugin")
+![Screenshot: EShoe plugin](./img/eshoe.jpg "Screenshot: EShoe plugin")
 
 EShoe plugin
 
@@ -16,11 +16,11 @@ EShoe plugin
 
 This software component requires an EShoe connected via Bluetooth to a COM Port.
 
-![EShoe](img/eshoe_picture.jpg "EShoe")
+![EShoe](./img/eshoe_picture.jpg "EShoe")
 
 Picture of the EShoe
 
-![Schematic of the EShoe](img/eshoe_schematic.jpg "Schematic of the EShoe")
+![Schematic of the EShoe](./img/eshoe_schematic.jpg "Schematic of the EShoe")
 
 Schematic view of the EShoe (left insole), light grey circles mark pressure sensors (big toe (BT), metatarsal head I (M1), metatarsal head V (M5), heel (HE)), the grey box marks the positon of the triaxial acceleration sensor (a) and triaxial gyroscope (ω).  
 V. David, H. Jagos, S. Litzenberger, and M. Reichel, "Instrumented insole for mobile and long distance motion pattern measurement," Procedia Eng., vol. 34, pp. 760-765, 2012.

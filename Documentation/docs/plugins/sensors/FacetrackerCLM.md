@@ -16,7 +16,7 @@ The FacetrackerCLM also introduces the detection of facial gestures that can be 
 
 For a closer explaination of the EyeTrackerCLM functions and the training algorithm for eye states please refer to the document FacetrackerCLM.pdf in the folder /documentation.
 
-![Screenshot: FacetrackerCLM plugin](img/facetrackerclm.jpg "Screenshot: FacetrackerCLM plugin")
+![Screenshot: FacetrackerCLM plugin](./img/facetrackerclm.jpg "Screenshot: FacetrackerCLM plugin")
 
 FacetrackerCLM plugin
 

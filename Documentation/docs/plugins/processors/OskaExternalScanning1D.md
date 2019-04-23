@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: OSKA)
 
 This component interacts with the On Screen Keyboard Application (OSKA) and forwards key selections and command (action-) strings to other ARE plugins. The scanning function of OSKA can be controlled via this plugin, allowing 1-dimensional input values to be used for direct scanning position selection. This is done in a two-step fashion where first the columns are highlighted and then keys of a column are highlighted. Selection of columns and cells is performed upon incoming events. The event input ports allow switching from row- to column scanning, moving the cell highlighter and selecting a cell.
 
-![Screenshot: OskaExternalScanning1D plugin](img/oskaexternalscanning1d.jpg "Screenshot: OskaExternalScanning1D plugin")
+![Screenshot: OskaExternalScanning1D plugin](./img/oskaexternalscanning1d.jpg "Screenshot: OskaExternalScanning1D plugin")
 
 OskaExternalScanning1D plugin
 

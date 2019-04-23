@@ -8,7 +8,7 @@ title: AnalogIn
 
 The AnalogIn component is a sensor which is used in combination with the ADC CIM. The component provides two output ports which correlate to the inputs IN1 and IN2 of the CIM. The component can be set up to sample the inputs periodically or upon an incoming event. Both inputs can be used for voltage and resistance measurement.
 
-![Screenshot: AnalogIn plugin](img/analogin.jpg "Screenshot: AnalogIn plugin")
+![Screenshot: AnalogIn plugin](./img/analogin.jpg "Screenshot: AnalogIn plugin")
 
 AnalogIn plugin
 

@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Communication)
 
 This component provides interface to pass the data through the network. It allows to pass data to the another NetConnection component or to the application which uses the NetConnection Native ASAPI library.
 
-![Screenshot: NetConnection plugin](img/netconnection.jpg "Screenshot: NetConnection plugin")
+![Screenshot: NetConnection plugin](./img/netconnection.jpg "Screenshot: NetConnection plugin")
 
 NetConnection plugin
 

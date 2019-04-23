@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Generic Control Input)
 
 The DigitalIn component provides an interface to read the digital inputs of the GPIO CIM. On state changes of the connected signals (transitions to high or low level), the component generates corresponding trigger-events.
 
-![Screenshot: DigitalIn plugin](img/digitalin.jpg "Screenshot: DigitalIn plugin")
+![Screenshot: DigitalIn plugin](./img/digitalin.jpg "Screenshot: DigitalIn plugin")
 
 DigitalIn plugin
 

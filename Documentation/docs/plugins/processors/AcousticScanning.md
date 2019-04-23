@@ -12,7 +12,7 @@ The component provides up to 6 selectionSets. A selectionSet contains a number o
 
 Additional functionalities can be given to the selection items via commands strings which are added to a selection item (seperated by the #-character). Supported command strings allow the deletion of the last character, the speaking of the currently composed text and other functions which are described below, thereby increasing the flexibility of the plugin. For more information see the demo model (ACS/models/componentTests/processors/AcousticScanning\_test.acs)
 
-![Screenshot: AcousticScanning plugin](img/acousticscanning.jpg "Screenshot: AcousticScanning plugin")
+![Screenshot: AcousticScanning plugin](./img/acousticscanning.jpg "Screenshot: AcousticScanning plugin")
 
 AcousticScanning plugin
 

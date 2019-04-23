@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Simulation)
 
 The SignalGenerator component can generate several output waveforms for component tests or other purposes like timing or event generation. Available waveforms are sine, sawtooth, rectangle and random signal data.
 
-![Screenshot: SignalGenerator plugin](img/signalgenerator.jpg "Screenshot: SignalGenerator plugin")
+![Screenshot: SignalGenerator plugin](./img/signalgenerator.jpg "Screenshot: SignalGenerator plugin")
 
 SignalGenerator plugin
 

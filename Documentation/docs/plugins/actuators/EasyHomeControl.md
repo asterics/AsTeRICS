@@ -12,15 +12,15 @@ With the EasyHomeControl, commands for the EasyHome house automation system can 
 
 The EasyHome sender must be attached to the system!
 
-![Picture of the EasyHome sender](img/easyhomesender.jpg "Picture of the EasyHome sender")
+![Picture of the EasyHome sender](./img/easyhomesender.jpg "Picture of the EasyHome sender")
 
 Picture of the EasyHome sender
 
-![Picture of the EasyHome switch](img/funksteckschalter.jpg "Picture of the EasyHome switch")
+![Picture of the EasyHome switch](./img/funksteckschalter.jpg "Picture of the EasyHome switch")
 
 Picture of the EasyHome switch
 
-![Picture of the EasyHome dimmer](img/funksteckdimmer.jpg "Picture of the EasyHome dimmer")
+![Picture of the EasyHome dimmer](./img/funksteckdimmer.jpg "Picture of the EasyHome dimmer")
 
 Picture of the EasyHome dimmer
 

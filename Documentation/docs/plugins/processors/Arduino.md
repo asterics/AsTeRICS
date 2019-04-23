@@ -8,7 +8,7 @@ Component Type: Processors (Subcategory: Microcontroller Interface)
 
 The Arduino component provides an interface to the Arduino Uno microcontroller and makes available analog inputs and digital inputs and outputs.
 
-![Screenshot: Arduino plugin](img/arduino.jpg "Screenshot: Arduino plugin")
+![Screenshot: Arduino plugin](./img/arduino.jpg "Screenshot: Arduino plugin")
 
 Arduino plugin
 
@@ -16,7 +16,7 @@ Arduino plugin
 
 An Arduino UNO microcontroller board has to be connected to an USB port. The Arduino CIM firmware must have been downloaded into the Arduino to communicate via the CIM protocol with the Arduino component.
 
-![Arduino UNO board](img/arduino_picture.jpg "Arduino UNO board")
+![Arduino UNO board](./img/arduino_picture.jpg "Arduino UNO board")
 
 Arduino UNO board
 

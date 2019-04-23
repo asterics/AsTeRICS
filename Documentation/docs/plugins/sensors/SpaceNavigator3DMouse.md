@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Standard Input Devices)
 
 This component interfaces the 3Dconnexion 3D Mouse device.
 
-![Screenshot: SpaceNavigator3DMouse plugin](img/spacenavigator3dmouse.jpg "Screenshot: SpaceNavigator3DMouse plugin")
+![Screenshot: SpaceNavigator3DMouse plugin](./img/spacenavigator3dmouse.jpg "Screenshot: SpaceNavigator3DMouse plugin")
 
 SpaceNavigator3DMouse plugin
 
@@ -16,7 +16,7 @@ SpaceNavigator3DMouse plugin
 
 The 3D Mouse device connected to the platform
 
-![SpaceNavigator 3DMouse](img/spacenavigator.jpg "SpaceNavigator 3DMouse")
+![SpaceNavigator 3DMouse](./img/spacenavigator.jpg "SpaceNavigator 3DMouse")
 
 SpaceNavigator 3DMouse
 

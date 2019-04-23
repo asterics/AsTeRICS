@@ -6,7 +6,7 @@ title: The Edit Tab
 
 The edit tab is used for manipulating properties of the components and their interconnections. The list below provides a detailed description of the available operations found on the Edit Tab as shown in the figure.
 
-![Screenshot: The edit tab](img/edit_tab.png "Screenshot: The edit tab")
+![Screenshot: The edit tab](./img/edit_tab.png "Screenshot: The edit tab")
 
 The Edit Tab
 
@@ -32,7 +32,7 @@ Description of the _Edit_ Group:
 *   _Redo_ the last editing action that has been undone with _Undo_. Setting properties and events (things done in the property window) are excluded form redo.
 *   _Group_ the selected components (incl. channels and event channels) to one group. The selected components must not contain a group. All connected ports and event ports will be available as external connection points of the group. The figure above shows a very simple example, the grouping of two components to one group.
     
-    ![Grouping of two components](img/group1.png "Grouping of two components")
+    ![Grouping of two components](./img/group1.png "Grouping of two components")
     
     Grouping of two components
     

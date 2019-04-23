@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 The integrate component performs successive addition of incoming signal values. This is useful for transforming relative movement information coming from a sensor into absolute position values.
 
-![Screenshot: Integrate plugin](img/integrate.jpg "Screenshot: Integrate plugin")
+![Screenshot: Integrate plugin](./img/integrate.jpg "Screenshot: Integrate plugin")
 
 Integrate plugin
 

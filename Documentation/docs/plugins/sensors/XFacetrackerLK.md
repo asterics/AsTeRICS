@@ -14,7 +14,7 @@ This component provides a cross-platform face tracking computer vision algorithm
 
 A camera has to be available (this can be any webcam or a camera which is available as image acquisition device via the operating system). The picture below shows the Logitech Webcam 9000 Pro. Also the camera device of a Kinect sensor or PS3Eye should work. Furthermore, a video stream of an IP camera can be used for tracking.
 
-![Logitech Webcam 9000 Pro](img/webcam.jpg "Logitech Webcam 9000 Pro")  
+![Logitech Webcam 9000 Pro](./img/webcam.jpg "Logitech Webcam 9000 Pro")  
 Logitech Webcam 9000 Pro
 
 ### Note for Raspberry Pi

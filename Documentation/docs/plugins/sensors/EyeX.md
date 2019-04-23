@@ -16,7 +16,7 @@ Currently the following devices should work:
 *   [Tobii Tracker 4C][3]: Also supports head tracking and can be combined with the [Tobii4CHeadTracker][4] plugin to get eye gaze and head pose data.
 *   [Steel Series Sentry][5] (not tested)
 
-![Screenshot: Tobii EyeX plugin](img/eyex.jpg "Screenshot: Tobii EyeX plugin")
+![Screenshot: Tobii EyeX plugin](./img/eyex.jpg "Screenshot: Tobii EyeX plugin")
 
 Tobii EyeX plugin
 
@@ -26,7 +26,7 @@ Tobii EyeX plugin
 *   USB port: The Tobii EyeX device needs a USB3.0 port, the Tracker 4C needs at least a USB 2.0 port. Preferably don't use a USB hub, or only use a [recommended hub from Tobii][6].
 *   [Tobii Eye Tracking Core Software][7] must be installed and running.
 
-![Screenshot: Tobii EyeX hardware](img/eyex_hw.png "Screenshot: Tobii EyeX hardware")
+![Screenshot: Tobii EyeX hardware](./img/eyex_hw.png "Screenshot: Tobii EyeX hardware")
 
 Tobii EyeX hardware
 

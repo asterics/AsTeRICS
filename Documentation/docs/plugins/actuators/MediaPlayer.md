@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: File System)
 
 This component allows to play media files supported by the local system. The supported file type depends on the installed media CODEC, but generally all media formats supported by the VLC player should work. Please note that the VLC player (32 bit version) should be installed in the default location: C:/Program Files/VideoLan or C:/Program Files (x86)/VideoLan
 
-![Screenshot: MediaPlayer plugin](img/mediaplayer.jpg "Screenshot: MediaPlayer plugin")
+![Screenshot: MediaPlayer plugin](./img/mediaplayer.jpg "Screenshot: MediaPlayer plugin")
 
 MediaPlayer plugin
 

@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory:Computer Vision)
 
 This plug-in provides a selection of up to 12 choices via the head. A choice can be selected through looking to the side. The angle of the head is calculated with the position of the ear and the mouth. The detection of the features is realised with HaarCascade.
 
-![Screenshot: HeadPositionHC plug-in](img/headpositionhc.png "Screenshot: HeadPositionHC plugin")
+![Screenshot: HeadPositionHC plug-in](./img/headpositionhc.png "Screenshot: HeadPositionHC plugin")
 
 The HeadPositionHC sensor plug-in
 

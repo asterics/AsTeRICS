@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Input Device Emulation)
 
 The RemoteTablet component interfaces the AsTeRICS Personal Platform to a second computer via the HID actuator CIM (USB dongle, plugged into the target computer). This plugins performs similar like the RemoteMouse plugin, with the difference that the coorindates are set absolutely via the table devie, not relatively like a mouse device works. The HID actuator emulates a standard USB Tablet on the target computer (no special driver software is needed). The Tablet x-position, y-position, press/release actions of Tablet buttons and wheel movements can be controlled via desired input values and event triggers. Note that multiple instances of the Remote components (RemoteJoystick, RemoteKeyboard, RemoteMouse and RemoteTablet) can be used concurrently with one HID actuator USB dongle, e.g. to provide different key actions for up to four different input devices on the target computer.
 
-![Screenshot: RemoteTablet plugin](img/remotetablet.jpg "Screenshot: RemoteTablet plugin")
+![Screenshot: RemoteTablet plugin](./img/remotetablet.jpg "Screenshot: RemoteTablet plugin")
 
 RemoteTablet plugin
 
@@ -16,7 +16,7 @@ RemoteTablet plugin
 
 The HID Actuator CIM (CIM ID 0x0101) has to be plugged into a free USB port of the target computer and the cable has to be connected to the AsTeRICS platform.
 
-![HID Actuator CIM](img/hid_cim.jpg "HID Actuator CIM")
+![HID Actuator CIM](./img/hid_cim.jpg "HID Actuator CIM")
 
 The HID Actuator plugs into the target computer and connects via Bluetooth wirelessly to the ARE
 

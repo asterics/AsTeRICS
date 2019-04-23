@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Simulation)
 
 The timer component can measure time in milliseconds, provide current time on an output port and trigger events when a specified time period has passed. It can be used to influence other features (e.g. to provide acceleration) or to enable dwell selection, for example clicking when a certain time has passed.
 
-![Screenshot: Timer plugin](img/timer.jpg "Screenshot: Timer plugin")
+![Screenshot: Timer plugin](./img/timer.jpg "Screenshot: Timer plugin")
 
 Timer plugin
 

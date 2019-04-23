@@ -4,7 +4,7 @@ title: Colours Settings
 
 # Colours Settings
 
-![Screenshot: Options Dialog, Colours Settings](img/colour_settings.png "Screenshot: Options Dialog, Colours Settings")
+![Screenshot: Options Dialog, Colours Settings](./img/colour_settings.png "Screenshot: Options Dialog, Colours Settings")
 
 Options Dialog, Colours Settings
 

@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: File System)
 
 This plugin reads an .edf file and sends the data to its output ports
 
-![Screenshot: ReadEDF plugin](img/readedf.png "Screenshot: ReadEDF plugin")
+![Screenshot: ReadEDF plugin](./img/readedf.png "Screenshot: ReadEDF plugin")
 
 ReadEDF
 

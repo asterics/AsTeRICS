@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Graphical User Interface)
 
 The Slider component generates a slider with adjustable range of values and size on the ARE desktop. This slider can be used to change important parameters of the model during runtime. Furthermore, an incoming signal can be adjusted by the slider component, using a gain factor property.
 
-![Screenshot: Slider plugin](img/slider.jpg "Screenshot: Slider plugin")
+![Screenshot: Slider plugin](./img/slider.jpg "Screenshot: Slider plugin")
 
 Slider plugin
 

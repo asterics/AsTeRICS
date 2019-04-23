@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Communication)
 
 The OscServer component enables the ARE to receive messages using the OpenSoundControl (OSC) protocol. The OscServer can receive various OSC data messages which can be divided in the individual data segments and forwarded to the output ports. The properties are used for the segmentation of the individual information segments of a whole OSC message. This plugin utilizes the NetUtil java library (http://www.sciss.de/netutil/) for the OSC implementation, it is (C)opyrighted 2004-2011 by Hanns Holger Rutz and released under the GNU Lesser General Public License.
 
-![Screenshot: OscServer plugin](img/oscserver.jpg "Screenshot: OscServer plugin")
+![Screenshot: OscServer plugin](./img/oscserver.jpg "Screenshot: OscServer plugin")
 
 OscServer plugin
 
@@ -20,7 +20,7 @@ OscServer plugin
 
 ## Functional Principle
 
-![Symblic OSC Message](img/oscmsg.jpg "Symbolic OSC Message")
+![Symblic OSC Message](./img/oscmsg.jpg "Symbolic OSC Message")
 
 Symbolic OSC Message
 

@@ -11,6 +11,6 @@ The Component Collection Manager (see Figure below) is a small tool in which dow
 *   _Save Component Collection_ saves the active component collection (e.g. a downloaded component collection from the ARE) into the ACS folder.
 *   The _Saved Component Collections_ list shows all saved component collections. A component collection can be selected and set active.
 
-![Bundle Manager](img/bundle-manager.png "Bundle Manager")
+![Bundle Manager](./img/bundle-manager.png "Bundle Manager")
 
 Component Collection Manager

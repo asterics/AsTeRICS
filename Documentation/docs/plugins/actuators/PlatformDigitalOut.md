@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Personal Platform)
 
 The PlatformDigitalOut plugin operates the output ports of the AsTeRICS Personal Platform. The output ports 1-2 are open-collector outputs with a deactivated pull-up resistor.
 
-![Screenshot: PlatformDigitalOut plugin](img/platformdigitalout.jpg "Screenshot: PlatformDigitalOut plugin")
+![Screenshot: PlatformDigitalOut plugin](./img/platformdigitalout.jpg "Screenshot: PlatformDigitalOut plugin")
 
 PlatformDigitalOut plugin
 
@@ -16,7 +16,7 @@ PlatformDigitalOut plugin
 
 This component requires the Core CIM (CIM Id: 0x0602) of the AsTeRICS Personal Platform.
 
-![The AsteRICS Personal Platform (preliminary version)](img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
+![The AsteRICS Personal Platform (./preliminary version)](img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
 
 The AsteRICS Personal Platform
 

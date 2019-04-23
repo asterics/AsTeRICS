@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: File System)
 
 This component writes lines from an input port to a text file.
 
-![Screenshot: LineWriter plugin](img/linewriter.jpg "Screenshot: LineWriter plugin")
+![Screenshot: LineWriter plugin](./img/linewriter.jpg "Screenshot: LineWriter plugin")
 
 ButtonGrid plugin
 

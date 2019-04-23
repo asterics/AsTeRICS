@@ -8,7 +8,7 @@ title: Legacy Digital Out
 
 The DigitalOut plugin operates the output ports of the legacy GPIO CIM (CIM Id: 0x0201). The output ports 1-4 are open-collector outputs, where a pull-up resistor can be activated or deactivated using the plugin's properties. The output ports 5-8 are relais outputs where loads can be connected via a galvanic isolation barrier. The plugin provides event listener ports which serve the activation or deactivation of an output channel, and a command port which accepts string parameters to set, clear and toggle particular output channels.
 
-![Screenshot: Legacy DigitalOut plugin](img/legacydigitalout.jpg "Screenshot: LegacyDigitalOut plugin")
+![Screenshot: Legacy DigitalOut plugin](./img/legacydigitalout.jpg "Screenshot: LegacyDigitalOut plugin")
 
 Legacy DigitalOut plugin
 
@@ -16,7 +16,7 @@ Legacy DigitalOut plugin
 
 This component requires the GPIO CIM (CIM Id: 0x0201) to be connected to an USB port.
 
-![GPIO CIM](img/digitalout_cim.jpg "GPIO CIM")
+![GPIO CIM](./img/digitalout_cim.jpg "GPIO CIM")
 
 Legacy GPIO CIM
 

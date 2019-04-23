@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Event and Signal Processing)
 
 This component allows definition of a sequence of events (up to 9 different incoming events are supported). If the sequence appears at the event listener ports in the given order, an event is fired by the EventStateMachine plugin. Optionally, a timing can be specified for a valid event sequence.
 
-![Screenshot: EventStateMachine](img/eventstatemachine.jpg "Screenshot: Event State Machine plugin")
+![Screenshot: EventStateMachine](./img/eventstatemachine.jpg "Screenshot: Event State Machine plugin")
 
 Event State Machine plugin
 

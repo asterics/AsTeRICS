@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Sensor Modules)
 
 This component integrates reacTIVision into AsTeRICS
 
-![Screenshot: TuioReactivision plug-in](img/reactivision.jpg "Screenshot: TuioReactivision plug-in")
+![Screenshot: TuioReactivision plug-in](./img/reactivision.jpg "Screenshot: TuioReactivision plug-in")
 
 TuioReactivision plug-in
 
@@ -36,11 +36,11 @@ This component requires that the reacTIVision.exe is running --> Download: http:
 *   **reactivisionPath \[Boolean\]:** Contains the path to the reacTIVision.exe
 *   **Text File \[String\]:** Contains the path of the text file in which the marker is either assigned to a text or an event port (e.g. "1-3" marker three is assigned to event trigger one )
 
-![Screenshot: examplary text file](img/liste.jpg "Screenshot: examplary text file")
+![Screenshot: examplary text file](./img/liste.jpg "Screenshot: examplary text file")
 
 Examplary text file when a marker should be assigned to a string (Marker number is on the left side)
 
-![Screenshot: exemplary text file](img/listeint.jpg "Screenshot: examplary text file")
+![Screenshot: exemplary text file](./img/listeint.jpg "Screenshot: examplary text file")
 
 Examplary text file ehen a marker should be assigned to an integer (Marker number is on the right side)
 

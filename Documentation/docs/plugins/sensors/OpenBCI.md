@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Bioelectric Measurement)
 
 This component provides an interface to bioelectric amplifiers which are compatible to the openBCI packet fromat. For more information please refer to the [OpenBCI][1] website. The COM Port number where the device is connected must be specified in the plugin properties.
 
-![Screenshot: OpenBCI plugin](img/openbci.jpg "Screenshot: OpenBCI plugin")
+![Screenshot: OpenBCI plugin](./img/openbci.jpg "Screenshot: OpenBCI plugin")
 
 OpenBCI plugin
 

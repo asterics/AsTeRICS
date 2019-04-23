@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Generic Control Input)
 
 The LegacyDigitalIn component provides an interface to read the digital inputs of the legacy GPIO CIM (CIM Id: 0x0201). On state changes of the connected signals (transitions to high or low level), the component generates corresponding trigger-events.
 
-![Screenshot: LegacyDigitalIn plugin](img/legacydigitalin.jpg "Screenshot: LegacyDigitalIn plugin")
+![Screenshot: LegacyDigitalIn plugin](./img/legacydigitalin.jpg "Screenshot: LegacyDigitalIn plugin")
 
 LegacyDigitalIn plugin
 
@@ -16,7 +16,7 @@ LegacyDigitalIn plugin
 
 This component requires the legacy GPIO CIM (CIM Id: 0x0201) connected to an USB port.
 
-![GPIO CIM](img/digitalin_cim.jpg "GPIO CIM")
+![GPIO CIM](./img/digitalin_cim.jpg "GPIO CIM")
 
 GPIO CIM
 

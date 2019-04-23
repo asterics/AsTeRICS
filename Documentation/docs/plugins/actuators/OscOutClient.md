@@ -8,7 +8,7 @@ Component Type: actuator (Subcategory: Communication)
 
 The OscOutClient plugin enables the ARE to broadcast messages using the OpenSoundControl (OSC) protocol. This plugin utilizes the NetUtil java library (http://www.sciss.de/netutil/) for the OSC implementation, it is (C)opyrighted 2004-2011 by Hanns Holger Rutz and released under the GNU Lesser General Public License.
 
-![Screenshot: OscServer plugin](img/oscoutclient.jpg "Screenshot: OscServer plugin")
+![Screenshot: OscServer plugin](./img/oscoutclient.jpg "Screenshot: OscServer plugin")
 
 OscOutClient plugin
 

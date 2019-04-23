@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 This component detects the shape that a blink produces in an electro-oculogram signal. The plugin analyses the input samples and recognises both a single blink and a double blink. Here a single blink is defined by an action whereby both eyes are simultaneously and voluntary closed and open. A double blink refers to the repletion of this action twice in an consecutive way. When one of these conditions is found the corresponding event is fired. In addition, a true Boolean will be output to the corresponding output port.
 
-![Screenshot: Blink Detection plugin](img/blinkdetection.jpg "Screenshot: Blink Detection plugin")
+![Screenshot: Blink Detection plugin](./img/blinkdetection.jpg "Screenshot: Blink Detection plugin")
 
 Blink Detection plugin
 

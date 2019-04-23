@@ -6,7 +6,7 @@ title: Android Connection
 
 Component Type: Actuator (Subcategory: Phone Interface)
 
-![Android Server Application](img/androidserverapp.jpg "Android Server Application")
+![Android Server Application](./img/androidserverapp.jpg "Android Server Application")
 
 Android Server Application
 

@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Input Device Emulation)
 
 The RemoteKeyboard component interfaces the AsTeRICS Personal Platform to a second computer via the HID actuator CIM (USB dongle, plugged into the target computer). The HID actuator emulates a standard USB keyboard device on the target computer (no special driver software is needed). The component supports key press/release actions and sending key sequences and special keycodes. Note that multiple instances of the Remote-components (RemoteJoystick, RemoteKeyboard and RemoteMouse) can be used concurrently with one HID actuator USB dongle, e.g. to provide different actions for up to three different input devices on the target computer.
 
-![Screenshot: RemoteKeyboard plugin](img/remotekeyboard.jpg "Screenshot: RemoteKeyboard plugin")
+![Screenshot: RemoteKeyboard plugin](./img/remotekeyboard.jpg "Screenshot: RemoteKeyboard plugin")
 
 RemoteKeyboard plugin
 
@@ -16,7 +16,7 @@ RemoteKeyboard plugin
 
 The HID Actuator CIM (CIM ID 0x0101) has to be plugged into a free USB port of the target computer and the cable has to be connected to the AsTeRICS platform.
 
-![HID Actuator CIM](img/hid_cim.jpg "HID Actuator CIM")
+![HID Actuator CIM](./img/hid_cim.jpg "HID Actuator CIM")
 
 The HID Actuator plugs into the target computer and connects via Bluetooth wirelessly to the ARE
 

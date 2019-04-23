@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Audio and Voice)
 
 The Synthetic Voice component uses the SAPI 5 technology to generate synthetic voice.
 
-![Screenshot: SyntheticVoice plugin](img/syntheticvoice.jpg "Screenshot: SyntheticVoice plugin")
+![Screenshot: SyntheticVoice plugin](./img/syntheticvoice.jpg "Screenshot: SyntheticVoice plugin")
 
 SyntheticVoice plugin
 

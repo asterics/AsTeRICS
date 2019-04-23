@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Graphical User Interface)
 
 This plugin provides a graphical feedback for events. It can be used to monitor event activities and is mainly targeted for testing of configurations during setup time. The plugin offers a GUI (simple window with text output) where event names are displayed.
 
-![Screenshot: EventVisualizer plugin](img/eventvisualizer.jpg "Screenshot: EventVisualizer plugin")
+![Screenshot: EventVisualizer plugin](./img/eventvisualizer.jpg "Screenshot: EventVisualizer plugin")
 
 EventVisualizer plugin
 

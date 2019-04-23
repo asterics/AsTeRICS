@@ -10,15 +10,15 @@ The CrosshairCursorControl component allows mouse cursor positioning by software
 
 Using other components, a stepswise control of x and y movement can be achieved, allowing full control of the cursor position. After a certain time of inactivity (no values received at the input ports), a click event can be created for generating different mouse clicks e.g. via a mouse element. Additionally, a number of tooltip icons can be displayed, sequentially. The currently displayed icon can be selected via an adjustable time of inactivity. The name of the selected icon is then sent to the tooltip output port.
 
-![Screenshot: CrosshairCursorControl plugin](img/crosshaircursorcontrol.jpg "Screenshot: CrosshairCursorControl plugin")
+![Screenshot: CrosshairCursorControl plugin](./img/crosshaircursorcontrol.jpg "Screenshot: CrosshairCursorControl plugin")
 
 CrosshairCursorControl plugin
 
-![Screenshot: CrosshairCursorControl arrow indicator](img/crosshaircursorcontrol_demo.jpg "Screenshot: CrosshairCursorControl arrow indicator")
+![Screenshot: CrosshairCursorControl arrow indicator](./img/crosshaircursorcontrol_demo.jpg "Screenshot: CrosshairCursorControl arrow indicator")
 
 CrosshairCursorControl arrow indicator
 
-![Screenshot: CrosshairCursorControl tooltip for doubleclick](img/crosshaircursorcontrol_tooltip.jpg "Screenshot: CrosshairCursorControl tooltip for doubleclick")
+![Screenshot: CrosshairCursorControl tooltip for doubleclick](./img/crosshaircursorcontrol_tooltip.jpg "Screenshot: CrosshairCursorControl tooltip for doubleclick")
 
 CrosshairCursorControl in combination with Tooltip plugin for double click
 

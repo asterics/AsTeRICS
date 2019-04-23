@@ -9,7 +9,7 @@ Component Type: Sensor (Subcategory:Sensor Modules)
 This component provides signals from the Lipmouse module, which allows computer control via a mouthpiece. The user can create input signals with 3 degrees of freedom by interacting with the mouthpiece: left/right, up/down and sip/puff. The horizontal and vertical movements are measured via force sensors inside the lipmouse module. The sip/puff actions are measured via a pressure sensor. The lipmouse can be adjusted to very low force that it can be used by persons with severly reduced motor capabilites (e.g. late stage musculuar dystrophy or quadraplegia up to C1/C2 lesions). Additionally the Lipmouse has an infrared interface which enables it to control electronic devices.  
 Through a receiver it is possible to record commands from existing remote controls and store the codes to a database. When needed, the IR signal is reconstructed and transmitted to the device to be controlled.
 
-![Screenshot: LipmouseIR plugin](img/lipmouseir.png "Screenshot: LipmouseIR plugin")
+![Screenshot: LipmouseIR plugin](./img/lipmouseir.png "Screenshot: LipmouseIR plugin")
 
 The LipmouseIR sensor plugin
 

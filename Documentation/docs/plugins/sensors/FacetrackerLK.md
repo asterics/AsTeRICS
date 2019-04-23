@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Computer Vision)
 
 This component provides a face tracking computer vision algorithm which puts out estimated movement of a users' nose and chin in x and y coordinates. The underlying mechanism builds upon the OpenCV library (in particular a trained cascade of haar-like features and an optical flow algorithm). The x- and y- coordinates can be used in camera-mouse configurations or to enable selection or control tasks. The values are only provided if a face can be tracked by the algorithm and are updated with the achievable frame rate. Note that the x- and y- values represent relative movement in pixels and have to be accumulated (e.g. via the integrate component) to generate e.g. absolute mouse positions.
 
-![Screenshot: FacetrackerLK plugin](img/facetrackerlk.jpg "Screenshot: FacetrackerLK plugin")
+![Screenshot: FacetrackerLK plugin](./img/facetrackerlk.jpg "Screenshot: FacetrackerLK plugin")
 
 FacetrackerLK plugin
 
@@ -16,7 +16,7 @@ FacetrackerLK plugin
 
 A camera has to be available (this can be any webcam or a camera which is available as image acquisition device via the operating system). The picture below shows the Logitech Webcam 9000 Pro.
 
-![Logitech Webcam 9000 Pro](img/webcam.jpg "Logitech Webcam 9000 Pro")
+![Logitech Webcam 9000 Pro](./img/webcam.jpg "Logitech Webcam 9000 Pro")
 
 Logitech Webcam 9000 Pro
 

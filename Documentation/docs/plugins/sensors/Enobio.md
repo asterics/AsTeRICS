@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Bioelectric Measurement)
 
 This component interfaces the Enobio sensor to the AsTeRICS system. It is in charge of driving the USB interface, commanding the proprietary protocol that Enobio uses, filtering the signal for removing the environmental noise and performing an automatic offset compensation for each channel in order to keep the electrophysiological signal correctly calibrated and avoid the effects that the skin contact may introduce in the signal. The component delivers the sampled signal in the Enobio electrodes through four output ports (one per channel). In addition, there is another output port which reports the calibration status of the channels and information regarding the sample loses due to environmental issues in the wireless link. The output ports (sampled data and status) deliver 250 values per second, which corresponds to the sample rate in the Enobio electrodes.
 
-![Screenshot: Enobio plugin](img/enobio.jpg "Screenshot: Enobio plugin")
+![Screenshot: Enobio plugin](./img/enobio.jpg "Screenshot: Enobio plugin")
 
 Enobio plugin
 
@@ -16,7 +16,7 @@ Enobio plugin
 
 This software component requires an Enobio receiver connected to the platform, the Enobio device switched on and the electrodes correctly placed on the user.
 
-![Enobio device](img/enobio_picture.jpg "Enobio device")
+![Enobio device](./img/enobio_picture.jpg "Enobio device")
 
 Enobio device
 

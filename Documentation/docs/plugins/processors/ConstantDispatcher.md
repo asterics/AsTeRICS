@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 This component sends double values from the chosen slot.
 
-![Screenshot: ConstantDispatcher plugin](img/constantdispatcher.jpg "Screenshot: ConstantDispatcher plugin")
+![Screenshot: ConstantDispatcher plugin](./img/constantdispatcher.jpg "Screenshot: ConstantDispatcher plugin")
 
 ConstantDispatcher plugin
 

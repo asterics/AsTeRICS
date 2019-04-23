@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: File System)
 
 This plugin reads a whole .csv file and sends the seperate lines as strings to the output port.
 
-![Screenshot: ReadCSV plugin](img/readcsv.png "Screenshot: ReadCSV plugin")
+![Screenshot: ReadCSV plugin](./img/readcsv.png "Screenshot: ReadCSV plugin")
 
 ReadCSV
 

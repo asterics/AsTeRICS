@@ -18,7 +18,7 @@ The plugin connects to the device via the [Tobii Eye Tracking Core Software][3].
 *   USB port: The Tracker 4C needs at least a USB 2.0 port. Preferably don't use a USB hub, or only use a [recommended hub from Tobii][4].
 *   [Tobii Eye Tracking Core Software][5] must be installed and running.
 
-![Screenshot: Tobii Tracker 4C plugin](img/tobiigaming_product_4c.png "Screenshot: Tobii Tracker 4C plugin")
+![Screenshot: Tobii Tracker 4C plugin](./img/tobiigaming_product_4c.png "Screenshot: Tobii Tracker 4C plugin")
 
 Tobii Tracker 4C
 

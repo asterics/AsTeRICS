@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory:Sensor Modules)
 
 This component provides signals from the Lipmouse module, which allows computer control via a mouthpiece. The user can create input signals with 3 degrees of freedom by interacting with the mouthpiece: left/right, up/down and sip/puff. The horizontal and vertical movements are measured via force sensors inside the lipmouse module. The sip/puff actions are measured via a pressure sensor. The lipmouse can be adjusted to very low force that it can be used by persons with severly reduced motor capabilites (e.g. late stage musculuar dystrophy or quadraplegia up to C1/C2 lesions).
 
-![Screenshot: Lipmouse plugin](img/lipmouse.jpg "Screenshot: Lipmouse plugin")
+![Screenshot: Lipmouse plugin](./img/lipmouse.jpg "Screenshot: Lipmouse plugin")
 
 The Lipmouse sensor plugin
 
@@ -16,7 +16,7 @@ The Lipmouse sensor plugin
 
 The Lipmouse module must be connected to a USB port. Firmware for the lipmouse sensor can be found in the folder CIMs/Lipmouse\_CIM. The free "teensy loader" tool can be used to update the firmware of the lipmouse module. An alternative stand-alone firmware and configuration GUI is provided in the folder CIMs/StandAlone\_Modules\_FLipWare. Detailed design documentation will be provided in the future.
 
-![Lipmouse sensor application](img/lipmouseapplication.jpg "Lipmouse sensor application")
+![Lipmouse sensor application](./img/lipmouseapplication.jpg "Lipmouse sensor application")
 
 Lipmouse sensor application
 

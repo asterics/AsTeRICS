@@ -10,7 +10,7 @@ The Kinect component interfaces to the Microsoft Kinect camera over the OpenNI l
 
 For the installation of the OpenNI framework and the drivers see for example [here][1].
 
-![Screenshot: Kinect plugin](img/kinect.jpg "Screenshot: Kinect plugin")
+![Screenshot: Kinect plugin](./img/kinect.jpg "Screenshot: Kinect plugin")
 
 Kinect plugin
 

@@ -10,7 +10,7 @@ The Kinect component interfaces to the Microsoft Kinect v1 camera over the [J4K 
 
 For the installation the SDK from Microsoft is needed. The plugin was tested with the SDK-Version 1.5 (see [here][2]).
 
-![Screenshot: KinectJ4K plugin](img/kinectj4k.png "Screenshot: KinectJ4K plugin")
+![Screenshot: KinectJ4K plugin](./img/kinectj4k.png "Screenshot: KinectJ4K plugin")
 
 KinectJ4K plugin
 
