@@ -80,7 +80,7 @@ public class ARECommunicator {
 	 */
 	public String uploadModel(String modelInXML) throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model",
+			HttpResponse httpResponse = httpCommunicator.postRequest("/runtime/model",
 					HttpCommunicator.DATATYPE_TEXT_XML, HttpCommunicator.DATATYPE_TEXT_PLAIN,
 					modelInXML);
 			return httpResponse.getBody();
@@ -101,7 +101,7 @@ public class ARECommunicator {
 	public String autorun(String filepath) throws Exception {
 		try {
 			String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
-			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/autorun/" + encodedFilepath,
+			HttpResponse httpResponse = httpCommunicator.postRequest("/runtime/model/autorun/" + encodedFilepath,
 					HttpCommunicator.DATATYPE_TEXT_PLAIN);
 			return httpResponse.getBody();
 		} catch (Exception e) {
@@ -117,7 +117,7 @@ public class ARECommunicator {
 	 */
 	public String pauseModel() throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/state/pause",
+			HttpResponse httpResponse = httpCommunicator.postRequest("/runtime/model/state/pause",
 					HttpCommunicator.DATATYPE_TEXT_PLAIN);
 			return httpResponse.getBody();
 		} catch (Exception e) {
@@ -133,7 +133,7 @@ public class ARECommunicator {
 	 */
 	public String startModel() throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/state/start",
+			HttpResponse httpResponse = httpCommunicator.postRequest("/runtime/model/state/start",
 					HttpCommunicator.DATATYPE_TEXT_PLAIN);
 			return httpResponse.getBody();
 		} catch (Exception e) {
@@ -149,7 +149,7 @@ public class ARECommunicator {
 	 */
 	public String stopModel() throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/state/stop",
+			HttpResponse httpResponse = httpCommunicator.postRequest("/runtime/model/state/stop",
 					HttpCommunicator.DATATYPE_TEXT_PLAIN);
 			return httpResponse.getBody();
 		} catch (Exception e) {
@@ -265,7 +265,7 @@ public class ARECommunicator {
 	public String deployModelFromFile(String filepath) throws Exception {
 		try {
 			String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
-			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/" + encodedFilepath,
+			HttpResponse httpResponse = httpCommunicator.postRequest("/runtime/model/" + encodedFilepath,
 					HttpCommunicator.DATATYPE_TEXT_PLAIN);
 			return httpResponse.getBody();
 		} catch (Exception e) {
@@ -413,7 +413,7 @@ public class ARECommunicator {
 		try {
 			String encodedId = astericsAPIEncoding.encodeString(componentId);
 			String encodedKey = astericsAPIEncoding.encodeString(propertyKey);
-			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/components/"+encodedId+"/"+encodedKey,
+			HttpResponse httpResponse = httpCommunicator.postRequest("/runtime/model/components/"+encodedId+"/"+encodedKey,
 					HttpCommunicator.DATATYPE_TEXT_PLAIN, HttpCommunicator.DATATYPE_TEXT_PLAIN,
 					value);
 			return httpResponse.getBody();
@@ -435,7 +435,7 @@ public class ARECommunicator {
 		String encodedId = astericsAPIEncoding.encodeString(componentId);
 		String encodedPortId = astericsAPIEncoding.encodeString(portId);
 		String url = MessageFormat.format("/runtime/model/components/{0}/ports/{1}/data", encodedId, encodedPortId);
-		HttpResponse httpResponse = httpCommunicator.putRequest(url,
+		HttpResponse httpResponse = httpCommunicator.postRequest(url,
 				HttpCommunicator.DATATYPE_TEXT_PLAIN, HttpCommunicator.DATATYPE_TEXT_PLAIN,
 				value);
 		return httpResponse != null ? httpResponse.getBody() : null;
@@ -453,7 +453,7 @@ public class ARECommunicator {
 		String encodedId = astericsAPIEncoding.encodeString(componentId);
 		String encodedPortId = astericsAPIEncoding.encodeString(eventPortId);
 		String url = MessageFormat.format("/runtime/model/components/{0}/events/{1}", encodedId, encodedPortId);
-		HttpResponse httpResponse = httpCommunicator.putRequest(url,
+		HttpResponse httpResponse = httpCommunicator.postRequest(url,
 				HttpCommunicator.DATATYPE_TEXT_PLAIN);
 		return httpResponse != null ? httpResponse.getBody() : null;
 	}
