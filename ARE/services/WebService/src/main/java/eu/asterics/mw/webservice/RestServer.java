@@ -90,6 +90,19 @@ public class RestServer {
         return JSONresponse;
     }
 
+    @Path("/restfunctions/withdeprecated")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Description("Returns a list with all the available rest functions including deprecated methods")
+    public String getRestFunctionsWithDeprecated() {
+        String JSONresponse = ObjectTransformation.objectToJSON(ServerRepository.getInstance().createListOfRestFunctions(true));
+        if (JSONresponse.equals("")) {
+            JSONresponse = "{'error':'Could not retrieve the rest function signatures (Object serialization failure)'}";
+        }
+
+        return JSONresponse;
+    }
+
     /**********************
      * Runtime resources
      **********************/
@@ -114,7 +127,7 @@ public class RestServer {
     }
 
     @Path("/runtime/model")
-    @PUT
+    @POST
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Deploys the model given as XML body parameter")
@@ -134,8 +147,18 @@ public class RestServer {
         return response;
     }
 
-    @Path("/runtime/model/{filepath}")
+    @Path("/runtime/model")
     @PUT
+    @Consumes(MediaType.TEXT_XML)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Description("Deploys the model given as XML body parameter")
+    @Deprecated
+    public String deployModelPut(String modelInXML) {
+        return deployModel(modelInXML);
+    }
+
+    @Path("/runtime/model/{filepath}")
+    @POST
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Deploys the model located at {filepath}.")
     public String deployFile(@PathParam("filepath") String filepath) {
@@ -157,8 +180,17 @@ public class RestServer {
         return response;
     }
 
-    @Path("/runtime/model/state/{state}")
+    @Path("/runtime/model/{filepath}")
     @PUT
+    @Produces(MediaType.TEXT_PLAIN)
+    @Description("Deploys the model located at {filepath}.")
+    @Deprecated
+    public String deployFilePut(@PathParam("filepath") String filepath) {
+        return deployFile(filepath);
+    }
+
+    @Path("/runtime/model/state/{state}")
+    @POST
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Changes the state of the deployed model to STARTED, PAUSED, STOPPED")
     public String runModel(@PathParam("state") String state) {
@@ -200,6 +232,15 @@ public class RestServer {
         return response;
     }
 
+    @Path("/runtime/model/state/{state}")
+    @PUT
+    @Produces(MediaType.TEXT_PLAIN)
+    @Description("Changes the state of the deployed model to STARTED, PAUSED, STOPPED")
+    @Deprecated
+    public String runModelPut(@PathParam("state") String state) {
+        return runModel(state);
+    }
+
     @Path("/runtime/model/state")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -239,7 +280,7 @@ public class RestServer {
     }
 
     @Path("/runtime/model/autorun/{filepath}")
-    @PUT
+    @POST
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Deploys and starts the model of the given filepath")
     public String autorun(@PathParam("filepath") String filepath) {
@@ -259,6 +300,15 @@ public class RestServer {
         }
 
         return response;
+    }
+
+    @Path("/runtime/model/autorun/{filepath}")
+    @PUT
+    @Produces(MediaType.TEXT_PLAIN)
+    @Description("Deploys and starts the model of the given filepath")
+    @Deprecated
+    public String autorunPut(@PathParam("filepath") String filepath) {
+        return autorun(filepath);
     }
 
     @Path("/runtime/model/components/ids")
@@ -360,7 +410,7 @@ public class RestServer {
     }
 
     @Path("/runtime/model/components/{componentId}/{propertyKey}")
-    @PUT
+    @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Changes a property value of a model component")
@@ -382,8 +432,18 @@ public class RestServer {
         return response;
     }
 
-    @Path("/runtime/model/components/properties")
+    @Path("/runtime/model/components/{componentId}/{propertyKey}")
     @PUT
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Description("Changes a property value of a model component")
+    @Deprecated
+    public String setRuntimeComponentPropertyPut(String value, @PathParam("componentId") String componentId, @PathParam("propertyKey") String propertyKey) {
+        return setRuntimeComponentProperty(value, componentId, propertyKey);
+    }
+
+    @Path("/runtime/model/components/properties")
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Changes multiple property value(s) of a runtime component(s) (propertyMap – see JSON objects)")
@@ -420,6 +480,16 @@ public class RestServer {
         } catch (Exception ex) {
             return "";
         }
+    }
+
+    @Path("/runtime/model/components/properties")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Description("Changes multiple property value(s) of a runtime component(s) (propertyMap – see JSON objects)")
+    @Deprecated
+    public String setRuntimeComponentPropertiesPut(String bodyContent) {
+        return setRuntimeComponentProperties(bodyContent);
     }
 
     @Path("/runtime/model/components/{componentId}/ports/input/ids")
@@ -1004,7 +1074,7 @@ public class RestServer {
     }
 
     @Path("/runtime/model/components/{componentId}/ports/{portId}/data")
-    @PUT
+    @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Sends data to a specific port of a component in the running model")
@@ -1029,6 +1099,16 @@ public class RestServer {
         return response;
     }
 
+    @Path("/runtime/model/components/{componentId}/ports/{portId}/data")
+    @PUT
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Description("Sends data to a specific port of a component in the running model")
+    @Deprecated
+    public String sendDataToInputPortPut(String value, @PathParam("componentId") String componentId, @PathParam("portId") String portId) {
+        return sendDataToInputPort(value, componentId, portId);
+    }
+
     /**
      * this method is the same as sendDataToInputPort(), but with HTTP GET for compatibility reasons for clients which do not support HTTP PUT
      */
@@ -1043,7 +1123,7 @@ public class RestServer {
     }
 
     @Path("/runtime/model/components/{componentId}/events/{eventId}")
-    @PUT
+    @POST
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Triggers an event on the given component/port")
     public String triggerEvent(@PathParam("componentId") String componentId, @PathParam("eventId") String eventId) {
@@ -1067,5 +1147,14 @@ public class RestServer {
         }
 
         return response;
+    }
+
+    @Path("/runtime/model/components/{componentId}/events/{eventId}")
+    @PUT
+    @Produces(MediaType.TEXT_PLAIN)
+    @Description("Triggers an event on the given component/port")
+    @Deprecated
+    public String triggerEventPut(@PathParam("componentId") String componentId, @PathParam("eventId") String eventId) {
+        return triggerEvent(componentId, eventId);
     }
 }
