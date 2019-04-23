@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Audio and Voice)
 
 This plugin plays a wave file specified in the properties on the platforms sound output.
 
-![Screenshot: WavefilePlayer plugin](img/wavefileplayer.jpg "Screenshot: WavefilePlayer plugin")
+![Screenshot: WavefilePlayer plugin](./img/wavefileplayer.jpg "Screenshot: WavefilePlayer plugin")
 
 WavefilePlayer plugin
 

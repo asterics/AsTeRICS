@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Input Device Emulation)
 
 The RemoteMouse component interfaces the AsTeRICS Personal Platform to a second computer via the HID actuator CIM (USB dongle, plugged into the target computer). The HID actuator emulates a standard USB mouse on the target computer (no special driver software is needed). The mouse x-position, y-position, press/release actions of three mouse buttons and mouse-wheel movements can be controlled via desired input values and event triggers. Note that multiple instances of the Remote components (RemoteJoystick, RemoteKeyboard and RemoteMouse) can be used concurrently with one HID actuator USB dongle, e.g. to provide different key actions for up to three different input devices on the target computer.
 
-![Screenshot: RemoteMouse plugin](img/remotemouse.jpg "Screenshot: RemoteMouse plugin")
+![Screenshot: RemoteMouse plugin](./img/remotemouse.jpg "Screenshot: RemoteMouse plugin")
 
 RemoteMouse plugin
 
@@ -16,7 +16,7 @@ RemoteMouse plugin
 
 The HID Actuator CIM (CIM ID 0x0101) has to be plugged into a free USB port of the target computer and the cable has to be connected to the AsTeRICS platform.
 
-![HID Actuator CIM](img/hid_cim.jpg "HID Actuator CIM")
+![HID Actuator CIM](./img/hid_cim.jpg "HID Actuator CIM")
 
 The HID Actuator plugs into the target computer and connects via Bluetooth wirelessly to the ARE
 

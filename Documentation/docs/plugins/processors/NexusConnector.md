@@ -8,7 +8,7 @@ Component Type: Processors (Subcategory: Web)
 
 The NexusConnector component provides a bidirectional connection to a GPII Nexus instance.
 
-![Screenshot: NexusConnector plugin](img/nexusconnector.png "Screenshot: NexusConnector plugin")
+![Screenshot: NexusConnector plugin](./img/nexusconnector.png "Screenshot: NexusConnector plugin")
 
 NexusConnector plugin
 

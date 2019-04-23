@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Home Control)
 
 The FS20CommandInterpreter receives strings containing commands of the home automation system FS20 for ELV Electronics. Depending on the received commands, events will be fired.
 
-![FS20 Command Interpreter Plugin](img/fs20command.jpg "FS20 Command Interpreter Plugin")
+![FS20 Command Interpreter Plugin](./img/fs20command.jpg "FS20 Command Interpreter Plugin")
 
 FS20 Command Interpreter Plugin
 

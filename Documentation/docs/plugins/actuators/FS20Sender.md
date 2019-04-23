@@ -12,7 +12,7 @@ With the FS20 Sender commands for the FS20 house automation system can be sent o
 
 The PCS sender must be attached to the system!
 
-![Picture of the PCS FS20 sender](img/pcs.jpg "Picture of the PCS FS20 sender")
+![Picture of the PCS FS20 sender](./img/pcs.jpg "Picture of the PCS FS20 sender")
 
 Picture of the PCS FS20 sender
 

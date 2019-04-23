@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 This component compares the numerical values of two input ports and provides output depending on the result of the comparison.
 
-![Screenshot: Comparator plugin](img/comparator.jpg "Screenshot: Comparator plugin")
+![Screenshot: Comparator plugin](./img/comparator.jpg "Screenshot: Comparator plugin")
 
 Comparator plugin
 

@@ -16,11 +16,11 @@ To save an exercise the save button has to be pressed. A new file with the name 
 
 To load a file the load button has to be pressed. Then the explorer is opened an a file can be choosen. If a file is selected it is atomatically loaded in the graph. To start an exercise the start button has to be pressed. The exercies stops automatically when it is finished and a result is sent to the result output port.
 
-![MotionAnalysis plugin](img/motionanalysis_plugin.jpg "MotionAnalysis plugin")
+![MotionAnalysis plugin](./img/motionanalysis_plugin.jpg "MotionAnalysis plugin")
 
 MotionAnalysis plugin
 
-![Screenshot: MotionAnalysis plugin](img/motioinanalysis_result.jpg "Screenshot: MotionAnalysis plugin")
+![Screenshot: MotionAnalysis plugin](./img/motioinanalysis_result.jpg "Screenshot: MotionAnalysis plugin")
 
 Screenshot: MotionAnalysis plugin
 

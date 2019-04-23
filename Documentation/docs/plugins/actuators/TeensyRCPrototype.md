@@ -8,11 +8,11 @@ Component Type: Actuator (Subcategory: Others)
 
 The TeensyRCprototype component allows to use radio-controlled toys from within the AsTeRICS framework. As a prerequisite, the Teensy\_RC\_CIM.hex firmware (see /CIMS/Teensy\_RC\_CIM) must be installed on a teensy microcontroller (see [http://www.pjrc.com][1]), and the teensy must be connected to a Walkera MTC-01 "MagicCube" or a similar remote control unit with PPM-signal input, which allows sending up to 8 channel values to a connected RC-receiver:
 
-![Screenshot: TeensyRC plugin](img/teensyrc.jpg "Screenshot: TeensyRC plugin")
+![Screenshot: TeensyRC plugin](./img/teensyrc.jpg "Screenshot: TeensyRC plugin")
 
 TeensyRC plugin
 
-![Screenshot: TeensyRC remote control gear](img/teensyrcremote.jpg "TeensyRC remote control gear")
+![Screenshot: TeensyRC remote control gear](./img/teensyrcremote.jpg "TeensyRC remote control gear")
 
 TeensyRC Remot control gear
 
@@ -20,7 +20,7 @@ TeensyRC Remot control gear
 
 The channel values which are sent into the plugin are transformed into so-called "PPM-signals" which are supported by several toy remote controls. For example to use a RC-model car, only 2 channels are needed. For more information about the firmware, the needed modules and their application, please refer to the Bachelor-thesis by Alexander Frimmel in the documentation section (/Documenation/DIYGuides/RC\_ToyControl\_Frimmel.pdf).
 
-![remote control of a toy car](img/teensyrcapplication.jpg "remote control of a toy car")
+![remote control of a toy car](./img/teensyrcapplication.jpg "remote control of a toy car")
 
 Remote control of a toy car
 

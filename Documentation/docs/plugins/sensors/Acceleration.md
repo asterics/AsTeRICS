@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Inertial Measurement)
 
 The Acceleration input component is a sensor which is used in combination with the Acceleration CIM created in the course of the AsTeRICS project. The component provides three output ports which provide acceleration values for x, y and z axis. Via the component properties, the sampling rate and the sensitivity (acceleration range) can be set.
 
-![Screenshot: Acceleration plugin](img/acceleration.jpg "Screenshot: Acceleration plugin")
+![Screenshot: Acceleration plugin](./img/acceleration.jpg "Screenshot: Acceleration plugin")
 
 Acceleration plugin
 
@@ -16,7 +16,7 @@ Acceleration plugin
 
 This software component requires an Acceleration CIM (CIM ID: 0x0501) connected to the platform.
 
-![Acceleration CIM](img/acceleration_cim.jpg "Acceleration CIM")
+![Acceleration CIM](./img/acceleration_cim.jpg "Acceleration CIM")
 
 Acceleration CIM (preliminary version)
 

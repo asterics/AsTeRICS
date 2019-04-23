@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Input Device Emulation)
 
 The Mouse component allows mouse cursor positioning and clicking on the computer the ARE is running on (by software emulation). The mouse x-position, y-position, press/release actions of three mouse buttons and mouse-wheel movements can be controlled via desired input values and event triggers.
 
-![Screenshot: Mouse plugin](img/mouse.jpg "Screenshot: Mouse plugin")
+![Screenshot: Mouse plugin](./img/mouse.jpg "Screenshot: Mouse plugin")
 
 Mouse plugin
 

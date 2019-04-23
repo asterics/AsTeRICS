@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: File System)
 
 The ModelSwitcher component allows to switch from the running model to another model which will be deployed and started. This makes it possible to build menus for different use-cases or switch from one use-case to another.
 
-![Screenshot: ModelSwitcher plugin](img/modelswitcher.jpg "Screenshot: ModelSwitcher plugin")
+![Screenshot: ModelSwitcher plugin](./img/modelswitcher.jpg "Screenshot: ModelSwitcher plugin")
 
 ModelSwitcher plugin
 

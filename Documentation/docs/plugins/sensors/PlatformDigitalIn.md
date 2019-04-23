@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Personal Platform)
 
 The PlatformDigitalIn component provides an interface to read the digital inputs of the AsTeRICS Personal Platform. On state changes of the connected signals (transitions to high or low level), the component generates corresponding trigger events.
 
-![Screenshot: PlatformDigitalIn plugin](img/platformdigitalin.jpg "Screenshot: PlatformDigitalIn plugin")
+![Screenshot: PlatformDigitalIn plugin](./img/platformdigitalin.jpg "Screenshot: PlatformDigitalIn plugin")
 
 PlatformDigitalIn plugin
 
@@ -16,7 +16,7 @@ PlatformDigitalIn plugin
 
 This component requires the Core CIM (CIM Id: 0x0602) of the AsTeRICS Personal Platform.
 
-![The AsteRICS Personal Platform (preliminary version)](img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
+![The AsteRICS Personal Platform (./preliminary version)](img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
 
 The AsteRICS Personal Platform
 

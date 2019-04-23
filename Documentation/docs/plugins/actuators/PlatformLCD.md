@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Personal Platform)
 
 The PlatformLCD component handles interaction with the display and the input buttons of the AsTeRICS Personal Platform. The component allows other components to send messages to the display.
 
-![Screenshot: PlatformLCD plugin](img/platformlcd.jpg "Screenshot: PlatformLCD plugin")
+![Screenshot: PlatformLCD plugin](./img/platformlcd.jpg "Screenshot: PlatformLCD plugin")
 
 PlatformLCD plugin
 
@@ -16,7 +16,7 @@ PlatformLCD plugin
 
 This component requires the Core CIM (CIM Id: 0x0601) of the AsTeRICS Personal Platform.
 
-![The AsteRICS Personal Platform (preliminary version)](img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
+![The AsteRICS Personal Platform (./preliminary version)](img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
 
 The AsteRICS Personal Platform
 

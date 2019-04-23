@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Sensor Modules)
 
 The Lightscore plugin provides the data output of the 9DOF IMU and RGB-color sensor [lightscores][1]. Additionally to the raw data, calculated euler values of the orentation (picht, yaw, roll) are provided. Please note that this in an early version of the product and the installation process is thus a bit demanding ...
 
-![Screenshot: Lightscore plugin](img/lightscore.jpg "Screenshot: Lightscore plugin")
+![Screenshot: Lightscore plugin](./img/lightscore.jpg "Screenshot: Lightscore plugin")
 
 Lightscore plugin
 

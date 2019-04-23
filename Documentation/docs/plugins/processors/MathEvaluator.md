@@ -10,7 +10,7 @@ The math evaluator is a component with four inputs. These inputs can be combined
 
 The list of supported mathematical functions is sin(), cos(), tan(), asin(), ,acos(), atan(), sqrt(), log(), ln(), angle(), abs(), mod(), sum(), rand(), umin(), add().
 
-![Screenshot: MathEvaluator plugin](img/mathevaluator.jpg "Screenshot: MathEvaluator plugin")
+![Screenshot: MathEvaluator plugin](./img/mathevaluator.jpg "Screenshot: MathEvaluator plugin")
 
 MathEvaluator plugin
 

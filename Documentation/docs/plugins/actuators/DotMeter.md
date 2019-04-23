@@ -8,11 +8,11 @@ Component Type: Actuator (Subcategory: Graphical User Interface)
 
 The Dot Meter generates a graphical representation of a 2-dimensional signal (for example x/y-coordinates) using a colored dot.
 
-![Screenshot: DotMeter plugin](img/dotmeter.jpg "Screenshot: DotMeter plugin")
+![Screenshot: DotMeter plugin](./img/dotmeter.jpg "Screenshot: DotMeter plugin")
 
 DotMeter plugin
 
-![Screenshot: DotMeter example](img/dotmeter_example.jpg "Screenshot: DotMeter example")
+![Screenshot: DotMeter example](./img/dotmeter_example.jpg "Screenshot: DotMeter example")
 
 DotMeter example
 

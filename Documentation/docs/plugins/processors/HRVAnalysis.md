@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: DSP and feature extraction)
 
 This component calculates various Heart Rate Variability (HRV) parameters from an incoming signal of raw ECG-data. For a detailed description of the HRV parameters and a guide how to use optical and electrical heart rate sensors see the work of Andreas Schreiber (in /documentation/DIYGuides/HRVAnalysis\_Schreiber.pdf and /documentation/OpticalPulseSensor\_Schreiber.pdf)
 
-![Screenshot: HRVAnalysis plugin](img/hrvanalysis.jpg "Screenshot: HRVAnalysis plugin")
+![Screenshot: HRVAnalysis plugin](./img/hrvanalysis.jpg "Screenshot: HRVAnalysis plugin")
 
 HRVAnalysis plugin
 

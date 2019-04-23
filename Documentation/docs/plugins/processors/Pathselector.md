@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Signal Pathways)
 
 The pathselector component allows routing of an incoming numerical signal between up to 4 output ports. The desired output port can be directly selected by a dedicated event listener port, or the signal can be switched to the next or previous output port. This component can be used to utilize one particular signal for different purposes, e.g. controlling different actuators within a single model by sequentially switching between them.
 
-![Screenshot: PathSelector plugin](img/pathselector.jpg "Screenshot: PathSelector plugin")
+![Screenshot: PathSelector plugin](./img/pathselector.jpg "Screenshot: PathSelector plugin")
 
 PathSelector plugin
 

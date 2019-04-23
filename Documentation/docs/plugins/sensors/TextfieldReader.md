@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Graphical User Interface)
 
 Similar to the Keyboard Hook component, this component provides access to keystrokes coming from a standard keyboard or injected via software. The difference to the Keyboard Hook is that the Text Field Reader opens a GUI element with a text input filed and processes key input only from this text field. The keycodes of the pressed keys and accumulated words (multiple keys separated by ) are provided at the output ports of this component. Possible applications include triggering functions by keyboard input or remapping keys to other keycodes.
 
-![Screenshot: TextfieldReader plugin](img/textfieldreader.jpg "Screenshot: TextfieldReader plugin")
+![Screenshot: TextfieldReader plugin](./img/textfieldreader.jpg "Screenshot: TextfieldReader plugin")
 
 TextfieldReader plugin
 

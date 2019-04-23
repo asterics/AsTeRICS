@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Input Device Emulation)
 
 The MousecursorIcon plugin can be used to modifiy the current default system mouse cursor icon. A number of icon file names can be given as properties and activated by corresponding event listener ports. Currently, only the default system cursor can be modified. The cursor is restored to the default arrow when the model is stopped.
 
-![Screenshot: MousecursorIcon plugin](img/mousecursoricon.jpg "Screenshot: MousecursorIcon plugin")
+![Screenshot: MousecursorIcon plugin](./img/mousecursoricon.jpg "Screenshot: MousecursorIcon plugin")
 
 MousecursorIcon plugin
 

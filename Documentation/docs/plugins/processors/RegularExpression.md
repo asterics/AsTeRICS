@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Event and String Processing)
 
 This component processes strings with regular expressions. It can work in two modes: match strings with the pattern or replace string parts with another string. The regular expression syntax is defined in the [Java class Pattern][1].  
 
-![Screenshot: RegularExpression plugin](img/regularexpression.jpg "Screenshot: RegularExpression plugin")
+![Screenshot: RegularExpression plugin](./img/regularexpression.jpg "Screenshot: RegularExpression plugin")
 
 RegularExpression plugin
 

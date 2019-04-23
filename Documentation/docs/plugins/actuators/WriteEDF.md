@@ -10,7 +10,7 @@ This plugin writes the incoming data into an .edf file (http://www.edfplus.info/
 
 The data gets live recorded, so it can be viewed simulaneously in the EDF-Browser ( http://www.teuniz.net/edfbrowser/ )
 
-![Screenshot: WriteEDF plugin](img/writeedf.png "Screenshot: WriteEDF plugin")
+![Screenshot: WriteEDF plugin](./img/writeedf.png "Screenshot: WriteEDF plugin")
 
 WriteEDF
 

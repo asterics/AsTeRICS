@@ -10,7 +10,7 @@ The PicoTTS component creates speech output of given input text.
 
 This component uses the picoTTS binary to create a temporary wavefile, which is played after creation.
 
-![Screenshot: picoTTS plugin](img/picotts.png "Screenshot: picoTTS plugin")
+![Screenshot: picoTTS plugin](./img/picotts.png "Screenshot: picoTTS plugin")
 
 picoTTS plugin
 

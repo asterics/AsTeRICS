@@ -4,7 +4,7 @@ title: Dialogs Settings
 
 # Dialogs Settings
 
-![Screenshot: Options Dialog, Dialogs Settings](img/dialogs_settings.png "Screenshot: Options Dialog, Dialogs Settings")
+![Screenshot: Options Dialog, Dialogs Settings](./img/dialogs_settings.png "Screenshot: Options Dialog, Dialogs Settings")
 
 Options Dialog, Dialogs Settings
 

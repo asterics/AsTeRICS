@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 This component takes an input and multiplies it with a gain factor set in the properties. It can be used to amplify or reduce signal values or to invert them.
 
-![Screenshot: Amplifier plugin](img/amplifier.jpg "Screenshot: Amplifier plugin")
+![Screenshot: Amplifier plugin](./img/amplifier.jpg "Screenshot: Amplifier plugin")
 
 Amplifier plugin
 

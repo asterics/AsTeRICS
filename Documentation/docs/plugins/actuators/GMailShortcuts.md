@@ -8,7 +8,7 @@ title: GMailShortcuts
 
 The GMailShortcuts component was developed to operate the e-mail client of GMail via Keystroke combinations (Shortcuts).The component emulates local keyboard inputs that are sent to the window currently having the focus. Please ensure that the GMail tab in your webbrowser has the input focus.
 
-![Screenshot: GMailShortcuts plugin](img/gmailshortcuts.jpg "Screenshot: GMailShortcuts plugin")
+![Screenshot: GMailShortcuts plugin](./img/gmailshortcuts.jpg "Screenshot: GMailShortcuts plugin")
 
 GMailShortcuts plugin
 

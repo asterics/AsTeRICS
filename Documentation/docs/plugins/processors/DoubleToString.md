@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Data Converters)
 
 This component converts the double values at the input port to string values at the output.
 
-![Screenshot: DoubleToString plugin](img/doubletostring.jpg "Screenshot: DoubleToString plugin")
+![Screenshot: DoubleToString plugin](./img/doubletostring.jpg "Screenshot: DoubleToString plugin")
 
 DoubleToString plugin
 

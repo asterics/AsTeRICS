@@ -10,11 +10,11 @@ The AngularCursorControl component allows mouse cursor positioning by software e
 
 If values are received at the move input port, the mouse cursor is moved in the direction of the arrow. Using other components, a stepwise control of angle and movement can be achieved, allowing full control of the cursor position. After a certain time of inactivity (no values received at the input ports), a click event can be created for generating different mouse clicks e.g. via a mouse element.
 
-![Screenshot: AngularCursorControl plugin](img/angularcursorcontrol.jpg "Screenshot: AngularCursorControl plugin")
+![Screenshot: AngularCursorControl plugin](./img/angularcursorcontrol.jpg "Screenshot: AngularCursorControl plugin")
 
 AngularCursorControl plugin
 
-![Screenshot: AngularCursorControl arrow indicator](img/angularcursorcontrol_demo.jpg "Screenshot: AngularCursorControl arrow indicator")
+![Screenshot: AngularCursorControl arrow indicator](./img/angularcursorcontrol_demo.jpg "Screenshot: AngularCursorControl arrow indicator")
 
 AngularCursorControl arrow indicator
 

@@ -14,7 +14,7 @@ This component interfaces the Intel Real Sense F200 (SR300) 3D camera and provid
 
 You need an [Intel Real Sense F200 (SR300)][1] camera plugged in and the SDK installed and running. The camera only supports Windows (>= 8.1, 64 Bit).
 
-![Intel Real Sense 3D camera](img/realsense_f200_camera.jpg "Intel Real Sense F200 (SR300) camera")
+![Intel Real Sense 3D camera](./img/realsense_f200_camera.jpg "Intel Real Sense F200 (SR300) camera")
 
 Intel Real Sense F200 (SR300) camera
 

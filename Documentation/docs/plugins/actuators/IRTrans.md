@@ -12,7 +12,7 @@ This component sends transmission commands to an infrared-transmitter. The diffe
   
 Using the event based option, the property "prestring" is set to "snd LG-TV", and at property "send1" is set to "TvOn".
 
-![Screenshot: IRTrans plugin](img/irtrans.jpg "Screenshot: IRTrans plugin")
+![Screenshot: IRTrans plugin](./img/irtrans.jpg "Screenshot: IRTrans plugin")
 
 IRTrans plugin
 
@@ -20,7 +20,7 @@ IRTrans plugin
 
 The IRTrans module (USB, LAN or WiFi version) is required. It can be purchased from [http://www.irtrans.de][1].
 
-![IRTrans universal IR remote module](img/irtrans_picture.jpg "IRTrans universal IR remote module")
+![IRTrans universal IR remote module](./img/irtrans_picture.jpg "IRTrans universal IR remote module")
 
 IRTrans universal IR remote module
 

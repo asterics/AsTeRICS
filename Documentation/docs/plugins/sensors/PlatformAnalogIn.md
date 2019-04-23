@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Generic Control Input)
 
 The PlatformAnalogIn component is a sensor which is used in combination with the analog inputs of the personal platform. The component provides two output ports which correlate to the inputs IN1 and IN2 of the platform. The component can be set up to sample the inputs periodically or upon an incoming event. Both inputs can be used for voltage and resistance measurement.
 
-![Screenshot: PlatformAnalogIn plugin](img/platformanalogin.jpg "Screenshot: PlatformAnalogIn plugin")
+![Screenshot: PlatformAnalogIn plugin](./img/platformanalogin.jpg "Screenshot: PlatformAnalogIn plugin")
 
 Platform AnalogIn plugin
 
@@ -16,7 +16,7 @@ Platform AnalogIn plugin
 
 This component requires the Core CIM (CIM Id: 0x0602) of the AsTeRICS Personal Platform.
 
-![The AsteRICS Personal Platform (preliminary version)](img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
+![The AsteRICS Personal Platform (./preliminary version)](img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
 
 The AsteRICS Personal Platform
 

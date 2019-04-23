@@ -8,7 +8,7 @@ title: IR Trans
 
 The IRMicro plugin connects to a Microcontroller via a COM port in order to receive and sent infrared (IR-) remote control commands (raw timing values). The values are stored in (or loded from) .csv file (one file per command, given the command's name as filename.csv) in the ARE subfolder ./data/processor.IRMicro
 
-![Screenshot: IrMicro plugin](img/irmicro.jpg "Screenshot: IrMicro plugin")
+![Screenshot: IrMicro plugin](./img/irmicro.jpg "Screenshot: IrMicro plugin")
 
 IrMicro plugin
 

@@ -10,7 +10,7 @@ The ApplicationLauncher component can be used to run an external executable appl
 
 Together with the Keyboard- or RemoteKeyboard components, the ApplicationLauncher plugin can perform complex automation tasks, for example open Skype, choose a contact and make a call.
 
-![Screenshot: ApplicationLauncher plugin](img/applicationlauncher.jpg "Screenshot: ApplicationLauncher plugin")
+![Screenshot: ApplicationLauncher plugin](./img/applicationlauncher.jpg "Screenshot: ApplicationLauncher plugin")
 
 ApplicationLauncher plugin
 

@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Computer Vision)
 
 This component provides access to the raw gaze tracking data from the [EyeTribe][1] eye tracking device. The data includes the estimated gazepoint (x/y), the eye location (x/y), fixation time and eye close time. The plugin connects to a running EyeTribe server.
 
-![Screenshot: Eyetribe plugin](img/eyetribe.jpg "Screenshot: Eyetribe plugin")
+![Screenshot: Eyetribe plugin](./img/eyetribe.jpg "Screenshot: Eyetribe plugin")
 
 Eyetribe plugin
 
@@ -16,7 +16,7 @@ Eyetribe plugin
 
 The Eyetribe tracker must be connected to an USB3.0 port and the Eyetribe server software must be running.
 
-![Screenshot: Eyetribe hardware](img/eyetribe_hw.png "Screenshot: Eyetribe hardware")
+![Screenshot: Eyetribe hardware](./img/eyetribe_hw.png "Screenshot: Eyetribe hardware")
 
 Eyetribe hardware
 

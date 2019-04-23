@@ -4,7 +4,7 @@ title: General Settings
 
 # General Settings
 
-![Screenshot: Options Dialog, General Settings](img/general_settings.png "Screenshot: Options Dialog, General Settings")
+![Screenshot: Options Dialog, General Settings](./img/general_settings.png "Screenshot: Options Dialog, General Settings")
 
 Options Dialog, General Settings
 

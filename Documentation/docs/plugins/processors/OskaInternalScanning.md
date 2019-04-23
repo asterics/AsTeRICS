@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: OSKA)
 
 This component interacts with the On Screen Keyboard Application (OSKA) and forwards key selections and command (action-) strings to other ARE plugins. OSKA is set to use its internal scanning methods and the component exposes the two button input events that Oska can work with.
 
-![Screenshot: OskaInternalScanning plugin](img/oskainternalscanning.jpg "Screenshot: OskaInternalScanning plugin")
+![Screenshot: OskaInternalScanning plugin](./img/oskainternalscanning.jpg "Screenshot: OskaInternalScanning plugin")
 
 OskaInternalScanning plugin
 

@@ -9,7 +9,7 @@ Component Type: Processor (Subcategory: Basic Math)
 This component takes an input and compares it to a given threshold and generates an according output value dependent on the operation mode. The component allows three operation modes: binary, deadzone and cut off which are described in the property section. The component allows operating with a hysteresis by setting the thresholds for transition from below to above and vice versa differently. Transitions over the thresholds are always evaluated arithmetically thus a below threshold to above transition always happens when the new value is mathematically greater than the threshold while the last input was less than threshold. Respectively the transition from above to below happens when the last value was greater than the threshold value and the new value is less than it. This statement also holds for negative values in the threshold.  
 The component provides the possibility to raise events on threshold transitions either on below to above, above to below or on both.
 
-![Screenshot: Threshold plugin](img/threshold.jpg "Screenshot: Threshold plugin")
+![Screenshot: Threshold plugin](./img/threshold.jpg "Screenshot: Threshold plugin")
 
 Threshold plugin
 

@@ -8,7 +8,7 @@ title: KNX
 
 The KNX plugin enables the ARE to interface a KNX installation. This plugin utilizes the calimero java library (http://calimero.sourceforge.net/) for the KNX implementation, it is (C)opyrighted 2006-2008 by W. Kastner and released under the GNU General Public License (FSF v2 or later). The KNX plugin provides an interface to the KNX home automation bus via a KNXnet/IP router. KNX actuators with specific group addresses can be switched on or off, or a specific value can be sent to the KNX actuators. This allows control of lightning, heat and ventilation, blend control or other utilization of other home automation facilities via the AsTeRICS platform.
 
-![Screenshot: KNX plugin](img/knx.jpg "Screenshot: KNX plugin")
+![Screenshot: KNX plugin](./img/knx.jpg "Screenshot: KNX plugin")
 
 KNX plugin
 

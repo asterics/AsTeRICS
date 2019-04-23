@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Standard Input Devices)
 
 This component provides access to mouse input activities of connected a standard mouse, like mouse x/y movement or button press/release activities. Mouse wheel and third mouse button are supported.
 
-![Screenshot: MouseCapture plugin](img/mousecapture.jpg "Screenshot: MouseCapture plugin")
+![Screenshot: MouseCapture plugin](./img/mousecapture.jpg "Screenshot: MouseCapture plugin")
 
 MouseCapture plugin
 

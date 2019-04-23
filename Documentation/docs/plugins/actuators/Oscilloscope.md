@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Graphical User Interface)
 
 The Oscilloscope provides graphical output of one or two signal values. It is a very basic implementation but useful to visualize sensor values, changes in values and value history. The trace colours and update speed can be configured via component parameters.
 
-![Screenshot: Oscilloscope plugin](img/oscilloscope.jpg "Screenshot: Oscilloscope plugin")
+![Screenshot: Oscilloscope plugin](./img/oscilloscope.jpg "Screenshot: Oscilloscope plugin")
 
 Oscilloscope plugin
 

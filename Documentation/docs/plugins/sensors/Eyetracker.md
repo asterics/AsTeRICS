@@ -17,7 +17,7 @@ This component provides different computer vision tracking algorithms which can 
     The coordinate-output of the eye tracking is only working correctly if no head movements occur. Any head movement will compromise the correctness of the x/y estimation for the cursor position..
 *   **calibrated eye tracking with head pose estimation** This mode is an extension of the "calibrated eye tracking" mode. The calibration has to be performed as above. Additionally to the head-mounted camera, an external LED-frame mounted on the computer monitor is used to minimize the negative effects of head movements to the tracking accuracy. Please note that this mode needs the head-mounted SVM device plus the external Led-Frame.
 
-![Screenshot: Eyetracker in operation](img/eyetracker.jpg "Screenshot: Eyetracker in operation")
+![Screenshot: Eyetracker in operation](./img/eyetracker.jpg "Screenshot: Eyetracker in operation")
 
 Eyetracker in operation (calibrated eyetracking mode)
 
@@ -25,7 +25,7 @@ Eyetracker in operation (calibrated eyetracking mode)
 
 A camera has to be available in the operating system, to detect round blobs or the eye-pupil position. Depending on the mode (if head pose estimation is selected), a head mounted camera which films a close-up of the eye and an external LED-mount are needed.
 
-![Screenshot: head mounted SVM device](img/eyetracker_headmount.jpg "Screenshot: head mounted SVM device")
+![Screenshot: head mounted SVM device](./img/eyetracker_headmount.jpg "Screenshot: head mounted SVM device")
 
 Head mounted SVM device
 

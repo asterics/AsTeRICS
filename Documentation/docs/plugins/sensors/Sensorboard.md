@@ -12,7 +12,7 @@ Furthermore, the Sensorboard contains a USB hub so that a USB camera can be conn
 The sensorboard is necessary for the headpose-compensated eye gaze tracking applications of the SVM. It can be used also for other applications like remote IR-led tracking or as inertial measurement unit.  
 For a detailled description of the Sensorboard and its application for eye-tracking please refer to the files Documentation/DIYGuides/SVM\_Eyetracking\_Yeung.pdf and Documentation/DIYGuides/SmartVisionModule.pdf
 
-![Screenshot: Sensorboard plugin](img/sensorboard_plugin.jpg "Screenshot: Sensorboard plugin")
+![Screenshot: Sensorboard plugin](./img/sensorboard_plugin.jpg "Screenshot: Sensorboard plugin")
 
 The Sensorboard plugin
 
@@ -20,7 +20,7 @@ The Sensorboard plugin
 
 The Sensorboard has to be connected to an USB port. Design files and firmware of the Sensorboard can be found in the folder CIMs/Sensorboard.
 
-![Screenshot: the Sensorboard PCB](img/sensorboard.jpg "Screenshot: Sensorboard PCB")
+![Screenshot: the Sensorboard PCB](./img/sensorboard.jpg "Screenshot: Sensorboard PCB")
 
 The Sensorboard PCB
 

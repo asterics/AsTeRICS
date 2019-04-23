@@ -6,7 +6,7 @@ title: Event Flip Flop
 
 Component Type: Processor (Subcategory: Event and Signal Processing) This component stores the state, driven by an event. When the event-in event is received and the internal status is 1, event-out1 is fired and the internal status set to 2. When the event-in event is received and the internal status is 2, event-out2 is fired and the internal status set to 1.
 
-![Screenshot: Event Flip Flop plugin](img/eventflipflop.png "Screenshot: Event Flip Flop plugin")
+![Screenshot: Event Flip Flop plugin](./img/eventflipflop.png "Screenshot: Event Flip Flop plugin")
 
 Event Flip Flop plugin
 

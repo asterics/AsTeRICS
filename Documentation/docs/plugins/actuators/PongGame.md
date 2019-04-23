@@ -8,11 +8,11 @@ Component Type: Actuator (Subcategory: Others)
 
 The Pong component is an implementation of the classic "pong"-game, where two players control their paddles and try to hit a moving ball. The Pong component offers different input modalities (speed or event-based) so that the game can be played via a wide range (and combination of) sensors. Two users can play the game using different sensors. Several game options can be controlled by the plugin properties.
 
-![Screenshot: Pong plugin](img/pong.jpg "Screenshot: Pong plugin")
+![Screenshot: Pong plugin](./img/pong.jpg "Screenshot: Pong plugin")
 
 Pong plugin
 
-![Screenshot: Pong game screen](img/pongscreen.jpg "Pong game screen")
+![Screenshot: Pong game screen](./img/pongscreen.jpg "Pong game screen")
 
 Pong game screen
 
@@ -20,7 +20,7 @@ Pong game screen
 
 A special "bike-Pong" interface has been developed at UAS Technikum Wien, which allows playing the game via bicycle ergometers. For this purpose, the Arduino microcontroller (and corresponding plugin) are utilized to measure the user interactions and deliver the data to the Pong plugin. The energy created by the pong-players can be calculated in calories (this mode makes only sense when the bike-ergonometers are connected, see properties) Please note that the bike mode only works well with a screen resolution of 1920x1090 because of the utilized background graphics.
 
-![bike pong gaming](img/pongapplication.jpg "bike pong gaming")
+![bike pong gaming](./img/pongapplication.jpg "bike pong gaming")
 
 bike-ergomenter controlled pong game
 

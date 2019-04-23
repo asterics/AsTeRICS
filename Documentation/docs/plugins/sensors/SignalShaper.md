@@ -8,11 +8,11 @@ Component Type: Sensor (Subcategory: Simulation)
 
 The SignalShaper component can be used to generate signal composed from basic linear functions.
 
-![Screenshot: SignalShaper plugin](img/signalshaper.jpg "Screenshot: SignalShaper plugin")
+![Screenshot: SignalShaper plugin](./img/signalshaper.jpg "Screenshot: SignalShaper plugin")
 
 SignalShaper plugin
 
-![Example composed signal created from three linear signals](img/signalshaper.png "Example composed signal")
+![Example composed signal created from three linear signals](./img/signalshaper.png "Example composed signal")
 
 Example composed signal created from three linear signals
 

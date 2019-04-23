@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Generic Control Output)
 
 The DigitalOut plugin operates the output ports of the GPIO CIM. The output ports 1-2 are relais outputs where loads can be connected via a galvanic isolation barrier. The output ports 3-5 are open-collector outputs, where a pull-up resistor can be activated or deactivated using the plugin's properties. The plugin provides event listener ports which serve the activation or deactivation of an output channel, and a command port which accepts string parameters to set, clear and toggle particular output channels.
 
-![Screenshot: DigitalOut plugin](img/digitalout.jpg "Screenshot: DigitalOut plugin")
+![Screenshot: DigitalOut plugin](./img/digitalout.jpg "Screenshot: DigitalOut plugin")
 
 DigitalOut plugin
 

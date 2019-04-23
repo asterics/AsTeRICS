@@ -8,7 +8,7 @@ Component Type: actuator (Subcategory: Home Control)
 
 The EnOcean plugin enables the ARE to interface to EnOcean wireless sensors. This plugin utilizes the Priscilla java library for the EnOcean implementation, it is (C)opyrighted by UAS FH Technikum Wien and released under the GNU General Public License (FSF v2). The EnOcean plugin provides an interface to the EnOcean sensors over an USB stick (EnOcean USB300) or an IP gateway. Interfacing to EnOcean devices is possible either by sending different data to actuators or receiving different types of values. This allows control of lightning, heat and ventilation devices and many more via the AsTeRICS platform.
 
-![Screenshot: EnOcean plugin](img/enocean.png "Screenshot: EnOcean plugin")
+![Screenshot: EnOcean plugin](./img/enocean.png "Screenshot: EnOcean plugin")
 
 EnOcean plugin
 

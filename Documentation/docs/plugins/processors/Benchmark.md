@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Others)
 
 This component may be used to perform benchmark of data throughput at a particular location of the model / design. It counts port activity of data and event ports per given time.
 
-![Screenshot: Benchmark plugin](img/benchmark.jpg "Screenshot: Benchmark plugin")
+![Screenshot: Benchmark plugin](./img/benchmark.jpg "Screenshot: Benchmark plugin")
 
 Benchmark plugin
 

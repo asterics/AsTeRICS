@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Graphical User Interface)
 
 The TextArea is a GUI component which displays (optionally user-editable) text information. It features multiple rows and a scrollbar, and event for appending string text, deleting characters or sending the text content
 
-![Screenshot: TextArea plugin](img/textarea.jpg "Screenshot: TextArea plugin")
+![Screenshot: TextArea plugin](./img/textarea.jpg "Screenshot: TextArea plugin")
 
 TextArea plugin
 

@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Graphical User Interface)
 
 The Bar display generates a coloured bar graph to visualise a current signal value in the ARE environment (of course the LC - display or a computer monitor have to be connected to the platform). The Bar display features auto-scale of value range, display of a threshold value and selectable update rate and foreground / background colours.
 
-![Screenshot: BarDisplay plugin](img/bardisplay.jpg "Screenshot: BarDisplay plugin")
+![Screenshot: BarDisplay plugin](./img/bardisplay.jpg "Screenshot: BarDisplay plugin")
 
 BarDisplay plugin
 

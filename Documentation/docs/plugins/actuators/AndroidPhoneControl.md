@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Phone Interface)
 
 This component controls a mobile phone with Android operating system through the TCP/IP connection. Currently this component is able to perform such action as: call a remote phone, drop a phone call, send and receive SMS message.
 
-![Screenshot: AndroidPhoneControl plugin](img/androidphonecontrol.jpg "Screenshot: AndroidPhoneControl plugin")
+![Screenshot: AndroidPhoneControl plugin](./img/androidphonecontrol.jpg "Screenshot: AndroidPhoneControl plugin")
 
 AndroidPhoneControl plugin
 

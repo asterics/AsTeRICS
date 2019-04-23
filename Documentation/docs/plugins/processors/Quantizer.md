@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 This plugin performs a quantization of the input signal. The value of the output signal is the input value rounded to the nearest multiple of the quantizationStep property value.
 
-![Screenshot: Quantizer plugin](img/quantizer.jpg "Screenshot: Quantizer plugin")
+![Screenshot: Quantizer plugin](./img/quantizer.jpg "Screenshot: Quantizer plugin")
 
 Quantizer plugin
 

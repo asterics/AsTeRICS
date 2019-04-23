@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Microcontroller Interface)
 
 This component provides an interface for a FABI controller and enables the programming process. It is possible to configure the buttons which are connected to the FABI controller and store the set to the built in EEPROM.
 
-![Screenshot: FABI plugin](img/fabi.png "Screenshot: FABI plugin")
+![Screenshot: FABI plugin](./img/fabi.png "Screenshot: FABI plugin")
 
 FABI plugin
 

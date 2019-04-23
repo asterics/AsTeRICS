@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Bioelectric Measurement)
 
 This component provides an interface to bioelectric amplifiers which are compatible to the openEEG P2 packet fromat (e.g. the ModualarEEG or the SMTEEG by Olimex). For more information please refer to the [OpenEEG][1] website.The COM Port number where the device is connected must be specified in the plugin properties.
 
-![Screenshot: OpenEEG P2Parser plugin](img/p2parser.jpg "Screenshot: OpenEEG P2Parser plugin")
+![Screenshot: OpenEEG P2Parser plugin](./img/p2parser.jpg "Screenshot: OpenEEG P2Parser plugin")
 
 OpenEEG P2 Parser plugin
 

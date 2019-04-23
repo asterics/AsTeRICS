@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Generic Control Input)
 
 The LegacyAnalogIn component is a sensor which is used in combination with the legacy ADC CIM (CIM Id: 0x0401). The component provides eight output ports which correlate to the inputs IN1 to IN8 of the CIM. The component can be set up to sample the inputs periodically or upon an incoming event.
 
-![Screenshot: LegacyAnalogIn plugin](img/legacyanalogin.jpg "Screenshot: LegacyAnalogIn plugin")
+![Screenshot: LegacyAnalogIn plugin](./img/legacyanalogin.jpg "Screenshot: LegacyAnalogIn plugin")
 
 Legacy AnalogIn plugin
 
@@ -16,7 +16,7 @@ Legacy AnalogIn plugin
 
 This software component requires an ADC-DAC CIM (CIM ID: 0x0401) connected to a USB port.
 
-![ADC/DAC CIM](img/analogin_cim.jpg "ADC/DAC CIM")
+![ADC/DAC CIM](./img/analogin_cim.jpg "ADC/DAC CIM")
 
 Legacy ADC/DAC CIM
 

@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Event and String Processing)
 
 Adds the preString and postString strings to the incoming string and sends the new string to the output port.
 
-![Screenshot: StringExpander plugin](img/stringexpander.jpg "Screenshot: StringExpander plugin")
+![Screenshot: StringExpander plugin](./img/stringexpander.jpg "Screenshot: StringExpander plugin")
 
 StringExpander plugin
 

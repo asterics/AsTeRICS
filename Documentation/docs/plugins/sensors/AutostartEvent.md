@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory: Simulation)
 
 The AutostartEvent component sends an event after model start, with a delay defined by the Delay property.
 
-![Screenshot: AutostartEvent plugin](img/autostartevent.jpg "Screenshot: AutostartEvent plugin")
+![Screenshot: AutostartEvent plugin](./img/autostartevent.jpg "Screenshot: AutostartEvent plugin")
 
 AutostartEvent plugin
 

@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Others)
 
 The SkyWatcher plugin can be used to control telescope mounts using the Nexstar 5 protocol, e.g. Skywatcher AllView, Skywatcher Merlin via Synscan hand control.
 
-![Screenshot: SkyWatcherMount plugin](img/skywatcher.png "Screenshot: SkyWatcherMount plugin")
+![Screenshot: SkyWatcherMount plugin](./img/skywatcher.png "Screenshot: SkyWatcherMount plugin")
 
 SkyWatcherMount plugin
 

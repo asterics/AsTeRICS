@@ -8,7 +8,7 @@ Component Type: Sensor (Subcategory:Sensor Modules)
 
 This component provides the distance sensor signal from the Proximity sensor board, which has been developed in course of the Bachelor Theses of Franziska Horak at the UAS Technikum Wien. The Proximity sensor board can be head mounted and offers an alternative input method via minimal movements of facial features - e.g. chin movements. In several proof-of-concept models, on-screen keyboard control and mouse control could be shown. For detailed information please refer to the file Documentation/DIYGuides/ProximitySensor\_Horak.pdf
 
-![Screenshot: Proximity plugin](img/proximity.jpg "Screenshot: Proximity plugin")
+![Screenshot: Proximity plugin](./img/proximity.jpg "Screenshot: Proximity plugin")
 
 The Proximity sensor plugin
 
@@ -16,7 +16,7 @@ The Proximity sensor plugin
 
 The Proximity sensor has to be connected to a USB port. Design files and firmware for the proximity sensor can be found in the folder CIMs/Proximity\_CIM.
 
-![Proximity sensor application](img/proximityapplication.jpg "Proximity sensor application")
+![Proximity sensor application](./img/proximityapplication.jpg "Proximity sensor application")
 
 Proximity sensor application
 

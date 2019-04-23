@@ -10,11 +10,11 @@ The AsTeRICS Configuration Suite is fully accessible by keyboard. The following 
 
 The whole ACS is fully accessible by keyboard. The menu items of the ACS menus can be acessed pressing the _Alt_\-key, followed by the keys, being displayed. Screenshot 1 shows the menu after pressing _Alt_, Screenshot 2 shows the System menu after pressing _Alt_ folowed by pressing _Y_.
 
-![Screenshot: The menu after pressing Alt](img/keyboard-menu1.png "Screenshot: The menu after pressing Alt")
+![Screenshot: The menu after pressing Alt](./img/keyboard-menu1.png "Screenshot: The menu after pressing Alt")
 
 Screenshot: The menu after pressing _Alt_
 
-![Screenshot: The menu after pressing Alt folowed by pressing Y](img/keyboard-menu2.png "Screenshot: The menu after pressing Alt folowed by pressing Y")
+![Screenshot: The menu after pressing Alt folowed by pressing Y](./img/keyboard-menu2.png "Screenshot: The menu after pressing Alt folowed by pressing Y")
 
 Screenshot: The menu after pressing _Alt_ followed by pressing _Y_
 
@@ -22,7 +22,7 @@ Screenshot: The menu after pressing _Alt_ followed by pressing _Y_
 
 The drawing area can be reached, pressing _Ctrl_+_D_, the focus will be on the first element. The focus between the elements can be changed using the _Tab_ key or the Arrow keys. Elements can be selected using the _Space_ Key, multiple elements can be selected, pressing _Ctrl_+_Space_. Pressing the _App_ Key (also called Context Menu key) opens the context menu. Screenshot 3 shows a selected component with the opend context menu.
 
-![Screenshot: Component with opend context menu](img/keyboard-contextmenu.png "Screenshot: Component with opend context menu")
+![Screenshot: Component with opend context menu](./img/keyboard-contextmenu.png "Screenshot: Component with opend context menu")
 
 Screenshot: Component with opend context menu
 
@@ -56,7 +56,7 @@ Accessing the GUI Editor is quite similar to the Drawing area. Using the _Ctrl_+
 
 _Ctrl_+_G_ sets the focus to the property editor tab. Using the _Tab_ key sets the focus to the property editor, using the arrow keys allows to navigate to the other tabs (input and output ports, event triggers and listeners). Within the property editor, navigation will be handled using the _Tab_ key to select and edit the different properties. Within the input and output ports, the list of ports can be navigated using the arrow keys (so shown in screenshot 4).
 
-![Screenshot: Port Editor with opend and closed output ports](img/keyboard-output_ports.png "Screenshot: Port Editor with opend and closed output ports")
+![Screenshot: Port Editor with opend and closed output ports](./img/keyboard-output_ports.png "Screenshot: Port Editor with opend and closed output ports")
 
 Screenshot: Port Editor with opend and closed output ports
 
@@ -64,7 +64,7 @@ Screenshot: Port Editor with opend and closed output ports
 
 With the Event Editor (reachable with the shortcut _Ctrl_+_E_), events within an event channel will be set. Once again, the navigation will be handled using the _Tab_ key. When a combobox is in focus, the value can be changed using the up an down arrow keys. Furthermore, the combobox can be opend using the _Enter_ key. Screenshot 5 shows the event editor with an opend combo box.
 
-![Screenshot: Event Editor with opend combobox](img/keyboard-eventeditor.png "Screenshot: Event Editor with opend combobox")
+![Screenshot: Event Editor with opend combobox](./img/keyboard-eventeditor.png "Screenshot: Event Editor with opend combobox")
 
 Screenshot: Event Editor with opend combobox
 

@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Graphical User Interface)
 
 This component allows moving the ARE window to desired locations on the screen and setting its state and modification options. Several default locations can be selected via incoming events (top, left, bottom, right or center of the screen). X- and Y- offset values can be defined - thus it becomes possible to set the ARE window e.g to a second screen (which is currently not supported in the ACS GUI designer).
 
-![Screenshot: AREWindow plugin](img/arewindow.jpg "Screenshot: AREWindow plugin")
+![Screenshot: AREWindow plugin](./img/arewindow.jpg "Screenshot: AREWindow plugin")
 
 AREWindow plugin
 

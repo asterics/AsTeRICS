@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: Event and String Processing)
 
 This component allows the user to control up to 10 actions using just one or two input events. In the first step, the event actions are scanned so that the user can choose the action, in the next step the selected action event is triggered. The detailed functionality depends upon the selected mode.
 
-![Screenshot: OneEventManyActions plugin](img/oneeventmanyactions.jpg "Screenshot: OneEventManyActions plugin")
+![Screenshot: OneEventManyActions plugin](./img/oneeventmanyactions.jpg "Screenshot: OneEventManyActions plugin")
 
 OneEventManyActions plugin
 

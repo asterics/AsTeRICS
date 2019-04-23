@@ -8,7 +8,7 @@ Component Type: Actuator (Subcategory: Graphical User Interface)
 
 This component allows moving or setting the state of a specific window (which is active and can be identified via the window title) to desired locations on the screen. Several default locations can be selected via incoming events (top, left, bottom, right or center of the screen). X- and Y- offset values can be defined - thus it becomes possible to move the remote window e.g to a second screen.
 
-![Screenshot: RemoteWindow plugin](img/remotewindow.jpg "Screenshot: RemoteWindow plugin")
+![Screenshot: RemoteWindow plugin](./img/remotewindow.jpg "Screenshot: RemoteWindow plugin")
 
 RemoteWindow plugin
 

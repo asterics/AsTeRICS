@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 This plugin provides adjustable Infinite Impulse Response Filters, based on the Java DSP Library: [http://www.source-code.biz/dsp/java][1]
 
-![Screenshot: IIRFilter plugin](img/iirfilter.jpg "Screenshot: IIRFilter plugin")
+![Screenshot: IIRFilter plugin](./img/iirfilter.jpg "Screenshot: IIRFilter plugin")
 
 IIRFilter plugin
 

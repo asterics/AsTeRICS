@@ -8,11 +8,11 @@ Component Type: Sensor (Subcategory: Graphical User Interface)
 
 This component creates a panel window with selectable opacity which can be placed anywhere on the screen/desktop. No window decoration is used. The plugin provides x/y input port for coordinates and the panel reacts if these coordinates are located within the panel. Via a selectable hover time, events can be triggered if the coordinates stay within the panel for a given time. Note that the hoverPanel represents a seperate window and is not a child window of the ARE window.
 
-![Screenshot: HoverPanel plugin](img/hoverpanel.jpg "Screenshot: HoverPanel plugin")
+![Screenshot: HoverPanel plugin](./img/hoverpanel.jpg "Screenshot: HoverPanel plugin")
 
 HoverPanel plugin
 
-![Screenshot: 2 HoverPanels on screen](img/hoverpanelscreen.jpg "Screenshot: 2 HoverPanels on screen")
+![Screenshot: 2 HoverPanels on screen](./img/hoverpanelscreen.jpg "Screenshot: 2 HoverPanels on screen")
 
 2 HoverPanels on screen
 

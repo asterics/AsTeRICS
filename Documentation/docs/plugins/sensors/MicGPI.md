@@ -12,7 +12,7 @@ It is possible to attach a momentary switch via standard 3.5mm jack plug to the 
 
 **Disclaimer:** Attaching a switch to mic/line input does not work with all sound cards. Although we are not aware of a permanent damage to a sound card, you do this on your own risk !
 
-![Screenshot: MicGPI plugin](img/micgpi.png "Screenshot: MicGPI plugin")
+![Screenshot: MicGPI plugin](./img/micgpi.png "Screenshot: MicGPI plugin")
 
 MicGPI plugin
 

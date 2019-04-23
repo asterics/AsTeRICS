@@ -8,7 +8,7 @@ Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 The OscGestureFollower component copules the ARE with the external gesture recognition software GestureFollower. The program is copyrighted by IRCAM. GestureFollower is stored in the ARE subfolder tools/GestureFollower. Gesture data can be stored and loaded from files in this subdirectory, these files have the extension ".mubu". The communication between GestureFollower and the ARE is based on the OpenSoundControl (OSC) protocol. This plugin utilizes the NetUtil java library (http://www.sciss.de/netutil/) for the OSC implementation, it is (C)opyrighted 2004-2011 by Hanns Holger Rutz and released under the GNU Lesser General Public License.
 
-![OscGestureFollower howto](img/oscgesturefollower.jpg "OscGestureFollower howto")
+![OscGestureFollower howto](./img/oscgesturefollower.jpg "OscGestureFollower howto")
 
 OscGestureFollower howto
 

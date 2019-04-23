@@ -8,13 +8,13 @@ Component Type: Actuator (Subcategory: Audio and Voice)
 
 The MidiPlayer component can generate midi tone output on the default midi device of the system. This can be used for audio feedback (e.g. for a selection or click) or for creation of musical instruments. The MidiPlayer Plugin features an optional GUI where the currently played tone can be seen.
 
-![Screenshot: MidiPlayer GUI](img/midipanel.jpg "Screenshot: MidiPlayer GUI")
+![Screenshot: MidiPlayer GUI](./img/midipanel.jpg "Screenshot: MidiPlayer GUI")
 
 MidiPlayer GUI
 
   
 
-![Screenshot: MidiPlayer plugin](img/midiplayer.jpg "Screenshot: MidiPlayer plugin")
+![Screenshot: MidiPlayer plugin](./img/midiplayer.jpg "Screenshot: MidiPlayer plugin")
 
 MidiPlayer plugin
 

@@ -8,7 +8,7 @@ title: Flickering Light Stimulator
 
 This plug-in allows the user to interact with the Flickering Light Stimulator panels by configuring their properties (stimulation frequency, duty cycle, intensity and colour) and start/stop the light stimulation. The stimulation frequency of the panels can be modified while the stimulation is running.
 
-![Screenshot: Flickering Light Stimulator plugin](img/flickeringlightstimulator.jpg "Screenshot: Flickering Light Stimulator plugin")
+![Screenshot: Flickering Light Stimulator plugin](./img/flickeringlightstimulator.jpg "Screenshot: Flickering Light Stimulator plugin")
 
 Flickering Light Stimulator plugin
 
@@ -16,7 +16,7 @@ Flickering Light Stimulator plugin
 
 This software component requires at least one of the four Flickering Light Stimulator panels to be connected to any available COM port. The COM port number to which the panels are connected must be configured in the properties before starting the plugin.
 
-![Screenshot: Flickering Panels setup](img/flickeringpanels.jpg "Screenshot: Flickering Panels setup")
+![Screenshot: Flickering Panels setup](./img/flickeringpanels.jpg "Screenshot: Flickering Panels setup")
 
 Flickering Panels setup
 
