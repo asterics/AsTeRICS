@@ -50,7 +50,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
 <Model
     title="Basic AAC Grid"
     :tags='[]'
-    description="Basic communication and simple keyboard with speech synthesis."
+    description="Basic communication and simple on-screen keyboard with speech synthesis."
     image="/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"
     grid="grid-data-1539356163042-54"
     docs="/solutions/AAC-Basic.html"
