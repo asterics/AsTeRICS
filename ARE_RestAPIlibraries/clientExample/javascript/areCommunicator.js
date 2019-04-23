@@ -70,7 +70,7 @@ function uploadModel(successCallback, errorCallback, modelInXML) {
   if (modelInXML == "") return;
 
   $.ajax({
-    type: "PUT",
+    type: "POST",
     url: _baseURI + "runtime/model",
     contentType: "text/xml", //content-type of the request
     data: modelInXML,
@@ -89,7 +89,7 @@ function autorun(successCallback, errorCallback, filepath) {
   if (filepath == "") return;
 
   $.ajax({
-    type: "PUT",
+    type: "POST",
     url: _baseURI + "runtime/model/autorun/" + encodeParam(filepath),
     datatype: "text",
     crossDomain: true,
@@ -104,7 +104,7 @@ function autorun(successCallback, errorCallback, filepath) {
 
 function pauseModel(successCallback, errorCallback) {
   $.ajax({
-    type: "PUT",
+    type: "POST",
     url: _baseURI + "runtime/model/state/pause",
     datatype: "text",
     crossDomain: true,
@@ -119,7 +119,7 @@ function pauseModel(successCallback, errorCallback) {
 
 function startModel(successCallback, errorCallback) {
   $.ajax({
-    type: "PUT",
+    type: "POST",
     url: _baseURI + "runtime/model/state/start",
     datatype: "text",
     crossDomain: true,
@@ -134,7 +134,7 @@ function startModel(successCallback, errorCallback) {
 
 function stopModel(successCallback, errorCallback) {
   $.ajax({
-    type: "PUT",
+    type: "POST",
     url: _baseURI + "runtime/model/state/stop",
     datatype: "text",
     crossDomain: true,
@@ -181,7 +181,7 @@ function deployModelFromFile(successCallback, errorCallback, filepath) {
   if (filepath == "") return;
 
   $.ajax({
-    type: "PUT",
+    type: "POST",
     url: _baseURI + "runtime/model/" + encodeParam(filepath),
     datatype: "text",
     crossDomain: true,
@@ -295,7 +295,7 @@ function setRuntimeComponentProperties(
   if (propertyMap == "") return;
 
   $.ajax({
-    type: "PUT",
+    type: "POST",
     url: _baseURI + "runtime/model/components/properties",
     contentType: "application/json",
     data: propertyMap,
@@ -320,7 +320,7 @@ function setRuntimeComponentProperty(
   if (componentId == "" || propertyKey == "" || componentValue == "") return;
 
   $.ajax({
-    type: "PUT",
+    type: "POST",
     url:
       _baseURI +
       "runtime/model/components/" +
@@ -594,7 +594,7 @@ function sendDataToInputPort(
   if (!componentId || !portId || !value) return;
 
   $.ajax({
-    type: "PUT",
+    type: "POST",
     beforeSend: function(request) {
       request.setRequestHeader("Content-Type", "text/plain");
     },
@@ -627,7 +627,7 @@ function triggerEvent(
   if (!componentId || !eventPortId) return;
 
   $.ajax({
-    type: "PUT",
+    type: "POST",
     url:
       _baseURI +
       "runtime/model/components/" +
