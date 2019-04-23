@@ -79,7 +79,7 @@ public class RestServer {
 
     @Path("/version")
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     @Description("Returns the current ARE version")
     public String getVersion() {
         return "#{APPLICATION_VERSION_NUMBER}#";
