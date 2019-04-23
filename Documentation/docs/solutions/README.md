@@ -20,7 +20,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     title="Camera Mouse"
     :tags='[{href:"", text:"webcam"}]'
     description="Mouse control according to your head movements with configurable settings."
-    image="/assets/img/solutions/camera-mouse.1.jpg"
+    image="/assets/img/face-shutterstock_717365779.jpg"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs"
     webapp="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-cameramouse"
     docs="/solutions/Camera-Mouse.html"
@@ -30,7 +30,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     title="Eye Tracking Mouse"
     :tags='[{href:"https://gaming.tobii.com/product/tobii-eye-tracker-4c/", text:"eye-tracker"}, {href:"", text:"windows"}]'
     description="Mouse control by eye tracking with configurable settings."
-    image="/assets/img/solutions/eye-tracking-mouse.2.jpg"
+    image="/assets/img/eye-tracking-shutterstock_195898592.jpg"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs"
     webapp="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-eyecontrol"
     docs="/solutions/Eye-Tracking-Mouse.html"
@@ -40,7 +40,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     title="Switch-controlled Mouse"
     :tags='[{href:"https://www.asterics-foundation.org/projects/fabi/", text:"switch"}]'
     description="Provides mouse control using AT switches."
-    image="/assets/img/solutions/switch-mouse.1.png"
+    image="/assets/img/fabi-switches.jpg"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/useCaseDemos/mouseControl/crosshairCursorControl_2keys_wraparound.acs"
     docs="/solutions/Switch-Mouse.html"
 />
@@ -51,7 +51,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     title="Basic AAC Grid"
     :tags='[]'
     description="Basic communication and simple on-screen keyboard with speech synthesis."
-    image="/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"
+    image="/assets/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"
     grid="grid-data-1539356163042-54"
     docs="/solutions/AAC-Basic.html"
 />
@@ -62,7 +62,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     title="Sounds by Head Movement"
     :tags='[{href:"", text:"webcam"}]'
     description="Creates sounds according to head movement."
-    image="/assets/img/solutions/head-sound.1.jpg"
+    image="/assets/img/sound-shutterstock_761313844.jpg"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/HeadSound.acs"
     docs="/solutions/Head-Sound.html"
 />
