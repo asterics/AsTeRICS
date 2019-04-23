@@ -20,19 +20,19 @@ layout: StartPage
   link="#"
   title="Accessible Computer Control"
   description="Control your computer by switches, head movements or eyetracking, depending on your capabilities."
-  image="/img/Harry-shutterstock_213119035.jpg"
+  image="/assets/img/harry-shutterstock_213119035.jpg"
 />
 <ShowCase left
   link=""
   title="Accessible Environmental Control"
   description="Switch on/off lights or control your TV and stereo."
-  image="https://m.gewinn.com/fileadmin/_processed_/csm_1712_smarthome_342faddf35.jpg"
+  image="/assets/img/smart-home-shutterstock_304964420.jpg"
 />
 <ShowCase
   link=""
   title="Alternative and Augmentative Communication"
   description="Create your own communication grid and use it on all your devices."
-  image="/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"
+  image="/assets/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"
 />
 <Youtube nocookie left
   code="JwL_zS3fpnU"
