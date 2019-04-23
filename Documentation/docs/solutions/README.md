@@ -28,7 +28,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
 
 <Model
     title="Eye Tracking Mouse"
-    :tags='[{href:"https://gaming.tobii.com/product/tobii-eye-tracker-4c/", text:"eye-tracker"}, {text:"windows"}]'
+    :tags='[{href:"https://gaming.tobii.com/product/tobii-eye-tracker-4c/", text:"eye-tracker"}, {href:"", text:"windows"}]'
     description="Mouse control by eye tracking with configurable settings."
     image="/assets/img/solutions/eye-tracking-mouse.2.jpg"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs"
