@@ -1,17 +1,6 @@
-<!-- ---
-layout: StartPage
---- -->
-
-<b-jumbotron
-  class="myjumbotron"
-  header="AsTeRICS"
-  lead="Create Customized Low-Cost Assistive Technologies for People with Disabilities."
-  fluid
->
-  <p>Are you disabled and want to use a computer to work, browse the internet or write E-Mails?</p>
-  <b-button variant="primary" href="./solutions/">Discover Solutions</b-button>
-  <b-button variant="info" href="get-started/">Get Started</b-button>
-</b-jumbotron>
+---
+layout: FrontLayout
+---
 
 ## Use Cases
 
@@ -70,3 +59,6 @@ The creation of the web page was funded by the City of Vienna, MA23, in course o
 
 This is a newly created web page to present AsTeRICS technologies and corresponding documentation. If you are looking for the web page of the original AsTeRICS project, please go to [https://project.asterics.eu](https://project.asterics.eu).
 
+
+
+<EditLink/>
