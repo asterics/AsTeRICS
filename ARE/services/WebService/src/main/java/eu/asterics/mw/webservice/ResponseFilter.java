@@ -76,7 +76,7 @@ public class ResponseFilter implements ContainerResponseFilter {
 
         // add headers to overcome CORS problems
         headers.add("Access-Control-Allow-Origin", "*");
-        headers.add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
+        headers.add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, cache-control");
         headers.add("Access-Control-Allow-Credentials", "true");
         headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
 
