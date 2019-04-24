@@ -136,7 +136,6 @@ public class RestServer {
 
     @Path("/runtime/model")
     @POST
-    @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Deploys the model given as XML body parameter")
     public String deployModel(String modelInXML) {
@@ -157,7 +156,6 @@ public class RestServer {
 
     @Path("/runtime/model")
     @PUT
-    @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Deploys the model given as XML body parameter")
     @Deprecated
@@ -419,7 +417,6 @@ public class RestServer {
 
     @Path("/runtime/model/components/{componentId}/{propertyKey}")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Changes a property value of a model component")
     public String setRuntimeComponentProperty(String value, @PathParam("componentId") String componentId, @PathParam("propertyKey") String propertyKey) {
@@ -442,7 +439,6 @@ public class RestServer {
 
     @Path("/runtime/model/components/{componentId}/{propertyKey}")
     @PUT
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Changes a property value of a model component")
     @Deprecated
@@ -452,7 +448,6 @@ public class RestServer {
 
     @Path("/runtime/model/components/properties")
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Changes multiple property value(s) of a runtime component(s) (propertyMap – see JSON objects)")
     public String setRuntimeComponentProperties(String bodyContent) {
@@ -492,7 +487,6 @@ public class RestServer {
 
     @Path("/runtime/model/components/properties")
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Changes multiple property value(s) of a runtime component(s) (propertyMap – see JSON objects)")
     @Deprecated
@@ -876,7 +870,6 @@ public class RestServer {
 
     @Path("/storage/models/{filepath}")
     @POST
-    @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Stores a model (XML body parameter) at the given filepath.")
     public String storeModel(@PathParam("filepath") String filepath, String modelInXML) {
@@ -904,7 +897,6 @@ public class RestServer {
 
     @Path("/storage/data/{filepath}")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Stores data (body parameter) to a given filepath in the ARE/data folder")
     public String storeData(@PathParam("filepath") String filepath, String data) {
@@ -931,7 +923,6 @@ public class RestServer {
 
     @Path("/storage/webapps/{webappName}/{filepath}")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Stores data (body parameter) for a specific webapp.")
     public String storeWebappData(@PathParam("webappName") String webappName, @PathParam("filepath") String filepath, String data) {
@@ -1083,7 +1074,6 @@ public class RestServer {
 
     @Path("/runtime/model/components/{componentId}/ports/{portId}/data")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Sends data to a specific port of a component in the running model")
     public String sendDataToInputPort(String value, @PathParam("componentId") String componentId, @PathParam("portId") String portId) {
@@ -1109,7 +1099,6 @@ public class RestServer {
 
     @Path("/runtime/model/components/{componentId}/ports/{portId}/data")
     @PUT
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     @Description("Sends data to a specific port of a component in the running model")
     @Deprecated
