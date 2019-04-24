@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ARE\Ergotherapie\Ergo-Kopf-Musik.acs_2017_12_14_11_55" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\work\dev\AsTeRICS\bin\ARE\models\Ergotherapie\Ergo-Kopf-Musik.acs_2019_4_24_23_35" version="20130320">
   <modelDescription>
     <shortDescription>A head-movement controlled musical instrument</shortDescription>
     <requirements>A midi-capabable soundcard must be installed and a webcamera must be connected to an USB port</requirements>
@@ -504,7 +504,7 @@ left/right movements influence the tone height</description>
         <property name="thresholdLow" value="-20" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="0" />
-        <property name="operationMode" value="binary" />
+        <property name="operationMode" value="0" />
         <property name="eventCondition" value="2" />
       </properties>
       <layout>
@@ -564,10 +564,17 @@ left/right movements influence the tone height</description>
         <inputPort portTypeID="action">
           <properties />
         </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="enableMouse" value="False" />
         <property name="absolutePosition" value="False" />
+        <property name="startCentered" value="true" />
         <property name="xMin" value="0" />
         <property name="xMax" value="0" />
         <property name="yMin" value="0" />
@@ -589,8 +596,10 @@ left/right movements influence the tone height</description>
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
         <property name="bufferSize" value="7" />
         <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
       </properties>
       <layout>
         <posX>963</posX>
@@ -608,8 +617,10 @@ left/right movements influence the tone height</description>
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
         <property name="bufferSize" value="7" />
         <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
       </properties>
       <layout>
         <posX>934</posX>

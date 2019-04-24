@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\XFaceTrackerMouse.acs_2019_2_1_11_4" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\work\dev\AsTeRICS\bin\ARE\models\XFaceTrackerMouse.acs_2019_4_24_23_34" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 
@@ -361,8 +361,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
         <property name="bufferSize" value="5" />
         <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
       </properties>
       <layout>
         <posX>146</posX>
@@ -380,8 +382,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
         <property name="bufferSize" value="5" />
         <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
       </properties>
       <layout>
         <posX>147</posX>

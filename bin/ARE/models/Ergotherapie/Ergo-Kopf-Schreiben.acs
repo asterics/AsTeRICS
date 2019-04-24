@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ARE\Ergotherapie\Ergo-Kopf-Schreiben.acs_2017_12_14_11_55" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\work\dev\AsTeRICS\bin\ARE\models\Ergotherapie\Ergo-Kopf-Schreiben.acs_2019_4_24_23_35" version="20130320">
   <modelDescription>
     <shortDescription>Camera controlled mouse for writing with OSKA</shortDescription>
     <requirements>Webcam connected to USB port.
@@ -14,19 +14,26 @@ OSKA and Notepad are automatically started for the writing task.</description>
     <component id="Mouse.1" type_id="asterics.Mouse">
       <description>Local mouse actuator, emulates mouse activity on local system</description>
       <ports>
-        <inputPort portTypeID="mouseX" sync="true">
+        <inputPort portTypeID="mouseX">
           <properties />
         </inputPort>
-        <inputPort portTypeID="mouseY" sync="true">
+        <inputPort portTypeID="mouseY">
           <properties />
         </inputPort>
         <inputPort portTypeID="action">
           <properties />
         </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="enableMouse" value="True" />
         <property name="absolutePosition" value="False" />
+        <property name="startCentered" value="true" />
         <property name="xMin" value="0" />
         <property name="xMax" value="0" />
         <property name="yMin" value="0" />
@@ -456,8 +463,10 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
         <property name="bufferSize" value="5" />
         <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
       </properties>
       <layout>
         <posX>181</posX>
@@ -475,8 +484,10 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
         <property name="bufferSize" value="5" />
         <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
       </properties>
       <layout>
         <posX>183</posX>
