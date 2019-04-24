@@ -119,6 +119,7 @@
 		<replace file="./Installer/asterics-are/package/linux/control" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
 		<replace file="./Installer/asterics-are/APE.properties" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
 		<replace file="./ARE/middleware/src/main/java/eu/asterics/mw/gui/AstericsGUI.java" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
+		<replace file="./ARE/services/WebService/src/main/java/eu/asterics/mw/webservice/RestServer.java" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
 	</target>
 	
 	<scriptdef name="getversionnumber" language="javascript">
