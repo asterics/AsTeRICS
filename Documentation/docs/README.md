@@ -34,7 +34,6 @@ layout: FrontLayout
   description="Generate sounds or play adapted music instruments."
 />
 </Group>
-<!-- >>>>>>> docs: update startpage -->
 
 ## Why AsTeRICS?
 
