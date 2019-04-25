@@ -1,3 +1,10 @@
-# ARE Keyboard and Mouse Services
+# ARE Webserver
 
-The source code can be found <a href="https://github.com/asterics/AsTeRICS/wiki/AsTeRICS_Webserver_Document_Root">here</a>.
+The ARE provides a webserver with the document root at 
+```
+ARE/web/
+``` 
+
+Then you can open the start page by
+
+http://localhost:8081/
