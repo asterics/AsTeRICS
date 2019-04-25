@@ -13,8 +13,6 @@ The solutions are grouped by **use cases** and can be directly started from this
 
 If you want to customize a solution, click onto `Edit` or go to [**Customize**](/customize/) to learn how to do that.
 
-<ModelInfo/>
-
 ## Computer Control
 
 <Model left
@@ -30,7 +28,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
 <Model
     title="Eye Tracking Mouse"
     :tags='[{href:"https://gaming.tobii.com/product/tobii-eye-tracker-4c/", text:"eye-tracker"}]'
-    os="windows"
+    :os='["windows"]'
     description="Mouse control by eye tracking with configurable settings."
     image="/assets/img/eye-tracking-shutterstock_195898592.jpg"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs"
@@ -70,4 +68,3 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
 />
 
 
-<EditLink/>
