@@ -26,7 +26,7 @@ The next needed component is the **Mouse**, it can be found by selecting **Actua
 the properties. Deactivate absolutePosition and set the `xMax` and `yMax` to your
 screen resolution.
 
-In the next step, connect the noseX and the noseY outputs of the **FacetrackerLKd**
+In the next step, connect the noseX and the noseY outputs of the **XFacetrackerLK**
 with the mouseX and mouseY inputs of the Mouse. Finally, it should look like the
 screenshot below.
 
@@ -36,14 +36,14 @@ screenshot below.
 
 The model now would be able to use the coordinates of the nose to control the
 mouse cursor, but the mouse click is still missing.
-For the mouse clicking functionality, we first need the **MathEvaluatord** (**Processorsd** -
-**Basic Mathd**) plugin. We connect the noseY output of the **FacetrackerLKd** the with
-the inA input of the **MathEvaluatord** and likewise the chinY with inB. In the properties
-of the **MathEvaluatord**, we set the property expression to **b-ad**.
+For the mouse clicking functionality, we first need the **MathEvaluator** (**Processors** -
+**Basic Math**) plugin. We connect the noseY output of the **XFacetrackerLK** the with
+the inA input of the **MathEvaluator** and likewise the chinY with inB. In the properties
+of the **MathEvaluator**, we set the property expression to **b-a**.
 
 ![ACS - A first example (3/8)](./img/quickstart12.png)
 
-We will **Differentiate** (**Processorsd** -> **Basic Mathd**) the out value to react on a fast
+We will **Differentiate** (**Processors** -> **Basic Math**) the out value to react on a fast
 change of the nose to chin distance.
 
 ![ACS - A first example (4/8)](./img/quickstart13.png)
@@ -78,7 +78,7 @@ Congratulations, your first AsTeRICS model is running!
 You might have noticed that the mouse pointer has a tremor, because the head is
 always in movement to a certain extent. To reduce this tremor, an **Averager**
 (**Processors** -> **Basic Math**) will be used to smoothen the X coordinates and
-another **Averager** for the Y coordinates between the **FacetrackerLK** and the
+another **Averager** for the Y coordinates between the **XFacetrackerLK** and the
 **Mouse**. The bufferSize in the properties will be set to 5.
 
 ![ACS - A first example (8/8)](./img/quickstart17.png)
