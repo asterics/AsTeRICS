@@ -11,6 +11,10 @@ The solutions are grouped by **use cases** and can be directly started from this
 2. Click onto `Start`
 :::
 
+::: warning No Firefox
+Starting a solution directly from this page is currently not supported with Firefox. Please use Chrome in between.
+:::
+
 If you want to customize a solution, click onto `Edit` or go to [**Customize**](/customize/) to learn how to do that.
 
 ## Computer Control
