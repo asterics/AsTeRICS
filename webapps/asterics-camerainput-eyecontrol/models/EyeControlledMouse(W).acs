@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\P4All\asterics-camerainput-eyecontrol\custom\bin\ARE\web\webapps\asterics-camerainput-eyecontrol\models\EyeControlledMouse(W).acs_2018_6_6_12_6" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\work\dev\asterics-camerainput-eyecontrol\custom\bin\ARE\web\webapps\asterics-camerainput-eyecontrol\models\EyeControlledMouse(W).acs_2019_5_5_22_48" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 
@@ -28,7 +28,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="thresholdLow" value="700" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="-1" />
-        <property name="operationMode" value="binary" />
+        <property name="operationMode" value="0" />
         <property name="eventCondition" value="0" />
       </properties>
       <layout>
@@ -39,19 +39,26 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="Mouse.1" type_id="asterics.Mouse">
       <description>Local mouse actuator, emulates mouse activity on local system</description>
       <ports>
-        <inputPort portTypeID="mouseX">
+        <inputPort portTypeID="mouseX" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="mouseY">
+        <inputPort portTypeID="mouseY" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="action">
+        <inputPort portTypeID="action" sync="false">
           <properties />
         </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="enableMouse" value="True" />
         <property name="absolutePosition" value="True" />
+        <property name="startCentered" value="true" />
         <property name="xMin" value="0" />
         <property name="xMax" value="0" />
         <property name="yMin" value="0" />
@@ -65,13 +72,13 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="Deadzone.1" type_id="asterics.Deadzone">
       <description>Defines active/passive Zone for x/y values</description>
       <ports>
-        <inputPort portTypeID="inX">
+        <inputPort portTypeID="inX" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="inY">
+        <inputPort portTypeID="inY" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="radius">
+        <inputPort portTypeID="radius" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="outX">
@@ -95,7 +102,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="DwellTimer" type_id="asterics.Timer">
       <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
       <ports>
-        <inputPort portTypeID="period">
+        <inputPort portTypeID="period" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="time">
@@ -118,7 +125,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="Differentiate.1.1" type_id="asterics.Differentiate">
       <description>Differentiate (subtract last input value from input value)</description>
       <ports>
-        <inputPort portTypeID="in">
+        <inputPort portTypeID="in" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="out">
@@ -136,7 +143,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="Differentiate.1" type_id="asterics.Differentiate">
       <description>Differentiate (subtract last input value from input value)</description>
       <ports>
-        <inputPort portTypeID="in">
+        <inputPort portTypeID="in" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="out">
@@ -154,10 +161,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="PatternVisualization" type_id="asterics.TextArea">
       <description>GUI component, which displays text.</description>
       <ports>
-        <inputPort portTypeID="setText">
+        <inputPort portTypeID="setText" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="appendText">
+        <inputPort portTypeID="appendText" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="text">
@@ -187,16 +194,16 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="CommandPanel" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
       <ports>
-        <inputPort portTypeID="row">
+        <inputPort portTypeID="row" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="column">
+        <inputPort portTypeID="column" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="cellNumber">
+        <inputPort portTypeID="cellNumber" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="xmlFile">
+        <inputPort portTypeID="xmlFile" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="actCell">
@@ -365,13 +372,13 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="Settings-Launcher" type_id="asterics.ApplicationLauncher">
       <description>starts external software applications via path and  filename (.exe)</description>
       <ports>
-        <inputPort portTypeID="filename">
+        <inputPort portTypeID="filename" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="arguments">
+        <inputPort portTypeID="arguments" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="stdIn">
+        <inputPort portTypeID="stdIn" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="stdOut">
@@ -388,7 +395,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="executeOnPlatform" value="ALL" />
         <property name="executionMode" value="OPEN_URL" />
         <property name="defaultApplication" value="" />
-        <property name="arguments" value="http://localhost:8081/" />
+        <property name="arguments" value="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-eyecontrol" />
         <property name="workingDirectory" value="." />
         <property name="closeCmd" value="" />
         <property name="autoLaunch" value="false" />
@@ -403,13 +410,13 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="Launch-OSK" type_id="asterics.ApplicationLauncher">
       <description>starts external software applications via path and  filename (.exe)</description>
       <ports>
-        <inputPort portTypeID="filename">
+        <inputPort portTypeID="filename" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="arguments">
+        <inputPort portTypeID="arguments" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="stdIn">
+        <inputPort portTypeID="stdIn" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="stdOut">
@@ -459,10 +466,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="AEqualsB" type_id="asterics.Comparator">
       <description>Comparator for two inputs</description>
       <ports>
-        <inputPort portTypeID="inA">
+        <inputPort portTypeID="inA" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="inB">
+        <inputPort portTypeID="inB" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="output">
@@ -484,10 +491,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="AGreaterB" type_id="asterics.Comparator">
       <description>Comparator for two inputs</description>
       <ports>
-        <inputPort portTypeID="inA">
+        <inputPort portTypeID="inA" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="inB">
+        <inputPort portTypeID="inB" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="output">
@@ -509,10 +516,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="ALowerB" type_id="asterics.Comparator">
       <description>Comparator for two inputs</description>
       <ports>
-        <inputPort portTypeID="inA">
+        <inputPort portTypeID="inA" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="inB">
+        <inputPort portTypeID="inB" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="output">
@@ -548,10 +555,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="AMinus1" type_id="asterics.Comparator">
       <description>Comparator for two inputs</description>
       <ports>
-        <inputPort portTypeID="inA">
+        <inputPort portTypeID="inA" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="inB">
+        <inputPort portTypeID="inB" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="output">
@@ -585,7 +592,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="thresholdLow" value="450" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="-1" />
-        <property name="operationMode" value="binary" />
+        <property name="operationMode" value="0" />
         <property name="eventCondition" value="0" />
       </properties>
       <layout>
@@ -596,7 +603,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="KeySwitch2" type_id="asterics.KeyCapture">
       <description>captures key presses and releases for a single keyboard key</description>
       <ports>
-        <inputPort portTypeID="keyCode">
+        <inputPort portTypeID="keyCode" sync="false">
           <properties />
         </inputPort>
       </ports>
@@ -612,7 +619,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="KeySwitch1" type_id="asterics.KeyCapture">
       <description>captures key presses and releases for a single keyboard key</description>
       <ports>
-        <inputPort portTypeID="keyCode">
+        <inputPort portTypeID="keyCode" sync="false">
           <properties />
         </inputPort>
       </ports>
@@ -622,22 +629,22 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </properties>
       <layout>
         <posX>1017</posX>
-        <posY>704</posY>
+        <posY>714</posY>
       </layout>
     </component>
     <component id="QuadrantVisualization" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
       <ports>
-        <inputPort portTypeID="row">
+        <inputPort portTypeID="row" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="column">
+        <inputPort portTypeID="column" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="cellNumber">
+        <inputPort portTypeID="cellNumber" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="xmlFile">
+        <inputPort portTypeID="xmlFile" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="actCell">
@@ -806,7 +813,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="ConstantDispatcher.1" type_id="asterics.ConstantDispatcher">
       <description>Send double values from chosen slot</description>
       <ports>
-        <inputPort portTypeID="slotDispatch">
+        <inputPort portTypeID="slotDispatch" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="output">
@@ -846,7 +853,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="KeySwitch1EventRouter" type_id="asterics.EventRouter">
       <description>routes incoming events to one of 8 event trigger ports</description>
       <ports>
-        <inputPort portTypeID="routeIndex">
+        <inputPort portTypeID="routeIndex" sync="false">
           <properties />
         </inputPort>
       </ports>
@@ -856,13 +863,13 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </properties>
       <layout>
         <posX>1142</posX>
-        <posY>707</posY>
+        <posY>694</posY>
       </layout>
     </component>
     <component id="KeySwitch2EventRouter" type_id="asterics.EventRouter">
       <description>routes incoming events to one of 8 event trigger ports</description>
       <ports>
-        <inputPort portTypeID="routeIndex">
+        <inputPort portTypeID="routeIndex" sync="false">
           <properties />
         </inputPort>
       </ports>
@@ -878,10 +885,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="PatternVisualizationLabel" type_id="asterics.TextArea">
       <description>GUI component, which displays text.</description>
       <ports>
-        <inputPort portTypeID="setText">
+        <inputPort portTypeID="setText" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="appendText">
+        <inputPort portTypeID="appendText" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="text">
@@ -890,11 +897,11 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="Pattern" />
+        <property name="default" value="Activation Pattern" />
         <property name="editable" value="false" />
         <property name="fontSize" value="14" />
         <property name="textColor" value="0" />
-        <property name="backgroundColor" value="11" />
+        <property name="backgroundColor" value="6" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
@@ -911,10 +918,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="AREWindow.1" type_id="asterics.AREWindow">
       <description>provides basic ARE Window manipulation</description>
       <ports>
-        <inputPort portTypeID="xPos">
+        <inputPort portTypeID="xPos" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="yPos">
+        <inputPort portTypeID="yPos" sync="false">
           <properties />
         </inputPort>
       </ports>
@@ -932,10 +939,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="EyeX.1" type_id="asterics.EyeX">
       <description>interfaces to the EyeX Gaze tracking system</description>
       <ports>
-        <inputPort portTypeID="xOffset">
+        <inputPort portTypeID="xOffset" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="yOffset">
+        <inputPort portTypeID="yOffset" sync="false">
           <properties />
         </inputPort>
         <outputPort portTypeID="gazeX">
@@ -959,7 +966,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </ports>
       <properties>
         <property name="enabled" value="true" />
-        <property name="averaging" value="10" />
+        <property name="averaging" value="50" />
         <property name="minBlinkTime" value="50" />
         <property name="midBlinkTime" value="200" />
         <property name="maxBlinkTime" value="2000" />
@@ -1056,7 +1063,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </target>
     </channel>
     <channel id="binding.19">
-      <description />
       <source>
         <component id="ThresholdX" />
         <port id="out" />
@@ -1067,7 +1073,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </target>
     </channel>
     <channel id="binding.22">
-      <description />
       <source>
         <component id="ThresholdX" />
         <port id="out" />
@@ -1078,7 +1083,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </target>
     </channel>
     <channel id="binding.21">
-      <description />
       <source>
         <component id="ThresholdY" />
         <port id="out" />
@@ -1089,7 +1093,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </target>
     </channel>
     <channel id="binding.28">
-      <description />
       <source>
         <component id="ThresholdX" />
         <port id="out" />
@@ -1100,7 +1103,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </target>
     </channel>
     <channel id="binding.29">
-      <description />
       <source>
         <component id="AEqualsB" />
         <port id="output" />
@@ -1111,7 +1113,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </target>
     </channel>
     <channel id="binding.30">
-      <description />
       <source>
         <component id="ThresholdY" />
         <port id="out" />
@@ -1122,7 +1123,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </target>
     </channel>
     <channel id="binding.31">
-      <description />
       <source>
         <component id="ThresholdY" />
         <port id="out" />
@@ -1133,7 +1133,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </target>
     </channel>
     <channel id="binding.23">
-      <description />
       <source>
         <component id="ConstantDispatcher.1" />
         <port id="output" />
@@ -1146,7 +1145,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
   </channels>
   <eventChannels>
     <eventChannel id="enterZone_start">
-      <description />
       <sources>
         <source>
           <component id="Deadzone.1" />
@@ -1161,7 +1159,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </targets>
     </eventChannel>
     <eventChannel id="exitZone_stop">
-      <description />
       <sources>
         <source>
           <component id="Deadzone.1" />
@@ -1176,7 +1173,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </targets>
     </eventChannel>
     <eventChannel id="exitZone_reset">
-      <description />
       <sources>
         <source>
           <component id="Deadzone.1" />
@@ -1191,7 +1187,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </targets>
     </eventChannel>
     <eventChannel id="periodFinished_leftClick">
-      <description />
       <sources>
         <source>
           <component id="DwellTimer" />
@@ -1205,7 +1200,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="cell4_toggle">
+    <eventChannel id="cell8_toggle">
       <sources>
         <source>
           <component id="CommandPanel" />
@@ -1219,7 +1214,63 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="cell5_launchNow">
+    <eventChannel id="cell1_nextClickRight">
+      <sources>
+        <source>
+          <component id="CommandPanel" />
+          <eventPort id="cell1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="nextClickRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell2_nextClickDouble">
+      <sources>
+        <source>
+          <component id="CommandPanel" />
+          <eventPort id="cell2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="nextClickDouble" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell3_nextClickDrag">
+      <sources>
+        <source>
+          <component id="CommandPanel" />
+          <eventPort id="cell3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="nextClickDrag" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell4_nextClickMiddle">
+      <sources>
+        <source>
+          <component id="CommandPanel" />
+          <eventPort id="cell4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="nextClickMiddle" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell7_launchNow">
       <sources>
         <source>
           <component id="CommandPanel" />
@@ -1275,7 +1326,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="cell7_event-in">
+    <eventChannel id="cell6_event-in">
       <sources>
         <source>
           <component id="CommandPanel" />
@@ -1356,62 +1407,6 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <target>
           <component id="PatternRecognition" />
           <eventPort id="in2" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell1_nextClickRight">
-      <sources>
-        <source>
-          <component id="CommandPanel" />
-          <eventPort id="cell1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="nextClickRight" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell2_nextClickDouble">
-      <sources>
-        <source>
-          <component id="CommandPanel" />
-          <eventPort id="cell2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="nextClickDouble" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell3_nextClickDrag">
-      <sources>
-        <source>
-          <component id="CommandPanel" />
-          <eventPort id="cell3" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="nextClickDrag" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell4_nextClickMiddle">
-      <sources>
-        <source>
-          <component id="CommandPanel" />
-          <eventPort id="cell4" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="nextClickMiddle" />
         </target>
       </targets>
     </eventChannel>
@@ -1667,7 +1662,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="eventOut5_wheelDown">
+    <eventChannel id="eventOut6_wheelDown">
       <sources>
         <source>
           <component id="KeySwitch2EventRouter" />
@@ -1681,7 +1676,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="eventOut6_toggle">
+    <eventChannel id="eventOut7_toggle">
       <sources>
         <source>
           <component id="KeySwitch2EventRouter" />
@@ -1733,7 +1728,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <AREGUIWindow>
       <posX>8835</posX>
       <posY>1333</posY>
-      <width>1188</width>
+      <width>1165</width>
       <height>7778</height>
     </AREGUIWindow>
   </modelGUI>

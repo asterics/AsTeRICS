@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\mad\dev\asterics-solutions\sub\asterics-camerainput-cameramouse\custom\bin\ARE\web\webapps\asterics-camerainput-cameramouse\models\XFaceTrackerMouse(WLM).acs_2018_5_31_22_47" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\work\dev\asterics-camerainput-cameramouse\custom\bin\ARE\web\webapps\asterics-camerainput-cameramouse\models\XFaceTrackerMouse(WLM).acs_2019_5_5_22_48" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 
@@ -28,7 +28,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="thresholdLow" value="0" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="-1" />
-        <property name="operationMode" value="binary" />
+        <property name="operationMode" value="0" />
         <property name="eventCondition" value="0" />
       </properties>
       <layout>
@@ -39,19 +39,26 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="Mouse.1" type_id="asterics.Mouse">
       <description>Local mouse actuator, emulates mouse activity on local system</description>
       <ports>
-        <inputPort portTypeID="mouseX" sync="false">
+        <inputPort portTypeID="mouseX">
           <properties />
         </inputPort>
-        <inputPort portTypeID="mouseY" sync="false">
+        <inputPort portTypeID="mouseY">
           <properties />
         </inputPort>
-        <inputPort portTypeID="action" sync="false">
+        <inputPort portTypeID="action">
           <properties />
         </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="enableMouse" value="True" />
         <property name="absolutePosition" value="False" />
+        <property name="startCentered" value="true" />
         <property name="xMin" value="0" />
         <property name="xMax" value="0" />
         <property name="yMin" value="0" />
@@ -246,7 +253,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="AveragerX" type_id="asterics.Averager">
       <description>Linked list-based averager or accumulator</description>
       <ports>
-        <inputPort portTypeID="input" sync="false">
+        <inputPort portTypeID="input">
           <properties />
         </inputPort>
         <outputPort portTypeID="output">
@@ -254,8 +261,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
         <property name="bufferSize" value="5" />
         <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
       </properties>
       <layout>
         <posX>146</posX>
@@ -265,7 +274,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="AveragerY" type_id="asterics.Averager">
       <description>Linked list-based averager or accumulator</description>
       <ports>
-        <inputPort portTypeID="input" sync="false">
+        <inputPort portTypeID="input">
           <properties />
         </inputPort>
         <outputPort portTypeID="output">
@@ -273,8 +282,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
         <property name="bufferSize" value="5" />
         <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
       </properties>
       <layout>
         <posX>147</posX>
@@ -762,7 +773,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="thresholdLow" value="0" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="-1" />
-        <property name="operationMode" value="binary" />
+        <property name="operationMode" value="0" />
         <property name="eventCondition" value="0" />
       </properties>
       <layout>
@@ -1067,11 +1078,11 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="Pattern" />
+        <property name="default" value="Activation Pattern" />
         <property name="editable" value="false" />
         <property name="fontSize" value="14" />
         <property name="textColor" value="0" />
-        <property name="backgroundColor" value="11" />
+        <property name="backgroundColor" value="6" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
