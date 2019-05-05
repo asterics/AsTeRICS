@@ -423,6 +423,6 @@ Page Down
 ## Properties
 
 *   **block \[boolean\]:** If this property is set to true, no key press activities will be routed to the operating system
-*   **keyCode\[integer\]:**The keycode of the key which should be captured. For a list of the mapping between keycodes and keys see the graphics above.
+*   **keyCode\[integer\]:** The keycode of the key which should be captured. For a list of the mapping between keycodes and keys see the graphics above.
 
 [1]: https://github.com/kwhat/jnativehook/blob/master/src/java/org/jnativehook/keyboard/NativeKeyEvent.java "Opens external link in new window"
