@@ -1,9 +1,0 @@
-<!-- The following HTML-snippet represents the ARE-help menu entry. -->
-<li class="menuItem">
-	ARE
-	<ul class="menuList">
-		<!--Each menu item has to have a special attribute "data-filename", containing the relative path
-		(below the path specified in "helpPaths.json") and the complete filename.-->
-		<li class="menuItem" data-filename="ARE_Introduction.htm">ARE Introduction</li>
-	</ul>
-</li>

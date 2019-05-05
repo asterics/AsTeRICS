@@ -1,11 +1,3 @@
-[submodule "src/AsTeRICS-help"]
-	path = src/AsTeRICS-help
-	url = https://github.com/asterics/AsTeRICS-help.git
-	ignore = dirty
-[submodule "src/WebACS"]
-	path = src/WebACS
-	url = https://github.com/asterics/WebACS.git
-	ignore = dirty
 [submodule "src/asterics-camerainput-cameramouse"]
 	path = src/asterics-camerainput-cameramouse
 	url = https://github.com/asterics/asterics-camerainput-cameramouse.git

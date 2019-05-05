@@ -14,13 +14,13 @@
 	</target>
 	
 	<target name="copySubModulesToTarget" description="Copyies the relevant parts of the submodules to the webapps folder.">
-		<copy todir="${web.docroot}/help" failonerror="true">
+		<!-- <copy todir="${web.docroot}/help" failonerror="true">
 		    <fileset dir="${src.dir}/AsTeRICS-help"/>
 		</copy>
 
 		<copy todir="${web.docroot}/webapps/WebACS" failonerror="true">
 		    <fileset dir="${src.dir}/WebACS"/>
-		</copy>
+		</copy> -->
 
 		<copy todir="${web.docroot}/webapps/startpage/lib" failonerror="true">
 		    <fileset dir="${src.dir}/asterics-solution-template/custom/bin/ARE/web/webapps/startpage/lib"/>
@@ -47,9 +47,9 @@
         </copy>		
 		
 		<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
-		<subant target="copyHelpFilesNoInitGitSubmodules" failonerror="true">
+		<!-- <subant target="copyHelpFilesNoInitGitSubmodules" failonerror="true">
 			<fileset dir="${WebACS.bin}" includes="**/build.xml"></fileset>
-		</subant>
+		</subant> -->
 	</target>
 	
 	<target name="copyHelpFiles" depends="copySubModulesToTarget" description="Copy all help files to the ARE and WebACS help locations.">
@@ -74,7 +74,7 @@
 		
 	</target>	
 	
-	<target name="copyAll" depends="copyHelpFiles" description="Copies the respective files of the submodules to the webapps subfolders including the help files. If you want to update the submodules to their remote HEAD, call 'ant updateGitSubmodules' first.">
+	<target name="copyAll" depends="copySubModulesToTarget" description="Copies the respective files of the submodules to the webapps subfolders including the help files. If you want to update the submodules to their remote HEAD, call 'ant updateGitSubmodules' first.">
 	</target>
 	<import file="imported.xml"/>
 	<include file="included.xml"/>
