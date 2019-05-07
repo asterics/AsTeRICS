@@ -12,6 +12,14 @@ The Acceleration input component is a sensor which is used in combination with t
 
 Acceleration plugin
 
+## Tilt calculation
+
+An accelerometer can be used to calculate the tilt angle of the accelerometer in a static environment (no movement), as the gravitation is constant and will always be measured at the axis pointing to the ground. If the accelerometer is tilted the measurement of the gravitation is distributed to 2-axis (e.g. x and y).
+
+![Diagram x and y axis tilted](http://www.hobbytronics.co.uk/image/data/tutorial/accel_dual_axis_angle.jpg)
+
+For further details, look at this [tutorial for tilt calculation](http://www.hobbytronics.co.uk/accelerometer-info).
+
 ## Requirements
 
 This software component requires an Acceleration CIM (CIM ID: 0x0501) connected to the platform.
