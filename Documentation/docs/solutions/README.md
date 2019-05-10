@@ -11,10 +11,6 @@ The solutions are grouped by **use cases** and can be directly started from this
 2. Click onto `Start`
 :::
 
-::: warning No Firefox
-Starting a solution directly from this page is currently not supported with Firefox. Please use Chrome in between.
-:::
-
 If you want to customize a solution, click onto `Edit` or go to [**Customize**](/customize/) to learn how to do that.
 
 ## Computer Control
@@ -29,16 +25,20 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     docs="/solutions/Camera-Mouse.html"
 />
 
+<br/><br/>
+
 <Model
     title="Eye Tracking Mouse"
     :tags='[{href:"https://gaming.tobii.com/product/tobii-eye-tracker-4c/", text:"eye-tracker"}]'
-    :os='["windows"]'
+    :os='["Windows"]'
     description="Mouse control by eye tracking with configurable settings."
     image="/assets/img/eye-tracking-shutterstock_195898592.jpg"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs"
     webapp="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-eyecontrol"
     docs="/solutions/Eye-Tracking-Mouse.html"
 />
+
+<br/><br/>
 
 <Model left
     title="Switch-controlled Mouse"
@@ -48,6 +48,8 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/useCaseDemos/mouseControl/crosshairCursorControl_2keys_wraparound.acs"
     docs="/solutions/Switch-Mouse.html"
 />
+
+<br/><br/>
 
 ## AAC
 
@@ -60,6 +62,8 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     docs="/solutions/AAC-Basic.html"
 />
 
+<br/><br/>
+
 ## Occupational Therapy
 
 <Model left
@@ -71,4 +75,6 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     docs="/solutions/Head-Sound.html"
 />
 
+<br/><br/>
 
+<EditLink/>
