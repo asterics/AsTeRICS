@@ -27,21 +27,20 @@ package eu.asterics.component.processor.signaltranslation;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
+import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- * SignalTranslationInstance incorporates a processor which transforms a signal
- * from within one range of values on the input to a different value range on
- * the output proportionally. The processor provides an translated output signal
- * for each input. It also incorporates two input ports which allow setting the
+ * SignalTranslationInstance incorporates a processor which transforms a signal from within one range of values on the input to a different value range on the
+ * output proportionally. The processor provides an translated output signal for each input. It also incorporates two input ports which allow setting the
  * minimum and maximum of the input value range.
  * 
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
- *         Time: 02:22:08 PM
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010 Time: 02:22:08 PM
  */
 public class SignalTranslationInstance extends AbstractRuntimeComponentInstance {
     private final String NAME_INPUT = "in";
@@ -61,10 +60,15 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     // ports
     private InputPort ipIn = new InputPort(this);
     private OutputPort opOut = new OutputPort();
+    private final IRuntimeEventTriggererPort etpExitRangeBelow = new DefaultRuntimeEventTriggererPort();
+    private final IRuntimeEventTriggererPort etpExitRangeAbove = new DefaultRuntimeEventTriggererPort();
+    private final IRuntimeEventTriggererPort etpEnterRange = new DefaultRuntimeEventTriggererPort();
+
+    private boolean inRange = false;
+    private Double lastValue = null;
 
     /**
-     * An input port implementation that will use incoming data to set the
-     * minimum input value of the component
+     * An input port implementation that will use incoming data to set the minimum input value of the component
      */
     private final IRuntimeInputPort ipSetMin = new DefaultRuntimeInputPort() {
         @Override
@@ -76,8 +80,7 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     };
 
     /**
-     * An input port implementation that will use incoming data to set the
-     * maximum input value of the component
+     * An input port implementation that will use incoming data to set the maximum input value of the component
      */
     private final IRuntimeInputPort ipSetMax = new DefaultRuntimeInputPort() {
         @Override
@@ -131,6 +134,26 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     }
 
     /**
+     * returns an Event Triggerer Port.
+     *
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
+     */
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+        if ("enterRange".equalsIgnoreCase(eventPortID)) {
+            return etpEnterRange;
+        }
+        if ("exitRangeBelow".equalsIgnoreCase(eventPortID)) {
+            return etpExitRangeBelow;
+        }
+        if ("exitRangeAbove".equalsIgnoreCase(eventPortID)) {
+            return etpExitRangeAbove;
+        }
+        return null;
+    }
+
+    /**
      * returns the value of the given property.
      * 
      * @param propertyName
@@ -165,9 +188,15 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
         try {
             if (PROPERTY_KEY_IN_MIN.equalsIgnoreCase(propertyName)) {
                 propInMin = Double.parseDouble(newValue.toString());
+                if (lastValue != null) {
+                    processInput(lastValue);
+                }
                 AstericsErrorHandling.instance.reportInfo(this, String.format("Setting in_min to %f", propInMin));
             } else if (PROPERTY_KEY_IN_MAX.equalsIgnoreCase(propertyName)) {
                 propInMax = Double.parseDouble(newValue.toString());
+                if (lastValue != null) {
+                    processInput(lastValue);
+                }
                 AstericsErrorHandling.instance.reportInfo(this, String.format("Setting in_max to %f", propInMax));
             } else if (PROPERTY_KEY_OUT_MIN.equalsIgnoreCase(propertyName)) {
                 propOutMin = Double.parseDouble(newValue.toString());
@@ -177,8 +206,7 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
                 AstericsErrorHandling.instance.reportInfo(this, String.format("Setting out_max to %f", propOutMax));
             }
         } catch (NumberFormatException nfe) {
-            AstericsErrorHandling.instance.reportInfo(this,
-                    "Invalid property value for " + propertyName + ": " + newValue);
+            AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
         }
         return null;
     }
@@ -206,20 +234,32 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
      * 
      * @param value
      */
-    public void processInput(double value) {
+    public synchronized void processInput(double originalValue) {
+        double value = originalValue;
         if (value > propInMax) {
             value = propInMax;
+            if (lastValue != null && lastValue <= propInMax) {
+                inRange = false;
+                etpExitRangeAbove.raiseEvent();
+            }
         } else if (value < propInMin) {
             value = propInMin;
+            if (lastValue != null && lastValue >= propInMin) {
+                inRange = false;
+                etpExitRangeBelow.raiseEvent();
+            }
+        } else if (!inRange) {
+            inRange = true;
+            etpEnterRange.raiseEvent();
         }
 
+        lastValue = originalValue;
         double out = (value - propInMin) / (propInMax - propInMin) * (propOutMax - propOutMin) + propOutMin;
         opOut.sendData(out);
     }
 
     /**
-     * An input port implementation which will initiate the translation of an
-     * input value to an output value in another value range
+     * An input port implementation which will initiate the translation of an input value to an output value in another value range
      * 
      * @author weissch
      *
@@ -251,8 +291,7 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance 
     }
 
     /**
-     * An output port implementation which will transfer doubles to the next
-     * component
+     * An output port implementation which will transfer doubles to the next component
      * 
      * @author weissch
      *

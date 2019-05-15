@@ -67,14 +67,17 @@ void PrintError(void);
 
 float leftEyeX=0;
 float leftEyeY=0;
+int fixation=0;
 
 // ID of the global interactors that provide our data streams; must be unique within the application.
 static const TX_STRING Interactor1Id = "AsTeRICS eyeX gazePos";
 static const TX_STRING Interactor2Id = "AsTeRICS eyeX eyePos";
+static const TX_STRING Interactor3Id = "AsTeRICS eyeX fixation";
 
 // global variables
 static TX_HANDLE g_hGlobalInteractor1Snapshot = TX_EMPTY_HANDLE;
 static TX_HANDLE g_hGlobalInteractor2Snapshot = TX_EMPTY_HANDLE;
+static TX_HANDLE g_hGlobalInteractor3Snapshot = TX_EMPTY_HANDLE;
 
 /*
  * Initializes g_hGlobalInteractorSnapshot with an interactor that has the Gaze Point behavior.
@@ -120,6 +123,28 @@ BOOL InitializeGlobalInteractorSnapshot2(TX_CONTEXTHANDLE hContext)
 }
 
 /*
+ * Initializes g_hGlobalInteractorSnapshot with an interactor that has the Fixation Data behavior.
+ */
+BOOL InitializeGlobalInteractorSnapshot3(TX_CONTEXTHANDLE hContext)
+{
+	TX_HANDLE hInteractor = TX_EMPTY_HANDLE;
+	TX_FIXATIONDATAPARAMS params = { TX_FIXATIONDATAMODE_SENSITIVE };
+//	TX_FIXATIONDATAPARAMS params = { TX_FIXATIONDATAMODE_SLOW };
+	BOOL success;
+
+	success = txCreateGlobalInteractorSnapshot(
+		hContext,
+		Interactor3Id,
+		&g_hGlobalInteractor3Snapshot,
+		&hInteractor) == TX_RESULT_OK;
+	success &= txCreateFixationDataBehavior(hInteractor, &params) == TX_RESULT_OK;
+
+	txReleaseObject(&hInteractor);
+
+	return success;
+}
+
+/*
  * Callback function invoked when a snapshot has been committed.
  */
 void TX_CALLCONVENTION OnSnapshotCommitted(TX_CONSTHANDLE hAsyncData, TX_USERPARAM param)
@@ -145,6 +170,7 @@ void TX_CALLCONVENTION OnEngineConnectionStateChanged(TX_CONNECTIONSTATE connect
 			// (it cannot be done earlier because committing means "send to the engine".)
 			success = txCommitSnapshotAsync(g_hGlobalInteractor1Snapshot, OnSnapshotCommitted, NULL) == TX_RESULT_OK;
 			success &= txCommitSnapshotAsync(g_hGlobalInteractor2Snapshot, OnSnapshotCommitted, NULL) == TX_RESULT_OK;
+			success &= txCommitSnapshotAsync(g_hGlobalInteractor3Snapshot, OnSnapshotCommitted, NULL) == TX_RESULT_OK;
 			if (!success) {
 				printf("Failed to initialize the data stream.\n");
 			}
@@ -187,7 +213,7 @@ void OnGazeDataEvent(TX_HANDLE hGazeDataBehavior)
 		// printf("Gaze Data: (%.1f, %.1f) timestamp %.0f ms\n", eventParams.X, eventParams.Y, eventParams.Timestamp);
 		if (jvm->AttachCurrentThread((void **)&env, NULL) >= 0) 
 		{
-     			env->CallVoidMethod(hookObj, newEyeDataProc, (jboolean)TRUE, (jint)eventParams.X,(jint)eventParams.Y,(jint)leftEyeX,(jint)leftEyeY);
+     			env->CallVoidMethod(hookObj, newEyeDataProc, (jboolean)fixation, (jint)eventParams.X,(jint)eventParams.Y,(jint)leftEyeX,(jint)leftEyeY);
 		}
 	} else {
 		printf("Failed to interpret gaze data event packet.\n");
@@ -206,6 +232,31 @@ void OnEyePositionDataEvent(TX_HANDLE hGazeDataBehavior)
 		leftEyeY=eventParams.LeftEyeY*10;
 	} else {
 		printf("Failed to interpret eye postion data event packet.\n");
+	}
+}
+
+/*
+ * Handles an event from the fixation data stream.
+ */
+void OnFixationDataEvent(TX_HANDLE hFixationDataBehavior)
+{
+	TX_FIXATIONDATAEVENTPARAMS eventParams;
+	TX_FIXATIONDATAEVENTTYPE eventType;
+	char* eventDescription;
+
+	if (txGetFixationDataEventParams(hFixationDataBehavior, &eventParams) == TX_RESULT_OK) {
+		eventType = eventParams.EventType;
+
+		if (eventType ==  TX_FIXATIONDATAEVENTTYPE_BEGIN) fixation =1;
+		else if (eventType ==  TX_FIXATIONDATAEVENTTYPE_END) fixation = 0;
+
+	//	eventDescription = (eventType == TX_FIXATIONDATAEVENTTYPE_DATA) ? "Data" 
+	//		: ((eventType == TX_FIXATIONDATAEVENTTYPE_END) ? "End"
+	//		: "Begin");
+
+    //		printf("Fixation %s: (%.1f, %.1f) timestamp %.0f ms\n", eventDescription, eventParams.X, eventParams.Y, eventParams.Timestamp);
+    //	} else {
+    //		printf("Failed to interpret fixation data event packet.\n");
 	}
 }
 
@@ -234,6 +285,11 @@ void TX_CALLCONVENTION HandleEvent(TX_CONSTHANDLE hAsyncData, TX_USERPARAM userP
 		OnEyePositionDataEvent(hBehavior);
 		txReleaseObject(&hBehavior);
 	}
+    else if (txGetEventBehavior(hEvent, &hBehavior, TX_BEHAVIORTYPE_FIXATIONDATA) == TX_RESULT_OK) {
+		OnFixationDataEvent(hBehavior);
+		txReleaseObject(&hBehavior);
+	}
+
 
 	// NOTE since this is a very simple application with a single interactor and a single data stream, 
 	// our event handling code can be very simple too. A more complex application would typically have to 
@@ -258,6 +314,7 @@ int startEyeX(void)
 	success &= txCreateContext(&hContext, TX_FALSE) == TX_RESULT_OK;
 	success &= InitializeGlobalInteractorSnapshot1(hContext);
 	success &= InitializeGlobalInteractorSnapshot2(hContext);
+	success &= InitializeGlobalInteractorSnapshot3(hContext);
 	success &= txRegisterConnectionStateChangedHandler(hContext, &hConnectionStateChangedTicket, OnEngineConnectionStateChanged, NULL) == TX_RESULT_OK;
 	success &= txRegisterEventHandler(hContext, &hEventHandlerTicket, HandleEvent, NULL) == TX_RESULT_OK;
 	success &= txEnableConnection(hContext) == TX_RESULT_OK;
@@ -281,6 +338,7 @@ int stopEyeX(void)
 	txDisableConnection(hContext);
 	txReleaseObject(&g_hGlobalInteractor1Snapshot);
 	txReleaseObject(&g_hGlobalInteractor2Snapshot);
+	txReleaseObject(&g_hGlobalInteractor3Snapshot);
 	txShutdownContext(hContext, TX_CLEANUPTIMEOUT_DEFAULT, TX_FALSE);
 	txReleaseContext(&hContext);
 

@@ -339,6 +339,9 @@ public class GUICell extends JPanel implements Accessible {
             g.setFont(font);
             FontMetrics fm = g.getFontMetrics(font);
             int ascent = fm.getMaxAscent();
+            ((Graphics2D)g).setRenderingHint(
+                    RenderingHints.KEY_TEXT_ANTIALIASING,
+                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
             g.setColor(getColorProperty(owner.getTextColor()));
             g.drawString(text, (int) positionX, (int) positionY + ascent);

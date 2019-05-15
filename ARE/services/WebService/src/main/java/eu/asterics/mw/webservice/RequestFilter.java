@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -56,7 +57,7 @@ public class RequestFilter implements ContainerRequestFilter {
     private List<String> allowedOrigins = null;
 
     static {
-        AREProperties.instance.setDefaultPropertyValue(ARE_REST_ALLOWED_ORIGINS, "localhost,127.0.0.1,asterics.github.io,asterics-foundation.org", "Origins that are allowed to access the ARE REST API. Separate with comma (',').");
+        AREProperties.instance.setDefaultPropertyValue(ARE_REST_ALLOWED_ORIGINS, "localhost,127.0.0.1,asterics.github.io,asterics-foundation.org,asterics.eu,asterics.org,studyathome.technikum-wien.at", "Origins that are allowed to access the ARE REST API. Separate with comma (',').");
     }
 
     @Override
@@ -101,11 +102,14 @@ public class RequestFilter implements ContainerRequestFilter {
         origin = origin.trim();
         origin = origin.replace("https://", "");
         origin = origin.replace("http://", "");
+        
+        AstericsErrorHandling.instance.getLogger().log(Level.FINE,"Requested origin <{0}>, allowed origins <{1}>",new Object[] {origin,allowedOrigins.toString()});
         if (origin.contains(":")) {
             origin = origin.substring(0, origin.indexOf(':')); // remove port
         }
         for (String testOrigin : this.allowedOrigins) {
             if (origin.equals(testOrigin) || origin.endsWith("." + testOrigin)) {
+                AstericsErrorHandling.instance.getLogger().log(Level.FINE,"Allowed: <{0}>",origin);
                 return true;
             }
         }

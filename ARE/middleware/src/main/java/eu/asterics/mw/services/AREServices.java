@@ -39,6 +39,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.Callable;
@@ -47,6 +48,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -65,6 +67,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import eu.asterics.mw.are.AREProperties;
+import static eu.asterics.mw.are.AREProperties.*;
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
@@ -76,6 +80,7 @@ import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.model.deployment.impl.ModelState;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
+import eu.asterics.mw.utils.OSUtils;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -109,6 +114,10 @@ import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
  */
 
 public class AREServices implements IAREServices {
+    public static final String WEB_ACS_EDIT_MODEL_URL_KEY = "WebACS.editModel.URL";
+    public static final String LOCAL_WEB_ACS_EDIT_MODEL_URL = "http://localhost:{0}/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
+    public static final String ONLINE_WEB_ACS_EDIT_MODEL_URL = "https://webacs.asterics.eu/index.html?autoConnect=true&autoDownloadModel=true";
+
     private final String STORAGE_FOLDER = "storage";
     private Logger logger = null;
 
@@ -122,11 +131,14 @@ public class AREServices implements IAREServices {
         logger = AstericsErrorHandling.instance.getLogger();
         areEventListenerObjects = new ArrayList<IAREEventListener>();
         runtimeDataListenerObjects = new ArrayList<RuntimeDataListener>();
+
+        AREProperties.instance.setDefaultPropertyValue(WEB_ACS_EDIT_MODEL_URL_KEY, ONLINE_WEB_ACS_EDIT_MODEL_URL,
+                "The URL which is used to open the currently deployed model for editing within the WebACS. Use '" + LOCAL_WEB_ACS_EDIT_MODEL_URL
+                        + "' if you prefer the locally deployed WebACS. The {0} will be automatically substituted by the configured REST port.");
     }
 
     /**
-     * Deploys the model associated to the specified filename. The file should
-     * be already available on the ARE file system.
+     * Deploys the model associated to the specified filename. The file should be already available on the ARE file system.
      * 
      * @param filename
      *            the filename of the model to be deployed
@@ -154,8 +166,7 @@ public class AREServices implements IAREServices {
     }
 
     /**
-     * Deploys the model associated to the specified filename. The file should
-     * be already available on the ARE file system.
+     * Deploys the model associated to the specified filename. The file should be already available on the ARE file system.
      * 
      * This method is not thread-safe, only use it in combination with
      * {@link AstericsModelExecutionThreadPool#execAndWaitOnModelExecutorLifecycleThread(Callable)}
@@ -169,26 +180,25 @@ public class AREServices implements IAREServices {
      * @throws BundleManagementException
      * @throws ParseException
      * @throws DeploymentException
-     * @throws URISyntaxException 
+     * @throws URISyntaxException
      */
 
-    public void deployFileInternal(String filename) throws ParserConfigurationException, SAXException, IOException,
-            TransformerException, DeploymentException, ParseException, BundleManagementException, URISyntaxException {
+    public void deployFileInternal(String filename) throws ParserConfigurationException, SAXException, IOException, TransformerException, DeploymentException,
+            ParseException, BundleManagementException, URISyntaxException {
         final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
 
         if (currentRuntimeModel != null) {
             stopModel();
         }
 
-        String modelAsXMLString = ResourceRegistry.getInstance().getResourceContentAsString(filename, RES_TYPE.MODEL);                    
+        String modelAsXMLString = ResourceRegistry.getInstance().getResourceContentAsString(filename, RES_TYPE.MODEL);
         deployModelInternal(modelAsXMLString);
-        AstericsErrorHandling.instance.getLogger().info("Deployed Model " + filename + " !");        
+        AstericsErrorHandling.instance.getLogger().info("Deployed Model " + filename + " !");
     }
 
     /**
-     * Deploys the model associated to the specified filename. The file should
-     * be already available on the ARE file system. This method will also start
-     * the model as soon as it is deployed.
+     * Deploys the model associated to the specified filename. The file should be already available on the ARE file system. This method will also start the
+     * model as soon as it is deployed.
      * 
      * @param filename
      *            the filename of the model to be deployed
@@ -219,54 +229,44 @@ public class AREServices implements IAREServices {
     }
 
     /**
-     * Sets the property with the specified key in the component with the
-     * specified ID with the given string representation of the value.
+     * Sets the property with the specified key in the component with the specified ID with the given string representation of the value.
      *
      * @param componentID
      *            the ID of the component to be checked
      * @param key
      *            the key of the property to be set
      * @param value
-     *            the string-representation of the value to be set to the
-     *            specified key
-     * @return the previous value of the property with the specified key in the
-     *         component with the specified ID as a string, or an empty string
-     *         if the property was not previously set
+     *            the string-representation of the value to be set to the specified key
+     * @return the previous value of the property with the specified key in the component with the specified ID as a string, or an empty string if the property
+     *         was not previously set
      */
 
     @Override
     public String setComponentProperty(final String componentID, final String key, final String value) {
         /*
-         * String result = DeploymentManager.instance.getCurrentRuntimeModel().
-         * setComponentProperty(componentID, key, value);
-         * DeploymentManager.instance.setComponentProperty (componentID, key,
-         * value); if (result == null) {
-         * logger.warning(this.getClass().getName()+"."+
-         * "setComponentProperty: Undefined component "+ componentID+"\n");
-         * return ""; } else { logger.fine(this.getClass().getName()+"."+
+         * String result = DeploymentManager.instance.getCurrentRuntimeModel(). setComponentProperty(componentID, key, value);
+         * DeploymentManager.instance.setComponentProperty (componentID, key, value); if (result == null) { logger.warning(this.getClass().getName()+"."+
+         * "setComponentProperty: Undefined component "+ componentID+"\n"); return ""; } else { logger.fine(this.getClass().getName()+"."+
          * "setComponentProperty: OK\n"); return result; }
          */
 
         try {
-            return AstericsModelExecutionThreadPool.instance
-                    .execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+            return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
 
-                        @Override
-                        public String call() throws Exception {
+                @Override
+                public String call() throws Exception {
 
-                            String result = DeploymentManager.instance.getCurrentRuntimeModel()
-                                    .setComponentProperty(componentID, key, value);
-                            DeploymentManager.instance.setComponentProperty(componentID, key, value);
-                            if (result == null) {
-                                logger.warning(this.getClass().getName() + "."
-                                        + "setComponentProperty: Undefined component " + componentID + "\n");
-                                throw new AREAsapiException("Undefined component ID: " + componentID);
-                            } else {
-                                return result;
-                            }
+                    String result = DeploymentManager.instance.getCurrentRuntimeModel().setComponentProperty(componentID, key, value);
+                    DeploymentManager.instance.setComponentProperty(componentID, key, value);
+                    if (result == null) {
+                        logger.warning(this.getClass().getName() + "." + "setComponentProperty: Undefined component " + componentID + "\n");
+                        throw new AREAsapiException("Undefined component ID: " + componentID);
+                    } else {
+                        return result;
+                    }
 
-                        }
-                    });
+                }
+            });
         } catch (Exception e) {
             String message = createErrorMsg("Could not setComponentProperty", e);
             logger.warning(message);
@@ -276,9 +276,8 @@ public class AREServices implements IAREServices {
     }
 
     /**
-     * Stops the execution of the model. Unlike the {@link #pauseModel()}
-     * method, this one resets the components, which means that when the model
-     * is started again it starts from scratch (i.e., with a new state).
+     * Stops the execution of the model. Unlike the {@link #pauseModel()} method, this one resets the components, which means that when the model is started
+     * again it starts from scratch (i.e., with a new state).
      */
     // NOTE: Don't use synchronized here, because in some cases it leads to a
     // dead lock.
@@ -331,8 +330,7 @@ public class AREServices implements IAREServices {
      */
     public void stopModelInternal() {
         logger.fine("stopModelInternal");
-        if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING
-                || DeploymentManager.instance.getStatus() == AREStatus.PAUSED
+        if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING || DeploymentManager.instance.getStatus() == AREStatus.PAUSED
                 || DeploymentManager.instance.getStatus() == AREStatus.ERROR) {
             DeploymentManager.instance.stopModel();
             DeploymentManager.instance.getCurrentRuntimeModel().setState(ModelState.STOPPED);
@@ -343,10 +341,8 @@ public class AREServices implements IAREServices {
     }
 
     /**
-     * Deploys the model encoded in the specified string into the ARE. An
-     * exception is thrown if the specified string is either not well-defined
-     * XML, or not well defined ASAPI model encoding, or if a validation error
-     * occurred after reading the model.
+     * Deploys the model encoded in the specified string into the ARE. An exception is thrown if the specified string is either not well-defined XML, or not
+     * well defined ASAPI model encoding, or if a validation error occurred after reading the model.
      * 
      * @param modelInXML
      *            a string representation in XML of the model to be deployed
@@ -384,8 +380,7 @@ public class AREServices implements IAREServices {
      * @throws ParseException
      * @throws BundleManagementException
      */
-    public void deployModelInternal(String modelInXML)
-            throws IOException, DeploymentException, ParseException, BundleManagementException {
+    public void deployModelInternal(String modelInXML) throws IOException, DeploymentException, ParseException, BundleManagementException {
         // Stop running model first if there is one
         if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING) {
             stopModelInternal();
@@ -459,9 +454,8 @@ public class AREServices implements IAREServices {
     }
 
     /**
-     * Briefly stops the execution of the model. Its main difference from the
-     * {@link #stopModel()} method is that it does not reset the components
-     * (e.g., the buffers are not cleared).
+     * Briefly stops the execution of the model. Its main difference from the {@link #stopModel()} method is that it does not reset the components (e.g., the
+     * buffers are not cleared).
      *
      */
     // NOTE: Don't use synchronized here, because in some cases it leads to a
@@ -487,8 +481,21 @@ public class AREServices implements IAREServices {
     }
 
     /**
-     * Creates an error message for an error dialog and internally logs the
-     * stacktrace of the exception.
+     * Opens the currently deployed model in the WebACS for editing.
+     */
+    public void editModel() {
+        String url = AREProperties.instance.getProperty(WEB_ACS_EDIT_MODEL_URL_KEY);
+        // If the url value contains {0} replace it with the currently configured REST port.
+        url = MessageFormat.format(url, AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
+        try {
+            OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "error opening WebACS for current model.", e);
+        }
+    }
+
+    /**
+     * Creates an error message for an error dialog and internally logs the stacktrace of the exception.
      * 
      * @param baseMsg
      * @param e
@@ -501,8 +508,7 @@ public class AREServices implements IAREServices {
         /*
          * else if(e instanceof ExecutionException) {
          * 
-         * if(e.getCause()!=null && e.getCause().getMessage()!=null) { return
-         * baseMsg+", "+e.getCause().getMessage(); } }
+         * if(e.getCause()!=null && e.getCause().getMessage()!=null) { return baseMsg+", "+e.getCause().getMessage(); } }
          */
         StringWriter stackTraceWriter = new StringWriter();
         e.printStackTrace(new PrintWriter(stackTraceWriter));
@@ -543,8 +549,7 @@ public class AREServices implements IAREServices {
     /**
      * Provides the name of the currently deployed model in ARE.
      * 
-     * @return the name of the model as a String object if there is one
-     *         deployed, <code>null</code> otherwise.
+     * @return the name of the model as a String object if there is one deployed, <code>null</code> otherwise.
      */
     // TODO:Should be synchronized, but risk of dead lock due to AREMain thread
     public String getRuntimeModelName() {
@@ -556,15 +561,11 @@ public class AREServices implements IAREServices {
     }
 
     /**
-     * Opens a File object for the requested file. The method will look up the
-     * current model name and the instance name of the component and open or
-     * create the file if it does not exist. The file will exist in a folder
-     * tree which allows each instance of a component to have its own storage on
-     * a per instance per model basis
+     * Opens a File object for the requested file. The method will look up the current model name and the instance name of the component and open or create the
+     * file if it does not exist. The file will exist in a folder tree which allows each instance of a component to have its own storage on a per instance per
+     * model basis
      * 
-     * @return the File object if it has been created, <code>null</code> if
-     *         there is currently no model deployed or the object could not be
-     *         created.
+     * @return the File object if it has been created, <code>null</code> if there is currently no model deployed or the object could not be created.
      * 
      * @param component
      *            the requesting instance of a runtime component
@@ -589,8 +590,7 @@ public class AREServices implements IAREServices {
         fullFilePath.append("/");
         fullFilePath.append(modelName);
         fullFilePath.append("/");
-        fullFilePath.append(
-                DeploymentManager.instance.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component));
+        fullFilePath.append(DeploymentManager.instance.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component));
         fullFilePath.append("/");
         // System.out.println("Model File Name for Local Storage
         // Service="+fullFilePath);
@@ -604,10 +604,9 @@ public class AREServices implements IAREServices {
                 localFile.createNewFile();
             } catch (IOException e1) {
                 DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-                AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "",
-                        "Deployment Error");
-                logger.warning(this.getClass().getName() + "." + "deployModel: Failed to create file "
-                        + fullFilePath.toString() + fileName + "-> \n" + e1.getMessage());
+                AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+                logger.warning(this.getClass().getName() + "." + "deployModel: Failed to create file " + fullFilePath.toString() + fileName + "-> \n"
+                        + e1.getMessage());
             }
         }
         return localFile;
@@ -649,8 +648,7 @@ public class AREServices implements IAREServices {
     }
 
     /**
-     * Registers a new {@link RuntimeDataListener} object to the
-     * {@link AREServices#runtimeDataListenerObjects} list
+     * Registers a new {@link RuntimeDataListener} object to the {@link AREServices#runtimeDataListenerObjects} list
      * 
      * @param runtimeDataListener
      *            - The class used to notify the external consumers
@@ -664,8 +662,7 @@ public class AREServices implements IAREServices {
     }
 
     /**
-     * Unregisters a {@link RuntimeDataListener} object from the
-     * {@link AREServices#runtimeDataListenerObjects} list
+     * Unregisters a {@link RuntimeDataListener} object from the {@link AREServices#runtimeDataListenerObjects} list
      * 
      * @param runtimeDataListener
      *            - The class used to notify the external consumers
@@ -694,8 +691,7 @@ public class AREServices implements IAREServices {
     }
 
     /**
-     * Notifies the {@link RuntimeDataListener} objects that a new
-     * {@link RuntimeDataEvent} was occurred.
+     * Notifies the {@link RuntimeDataListener} objects that a new {@link RuntimeDataEvent} was occurred.
      * 
      * @param event
      *            - the object holding the event information
@@ -746,12 +742,20 @@ public class AREServices implements IAREServices {
         return DeploymentManager.instance.getComponentPosition(componentInstance);
 
     }
+    
+    public float calcMaxFontSize(JComponent component, Dimension widgetDim, String testString) {
+        return DeploymentManager.instance.calcMaxFontSize(component, widgetDim, testString);
+    }
 
-    public Point getScreenDimension() {
+    public int getMaxFontSize() {
+        return DeploymentManager.instance.getMaxFontSize();
+    }
+    
+    public Dimension getScreenDimension() {
         return DeploymentManager.instance.getScreenDimension();
     }
 
-    public Point getAREWindowDimension() {
+    public Dimension getAREWindowDimension() {
         return DeploymentManager.instance.getAREWindowDimension();
     }
 

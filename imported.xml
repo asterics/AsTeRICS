@@ -53,25 +53,4 @@
 		<move file="LICENSE/LICENSE_dual.txt" tofile="LICENSE/LICENSE_MITOrGPLv3WithException.txt" verbose="true">
 		</move>
 	</target>
-	
-	<!-- update git submodules -->
-	<target name="updateGitSubmodules" description="Inits all git submodules and updates them to the latest revision that is available remote.">
-		<exec executable="git">
-			<arg value="submodule"/>
-			<arg value="update"/>
-			<arg value="--init"/>
-			<arg value="--recursive"/>
-			<arg value="--remote"/>
-		</exec>
-	</target>
-	
-	<target name="initGitSubmodules" description="Inits all submodules to the current revision saved in this repository.">
-		<exec executable="git">
-			<arg value="submodule"/>
-			<arg value="update"/>
-			<arg value="--init"/>
-			<arg value="--recursive"/>
-		</exec>
-	</target>
-	
 </project>

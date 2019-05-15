@@ -29,6 +29,14 @@
       <li><strong>defaultIn3Double [double]:</strong> The default value of in3Double. Used if there is no input port value.</li>
       <li><strong>defaultIn4Integer [integer]:</strong> The default value of in4Integer. Used if there is no input port value.</li>
       <li><strong>sendOnlyByEvent [boolean]:</strong> Only sends the value of the formatted string, if the event sendFormattedStr is received.</li>
+      <li>
+        <strong>port1ToDefaultAfterSend [boolean]:</strong> If true (default: false) input port 1 is reverted to the default value (property 'defaultIn1String')
+        after the formatted result value was sent, triggered by a different value sent to input port 'in1String'.
+        This functionality can be useful, if some kind of action string is constructed using the StringFormatter plugin and a part of it should be sent exactly once triggering an one-time action.
+      </li>
+      <li>
+        <strong>port[2-4]ToDefaultAfterSend [boolean]:</strong> Analog functionality for input ports 2-4 as described for 'port1ToDefaultAfterSend' above.
+      </li>
     </ul>
   </body>
 </html>

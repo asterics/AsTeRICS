@@ -56,20 +56,20 @@ import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import eu.asterics.mw.are.AREProperties;
+import static eu.asterics.mw.are.AREProperties.*;
 import eu.asterics.mw.utils.OSUtils;
 import org.osgi.framework.BundleContext;
 
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class ControlPane extends JPanel {
 
     private static final int CONTROLPANEL_WIDTH = 30;
     private Logger logger = AstericsErrorHandling.instance.getLogger();
-    private static final String DEFAULT_REST_PORT = "8081";
-    private static final String PROPTERTY_REST_PORT = "ARE.webservice.port.REST";
 
     private BundleContext bundleContext;
     private JPanel jplPanel, iconPanel, mainPanel;
@@ -176,7 +176,7 @@ public class ControlPane extends JPanel {
         JComponent controlPanel = makeControlPanel("", axis);
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, axis));
-        mainPanel.setPreferredSize(new Dimension(CONTROLPANEL_WIDTH, astericsGUI.screenSize.height));
+        mainPanel.setPreferredSize(new Dimension(CONTROLPANEL_WIDTH, astericsGUI.getScreenDimension().height));
         mainPanel.add(controlPanel);
         add(mainPanel);
     }
@@ -267,20 +267,14 @@ public class ControlPane extends JPanel {
             pencilLabel = new ControlPanelLabel(getFullURL(PENCIL_ICON_PATH), getFullURL(PENCIL_ICON_PATH_RO), "Edit current model in WebACS") {
                 @Override
                 public void onMouseClick() {
-                    String webACSPath = "webapps/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
-                    String url = MessageFormat.format("http://localhost:{0}/{1}", getCurrentRestPort(), webACSPath);
-                    try {
-                        OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
-                    } catch (IOException e) {
-                        logger.log(Level.SEVERE, "error opening WebACS for current model.", e);
-                    }
+                    AREServices.instance.editModel();
                 }
             };
 
             globeLabel = new ControlPanelLabel(getFullURL(GLOBE_ICON_PATH), getFullURL(GLOBE_ICON_PATH_RO), "Open ARE Webserver Startpage") {
                 @Override
                 public void onMouseClick() {
-                    String url = MessageFormat.format("http://localhost:{0}/", getCurrentRestPort());
+                    String url = MessageFormat.format("http://localhost:{0}/", AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
                     try {
                         OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
                     } catch (IOException e) {
@@ -471,8 +465,7 @@ public class ControlPane extends JPanel {
         exitLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                int n = JOptionPane.showConfirmDialog(null, "Are you sure to stop and close the ARE?", "ARE Exit",
-                        JOptionPane.YES_NO_OPTION);
+                int n = JOptionPane.showConfirmDialog(null, "Are you sure to stop and close the ARE?", "ARE Exit", JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION) {
                     astericsGUI.closeAction();
                 }
@@ -559,7 +552,7 @@ public class ControlPane extends JPanel {
 
     public void resizeLabels(int orientation) {
         int newSize = mainFrame.getHeight() / 8;
-        int maxSize = astericsGUI.screenSize.width / 30;
+        int maxSize = astericsGUI.getScreenDimension().width / 30;
 
         if (newSize > maxSize) {
             newSize = maxSize;
@@ -590,9 +583,9 @@ public class ControlPane extends JPanel {
             globeLabel.resizeImage(newSize);
 
             if (orientation == BoxLayout.Y_AXIS) {
-                mainPanel.setPreferredSize(new Dimension(newSize, astericsGUI.screenSize.height));
+                mainPanel.setPreferredSize(new Dimension(newSize, astericsGUI.getScreenDimension().height));
             } else {
-                mainPanel.setPreferredSize(new Dimension(astericsGUI.screenSize.height, newSize));
+                mainPanel.setPreferredSize(new Dimension(astericsGUI.getScreenDimension().height, newSize));
             }
 
             iconPanel.revalidate();
@@ -606,9 +599,8 @@ public class ControlPane extends JPanel {
         // cpWrapperPanel.setLayout(new BoxLayout(cpWrapperPanel,axis));
         iconPanel.setLayout(new BoxLayout(iconPanel, axis));
         /*
-         * if (axis==BoxLayout.Y_AXIS) setPreferredSize(new Dimension
-         * (VERTICAL_BAR_WIDTH,VERTICAL_BAR_HEIGHT)); else setPreferredSize(new
-         * Dimension (HORIZONTAL_BAR_WIDTH,HORIZONTAL_BAR_HEIGHT));
+         * if (axis==BoxLayout.Y_AXIS) setPreferredSize(new Dimension (VERTICAL_BAR_WIDTH,VERTICAL_BAR_HEIGHT)); else setPreferredSize(new Dimension
+         * (HORIZONTAL_BAR_WIDTH,HORIZONTAL_BAR_HEIGHT));
          */
         mainPanel.revalidate();
 
@@ -697,13 +689,5 @@ public class ControlPane extends JPanel {
 
     private URL getFullURL(String relativePath) {
         return bundleContext.getBundle().getResource(relativePath);
-    }
-
-    private String getCurrentRestPort() {
-        String port = AREProperties.instance.getProperty(PROPTERTY_REST_PORT);
-        if(port == null || port.isEmpty()) {
-            port = DEFAULT_REST_PORT;
-        }
-        return port;
     }
 }

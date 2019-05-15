@@ -22,6 +22,23 @@
 		<ul>
 			<li><STRONG>out [double]:</STRONG> This port sends the translated values corresponding to the output range.</li>
 		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li>
+				<STRONG>enterRange:</STRONG> This event is generated if the defined input range was entered by the last input value and now inMin < value < inMax holds.
+				It is also fired if inMin or inMax is changed using the corresponding input ports and after this change now inMin < value < inMax newly holds.
+			</li>
+			<li>
+				<STRONG>exitRangeBelow:</STRONG>
+				This event is generated if value < inMin holds and value >= inMin was true for the last value.
+				It is also fired if inMin is changed using the corresponding input port and after this change value < inMin newly holds.
+			</li>
+			<li>
+				<STRONG>exitRangeAbove:</STRONG>
+				This event is generated if value > inMax holds and value <= inMax was true for the last value.
+				It is also fired if inMax is changed using the corresponding input port and after this change value > inMax newly holds.
+			</li>
+		</ul>
 		<H2>Properties</H2>
 		<ul>
 			<li><STRONG>inMin [double]:</STRONG> Sets the minimum value of the input range, input values below this value will be clipped to the minimum.</li>

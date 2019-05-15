@@ -358,15 +358,15 @@ public class ARECommunicator {
 	 * Retrieves property value of a specific component, in the currently deployed model
 	 *
 	 * @param componentId - the component id
-	 * @param componentKey - the component key
+	 * @param propertyKey - the property key
 	 *
-	 * @return - the value that corresponds to the given component key
+	 * @return - the value that corresponds to the given property key
 	 * @throws Exception
 	 */
-	public String getRuntimeComponentProperty(String componentId, String componentKey) throws Exception {
+	public String getRuntimeComponentProperty(String componentId, String propertyKey) throws Exception {
 		try {
 			String encodedId = astericsAPIEncoding.encodeString(componentId);
-			String encodedKey = astericsAPIEncoding.encodeString(componentKey);
+			String encodedKey = astericsAPIEncoding.encodeString(propertyKey);
 			HttpResponse httpResponse = httpCommunicator.getRequest("/runtime/model/components/"+encodedId+"/"+encodedKey,
 					HttpCommunicator.DATATYPE_TEXT_PLAIN);
 			return httpResponse.getBody();
@@ -374,21 +374,45 @@ public class ARECommunicator {
 			throw e;
 		}
 	}
+	
+    /**
+     * Retrieves the dynamic property value of a specific component, in the currently deployed model
+     *
+     * @param componentId - the component id
+     * @param propertyKey - the property key
+     *
+     * @return - the value that corresponds to the given property key
+     * @throws Exception
+     */
+    public String[] getRuntimeComponentPropertyDynamic(String componentId, String propertyKey) throws Exception {
+        try {
+            String encodedId = astericsAPIEncoding.encodeString(componentId);
+            String encodedKey = astericsAPIEncoding.encodeString(propertyKey);
+            HttpResponse httpResponse = httpCommunicator.getRequest("/runtime/model/components/"+encodedId+"/"+encodedKey+"/dynamicproperty",
+                    HttpCommunicator.DATATYPE_APPLICATION_JSON);
+            
+            List<String> list = (List<String>) ObjectTransformation.JSONToObject(httpResponse.getBody(), List.class);
+
+            return (String[]) list.toArray(new String[list.size()]);
+        } catch (Exception e) {
+            throw e;
+        }
+    }	
 
 	/**
 	 * Changes a property value of a specific component, in the currently deployed model
 	 *
 	 * @param componentId - the component id
-	 * @param componentKey - the component key
+	 * @param propertyKey - the property key
 	 * @param value - the new value
 	 *
 	 * @return - the previous value
 	 * @throws Exception
 	 */
-	public String setRuntimeComponentProperty(String componentId, String componentKey, String value) throws Exception {
+	public String setRuntimeComponentProperty(String componentId, String propertyKey, String value) throws Exception {
 		try {
 			String encodedId = astericsAPIEncoding.encodeString(componentId);
-			String encodedKey = astericsAPIEncoding.encodeString(componentKey);
+			String encodedKey = astericsAPIEncoding.encodeString(propertyKey);
 			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/components/"+encodedId+"/"+encodedKey,
 					HttpCommunicator.DATATYPE_TEXT_PLAIN, HttpCommunicator.DATATYPE_TEXT_PLAIN,
 					value);

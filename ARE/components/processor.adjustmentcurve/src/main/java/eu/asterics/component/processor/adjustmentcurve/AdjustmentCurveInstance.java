@@ -64,11 +64,15 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
     final int MODE_CLIPMINMAX = 0;
     final int MODE_AUTOMINMAX = 1;
 
+    static final int OPMODE_FROM_FILE = 0;
+    static final int OPMODE_FROM_PROP_PERCENT = 1;
+    static final int OPMODE_FROM_PROP_ABSOLUTE = 2;
+
     final int MAX_REDRAWSPEED = 50;
 
     private double input = 500;
     private double output = 500;
-    private int active = 0;
+    private boolean guiVisible = false;
 
     public Vector<CurvePoint> curvePoints = new Vector<CurvePoint>();
 
@@ -81,6 +85,8 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
     public int propFontSize = 14;
     public String propCaption = "dotMeter";
     public String propFilename = "curve1";
+    public int propOperationMode = 0;
+    String propCurvePoints;
 
     long timestamp = 0;
 
@@ -99,7 +105,6 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
          * CurvePoint e= new CurvePoint(); e.x=0; e.y=0; curvePoints.add(e); e=
          * new CurvePoint(); e.x=1000; e.y=1000; curvePoints.add(e);
          */
-
     }
 
     public synchronized void load() {
@@ -129,6 +134,27 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+    
+    private void loadFromProperty() {
+        curvePoints.clear();
+        try {
+            if (propCurvePoints != null && !"".equals(propCurvePoints)) {
+                propCurvePoints = propCurvePoints.replace(" ", "");
+                String[] stringPoints = propCurvePoints.split("\\),");
+                for (String stringPoint : stringPoints) {
+                    stringPoint = stringPoint.replace(")", "").replace("(", "");
+                    String[] stringValues = stringPoint.split(",");
+                    CurvePoint c = new CurvePoint();
+                    c.x = Double.parseDouble(stringValues[0]);
+                    c.y = Double.parseDouble(stringValues[1]);
+                    curvePoints.add(c);
+                }
+            }
+        } catch (Exception e) {
+            AstericsErrorHandling.instance.reportError(this,
+                    "AdjustmentCurve: Could not parse 'propCurvePoints'. Make sure the format is like '(1,2),(2,3),(4,5)'.");
         }
     }
 
@@ -161,28 +187,50 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
         CurvePoint a, b;
 
         if (curvePoints.size() > 1) {
-            a = curvePoints.get(0);
-            if (x <= a.x) {
-                return (a.y);
+            if (x <= getX(0)) {
+                return (getY(0));
             }
-            b = curvePoints.get(curvePoints.size() - 1);
-            if (x >= b.x) {
-                return (b.y);
+            if (x >= getX(curvePoints.size() - 1)) {
+                return (getY(curvePoints.size() - 1));
             }
             int i = 0;
-            while ((i < curvePoints.size() - 1) && (x > curvePoints.get(i).x)) {
+            while ((i < curvePoints.size() - 1) && (x > getX(i))) {
                 i++;
             }
 
-            a = curvePoints.get(i - 1);
-            b = curvePoints.get(i);
+            double ax = getX(i - 1);
+            double ay = getY(i - 1);
+            double bx = getX(i);
+            double by = getY(i);
             // System.out.println("x="+x+", a.x="+a.x+",b.x="+b.x);
 
-            double f = (x - a.x) / (b.x - a.x);
-            return (a.y + (b.y - a.y) * f);
+            double f = (x - ax) / (bx - ax);
+            return (ay + (by - ay) * f);
         } else {
             return (0);
         }
+    }
+
+    private double getX(int index) {
+        double value = curvePoints.get(index).x;
+        if(propOperationMode == OPMODE_FROM_PROP_PERCENT) {
+            value = value > 100 ? 100 : value;
+            value = value < 0 ? 0 : value;
+            double range = propInMax - propInMin;
+            value = (value * range / 100) + propInMin;
+        }
+        return value;
+    }
+
+    private double getY(int index) {
+        double value = curvePoints.get(index).y;
+        if(propOperationMode == OPMODE_FROM_PROP_PERCENT) {
+            value = value > 100 ? 100 : value;
+            value = value < 0 ? 0 : value;
+            double range = propOutMax - propOutMin;
+            value = (value * range / 100) + propOutMin;
+        }
+        return value;
     }
 
     /**
@@ -248,11 +296,17 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
         if ("mode".equalsIgnoreCase(propertyName)) {
             return propMode;
         }
+        if ("operationMode".equalsIgnoreCase(propertyName)) {
+            return propOperationMode;
+        }
         if ("fontSize".equalsIgnoreCase(propertyName)) {
             return propFontSize;
         }
         if ("caption".equalsIgnoreCase(propertyName)) {
             return propCaption;
+        }
+        if ("curvePoints".equalsIgnoreCase(propertyName)) {
+            return propCurvePoints;
         }
         return null;
     }
@@ -300,16 +354,12 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
             if ("true".equalsIgnoreCase((String) newValue)) {
                 propDisplayGui = true;
                 if (oldValue == false) {
-                    gui = new GUI(this, AREServices.instance.getAvailableSpace(this));
-                    AREServices.instance.displayPanel(gui, this, true);
-                    gui.updateGraph(input, output);
-                    active = 1;
+                    showGui();
                 }
             } else if ("false".equalsIgnoreCase((String) newValue)) {
                 propDisplayGui = false;
-                if ((oldValue == true) && (gui != null)) {
-                    AREServices.instance.displayPanel(gui, this, false);
-                    active = 0;
+                if (oldValue == true) {
+                    hideGui();
                 }
             }
             return oldValue;
@@ -354,7 +404,29 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
             }
             return oldValue;
         }
-
+        if ("operationMode".equalsIgnoreCase(propertyName)) {
+            final int oldValue = propOperationMode;
+            propOperationMode = Integer.parseInt(newValue.toString());
+            if (oldValue != propOperationMode) {
+                switch (propOperationMode) {
+                case OPMODE_FROM_FILE:
+                    load();
+                    if (propDisplayGui) {
+                        showGui();
+                    }
+                    break;
+                case OPMODE_FROM_PROP_PERCENT:
+                    loadFromProperty();
+                    hideGui();
+                    break;
+                case OPMODE_FROM_PROP_ABSOLUTE:
+                    loadFromProperty();
+                    hideGui();
+                    break;
+                }
+            }
+            return oldValue;
+        }
         if ("fontSize".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propFontSize;
             propFontSize = Integer.parseInt(newValue.toString());
@@ -363,6 +435,14 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
         if ("caption".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propCaption;
             propCaption = newValue.toString();
+            return oldValue;
+        }
+        if ("curvePoints".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propCurvePoints;
+            propCurvePoints = newValue.toString();
+            if(propOperationMode == OPMODE_FROM_PROP_ABSOLUTE || propOperationMode == OPMODE_FROM_PROP_PERCENT) {
+                loadFromProperty();
+            }
             return oldValue;
         }
         return null;
@@ -376,7 +456,7 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
         public void receiveData(byte[] data) {
             input = ConversionUtils.doubleFromBytes(data);
             output = calculateOutputValue(input);
-            if ((propDisplayGui == true) && (active == 1)) {
+            if ((propDisplayGui == true) && guiVisible) {
                 if (System.currentTimeMillis() - timestamp > MAX_REDRAWSPEED) {
                     gui.updateGraph(input, output);
                     timestamp = System.currentTimeMillis();
@@ -405,13 +485,9 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
     final IRuntimeEventListenerPort elpDisplayGui = new IRuntimeEventListenerPort() {
         @Override
         public void receiveEvent(final String data) {
-
             if (propDisplayGui == false) {
                 propDisplayGui = true;
-                gui = new GUI(thisInstance, AREServices.instance.getAvailableSpace(thisInstance));
-                AREServices.instance.displayPanel(gui, thisInstance, true);
-                gui.updateGraph(input, output);
-                active = 1;
+                showGui();
             }
         }
     };
@@ -419,10 +495,7 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveEvent(final String data) {
             propDisplayGui = false;
-            if (gui != null) {
-                AREServices.instance.displayPanel(gui, thisInstance, false);
-            }
-            active = 0;
+            hideGui();
             // gui.updateGraph(input,output);
         }
     };
@@ -430,7 +503,7 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveEvent(final String data) {
             // System.out.println("Load Curve");
-            // if (active==0)
+            // if (guiVisible)
             load();
         }
     };
@@ -452,11 +525,8 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
         output = calculateOutputValue(input);
 
         if (propDisplayGui == true) {
-            gui = new GUI(this, AREServices.instance.getAvailableSpace(this));
-            AREServices.instance.displayPanel(gui, this, true);
-            gui.updateGraph(input, output);
+            showGui();
         }
-        active = 1;
         super.start();
     }
 
@@ -481,9 +551,24 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void stop() {
-        AREServices.instance.displayPanel(gui, this, false);
-
-        active = 0;
+        hideGui();
         super.stop();
+    }
+    
+    private void showGui() {
+        if(propOperationMode != OPMODE_FROM_FILE || guiVisible) {
+            return;
+        }
+        gui = new GUI(this, AREServices.instance.getAvailableSpace(this));
+        AREServices.instance.displayPanel(gui, this, true);
+        gui.updateGraph(input, output);
+        guiVisible = true;
+    }
+    
+    private void hideGui() {
+        if (gui != null) {
+            AREServices.instance.displayPanel(gui, this, false);
+            guiVisible = false;
+        }
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ARE\GamepadMouseEdit.acs_2017_12_14_11_54" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\work\dev\AsTeRICS\bin\ARE\models\GamepadMouseEdit.acs_2019_4_24_23_28" version="20130320">
   <modelDescription>
     <shortDescription>A short demonstration how a standard PC gamepad can be used for mouse-replacement
 This model is described in the AsTeRICS User Manual 
@@ -46,19 +46,26 @@ Left-,  right- and double clicks can be created via the gampad buttons 1,2 and 3
     <component id="Mouse.1" type_id="asterics.Mouse">
       <description>Local mouse actuator, emulates mouse activity on local system</description>
       <ports>
-        <inputPort portTypeID="mouseX" sync="true">
+        <inputPort portTypeID="mouseX">
           <properties />
         </inputPort>
-        <inputPort portTypeID="mouseY" sync="true">
+        <inputPort portTypeID="mouseY">
           <properties />
         </inputPort>
         <inputPort portTypeID="action">
           <properties />
         </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="enableMouse" value="True" />
         <property name="absolutePosition" value="False" />
+        <property name="startCentered" value="true" />
         <property name="xMin" value="0" />
         <property name="xMax" value="0" />
         <property name="yMin" value="0" />
@@ -157,6 +164,8 @@ Left-,  right- and double clicks can be created via the gampad buttons 1,2 and 3
         <property name="mode" value="1" />
         <property name="fontSize" value="14" />
         <property name="caption" value="y-Acceleration" />
+        <property name="operationMode" value="0" />
+        <property name="curvePoints" value="(10,0),(10,10),(100,100)" />
       </properties>
       <layout>
         <posX>226</posX>
@@ -192,6 +201,8 @@ Left-,  right- and double clicks can be created via the gampad buttons 1,2 and 3
         <property name="mode" value="1" />
         <property name="fontSize" value="12" />
         <property name="caption" value="x-Acceleration" />
+        <property name="operationMode" value="0" />
+        <property name="curvePoints" value="(10,0),(10,10),(100,100)" />
       </properties>
       <layout>
         <posX>227</posX>

@@ -25,12 +25,30 @@
 
 package eu.asterics.mw.webservice.serverUtils;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+
 import eu.asterics.mw.are.AREProperties;
+import static eu.asterics.mw.are.AREProperties.*;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.webservice.RestServer;
+import eu.asterics.mw.webservice.SseResource;
+import eu.asterics.mw.webservice.serverUtils.RestFunction.Description;
 
 /**
  * The repository used by the Grizzly servers, holding static information.
@@ -43,19 +61,24 @@ public class ServerRepository {
     private static ServerRepository instance;
 
     // Rest Server configuration
-    public static final String ARE_WEBSERVICE_PORT_REST_KEY = "ARE.webservice.port.REST";
+
     public static final String PATH_REST = "/rest";
     public static final int DEFAULT_PORT_REST = 8081;
+    public static final int DEFAULT_SSL_PORT_REST = 8083;
 
     // Web Socket Server configuration
     public static final String PATH_WEBSOCKET = "/ws";
     public static final String PATH_WEBSOCKET_ASTERICS_DATA = "/astericsData";
-    public static final String ARE_WEBSERVICE_PORT_WEBSOCKET_KEY = "ARE.webservice.port.websocket";
+
     public static final int DEFAULT_PORT_WEBSOCKET = 8082;
+    // this is disabled for now, as it did not work as expected
+    public static final int DEFAULT_SSL_PORT_WEBSOCKET = -1;
 
     // member variables holding property values
     private int portREST = DEFAULT_PORT_REST;
     private int portWebsocket = DEFAULT_PORT_WEBSOCKET;
+    private int sslPortREST = DEFAULT_SSL_PORT_REST;
+    private int sslPortWebsocket = DEFAULT_SSL_PORT_WEBSOCKET;
 
     /**
      * Private ctor used for initializing the class.
@@ -63,18 +86,40 @@ public class ServerRepository {
     private ServerRepository() {
         // init ports and paths with property values
         try {
-            portREST = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY, String.valueOf(DEFAULT_PORT_REST)));
+            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_PORT_REST_KEY, String.valueOf(DEFAULT_PORT_REST),
+                    "The port to use for the REST API or -1 to disable it.");
+            portREST = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
         } catch (NumberFormatException e) {
             AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
                     "Configured port for REST service invalid: " + e.getMessage(), e);
         }
         // init ports and paths with property values
         try {
-            portWebsocket = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_PORT_WEBSOCKET)));
+            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_PORT_WEBSOCKET),
+                    "The port to use for websocket communication or -1 to disable it.");
+            portWebsocket = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY));
         } catch (NumberFormatException e) {
             AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
                     "Configured port for Websocket service invalid: " + e.getMessage(), e);
         }
+        // init ports and paths with property values for SSL
+        try {
+            AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_SSL_PORT_REST_KEY, String.valueOf(DEFAULT_SSL_PORT_REST),
+                    "The port to use for the SSL REST API or -1 to disable it.");
+            sslPortREST = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_SSL_PORT_REST_KEY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+                    "Configured port for SSL REST service invalid: " + e.getMessage(), e);
+        }
+        // init ports and paths with property values
+        // try {
+        // AREProperties.instance.setDefaultPropertyValue(ARE_WEBSERVICE_SSL_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_SSL_PORT_WEBSOCKET), "The port to use
+        // for SSL websocket communication or -1 to disable it.");
+        // sslPortWebsocket = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_SSL_PORT_WEBSOCKET_KEY));
+        // } catch (NumberFormatException e) {
+        // AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+        // "Configured port for SSL Websocket service invalid: " + e.getMessage(), e);
+        // }
     }
 
     /**
@@ -93,7 +138,7 @@ public class ServerRepository {
      * @return the baseUriWs
      */
     public URI getBaseUriWebsocket() {
-        return URI.create("http://0.0.0.0:" + getPortWebsocket() + PATH_WEBSOCKET);
+        return URI.create("ws://0.0.0.0:" + getPortWebsocket() + PATH_WEBSOCKET);
     }
 
     /**
@@ -122,6 +167,86 @@ public class ServerRepository {
     }
 
     /**
+     * Returns the baseURI for the SSL REST API.
+     *
+     * @return the baseUriRest
+     */
+    public URI getBaseUriSSLREST() {
+        return URI.create("https://0.0.0.0:" + getSSLPortREST() + PATH_REST);
+    }
+
+    /**
+     * Returns the baseURI for the SSL websocket functionality. The actual websocket channels must be subpaths of it, e.g.
+     * {@link ServerRepository#PATH_WEBSOCKET_ASTERICS_DATA}
+     *
+     * @return the baseUriWs
+     */
+    public URI getBaseUriSSLWebsocket() {
+        return URI.create("wss://0.0.0.0:" + getSSLPortWebsocket() + PATH_WEBSOCKET);
+    }
+
+    /**
+     * Returns the configured port number for the SSL REST API.
+     *
+     * @return
+     */
+    public int getSSLPortREST() {
+        return sslPortREST;
+    }
+
+    /**
+     * Returns the configured port number for the SSL webserver, which should be the same as the one for the REST API.
+     */
+    public int getSSLPortWebserver() {
+        return getSSLPortREST();
+    }
+
+    /**
+     * Returns the configured port number for the SSL Websocket functionality.
+     *
+     * @return
+     */
+    public int getSSLPortWebsocket() {
+        return sslPortWebsocket;
+    }
+
+    /**
+     * Returns true if the REST service is configured for being enabled.
+     * 
+     * @return
+     */
+    public boolean isRESTEnabled() {
+        return portREST > -1;
+    }
+
+    /**
+     * Returns true if the SSL REST service is configured for being enabled.
+     * 
+     * @return
+     */
+    public boolean isSSLRESTEnabled() {
+        return sslPortREST > -1;
+    }
+
+    /**
+     * Returns true if the Websocket service is configured for being enabled.
+     * 
+     * @return
+     */
+    public boolean isWebsocketEnabled() {
+        return portWebsocket > -1;
+    }
+
+    /**
+     * Returns true if the SSL Websocket service is configured for being enabled.
+     * 
+     * @return
+     */
+    public boolean isSSLWebsocketEnabled() {
+        return sslPortWebsocket > -1;
+    }
+
+    /**
      * Returns a singleton instance of the ServerRepository class
      *
      * @return
@@ -133,71 +258,66 @@ public class ServerRepository {
         return instance;
     }
 
-    // a list with the functions of the Restful API
-    public static final ArrayList<RestFunction> restFunctions = new ArrayList<RestFunction>() {
-        {
-            add(new RestFunction("GET", "/runtime/model", "", "text/xml", "", "Retrieves the currently deployed model in XML"));
+    /**
+     * This method generates a list of {@link RestFunction} entries for the given class object.
+     * 
+     * @param restClass
+     * @return
+     */
+    private ArrayList<RestFunction> createListOfRestFunctions(Class restClass) {
+        ArrayList<RestFunction> restFunctions = new ArrayList<RestFunction>();
+        Method[] allMethods = restClass.getDeclaredMethods();
+        for (Method method : allMethods) {
+            if (Modifier.isPublic(method.getModifiers())) {
+                // use the method
+                RestFunction restFunction = new RestFunction();
+                for (Annotation annotation : method.getDeclaredAnnotations()) {
+                    if (annotation instanceof Path) {
+                        restFunction.setPath(((javax.ws.rs.Path) annotation).value());
+                    } else if (annotation instanceof Produces) {
+                        restFunction.setProduces(Arrays.toString(((javax.ws.rs.Produces) annotation).value()));
+                    } else if (annotation instanceof Consumes) {
+                        restFunction.setConsumes(Arrays.toString(((javax.ws.rs.Consumes) annotation).value()));
+                    } else if (annotation instanceof GET) {
+                        restFunction.setHttpRequestType("GET");
+                    } else if (annotation instanceof PUT) {
+                        restFunction.setHttpRequestType("PUT");
+                    } else if (annotation instanceof POST) {
+                        restFunction.setHttpRequestType("POST");
+                    } else if (annotation instanceof DELETE) {
+                        restFunction.setHttpRequestType("DELETE");
+                    } else if (annotation instanceof Description) {
+                        restFunction.setDescription(((Description) annotation).value());
+                    }
+                }
+                List<String> pathParams = new ArrayList<String>();
+                for (Annotation[] annotations : method.getParameterAnnotations()) {
+                    for (Annotation annotation : annotations) {
+                        if (annotation instanceof PathParam) {
+                            pathParams.add(((PathParam) annotation).value());
+                        }
+                    }
+                }
+                restFunction.setBodyParameter(pathParams.toString());
 
-            add(new RestFunction("PUT", "/runtime/model", "text/xml", "text/plain", "model in xml", "Deploys the model given as a parameter"));
-
-            add(new RestFunction("PUT", "/runtime/model/{filename}", "", "text/plain", "", "Deploys the model contained in the given filename"));
-
-            add(new RestFunction("PUT", "/runtime/model/state/start", "", "text/plain", "", "Starts the model"));
-
-            add(new RestFunction("PUT", "/runtime/model/state/stop", "", "text/plain", "", "Stops the model"));
-
-            add(new RestFunction("PUT", "/runtime/model/state/pause", "", "text/plain", "", "Pauses the model"));
-
-            add(new RestFunction("GET", "/runtime/model/state", "", "text/plain", "", "Returns the state of the deployed model"));
-
-            add(new RestFunction("PUT", "/runtime/model/autorun/{filename}", "", "text/plain", "",
-                    "Deploys and starts the model contained in the given filename"));
-
-            add(new RestFunction("GET", "/runtime/model/components/ids", "", "application/json", "", "Retrieves all the components in the deployed model"));
-
-            add(new RestFunction("GET", "/runtime/model/components/{componentId}", "", "application/json", "",
-                    "Retrieves all the property keys of the component with the given id"));
-
-            add(new RestFunction("GET", "/runtime/model/components/{componentId}/{componentKey}", "", "text/plain", "",
-                    "Retrieves property value of a specific component, in the currently deployed model"));
-
-            add(new RestFunction("PUT", "/runtime/model/components/{componentId}/{componentKey}", "text/plain", "text/plain", "property value",
-                    "Changes a property value of a specific component,  in the currently deployed model"));
-
-            add(new RestFunction("GET", "/storage/models/{filename}", "", "text/xml", "", "Retrieves an xml representation of a model in a specific file"));
-
-            add(new RestFunction("POST", "/storage/models/{filename}", "text/xml", "text/plain", "model in xml", "Stores a model in the given filename"));
-
-            add(new RestFunction("DELETE", "/storage/models/{filename}", "", "text/plain", "", "Deletes the model with the given filename"));
-
-            add(new RestFunction("GET", "/storage/models/names", "", "application/json", "",
-                    "Retrieves a list with all the model that are saved in the ARE repository"));
-
-            add(new RestFunction("GET", "/restfunctions", "", "text/plain", "", "Retrieves a list with all the available rest functions"));
-
-            add(new RestFunction("GET", "/storage/components/descriptors/xml", "", "text/xml", "",
-                    "Returns an xml string containing the descriptors of the created components with some modifications in order to be used by the webACS"));
-
-            add(new RestFunction("GET", "/storage/components/descriptors/json", "", "text/xml", "",
-                    "Retrieves the exact content of the component descriptors contained in the ARE repository"));
-
-            add(new RestFunction("POST", "/storage/webapps/{webappName}/{filepath}", "text/plain", "text/plain", "data to save",
-                    "Stores data for a webapp with the given filename to webapps/<webappName>/data"));
-
-            add(new RestFunction("GET", "/storage/webapps/{webappName}/{filepath}", "", "text/plain", "",
-                    "Gets stored webapp-data with the given filename from webapps/<webappName>/data"));
-
-            add(new RestFunction("GET", "/events/subscribe", "", "", "", "Opens a persistent connection with ARE to use it for Server Sent Events"));
-
-            add(new RestFunction("PUT", "/runtime/model/components/{componentId}/ports/{portId}/data", "text/plain",
-                    "text/plain", "input value", "Sets an input port of a component to a given value"));
-
-            add(new RestFunction("PUT", "/runtime/model/components/{componentId}/events/{eventId}", "", "text/plain", "",
-                    "Triggers a event on the given eventPort and given Component"));
-
-            add(new RestFunction("GET", "/runtime/model/name", "", "text/plain", "",
-                    "Returns the name of the currently deployed model"));
+                if ("".equals(restFunction.getPath()) || "".equals(restFunction.getHttpRequestType())) {
+                    // If there is not @Path or no @HTTRequestType it cannot be a REST function, so skip it.
+                    continue;
+                }
+                restFunctions.add(restFunction);
+            }
         }
-    };
+        return restFunctions;
+    }
 
+    /**
+     * Generates a list of {@link RestFunction} entries with all REST functions of the ARE.
+     * 
+     * @return
+     */
+    public ArrayList<RestFunction> createListOfRestFunctions() {
+        ArrayList<RestFunction> restFunctions = createListOfRestFunctions(RestServer.class);
+        restFunctions.addAll(createListOfRestFunctions(SseResource.class));
+        return restFunctions;
+    }
 }

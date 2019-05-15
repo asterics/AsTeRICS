@@ -26,6 +26,7 @@
 
 package eu.asterics.component.actuator.remotewindow;
 
+import java.awt.Dimension;
 import java.awt.Point;
 
 import com.sun.jna.Native;
@@ -307,8 +308,8 @@ public class RemoteWindowInstance extends AbstractRuntimeComponentInstance {
         if (result != 0) {
             int xPos = rect[0] + propXPos;
             int height = rect[3] - rect[1];
-            Point screen = AREServices.instance.getScreenDimension();
-            int yPos = screen.y - height + propYPos;
+            Dimension screen = AREServices.instance.getScreenDimension();
+            int yPos = screen.height - height + propYPos;
             User32.INSTANCE.SetWindowPos(hWnd, null, xPos, yPos, 0, 0, User32.SWP_NOSIZE);
         }
     }
@@ -329,8 +330,8 @@ public class RemoteWindowInstance extends AbstractRuntimeComponentInstance {
         if (result != 0) {
             int yPos = rect[1] + propYPos;
             int width = rect[2] - rect[0];
-            Point screen = AREServices.instance.getScreenDimension();
-            int xPos = screen.x - width + propXPos;
+            Dimension screen = AREServices.instance.getScreenDimension();
+            int xPos = screen.width - width + propXPos;
             User32.INSTANCE.SetWindowPos(hWnd, null, xPos, yPos, 0, 0, User32.SWP_NOSIZE);
         }
     }
@@ -341,9 +342,9 @@ public class RemoteWindowInstance extends AbstractRuntimeComponentInstance {
         if (result != 0) {
             int width = rect[2] - rect[0];
             int height = rect[3] - rect[1];
-            Point screen = AREServices.instance.getScreenDimension();
-            int xPos = screen.x / 2 - width / 2 + propXPos;
-            int yPos = screen.y / 2 - height / 2 + propYPos;
+            Dimension screen = AREServices.instance.getScreenDimension();
+            int xPos = screen.width / 2 - width / 2 + propXPos;
+            int yPos = screen.height / 2 - height / 2 + propYPos;
             User32.INSTANCE.SetWindowPos(hWnd, null, xPos, yPos, 0, 0, User32.SWP_NOSIZE);
         }
     }

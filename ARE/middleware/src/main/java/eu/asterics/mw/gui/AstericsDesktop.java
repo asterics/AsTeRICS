@@ -26,6 +26,7 @@
 package eu.asterics.mw.gui;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,7 +45,6 @@ import eu.asterics.mw.are.AREProperties;
  *
  */
 public class AstericsDesktop extends JPanel implements ActionListener, MouseMotionListener {
-    private Dimension screenSize;
     AstericsGUI parentFrame;
 
     // HashMap areOptions;
@@ -57,9 +57,8 @@ public class AstericsDesktop extends JPanel implements ActionListener, MouseMoti
         if (props.checkProperty("fullscreen", "1")) {
         } else {
         }
-
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setPreferredSize(new Dimension(screenSize.width, screenSize.height));
+        
+        setPreferredSize(frame.getScreenDimension());
         // setBorder(BorderFactory.createTitledBorder(
         // "Desktop"));
         addMouseMotionListener(this);

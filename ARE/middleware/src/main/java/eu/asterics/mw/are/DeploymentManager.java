@@ -1,6 +1,7 @@
 package eu.asterics.mw.are;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.io.PrintWriter;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -1244,8 +1246,8 @@ public class DeploymentManager {
         IRuntimeModel model = getCurrentRuntimeModel();
         IComponentInstance component = model.getComponentInstance(componentInstanceID);
         AREGUIElement el = component.getAREGUIElement();
-        if (el != null) {
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        if (el != null) {            
+            Dimension screenSize = getScreenDimension();
             int width = (int) (screenSize.width * el.width / 10000f);
             int height = (int) (screenSize.height * el.height / 10000f);
             return new Dimension(width, height);
@@ -1255,7 +1257,7 @@ public class DeploymentManager {
 
     }
 
-    public Point getScreenDimension() {
+    public Dimension getScreenDimension() {
         return (gui.getScreenDimension());
     }
 
@@ -1263,7 +1265,7 @@ public class DeploymentManager {
         return (gui.getAREWindowLocation());
     }
 
-    public Point getAREWindowDimension() {
+    public Dimension getAREWindowDimension() {
         return (gui.getAREWindowDimension());
     }
 
@@ -1296,7 +1298,7 @@ public class DeploymentManager {
         AREGUIElement el = component.getAREGUIElement();
 
         if (el != null) {
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            Dimension screenSize = getScreenDimension();            
             gui.getDesktop();
             // int x = ((screenSize.width*el.posX/100) +
             // desktop.getLocationOnScreen().x);
@@ -1505,5 +1507,19 @@ public class DeploymentManager {
                 }
             }
         }
+    }
+
+    public float calcMaxFontSize(JComponent component, Dimension widgetDim, String testString) {
+        if(gui!=null) {
+            return gui.calcMaxFontSize(component, widgetDim, testString);
+        }
+        return AstericsGUI.DEFAULT_FONT_SIZE;
+    }
+
+    public int getMaxFontSize() {
+        if(gui!=null) {
+            return gui.getMaxFontSize();
+        }
+        return AstericsGUI.DEFAULT_FONT_SIZE;
     }
 }

@@ -40,9 +40,18 @@
 			<li><STRONG>outMax [double]:</STRONG> Sets the maximum value of the input range.</li>
 			<li><STRONG>outMin [double]:</STRONG> Sets the minimum value of the output range.</li>
 			<li><STRONG>outMax [double]:</STRONG> Sets the maximum value of the output range.</li>
-			<li><STRONG>mode [combobox]:</STRONG> "autoupdate min and max" modifies the input range if incoming values exceed the current minimum or maximum, "clip to min and max" which keeps the values as set by the min/max properties.</li>
+			<li><STRONG>mode [combobox]:</STRONG> GUI mode: "autoupdate min and max" modifies the shown input range of the GUI if incoming values exceed the current minimum or maximum, "clip to min and max" which keeps the values as set by the min/max properties.</li>
 			<li><STRONG>fontSize [integer]:</STRONG> The size of the font for dispaying text in the GUI.</li>
 			<li><STRONG>caption [string]:</STRONG> The caption of the AdjustmentCurve GUI.</li>
+			<li>
+				<STRONG>operationMode [integer]:</STRONG> Selects the mode of operation of the adjustment curve component, following modes are available:
+				<ul>
+					<li><EM>"use file and GUI":</EM> Default mode. The x/y points of the adjustment curve are defined using the graphical user interface and are stored and loaded from a file, defined by property 'filename'.</li>
+					<li><EM>"use property curvePoints (percent values)":</EM> No GUI is shown, x/y points of the adjustmentcurve are defined by property 'curvePoints' and interpreted as relative percentatge values of given in/out min/max values. In this mode no external file is needed or used. </li>
+					<li><EM>"use property curvePoints (absolute values)":</EM> Same mode as before, using property 'curvePoints' with the difference that x/y values are defined as absolute values.</li>
+				</ul>
+			</li>
+			<li><STRONG>curvePoints [string]:</STRONG> For operation mode 'use property curvePoints' this property defines the x/y points of the adjustment curve. The expected format are comma-separated tuples of double or integer values like e.g. '(10.0,0.0),(10,10),(100,100)' defining 3 x/y points.</li>
 		</ul>
 	</BODY>
 </HTML>

@@ -46,6 +46,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.theeyetribe.client.GazeManager;
 
+import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
@@ -78,8 +79,8 @@ public class CalibrationGenerator implements Runnable {
 
         // Class constructor
         public calibPoint(int i) {
-            int width = Toolkit.getDefaultToolkit().getScreenSize().width;
-            int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+            int width = AREServices.instance.getScreenDimension().width;
+            int height = AREServices.instance.getScreenDimension().height;
             xLocation = width / 2 * (i % 3);
             yLocation = height / 2 * (int) (i / 3);
 

@@ -45,10 +45,7 @@ public class Activator implements Runnable {
      * @return
      */
     private int getPortNumber() {
-        String ASAPIACSPort = AREProperties.instance.getProperty(ASAPI_ACS_PORT_NUMBER_PROPKEY,
-                String.valueOf(ASAPI_ACS_PORT_NUMBER_DEFAULT));
-        // set back default value, if property was not in file.
-        AREProperties.instance.setProperty(ASAPI_ACS_PORT_NUMBER_PROPKEY, ASAPIACSPort);
+        String ASAPIACSPort = AREProperties.instance.getProperty(ASAPI_ACS_PORT_NUMBER_PROPKEY);
 
         try {
             return Integer.valueOf(ASAPIACSPort);

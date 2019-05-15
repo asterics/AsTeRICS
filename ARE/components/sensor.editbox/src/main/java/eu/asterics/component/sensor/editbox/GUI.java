@@ -43,6 +43,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import eu.asterics.mw.services.AREServices;
+
 /**
  * Implements the Graphical User Interface for the Edit Box plugin
  * 
@@ -60,8 +62,6 @@ public class GUI extends JPanel implements FocusListener {
     private final EditBoxInstance owner;
 
     // private final double verticalOffset=1;
-    private final float fontSizeMax = 150;
-    private final float fontIncrementStep = 0.5f;
     private final EditBoxInstance.OutputPort opOutput;
 
     private final int selectText = 1;
@@ -126,32 +126,8 @@ public class GUI extends JPanel implements FocusListener {
         textField.setMinimumSize(labelDimension);
         textField.setMaximumSize(labelDimension);
 
-        String testString = "THIS IS TEST STRING";
-
-        float fontSize = 0;
-        boolean finish = false;
-
-        do {
-            fontSize = fontSize + fontIncrementStep;
-
-            Font font = textField.getFont();
-            font = font.deriveFont(fontSize);
-            FontMetrics fontMetrics = textField.getFontMetrics(font);
-            Rectangle2D tmpFontSize = fontMetrics.getStringBounds(testString, textField.getGraphics());
-
-            double fontHeight = tmpFontSize.getHeight();
-            // double fontWidth=tmpFontSize.getWidth();
-
-            if (fontHeight >= labelHeight) {
-                finish = true;
-                fontSize = fontSize - 1;
-            } else {
-
-                if (fontSize > fontSizeMax) {
-                    finish = true;
-                }
-            }
-        } while (!finish);
+        String testString = owner.getDefaultText()!= "" ? owner.getDefaultText() : "THIS IS TEST STRING";
+        float fontSize=AREServices.instance.calcMaxFontSize(textField, labelDimension, testString);
 
         textField.setOpaque(true);
         textField.setForeground(getColorProperty(owner.getTextColor()));
