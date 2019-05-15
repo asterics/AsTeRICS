@@ -334,7 +334,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
      * Input Ports for receiving values.
      */
     private final IRuntimeInputPort ipX = new DefaultRuntimeInputPort() {
-        public void receiveData(byte[] data) {
+        public synchronized void receiveData(byte[] data) {
             if (!propEnabled) {
                 return;
             }
@@ -348,9 +348,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             if (propAbsoluteValues) {
                 x = inputValue;
             } else {
-                long diffTimeMs = elapsedIdleTime - lastMoveTimeH;
-                currentMoveSpeedH = getNewSpeed(currentMoveSpeedH, propBaseVelocity, propMaxVelocity, diffTimeMs, propAccelerationH);
-                int diffPx = getDiffPx(currentMoveSpeedH - propBaseVelocity, propBaseVelocity, propMaxVelocity, diffTimeMs, inputValue);
+                long diffTimeMs = System.currentTimeMillis() - lastMoveTimeH;
+                currentMoveSpeedH = getNewSpeed(currentMoveSpeedH, propBaseVelocity, propMaxVelocity, diffTimeMs, Math.abs(propAccelerationH));
+                double diffPx = getDiffPx(currentMoveSpeedH - propBaseVelocity, propBaseVelocity, propMaxVelocity, diffTimeMs, inputValue, propAccelerationH);
                 x += diffPx;
             }
             x = (float) normalizeValue(x, 0, screenWidth, propWrapAround);
@@ -359,7 +359,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         }
     };
     private final IRuntimeInputPort ipY = new DefaultRuntimeInputPort() {
-        public void receiveData(byte[] data) {
+        public synchronized void receiveData(byte[] data) {
             if (!propEnabled) {
                 return;
             }
@@ -373,9 +373,9 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             if (propAbsoluteValues) {
                 y = inputValue;
             } else {
-                long diffTimeMs = elapsedIdleTime - lastMoveTimeV;
-                currentMoveSpeedV = getNewSpeed(currentMoveSpeedV, propBaseVelocity, propMaxVelocity, diffTimeMs, propAccelerationV);
-                int diffPx = getDiffPx(currentMoveSpeedV - propBaseVelocity, propBaseVelocity, propMaxVelocity, diffTimeMs, inputValue);
+                long diffTimeMs = System.currentTimeMillis() - lastMoveTimeV;
+                currentMoveSpeedV = getNewSpeed(currentMoveSpeedV, propBaseVelocity, propMaxVelocity, diffTimeMs, Math.abs(propAccelerationV));
+                double diffPx = getDiffPx(currentMoveSpeedV - propBaseVelocity, propBaseVelocity, propMaxVelocity, diffTimeMs, inputValue, propAccelerationV);
                 y += diffPx;
             }
             lastMoveTimeV = System.currentTimeMillis();
@@ -488,7 +488,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
 
     final IRuntimeEventListenerPort elpStopMoveAll = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
-            if (propAutoColorAxis) gui.resetAxis();
+            if (propAutoColorAxis  && gui != null) gui.resetAxis();
             moveLeft = false;
             moveRight = false;
             moveUp = false;
@@ -512,7 +512,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
             propAutoColorAxis = false;
-            if (propEnabled) {
+            if (propEnabled && gui != null) {
                 gui.setXAxisHighlight(true);
                 gui.setYAxisHighlight(false);
             }
@@ -523,7 +523,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         public void receiveEvent(final String data) {
             elapsedIdleTime = System.currentTimeMillis();
             propAutoColorAxis = false;
-            if (propEnabled) {
+            if (propEnabled && gui != null) {
                 gui.setYAxisHighlight(true);
                 gui.setXAxisHighlight(false);
             }
@@ -543,7 +543,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
             elapsedIdleTime = System.currentTimeMillis();
             if (propEnabled) {
                 etpClickEvent.raiseEvent();
-                if (propHighlightClick) {
+                if (propHighlightClick  && gui != null) {
                     gui.doAxisClickHighlight();
                 }
             }
@@ -706,14 +706,14 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
         return currentSpeed;
     }
 
-    private int getDiffPx(double speed, int minSpeed, int maxSpeed, long diffTimeMs, float givenDiffPx) {
+    private double getDiffPx(double speed, int minSpeed, int maxSpeed, long diffTimeMs, float givenDiffPx, int acceleration) {
         if (diffTimeMs > 200) {
             return (int) givenDiffPx;
         }
         float signum = Math.signum(givenDiffPx);
         double speedByPx = (Math.abs(givenDiffPx * 1.0) / diffTimeMs) * 1000;
-        double resultSpeed = normalizeValue(speed + speedByPx, minSpeed, maxSpeed);
-        return (int) ((resultSpeed * diffTimeMs / 1000) * signum);
+        double resultSpeed = normalizeValue(speed * Math.signum(acceleration) + speedByPx, minSpeed, maxSpeed);
+        return (resultSpeed * diffTimeMs / 1000) * signum;
     }
 
     /**
@@ -752,7 +752,7 @@ public class CrosshairCursorControlInstance extends AbstractRuntimeComponentInst
     private void setCursorInternal(float x, float y) {
         int roundedX = Math.round(x);
         int roundedY = Math.round(y);
-        gui.setCursor(roundedX, roundedY);
+        if (gui != null) gui.setCursor(roundedX, roundedY);
         opOutX.sendData(ConversionUtils.doubleToBytes(roundedX));
         opOutY.sendData(ConversionUtils.doubleToBytes(roundedY));
     }

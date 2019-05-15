@@ -1,0 +1,288 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\componentTests\sensors\Myocontroller_test.acs_2019_3_8_13_8" version="20130320">
+  <components>
+    <component id="myocontroller.1" type_id="asterics.myocontroller">
+      <description>This plugin receives a packet stream from the OttoBock Myocontroller device</description>
+      <ports>
+        <outputPort portTypeID="Channel1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel6">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="ComPort" value="COM123" />
+        <property name="BaudRate" value="57600" />
+        <property name="useFile" value="True" />
+        <property name="filename" value="output_2019-03-06_16-55-22.log" />
+      </properties>
+      <layout>
+        <posX>307</posX>
+        <posY>214</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="1" />
+        <property name="drawingInterval" value="60" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="channel3" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>440</posX>
+        <posY>82</posY>
+      </layout>
+      <gui>
+        <posX>260</posX>
+        <posY>676</posY>
+        <width>7438</width>
+        <height>2111</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.3" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="1" />
+        <property name="drawingInterval" value="60" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="channel4" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>558</posX>
+        <posY>163</posY>
+      </layout>
+      <gui>
+        <posX>260</posX>
+        <posY>2898</posY>
+        <width>7438</width>
+        <height>2111</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.4" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="1" />
+        <property name="drawingInterval" value="60" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="channel5" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>578</posX>
+        <posY>317</posY>
+      </layout>
+      <gui>
+        <posX>260</posX>
+        <posY>5121</posY>
+        <width>7438</width>
+        <height>2222</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.5" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="1" />
+        <property name="drawingInterval" value="60" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="channel6" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>446</posX>
+        <posY>389</posY>
+      </layout>
+      <gui>
+        <posX>197</posX>
+        <posY>7454</posY>
+        <width>7500</width>
+        <height>2111</height>
+      </gui>
+    </component>
+    <component id="Benchmark.1" type_id="asterics.Benchmark">
+      <description>Measures incoming data or events per time</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="dataCount">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="eventCount">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="time" value="1000" />
+      </properties>
+      <layout>
+        <posX>726</posX>
+        <posY>122</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>873</posX>
+        <posY>128</posY>
+      </layout>
+      <gui>
+        <posX>7885</posX>
+        <posY>787</posY>
+        <width>1188</width>
+        <height>1333</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.2">
+      <source>
+        <component id="myocontroller.1" />
+        <port id="Channel3" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="myocontroller.1" />
+        <port id="Channel4" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.3" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="myocontroller.1" />
+        <port id="Channel5" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.4" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="myocontroller.1" />
+        <port id="Channel6" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.5" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="myocontroller.1" />
+        <port id="Channel1" />
+      </source>
+      <target>
+        <component id="Benchmark.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Benchmark.1" />
+        <port id="dataCount" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>185</posX>
+      <posY>133</posY>
+      <width>9625</width>
+      <height>9778</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

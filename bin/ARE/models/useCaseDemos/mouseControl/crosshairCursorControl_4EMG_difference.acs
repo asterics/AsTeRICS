@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_4EMG_difference.acs_2019_2_4_8_42" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\crosshairCursorControl_4EMG_difference.acs_2019_2_28_10_6" version="20130320">
   <modelDescription>
     <shortDescription>Difference between two EMG Signals move cursor
 Difference is cubed in order to cause small movements for small values
@@ -34,37 +34,86 @@ Timer changes between horizontal/vertical</shortDescription>
       <properties>
         <property name="enabled" value="True" />
         <property name="absoluteValues" value="false" />
-        <property name="autoColorAxis" value="True" />
-        <property name="highlightClick" value="True" />
+        <property name="autoColorAxis" value="true" />
+        <property name="highlightClick" value="true" />
         <property name="wrapAround" value="True" />
-        <property name="clickEventTime" value="1500" />
+        <property name="taskbarOffset" value="true" />
+        <property name="clickEventTime" value="1000" />
         <property name="lineWidth" value="5" />
-        <property name="baseVelocity" value="50" />
+        <property name="baseVelocity" value="10" />
         <property name="accelerationH" value="0" />
         <property name="accelerationV" value="0" />
-        <property name="maxVelocity" value="1500" />
+        <property name="maxVelocity" value="1000" />
       </properties>
       <layout>
-        <posX>1073</posX>
-        <posY>353</posY>
+        <posX>1328</posX>
+        <posY>339</posY>
       </layout>
     </component>
-    <component id="Keyboard.1" type_id="asterics.Keyboard">
-      <description>Local Keyboard actuator</description>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
       <ports>
-        <inputPort portTypeID="keyCodes">
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="False" />
+        <property name="absolutePosition" value="true" />
+        <property name="startCentered" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>1492</posX>
+        <posY>317</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.Left" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
           <properties />
         </inputPort>
       </ports>
       <properties>
-        <property name="keyCodeString" value="a" />
-        <property name="inputMethod" value="1" />
-        <property name="waitTime" value="1000" />
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="left" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>1709</posX>
-        <posY>583</posY>
+        <posX>1175</posX>
+        <posY>792</posY>
       </layout>
+      <gui>
+        <posX>135</posX>
+        <posY>565</posY>
+        <width>4688</width>
+        <height>2556</height>
+      </gui>
     </component>
     <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
       <description>Mathematical expression evaluator</description>
@@ -86,11 +135,11 @@ Timer changes between horizontal/vertical</shortDescription>
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="(-a+b)*abs(-a+b)/400" />
+        <property name="expression" value="(-a+b)*abs(-a+b)/600" />
       </properties>
       <layout>
-        <posX>883</posX>
-        <posY>507</posY>
+        <posX>1139</posX>
+        <posY>485</posY>
       </layout>
     </component>
     <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
@@ -113,32 +162,32 @@ Timer changes between horizontal/vertical</shortDescription>
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="(-a+b)*abs(-a+b)/400" />
+        <property name="expression" value="(-a+b)*abs(-a+b)/600" />
       </properties>
       <layout>
-        <posX>877</posX>
-        <posY>266</posY>
+        <posX>1140</posX>
+        <posY>340</posY>
       </layout>
     </component>
-    <component id="ComPort.1" type_id="asterics.ComPort">
-      <description>interfaces a (virtual) COM Port for data send/receive  operations</description>
+    <component id="Averager.1.3" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
       <ports>
-        <inputPort portTypeID="send">
+        <inputPort portTypeID="input">
           <properties />
         </inputPort>
-        <outputPort portTypeID="received">
+        <outputPort portTypeID="output">
           <properties />
         </outputPort>
       </ports>
       <properties>
-        <property name="ComPort" value="COM12" />
-        <property name="BaudRate" value="9600" />
-        <property name="ReceivedDataType" value="0" />
-        <property name="SendDataType" value="1" />
+        <property name="enabled" value="true" />
+        <property name="bufferSize" value="100" />
+        <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
       </properties>
       <layout>
-        <posX>25</posX>
-        <posY>189</posY>
+        <posX>538</posX>
+        <posY>958</posY>
       </layout>
     </component>
     <component id="StringSplitter.1" type_id="asterics.StringSplitter">
@@ -200,11 +249,59 @@ Timer changes between horizontal/vertical</shortDescription>
         <property name="Seperator" value="," />
       </properties>
       <layout>
-        <posX>145</posX>
-        <posY>201</posY>
+        <posX>275</posX>
+        <posY>281</posY>
       </layout>
     </component>
-    <component id="SignalTranslation.2.1.2" type_id="asterics.SignalTranslation">
+    <component id="Averager.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enabled" value="true" />
+        <property name="bufferSize" value="100" />
+        <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
+      </properties>
+      <layout>
+        <posX>569</posX>
+        <posY>65</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.4.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a+20" />
+      </properties>
+      <layout>
+        <posX>696</posX>
+        <posY>10</posY>
+      </layout>
+    </component>
+    <component id="SignalTranslation.2.3" type_id="asterics.SignalTranslation">
       <description>Translates signals from a certain input range to an output range</description>
       <ports>
         <inputPort portTypeID="in">
@@ -221,20 +318,29 @@ Timer changes between horizontal/vertical</shortDescription>
         </outputPort>
       </ports>
       <properties>
-        <property name="inMin" value="0.0" />
-        <property name="inMax" value="600" />
+        <property name="inMin" value="100" />
+        <property name="inMax" value="1023" />
         <property name="outMin" value="0" />
         <property name="outMax" value="100" />
       </properties>
       <layout>
-        <posX>476</posX>
-        <posY>641</posY>
+        <posX>827</posX>
+        <posY>956</posY>
       </layout>
     </component>
-    <component id="Threshold.2.1" type_id="asterics.Threshold">
-      <description>Threshold Level Processor</description>
+    <component id="MathEvaluator.4.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
       <ports>
-        <inputPort portTypeID="in">
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
           <properties />
         </inputPort>
         <outputPort portTypeID="out">
@@ -242,95 +348,33 @@ Timer changes between horizontal/vertical</shortDescription>
         </outputPort>
       </ports>
       <properties>
-        <property name="thresholdHigh" value="10" />
-        <property name="thresholdLow" value="10" />
-        <property name="outputHigh" value="1" />
-        <property name="outputLow" value="0" />
-        <property name="operationMode" value="2" />
-        <property name="eventCondition" value="2" />
+        <property name="expression" value="a+24" />
       </properties>
       <layout>
-        <posX>586</posX>
-        <posY>306</posY>
+        <posX>689</posX>
+        <posY>314</posY>
       </layout>
     </component>
-    <component id="MinMax.Down" type_id="asterics.MinMax">
-      <description>Remember minimum and maximum of a signal</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="max">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="min">
-          <properties />
-        </outputPort>
-      </ports>
+    <component id="EventDelay.2" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
       <properties>
-        <property name="defaultMin" value="1000" />
-        <property name="defaultMax" value="0" />
+        <property name="delay" value="100" />
       </properties>
       <layout>
-        <posX>325</posX>
-        <posY>647</posY>
-      </layout>
-    </component>
-    <component id="MinMax.Up" type_id="asterics.MinMax">
-      <description>Remember minimum and maximum of a signal</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="max">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="min">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="defaultMin" value="1000" />
-        <property name="defaultMax" value="0" />
-      </properties>
-      <layout>
-        <posX>321</posX>
-        <posY>480</posY>
-      </layout>
-    </component>
-    <component id="EventDispatcher.1" type_id="asterics.EventDispatcher">
-      <description>Translates incoming command strings into events</description>
-      <ports>
-        <inputPort portTypeID="cmd">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="command1" value="1" />
-        <property name="command2" value="2" />
-        <property name="command3" value="3" />
-        <property name="command4" value="4" />
-        <property name="command5" value="5" />
-        <property name="command6" value="6" />
-        <property name="command7" value="7" />
-        <property name="command8" value="" />
-        <property name="command9" value="" />
-        <property name="command10" value="" />
-      </properties>
-      <layout>
-        <posX>1337</posX>
-        <posY>574</posY>
+        <posX>1736</posX>
+        <posY>542</posY>
       </layout>
     </component>
     <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
       <description>Send text from chosen slot</description>
       <ports>
-        <outputPort portTypeID="output">
-          <properties />
-        </outputPort>
         <inputPort portTypeID="slotDispatch">
           <properties />
         </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="delay" value="300" />
@@ -356,241 +400,52 @@ Timer changes between horizontal/vertical</shortDescription>
         <property name="slot20" value="" />
       </properties>
       <layout>
-        <posX>1579</posX>
-        <posY>579</posY>
+        <posX>1866</posX>
+        <posY>536</posY>
       </layout>
     </component>
-    <component id="EventDelay.2" type_id="asterics.EventDelay">
-      <description>Delalys events</description>
-      <ports />
-      <properties>
-        <property name="delay" value="100" />
-      </properties>
-      <layout>
-        <posX>1438</posX>
-        <posY>574</posY>
-      </layout>
-    </component>
-    <component id="Tooltip.1" type_id="asterics.Tooltip">
-      <description>show tooltips next to mouse pointer for triggering various actions</description>
+    <component id="EventDispatcher.1" type_id="asterics.EventDispatcher">
+      <description>Translates incoming command strings into events</description>
       <ports>
-        <inputPort portTypeID="x">
+        <inputPort portTypeID="cmd">
           <properties />
         </inputPort>
-        <inputPort portTypeID="y">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="tooltip">
-          <properties />
-        </outputPort>
       </ports>
       <properties>
-        <property name="initialX" value="0" />
-        <property name="initialY" value="0" />
-        <property name="selectTime" value="1000" />
-        <property name="tooltipFolder" value="pictures/tooltips" />
-        <property name="tooltipStartIndex" value="3" />
+        <property name="command1" value="1" />
+        <property name="command2" value="2" />
+        <property name="command3" value="3" />
+        <property name="command4" value="4" />
+        <property name="command5" value="5" />
+        <property name="command6" value="6" />
+        <property name="command7" value="7" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
       </properties>
       <layout>
-        <posX>1232</posX>
-        <posY>404</posY>
+        <posX>1603</posX>
+        <posY>547</posY>
       </layout>
     </component>
-    <component id="SignalTranslation.2.1" type_id="asterics.SignalTranslation">
-      <description>Translates signals from a certain input range to an output range</description>
+    <component id="Keyboard.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
       <ports>
-        <inputPort portTypeID="in">
+        <inputPort portTypeID="keyCodes">
           <properties />
         </inputPort>
-        <inputPort portTypeID="setMax">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="setMin">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
       </ports>
       <properties>
-        <property name="inMin" value="0.0" />
-        <property name="inMax" value="600" />
-        <property name="outMin" value="0" />
-        <property name="outMax" value="100" />
+        <property name="keyCodeString" value="a" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
       </properties>
       <layout>
-        <posX>441</posX>
-        <posY>296</posY>
+        <posX>1994</posX>
+        <posY>542</posY>
       </layout>
     </component>
-    <component id="MinMax.Left" type_id="asterics.MinMax">
-      <description>Remember minimum and maximum of a signal</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="max">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="min">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="defaultMin" value="1000" />
-        <property name="defaultMax" value="0" />
-      </properties>
-      <layout>
-        <posX>306</posX>
-        <posY>113</posY>
-      </layout>
-    </component>
-    <component id="SignalTranslation.2" type_id="asterics.SignalTranslation">
-      <description>Translates signals from a certain input range to an output range</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="setMax">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="setMin">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="inMin" value="0.0" />
-        <property name="inMax" value="600" />
-        <property name="outMin" value="0" />
-        <property name="outMax" value="100" />
-      </properties>
-      <layout>
-        <posX>446</posX>
-        <posY>128</posY>
-      </layout>
-    </component>
-    <component id="MinMax.Right" type_id="asterics.MinMax">
-      <description>Remember minimum and maximum of a signal</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="max">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="min">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="defaultMin" value="1000" />
-        <property name="defaultMax" value="0" />
-      </properties>
-      <layout>
-        <posX>310</posX>
-        <posY>298</posY>
-      </layout>
-    </component>
-    <component id="Threshold.2.1.1" type_id="asterics.Threshold">
-      <description>Threshold Level Processor</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="thresholdHigh" value="10" />
-        <property name="thresholdLow" value="10" />
-        <property name="outputHigh" value="1" />
-        <property name="outputLow" value="0" />
-        <property name="operationMode" value="2" />
-        <property name="eventCondition" value="2" />
-      </properties>
-      <layout>
-        <posX>596</posX>
-        <posY>488</posY>
-      </layout>
-    </component>
-    <component id="SignalTranslation.2.1.1" type_id="asterics.SignalTranslation">
-      <description>Translates signals from a certain input range to an output range</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="setMax">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="setMin">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="inMin" value="0.0" />
-        <property name="inMax" value="600" />
-        <property name="outMin" value="0" />
-        <property name="outMax" value="100" />
-      </properties>
-      <layout>
-        <posX>451</posX>
-        <posY>478</posY>
-      </layout>
-    </component>
-    <component id="Threshold.1" type_id="asterics.Threshold">
-      <description>Threshold Level Processor</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="thresholdHigh" value="600" />
-        <property name="thresholdLow" value="600" />
-        <property name="outputHigh" value="1" />
-        <property name="outputLow" value="0" />
-        <property name="operationMode" value="0" />
-        <property name="eventCondition" value="0" />
-      </properties>
-      <layout>
-        <posX>949</posX>
-        <posY>44</posY>
-      </layout>
-    </component>
-    <component id="Threshold.2.1.2" type_id="asterics.Threshold">
-      <description>Threshold Level Processor</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="thresholdHigh" value="10" />
-        <property name="thresholdLow" value="10" />
-        <property name="outputHigh" value="1" />
-        <property name="outputLow" value="0" />
-        <property name="operationMode" value="2" />
-        <property name="eventCondition" value="2" />
-      </properties>
-      <layout>
-        <posX>614</posX>
-        <posY>647</posY>
-      </layout>
-    </component>
-    <component id="MathEvaluator.2" type_id="asterics.MathEvaluator">
+    <component id="MathEvaluator.4.1.3" type_id="asterics.MathEvaluator">
       <description>Mathematical expression evaluator</description>
       <ports>
         <inputPort portTypeID="inA">
@@ -610,14 +465,116 @@ Timer changes between horizontal/vertical</shortDescription>
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="(a+b)-abs(a-b)" />
+        <property name="expression" value="a+50" />
       </properties>
       <layout>
-        <posX>801</posX>
-        <posY>22</posY>
+        <posX>684</posX>
+        <posY>907</posY>
       </layout>
     </component>
-    <component id="Threshold.2" type_id="asterics.Threshold">
+    <component id="SignalTranslation.2" type_id="asterics.SignalTranslation">
+      <description>Translates signals from a certain input range to an output range</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setMax">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setMin">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="inMin" value="100" />
+        <property name="inMax" value="1023" />
+        <property name="outMin" value="0" />
+        <property name="outMax" value="100" />
+      </properties>
+      <layout>
+        <posX>833</posX>
+        <posY>80</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.4.1.2" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a+35" />
+      </properties>
+      <layout>
+        <posX>684</posX>
+        <posY>613</posY>
+      </layout>
+    </component>
+    <component id="Averager.1.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enabled" value="true" />
+        <property name="bufferSize" value="100" />
+        <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
+      </properties>
+      <layout>
+        <posX>549</posX>
+        <posY>379</posY>
+      </layout>
+    </component>
+    <component id="SignalTranslation.2.2" type_id="asterics.SignalTranslation">
+      <description>Translates signals from a certain input range to an output range</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setMax">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setMin">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="inMin" value="100" />
+        <property name="inMax" value="1023" />
+        <property name="outMin" value="0" />
+        <property name="outMax" value="100" />
+      </properties>
+      <layout>
+        <posX>826</posX>
+        <posY>641</posY>
+      </layout>
+    </component>
+    <component id="Threshold.TooltipActivate" type_id="asterics.Threshold">
       <description>Threshold Level Processor</description>
       <ports>
         <inputPort portTypeID="in">
@@ -628,134 +585,519 @@ Timer changes between horizontal/vertical</shortDescription>
         </outputPort>
       </ports>
       <properties>
-        <property name="thresholdHigh" value="10" />
-        <property name="thresholdLow" value="10" />
+        <property name="thresholdHigh" value="400" />
+        <property name="thresholdLow" value="400" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="0" />
-        <property name="operationMode" value="2" />
-        <property name="eventCondition" value="2" />
+        <property name="operationMode" value="0" />
+        <property name="eventCondition" value="0" />
       </properties>
       <layout>
-        <posX>593</posX>
-        <posY>135</posY>
+        <posX>1265</posX>
+        <posY>8</posY>
       </layout>
     </component>
-    <component id="Mouse.1" type_id="asterics.Mouse">
-      <description>Local mouse actuator, emulates mouse activity on local system</description>
+    <component id="MathEvaluator.Tooltip" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
       <ports>
-        <inputPort portTypeID="mouseX">
+        <inputPort portTypeID="inA">
           <properties />
         </inputPort>
-        <inputPort portTypeID="mouseY">
+        <inputPort portTypeID="inB">
           <properties />
         </inputPort>
-        <inputPort portTypeID="action">
+        <inputPort portTypeID="inC">
           <properties />
         </inputPort>
-        <outputPort portTypeID="outX">
+        <inputPort portTypeID="inD">
           <properties />
-        </outputPort>
-        <outputPort portTypeID="outY">
+        </inputPort>
+        <outputPort portTypeID="out">
           <properties />
         </outputPort>
       </ports>
       <properties>
-        <property name="enableMouse" value="true" />
-        <property name="absolutePosition" value="true" />
-        <property name="startCentered" value="False" />
-        <property name="xMin" value="0" />
-        <property name="xMax" value="0" />
-        <property name="yMin" value="0" />
-        <property name="yMax" value="0" />
+        <property name="expression" value="a+b" />
       </properties>
       <layout>
-        <posX>1229</posX>
-        <posY>232</posY>
+        <posX>1137</posX>
+        <posY>0</posY>
       </layout>
+    </component>
+    <component id="Oscilloscope.Down" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="down" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1485</posX>
+        <posY>795</posY>
+      </layout>
+      <gui>
+        <posX>4947</posX>
+        <posY>3232</posY>
+        <width>4688</width>
+        <height>2556</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.Up" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="up" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1376</posX>
+        <posY>793</posY>
+      </layout>
+      <gui>
+        <posX>135</posX>
+        <posY>3232</posY>
+        <width>4688</width>
+        <height>2556</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.Right" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="right" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1274</posX>
+        <posY>791</posY>
+      </layout>
+      <gui>
+        <posX>4947</posX>
+        <posY>565</posY>
+        <width>4688</width>
+        <height>2556</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.4.2" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a+14" />
+      </properties>
+      <layout>
+        <posX>687</posX>
+        <posY>449</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.4.4" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a+25" />
+      </properties>
+      <layout>
+        <posX>682</posX>
+        <posY>1040</posY>
+      </layout>
+    </component>
+    <component id="Averager.1.2" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enabled" value="true" />
+        <property name="bufferSize" value="100" />
+        <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
+      </properties>
+      <layout>
+        <posX>554</posX>
+        <posY>670</posY>
+      </layout>
+    </component>
+    <component id="SignalTranslation.2.1" type_id="asterics.SignalTranslation">
+      <description>Translates signals from a certain input range to an output range</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setMax">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setMin">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="inMin" value="100" />
+        <property name="inMax" value="1023" />
+        <property name="outMin" value="0" />
+        <property name="outMax" value="100" />
+      </properties>
+      <layout>
+        <posX>823</posX>
+        <posY>377</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.4.3" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a+5" />
+      </properties>
+      <layout>
+        <posX>683</posX>
+        <posY>746</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.4" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a+13" />
+      </properties>
+      <layout>
+        <posX>694</posX>
+        <posY>145</posY>
+      </layout>
+    </component>
+    <component id="Tooltip.1" type_id="asterics.Tooltip">
+      <description>show tooltips next to mouse pointer for triggering various actions</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="tooltip">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="initialX" value="-1" />
+        <property name="initialY" value="-1" />
+        <property name="selectTime" value="1000" />
+        <property name="tooltipFolder" value="pictures/tooltips" />
+        <property name="tooltipStartIndex" value="3" />
+      </properties>
+      <layout>
+        <posX>1477</posX>
+        <posY>480</posY>
+      </layout>
+    </component>
+    <component id="ComPort.1" type_id="asterics.ComPort">
+      <description>interfaces a (virtual) COM Port for data send/receive  operations</description>
+      <ports>
+        <inputPort portTypeID="send">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="received">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enabled" value="true" />
+        <property name="ComPort" value="COM10" />
+        <property name="BaudRate" value="9600" />
+        <property name="ReceivedDataType" value="0" />
+        <property name="SendDataType" value="1" />
+      </properties>
+      <layout>
+        <posX>139</posX>
+        <posY>270</posY>
+      </layout>
+    </component>
+    <component id="Threshold.TooltipPrev" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="80" />
+        <property name="thresholdLow" value="80" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="0" />
+        <property name="eventCondition" value="0" />
+      </properties>
+      <layout>
+        <posX>1270</posX>
+        <posY>141</posY>
+      </layout>
+    </component>
+    <component id="Threshold.TooltipNext" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="80" />
+        <property name="thresholdLow" value="80" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="0" />
+        <property name="eventCondition" value="0" />
+      </properties>
+      <layout>
+        <posX>1144</posX>
+        <posY>137</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.Y" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="y-movement" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1478</posX>
+        <posY>952</posY>
+      </layout>
+      <gui>
+        <posX>4947</posX>
+        <posY>6676</posY>
+        <width>4688</width>
+        <height>2556</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.X" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="x-movement" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1364</posX>
+        <posY>954</posY>
+      </layout>
+      <gui>
+        <posX>135</posX>
+        <posY>6676</posY>
+        <width>4688</width>
+        <height>2556</height>
+      </gui>
     </component>
   </components>
   <channels>
-    <channel id="binding.20">
+    <channel id="binding.26">
       <source>
-        <component id="SignalTranslation.2.1" />
-        <port id="out" />
+        <component id="Averager.1.2" />
+        <port id="output" />
       </source>
       <target>
-        <component id="Threshold.2.1" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.39">
-      <source>
-        <component id="Threshold.2.1.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="MathEvaluator.1.1" />
+        <component id="MathEvaluator.4.1.2" />
         <port id="inA" />
       </target>
     </channel>
-    <channel id="binding.41">
+    <channel id="binding.63">
       <source>
-        <component id="CrosshairCursorControl.1" />
-        <port id="outX" />
+        <component id="MathEvaluator.4.1" />
+        <port id="out" />
       </source>
       <target>
-        <component id="Mouse.1" />
-        <port id="mouseX" />
+        <component id="SignalTranslation.2" />
+        <port id="setMax" />
       </target>
     </channel>
-    <channel id="binding.16">
+    <channel id="binding.35">
+      <description />
       <source>
-        <component id="ComPort.1" />
-        <port id="received" />
+        <component id="MathEvaluator.1" />
+        <port id="out" />
       </source>
       <target>
+        <component id="CrosshairCursorControl.1" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.28">
+      <source>
+        <component id="Averager.1.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.4.3" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.53">
+      <source>
+        <component id="MathEvaluator.4.3" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="SignalTranslation.2.2" />
+        <port id="setMin" />
+      </target>
+    </channel>
+    <channel id="binding.38">
+      <source>
         <component id="StringSplitter.1" />
+        <port id="out4" />
+      </source>
+      <target>
+        <component id="Averager.1.3" />
         <port id="input" />
       </target>
     </channel>
-    <channel id="binding.19">
-      <source>
-        <component id="Threshold.2" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="MathEvaluator.1" />
-        <port id="inA" />
-      </target>
-    </channel>
-    <channel id="binding.40">
-      <source>
-        <component id="Threshold.2.1.2" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="MathEvaluator.1.1" />
-        <port id="inB" />
-      </target>
-    </channel>
-    <channel id="binding.27">
-      <source>
-        <component id="MinMax.Down" />
-        <port id="min" />
-      </source>
-      <target>
-        <component id="SignalTranslation.2.1.2" />
-        <port id="setMin" />
-      </target>
-    </channel>
-    <channel id="binding.23">
-      <source>
-        <component id="MinMax.Up" />
-        <port id="min" />
-      </source>
-      <target>
-        <component id="SignalTranslation.2.1.1" />
-        <port id="setMin" />
-      </target>
-    </channel>
-    <channel id="binding.44">
+    <channel id="binding.15">
+      <description />
       <source>
         <component id="StringDispatcher.1" />
         <port id="output" />
@@ -765,227 +1107,132 @@ Timer changes between horizontal/vertical</shortDescription>
         <port id="keyCodes" />
       </target>
     </channel>
-    <channel id="binding.22">
+    <channel id="binding.57">
       <source>
-        <component id="StringSplitter.1" />
-        <port id="out1" />
+        <component id="MathEvaluator.4.4" />
+        <port id="out" />
       </source>
       <target>
-        <component id="MinMax.Left" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.24">
-      <source>
-        <component id="MinMax.Left" />
-        <port id="min" />
-      </source>
-      <target>
-        <component id="SignalTranslation.2" />
+        <component id="SignalTranslation.2.3" />
         <port id="setMin" />
-      </target>
-    </channel>
-    <channel id="binding.25">
-      <source>
-        <component id="StringSplitter.1" />
-        <port id="out1" />
-      </source>
-      <target>
-        <component id="SignalTranslation.2" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.28">
-      <source>
-        <component id="StringSplitter.1" />
-        <port id="out2" />
-      </source>
-      <target>
-        <component id="MinMax.Right" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.29">
-      <source>
-        <component id="SignalTranslation.2.1.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="Threshold.2.1.1" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.33">
-      <source>
-        <component id="MinMax.Right" />
-        <port id="min" />
-      </source>
-      <target>
-        <component id="SignalTranslation.2.1" />
-        <port id="setMin" />
-      </target>
-    </channel>
-    <channel id="binding.26">
-      <source>
-        <component id="Threshold.2.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="MathEvaluator.1" />
-        <port id="inB" />
-      </target>
-    </channel>
-    <channel id="binding.18">
-      <source>
-        <component id="SignalTranslation.2" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="Threshold.2" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.36">
-      <source>
-        <component id="StringSplitter.1" />
-        <port id="out2" />
-      </source>
-      <target>
-        <component id="SignalTranslation.2.1" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.31">
-      <source>
-        <component id="MathEvaluator.2" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="Threshold.1" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.38">
-      <source>
-        <component id="StringSplitter.1" />
-        <port id="out2" />
-      </source>
-      <target>
-        <component id="MathEvaluator.2" />
-        <port id="inB" />
-      </target>
-    </channel>
-    <channel id="binding.37">
-      <source>
-        <component id="StringSplitter.1" />
-        <port id="out1" />
-      </source>
-      <target>
-        <component id="MathEvaluator.2" />
-        <port id="inA" />
-      </target>
-    </channel>
-    <channel id="binding.30">
-      <source>
-        <component id="SignalTranslation.2.1.2" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="Threshold.2.1.2" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.32">
-      <source>
-        <component id="StringSplitter.1" />
-        <port id="out3" />
-      </source>
-      <target>
-        <component id="MinMax.Up" />
-        <port id="in" />
       </target>
     </channel>
     <channel id="binding.34">
       <source>
         <component id="StringSplitter.1" />
-        <port id="out4" />
-      </source>
-      <target>
-        <component id="MinMax.Down" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.35">
-      <source>
-        <component id="CrosshairCursorControl.1" />
-        <port id="outY" />
-      </source>
-      <target>
-        <component id="Mouse.1" />
-        <port id="mouseY" />
-      </target>
-    </channel>
-    <channel id="binding.43">
-      <source>
-        <component id="StringSplitter.1" />
-        <port id="out4" />
-      </source>
-      <target>
-        <component id="SignalTranslation.2.1.2" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.42">
-      <source>
-        <component id="StringSplitter.1" />
         <port id="out3" />
       </source>
       <target>
-        <component id="SignalTranslation.2.1.1" />
-        <port id="in" />
+        <component id="Averager.1.2" />
+        <port id="input" />
       </target>
     </channel>
     <channel id="binding.45">
       <source>
-        <component id="CrosshairCursorControl.1" />
-        <port id="outX" />
+        <component id="StringSplitter.1" />
+        <port id="out1" />
       </source>
       <target>
-        <component id="Tooltip.1" />
-        <port id="x" />
+        <component id="Averager.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.39">
+      <description />
+      <source>
+        <component id="SignalTranslation.2.3" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.32">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="Averager.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.69">
+      <source>
+        <component id="SignalTranslation.2.3" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.Tooltip" />
+        <port id="inB" />
       </target>
     </channel>
     <channel id="binding.46">
       <source>
-        <component id="CrosshairCursorControl.1" />
-        <port id="outY" />
+        <component id="StringSplitter.1" />
+        <port id="out1" />
       </source>
       <target>
-        <component id="Tooltip.1" />
-        <port id="y" />
+        <component id="SignalTranslation.2" />
+        <port id="in" />
       </target>
     </channel>
-    <channel id="binding.47">
+    <channel id="binding.36">
+      <description />
       <source>
-        <component id="Tooltip.1" />
-        <port id="tooltip" />
+        <component id="SignalTranslation.2.2" />
+        <port id="out" />
       </source>
       <target>
-        <component id="EventDispatcher.1" />
-        <port id="cmd" />
+        <component id="MathEvaluator.1.1" />
+        <port id="inA" />
       </target>
     </channel>
-    <channel id="binding.48">
+    <channel id="binding.31">
+      <description />
+      <source>
+        <component id="MathEvaluator.Tooltip" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.TooltipActivate" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.67">
+      <source>
+        <component id="SignalTranslation.2.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.Tooltip" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.64">
       <source>
         <component id="MathEvaluator.1" />
         <port id="out" />
       </source>
       <target>
-        <component id="CrosshairCursorControl.1" />
-        <port id="x" />
+        <component id="Oscilloscope.X" />
+        <port id="in" />
       </target>
     </channel>
-    <channel id="binding.49">
+    <channel id="binding.33">
+      <description />
+      <source>
+        <component id="SignalTranslation.2.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.41">
+      <description />
       <source>
         <component id="MathEvaluator.1.1" />
         <port id="out" />
@@ -995,25 +1242,362 @@ Timer changes between horizontal/vertical</shortDescription>
         <port id="y" />
       </target>
     </channel>
+    <channel id="binding.44">
+      <source>
+        <component id="MathEvaluator.4.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="SignalTranslation.2.1" />
+        <port id="setMin" />
+      </target>
+    </channel>
+    <channel id="binding.40">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out4" />
+      </source>
+      <target>
+        <component id="SignalTranslation.2.3" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.27">
+      <description />
+      <source>
+        <component id="SignalTranslation.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.48">
+      <description />
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.49">
+      <description />
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outY" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.50">
+      <source>
+        <component id="Tooltip.1" />
+        <port id="tooltip" />
+      </source>
+      <target>
+        <component id="EventDispatcher.1" />
+        <port id="cmd" />
+      </target>
+    </channel>
+    <channel id="binding.56">
+      <source>
+        <component id="MathEvaluator.4.1.3" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="SignalTranslation.2.3" />
+        <port id="setMax" />
+      </target>
+    </channel>
+    <channel id="binding.43">
+      <source>
+        <component id="MathEvaluator.4.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="SignalTranslation.2.1" />
+        <port id="setMax" />
+      </target>
+    </channel>
+    <channel id="binding.52">
+      <source>
+        <component id="MathEvaluator.4.1.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="SignalTranslation.2.2" />
+        <port id="setMax" />
+      </target>
+    </channel>
+    <channel id="binding.47">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="SignalTranslation.2.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.62">
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.4.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.54">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out3" />
+      </source>
+      <target>
+        <component id="SignalTranslation.2.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.30">
+      <source>
+        <component id="Averager.1.3" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.4.4" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.29">
+      <source>
+        <component id="Averager.1.3" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.4.1.3" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.24">
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.4.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.25">
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.4.2" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.58">
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MathEvaluator.4" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.60">
+      <source>
+        <component id="MathEvaluator.4" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="SignalTranslation.2" />
+        <port id="setMin" />
+      </target>
+    </channel>
+    <channel id="binding.66">
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.Y" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.59">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="Tooltip.1" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.65">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outY" />
+      </source>
+      <target>
+        <component id="Tooltip.1" />
+        <port id="y" />
+      </target>
+    </channel>
+    <channel id="binding.68">
+      <source>
+        <component id="ComPort.1" />
+        <port id="received" />
+      </source>
+      <target>
+        <component id="StringSplitter.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.70">
+      <source>
+        <component id="SignalTranslation.2.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.TooltipPrev" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.71">
+      <source>
+        <component id="SignalTranslation.2.3" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.TooltipNext" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.61">
+      <source>
+        <component id="SignalTranslation.2.3" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.Down" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.55">
+      <source>
+        <component id="SignalTranslation.2.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.Up" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.51">
+      <source>
+        <component id="SignalTranslation.2.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.Right" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.42">
+      <source>
+        <component id="SignalTranslation.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Oscilloscope.Left" />
+        <port id="in" />
+      </target>
+    </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="clickEvent_leftClick">
-      <description />
+    <eventChannel id="recognizedCommand4_dispatchSlot1">
       <sources>
         <source>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="clickEvent" />
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand4" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="Mouse.1" />
-          <eventPort id="leftClick" />
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_dispatchSlot4">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_input">
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.2" />
+          <eventPort id="input" />
         </target>
       </targets>
     </eventChannel>
     <eventChannel id="recognizedCommand3_rightClick">
-      <description />
       <sources>
         <source>
           <component id="EventDispatcher.1" />
@@ -1028,7 +1612,6 @@ Timer changes between horizontal/vertical</shortDescription>
       </targets>
     </eventChannel>
     <eventChannel id="recognizedCommand2_doubleClick">
-      <description />
       <sources>
         <source>
           <component id="EventDispatcher.1" />
@@ -1043,7 +1626,6 @@ Timer changes between horizontal/vertical</shortDescription>
       </targets>
     </eventChannel>
     <eventChannel id="recognizedCommand1_dragPress">
-      <description />
       <sources>
         <source>
           <component id="EventDispatcher.1" />
@@ -1058,7 +1640,6 @@ Timer changes between horizontal/vertical</shortDescription>
       </targets>
     </eventChannel>
     <eventChannel id="output_nextClickRelease">
-      <description />
       <sources>
         <source>
           <component id="EventDelay.2" />
@@ -1069,6 +1650,20 @@ Timer changes between horizontal/vertical</shortDescription>
         <target>
           <component id="Mouse.1" />
           <eventPort id="nextClickRelease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_moveToLastStable">
+      <sources>
+        <source>
+          <component id="Threshold.TooltipActivate" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="moveToLastStable" />
         </target>
       </targets>
     </eventChannel>
@@ -1087,7 +1682,7 @@ Timer changes between horizontal/vertical</shortDescription>
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="tooltipDeactivated_disablePlugin">
+    <eventChannel id="tooltipActivated_disablePlugin">
       <description />
       <sources>
         <source>
@@ -1102,86 +1697,11 @@ Timer changes between horizontal/vertical</shortDescription>
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="tooltipActivated_moveToLastStable">
-      <description />
-      <sources>
-        <source>
-          <component id="Tooltip.1" />
-          <eventPort id="tooltipActivated" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="moveToLastStable" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand4_dispatchSlot1">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand4" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot1" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand5_dispatchSlot2">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand5" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot2" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand6_dispatchSlot3">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand6" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot3" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="recognizedCommand7_dispatchSlot4">
-      <description />
-      <sources>
-        <source>
-          <component id="EventDispatcher.1" />
-          <eventPort id="recognizedCommand7" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot4" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="eventPosEdge_activateTooltips">
       <description />
       <sources>
         <source>
-          <component id="Threshold.1" />
+          <component id="Threshold.TooltipActivate" />
           <eventPort id="eventPosEdge" />
         </source>
       </sources>
@@ -1192,26 +1712,11 @@ Timer changes between horizontal/vertical</shortDescription>
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="eventPosEdge_previousTooltip">
-      <description />
-      <sources>
-        <source>
-          <component id="Threshold.2" />
-          <eventPort id="eventPosEdge" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Tooltip.1" />
-          <eventPort id="previousTooltip" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="eventPosEdge_nextTooltip">
       <description />
       <sources>
         <source>
-          <component id="Threshold.2.1" />
+          <component id="Threshold.TooltipNext" />
           <eventPort id="eventPosEdge" />
         </source>
       </sources>
@@ -1222,18 +1727,49 @@ Timer changes between horizontal/vertical</shortDescription>
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="eventPosEdge_previousTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.TooltipPrev" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="previousTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="clickEvent_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="clickEvent" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
+  <groups />
   <modelGUI>
-    <Decoration>false</Decoration>
+    <Decoration>true</Decoration>
     <Fullscreen>false</Fullscreen>
     <AlwaysOnTop>false</AlwaysOnTop>
     <ToSystemTray>true</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
-      <posX>0</posX>
-      <posY>-44</posY>
-      <width>9875</width>
-      <height>7889</height>
+      <posX>35</posX>
+      <posY>44</posY>
+      <width>10000</width>
+      <height>9889</height>
     </AREGUIWindow>
   </modelGUI>
 </model>
