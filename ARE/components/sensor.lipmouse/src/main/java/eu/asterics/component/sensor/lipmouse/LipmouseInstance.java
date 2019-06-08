@@ -65,6 +65,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
     private static final short LIPMOUSE_CIM_FEATURE_BUTTONREPORT = 0x0003;
     private static final short LIPMOUSE_CIM_FEATURE_SETLEDS = 0x0004;
     private static final short LIPMOUSE_CIM_FEATURE_ATCMD = 0x0005;
+    private static final short LIPMOUSE_CIM_FEATURE_SET_MODE = 0x0006;
 
     final IRuntimeOutputPort opX = new DefaultRuntimeOutputPort();
     final IRuntimeOutputPort opY = new DefaultRuntimeOutputPort();
@@ -91,7 +92,8 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
     public int propSipThreshold = 505;
     public int propSipTime = 700;
     public int propPuffThreshold = 520;
-    public int propPuffTime = 700;
+    public int propPuffTime = 700;    
+    public boolean propEnableStandaloneFunctions=false;
 
     private int calibX = 0;
     private int calibY = 0;
@@ -279,6 +281,9 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
         if ("puffTime".equalsIgnoreCase(propertyName)) {
             return propPuffTime;
         }
+        if ("enableStandaloneFunctions".equalsIgnoreCase(propertyName)) {
+            return propEnableStandaloneFunctions;
+        }        
         return null;
     }
 
@@ -326,6 +331,15 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
             if (port != null) {
                 // System.out.println("SET UNIQUE NUMBER TO NEW VALUE !!!!");
                 // port= openCIM (LIPMOUSE_CIM_ID, propUniqueID);
+            }
+            return oldValue;
+        }
+        if ("enableStandaloneFunctions".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propEnableStandaloneFunctions;
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propEnableStandaloneFunctions = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propEnableStandaloneFunctions = false;
             }
             return oldValue;
         }
@@ -662,7 +676,11 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
             CIMPortManager.getInstance().sendPacket(port, null, (short) 0, CIMProtocolPacket.COMMAND_REQUEST_START_CIM,
                     false);
             sendLipmouseWriteFeature(LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD, propPeriodicADCUpdate);
-        } else {
+            if (propEnableStandaloneFunctions==true)
+                sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_SET_MODE, 1);
+            else sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_SET_MODE, 0);
+                
+            } else {
             AstericsErrorHandling.instance.reportError(this, "Could not find LipMouse Module (ID " + propUniqueID
                     + "). Please verify that the Module is connected to an USB Port and that the driver is installed.");
         }
