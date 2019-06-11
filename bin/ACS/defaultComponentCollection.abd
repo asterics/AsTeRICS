@@ -5848,7 +5848,7 @@
                       type="integer"
                       value="1"
                       combobox="clip to min and max//autoupdate min and max"
-                      description="how to deal with input values exceeding min or max"/> 
+                      description="how to deal with input values exceeding min or max (GUI related only)"/>
             <property name="fontSize"
                       type="integer"
                       value="14"
@@ -5856,7 +5856,16 @@
             <property name="caption"
                       type="string"
                       value="signal mapper"
-                      description="caption of the curve window"/>                                                       
+                      description="caption of the curve window"/>
+            <property name="operationMode"
+                      type="integer"
+                      value="0"
+                      combobox="use file and GUI//use property curvePoints (percent values)//use property curvePoints (absolute values)"
+                      description="operation mode, either use file and GUI or property curvePoints"/>
+            <property name="curvePoints"
+                      type="string"
+                      value="(10,0),(10,10),(100,100)"
+                      description="curvePoints (x/y) for operationMode 'curve points from property'"/>
         </properties>
         <gui>
             <width>5000</width>
@@ -6231,7 +6240,19 @@
                 <dataType>double</dataType>
             </outputPort>
         </ports>
-        <properties>
+    <events>
+        <eventListenerPort id="enablePlugin">
+            <description>enables the functionality of this plugin</description>
+        </eventListenerPort>
+        <eventListenerPort id="disablePlugin">
+            <description>disables the functionality of this plugin</description>
+        </eventListenerPort>
+    </events>
+    <properties>
+            <property name="enabled"
+                      type="boolean"
+                      value="true"
+                      description="if true, the plugin is enabled, if false the plugin does nothing"/>
             <property name="bufferSize"
                       type="integer"
                       value="50"
@@ -6241,6 +6262,10 @@
                       value="0"
                       combobox="average//averager with integer output//accumulate for n milliseconds//median"
                       description="The averager or accumulator mode"/>
+            <property name="autoReenableTime"
+                      type="integer"
+                      value="0"
+                      description="time in ms, after the plugin automatically re-enables itself after being disabled. Set to zero to deactivate this functionality (never auto re-enable)."/>
         </properties>
     </componentType>
 
@@ -6549,10 +6574,18 @@
 
         </ports>
 		<events>
-
-
-		</events>			
-        <properties>
+			<eventListenerPort id="enablePlugin">
+				<description>enables the functionality of this plugin</description>
+			</eventListenerPort>
+			<eventListenerPort id="disablePlugin">
+				<description>disables all functionality of this plugin</description>
+			</eventListenerPort>
+		</events>
+		<properties>
+			<property name="enabled"
+					  type="boolean"
+					  value="true"
+					  description="if true, the plugin is enabled, if false the plugin does nothing"/>
 			<property name="ComPort"
 				type="string"
 				value="COM4"
@@ -10831,6 +10864,17 @@
                 <dataType>double</dataType>
             </outputPort>            
         </ports>
+        <events>
+            <eventTriggererPort id="enterRange">
+                <description>this event is generated if the defined input range was entered by the last input value</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="exitRangeBelow">
+                <description>this event is generated if the defined input range was left by the last input value, which was smaller than inMin</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="exitRangeAbove">
+                <description>this event is generated if the defined input range was left by the last input value, which was greater than inMax</description>
+            </eventTriggererPort>
+        </events>
         <properties>
             <property name="inMin"
                       type="double"
@@ -11712,11 +11756,27 @@
 			<property name="defaultIn4Integer"
 				type="integer"
 				value="0"
-				description="The default value of in4Integer. Used if there is no input port value."/>				
+				description="The default value of in4Integer. Used if there is no input port value."/>
 			<property name="sendOnlyByEvent"
 				type="boolean"
-				value="0"
-				description="Only sends the value of the formatted string, if the event sendFormattedStr is received."/>				
+				value="false"
+				description="Only sends the value of the formatted string, if the event sendFormattedStr is received."/>
+			<property name="port1ToDefaultAfterSend"
+					type="boolean"
+					value="false"
+					description="If true, input port 1 is reverted to default value, after value was sent."/>
+			<property name="port2ToDefaultAfterSend"
+					  type="boolean"
+					  value="false"
+					  description="If true, input port 2 is reverted to default value, after value was sent."/>
+			<property name="port3ToDefaultAfterSend"
+					  type="boolean"
+					  value="false"
+					  description="If true, input port 3 is reverted to default value, after value was sent."/>
+			<property name="port4ToDefaultAfterSend"
+					  type="boolean"
+					  value="false"
+					  description="If true, input port 4 is reverted to default value, after value was sent."/>
         </properties>
 
     </componentType>
@@ -16050,6 +16110,10 @@
 				type="integer"
 				value="700"
 				description="time to select short/long puff action "/>
+			<property name="enableStandaloneFunctions"
+				type="boolean"
+				value="false"
+				description="if checked, the FlipMouse will perform functions according to slot settings"/>
 
         </properties>
 
@@ -16355,58 +16419,6 @@
         </properties>
     </componentType>
 
-
-
-    <componentType id="asterics.myocontroller"
-                   canonical_name="eu.asterics.component.sensor.myocontroller.MyocontrollerInstance">
-        <type subtype="Bioelectric Measurement">sensor</type>
-        <singleton>false</singleton>
-        <description>This plugin receives a packet stream from the OttoBock Myocontroller device</description>
-        <ports>
-
-			<outputPort id="Channel1">
-				<description>output port for channel1 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Channel2">
-				<description>output port for channel2 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Channel3">
-				<description>output port for channel3 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Channel4">
-				<description>output port for channel4 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Channel5">
-				<description>output port for channel5 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Channel6">
-				<description>output port for channel6 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-
-
-		</events>			
-        <properties>
-			<property name="ComPort"
-				type="string"
-				value="COM4"
-				description="The COM Port which will be opened to receive a P2-packet stream"/>
-			<property name="BaudRate"
-				type="integer"
-				value="57600"
-				description="The baud rate for the P2 packet stream"/>
-
-        </properties>
-
-    </componentType>
 
 
     <componentType id="asterics.openBCI"
