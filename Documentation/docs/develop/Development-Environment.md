@@ -44,7 +44,6 @@ You need:
 
 * Ensure to set ```JAVA_HOME``` to the folder where you installed the Java JDK and add the JDK bin path to the  Environment Variable ```Path```.
 * Ensure to set ```ANT_HOME``` to the folder where you installed ant and add the ant bin path to the Environment Variable ```Path```.
-* The ```git``` command line tool must be available from within ant, ensure to set the Environment Variable ```Path``` to the respective ```bin``` folder.
 
 See below an example of how to set the environment variable ```JAVA_HOME``` on Windows 7.
 
