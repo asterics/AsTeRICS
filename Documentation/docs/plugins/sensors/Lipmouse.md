@@ -65,6 +65,7 @@ FLipmouse application
 *   **sipTime \[integer\]:** threshold time for sip/longSip events.
 *   **puffThreshold \[integer\]:** threshold value for puff actions.
 *   **puffTime \[integer\]:** threshold time for puff/longPuff events.
+*   **enableStandaloneFunctions \[boolean\]:** if enabled, the FLipMouse will perform it's normal functions as defined in the FlipMouseGUI settings manager; if disabled, the FlipMouse will only act as sensor for the AsTeRICS plugin.
 
 [1]: https://github.com/asterics/FLipMouse
 [2]: https://github.com/asterics/FLipMouse
