@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="500"
+   height="587.92389"
+   id="svg5324"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="ecgl.png"
+   inkscape:export-filename="/home/tim/Pictures/Home/Stack Exchange/Health/Meta/Logo/ecge.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs5326" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="529.41436"
+     inkscape:cy="243.07183"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1014"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <sodipodi:guide
+       orientation="0,1"
+       position="297.14285,293.96195"
+       id="guide5440" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="249.99999,498.24766"
+       id="guide5442" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5329">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-70.000014,-292.68593)">
+    <g
+       id="g4732-2"
+       transform="translate(-33.562486,181.31094)">
+      <g
+         transform="matrix(1.0121741,0,0,1.0121741,-4.3078357,-8.5620129)"
+         id="g4701-2">
+        <rect
+           style="fill:#62b0df;fill-opacity:1;stroke:none"
+           id="rect4680-9"
+           width="493.98618"
+           height="493.98618"
+           x="106.57291"
+           y="118.49444"
+           ry="63.630905" />
+        <path
+           sodipodi:nodetypes="ccc"
+           style="fill:#62b0df;fill-opacity:1;stroke:none"
+           d="m 398.52704,611.58562 0,87.76138 98.79723,-88.20759"
+           id="path4699-2"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:9.41626549;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 133.97339,554.47846 71.8825,0 8.5194,21.97129 7.3985,-21.29871 17.039,0 14.1338,-52.7481 13.524,50.47244 16.9573,0 7.6228,52.49574 15.0211,-211.935 24.2133,270.73809 15.24538,-108.799 35.8714,0 26.8885,-46.57229 26.0374,45.09808 71.5136,0"
+       id="path4911-8-6-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccc" />
+  </g>
+</svg>
