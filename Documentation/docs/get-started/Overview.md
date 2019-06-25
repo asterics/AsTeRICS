@@ -6,6 +6,10 @@ This pages explains the most important terms and elements of the AsTeRICS framew
 
 The most important terms are described below.
 
+### AsTeRICS
+
+The term AsTeRICS stands for **As**sistive **Te**chnology **R**apid **I**ntegration and **C**onstruction **S**et and allows the creation of customized low-cost Assistive Technologies.
+
 ### Solutions
 
 The AsTeRICS framework provides some selected [solutions](/solutions/) which can be used out of the box. The solutions are grouped by **use cases** and can be directly started from the solutions page. Some solutions depend on certain [input devices](#input-device) or other hardware and software. Just click on the ```Read More``` button in a solution's tile to get a detailed step by step instruction of how to install and use it.
