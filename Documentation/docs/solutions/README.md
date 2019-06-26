@@ -18,6 +18,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
 <Model left
     title="Camera Mouse"
     :tags='[{href:"", text:"webcam"}]'
+    :os='["Windows", "Linux", "macOS"]'
     description="Mouse control according to your head movements with configurable settings."
     image="/assets/img/face-shutterstock_717365779.jpg"
     model="https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs"
@@ -76,5 +77,3 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
 />
 
 <br/><br/>
-
-<EditLink/>
