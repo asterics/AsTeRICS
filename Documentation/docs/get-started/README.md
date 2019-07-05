@@ -1,3 +1,6 @@
+---
+"layout": "Layout"
+---
 # Get Started
 
 ::: tip Note
