@@ -55,7 +55,7 @@ AsTeRICS consists of several executable programs.
 
 The AsTeRICS Configuration Suite (ACS) is a graphical editor for easy designing and testing model files. A model file can be saved to a file or uploaded to the [ARE](#are) to execute it. Likewise, a model can be downloaded from the ARE to be changed or customized. Furthermore, the ACS allows to remote control the ARE program and to start and stop a model. For more information about how to use the ACS, please read the [ACS user manual](/manuals/ACS/).
 
-![Screenshot of ACS program with a simple model.](../customize/img/quickstart11.png)
+![Screenshot of ACS program with a simple model.](../../customize/img/quickstart11.png)
 
 ### WebACS
 

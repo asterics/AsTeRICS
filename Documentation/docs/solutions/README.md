@@ -1,6 +1,7 @@
 ---
 navTitle: Solutions
 navOrder: 1
+sidebarGenerator: false
 ---
 
 # Discover Solutions
