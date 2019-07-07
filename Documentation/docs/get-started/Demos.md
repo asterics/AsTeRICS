@@ -1,3 +1,7 @@
+---
+sidebarGenerator: false
+---
+
 # Demos
 
 * [Camera Mouse](http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-cameramouse)
