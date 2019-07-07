@@ -1,5 +1,7 @@
 ---
-"layout": "Layout"
+layout: Layout
+navTitle: Getting Started
+navOrder: 0
 ---
 # Get Started
 

@@ -1,3 +1,8 @@
+---
+navTitle: Solutions
+navOrder: 1
+---
+
 # Discover Solutions
 
 ::: tip Note

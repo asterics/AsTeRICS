@@ -1,3 +1,8 @@
+---
+navTitle: Customize
+navOrder: 2
+---
+
 # Customize
 
 ::: tip Note

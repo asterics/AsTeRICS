@@ -1,5 +1,6 @@
 ---
 title: Plugins
+navOrder: 3
 ---
 
 # Plugins
