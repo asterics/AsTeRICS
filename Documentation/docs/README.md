@@ -1,6 +1,7 @@
 ---
-"layout": "FrontLayout"
-"metaTitle": "Home | AsTeRICS"
+layout: FrontLayout
+title: Home
+metaTitle: Home | AsTeRICS
 ---
 
 ## Use Cases
