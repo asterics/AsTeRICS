@@ -11,7 +11,7 @@ The ARE expects from plugin-developers to define the structure of their plugins 
 Furthermore, the ARE expects a runtime model (system model) which usually comes from the AsTeRICS Configuration Suite (ACS). The ACS is running on a Windows Personal Computer (.net 4.0 required) and mainly used to graphically design the layout of the system as a network of interconnected components. The system model is another XML file that defines the components participating in a specific application, connections between them, events and other properties. Based on this file, ARE knows which plugins to activate and how to define the data flow between them. Since the system model represents the main communication means between the ACS and the ARE, it is expected to be a serialisable object, easy to transfer and translate. ARE and ACS communicate through an appropriate TCP/IP-based communication protocol named ASAPI.
 
   
-![](./images/DeveloperManual_html_74b8c615b8455605.png)
+![](./img/DeveloperManual_html_74b8c615b8455605.png)
 
   
   
@@ -245,7 +245,7 @@ If the ARE is started using the “start\_debug.bat” script and source-level d
   
   
 
-![](./images/DeveloperManual_html_c0991ef32ae9b458.png)
+![](./img/DeveloperManual_html_c0991ef32ae9b458.png)
 
   
   
@@ -255,7 +255,7 @@ Create a “Remote Java Application” Debug Configuration and assign a name for
   
   
 
-![](./images/DeveloperManual_html_4dfe72317ab9f571.jpg)
+![](./img/DeveloperManual_html_4dfe72317ab9f571.jpg)
 
   
   
@@ -264,18 +264,18 @@ Now launch the ARE using “start\_debug.bat”. The messages in the console win
   
   
 
-![](./images/DeveloperManual_html_b6693a1cbcd9178a.png)
+![](./img/DeveloperManual_html_b6693a1cbcd9178a.png)
 
 Now, the usual debugging support of Eclipse can be used, including breakpoints in middleware or components, variable and context watch windows, single stepping etc. All these operations are performed in the Eclipse “Debug” perspective.
 
 The following screenshot shows a program execution of the ARE which ran into a breakpoint (here: the OSKA plugin was halted as a command was selected in the OSKA-application and transferred to the ARE plugin’s command handler:
 
-![](./images/DeveloperManual_html_f1a0b4f36dd370ba.jpg)
+![](./img/DeveloperManual_html_f1a0b4f36dd370ba.jpg)
 
   
   
 
-I![](./images/DeveloperManual_html_fb7627584ba9d5d7.png) f the source-level debug information is missing (due to compilation without debugging support) an error message indicates a problem, e.g. the missing line number for breakpoint installation:
+I![](./img/DeveloperManual_html_fb7627584ba9d5d7.png) f the source-level debug information is missing (due to compilation without debugging support) an error message indicates a problem, e.g. the missing line number for breakpoint installation:
 
 ## Services and Utils: Infrastructure for plugins
     
@@ -706,7 +706,7 @@ Developers are expected to use the ARE thread pool for executing their tasks tha
 
 The ARE provides a panel area (“ARE Desktop”) where plugins can display their graphical elements using the ARE GUI support classes. The ACS provides a dedicated canvas editor that allows end users positioning and resizing graphical elements of the plugins. Based on this information, the ARE displays plugins on the local device, maintaining the correct screen position and aspect ratio of graphical elements with respect to the screen resolution of the deployment device. (For more information about the usage of the ACS GUI editor and the ARE GUI control panel refer to the User Manual.)
 
-![](./images/DeveloperManual_html_3e993efbc73f2910.png)
+![](./img/DeveloperManual_html_3e993efbc73f2910.png)
 
 **GUI composition using the ACS GUI designer (right), resulting ARE GUI (left)**
 

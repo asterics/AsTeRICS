@@ -1,3 +1,6 @@
+---
+title: Customization
+---
 # Grid Customization
 
 In this tutorial you will learn how to do simple modifications to a grid like changing the cell text or image.

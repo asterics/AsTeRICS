@@ -1,3 +1,6 @@
+---
+title: Customization
+---
 # Model Customization
 
 In this tutorial you will learn how to do simple modifications to a model like changing a plugin property. This can be useful if you want to change the camera device to be used or want to change the key triggering a user action.

@@ -333,7 +333,7 @@ public interface IRuntimeComponentInstance
   
   
 
-![](./images/DeveloperManual_html_17298a48a6d250c5.png)  
+![](./img/DeveloperManual_html_17298a48a6d250c5.png)  
   
 
 The lifecycle support methods are used to intercept AsTeRICS events concerning the component’s lifecycle. In principle, a component can be any of the following:

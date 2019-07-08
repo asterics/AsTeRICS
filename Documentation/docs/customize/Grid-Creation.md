@@ -1,3 +1,7 @@
+---
+title: Creation
+---
+
 # Grid Creation
 
 In this tutorial you will learn how to create a simple grid.
