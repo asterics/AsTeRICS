@@ -15,8 +15,8 @@ SignalTranslation plugin
 ## Input Port Description
 
 *   **in \[double\]:** This port receives the input values which will be translated to the new range.
-*   **setMax \[double\]:** This port sets the value of the maximum property in the component.
-*   **setMin \[double\]:** This port sets the value of the minimum property in the component.
+*   **setMax \[double\]:** This port sets the value of the input maximum property (inMax) in the component.
+*   **setMin \[double\]:** This port sets the value of the input minimum property (inMin) in the component.
 
 ## Output Port Description
 
