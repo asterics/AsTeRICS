@@ -7,5 +7,4 @@ Bundle-ClassPath: ., lib/native/nrjavaserial-3.13.0.jar, lib/native/jna-4.2.2.ja
 Export-Package: eu.asterics.mw.cimcommunication
 Require-Bundle: org.asterics.middleware
 Bundle-Activator: eu.asterics.mw.cimcommunication.CIMCommunicationBundleActivator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 DynamicImport-Package: *
