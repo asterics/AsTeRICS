@@ -42,7 +42,7 @@ echo "ARE_DEBUG_STRING=$ARE_DEBUG_STRING"
 echo "ARE_OPTIONAL_SERVICES_INI=$ARE_OPTIONAL_SERVICES_INI"
 
 	
-java $ARE_DEBUG_STRING -Deu.asterics.mw.services.AstericsErrorHandling.consoleLogLevel=$ARE_CONSOLE_LOGLEVEL -Dosgi.clean=true  -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel="$ARE_AUTOSTART_MODEL" -Deu.asterics.ARE.ServicesFiles="$ARE_OPTIONAL_SERVICES_INI" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration $ARE_PROFILE_PATH -console "$@"
+java $ARE_DEBUG_STRING -Deu.asterics.mw.services.AstericsErrorHandling.consoleLogLevel=$ARE_CONSOLE_LOGLEVEL -Dosgi.clean=true  -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel="$ARE_AUTOSTART_MODEL" -Deu.asterics.ARE.ServicesFiles="$ARE_OPTIONAL_SERVICES_INI" -jar org.eclipse.osgi_3.14.0.v20190517-1309.jar -configuration $ARE_PROFILE_PATH -console "$@"
 
 
 # workaround for muliple user support
