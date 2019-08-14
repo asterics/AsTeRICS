@@ -1,3 +1,10 @@
 Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.10.5
+Created-By: 12.0.2+10 (Oracle Corporation)
 Main-Class: eu.asterics.ape.main.APE
-Class-Path: ../ARE/asterics.ARE.jar ../ARE/org.eclipse.osgi_3.6.0.v20100517.jar ../ARE/org.eclipse.osgi.services_3.2.100.v20100503.jar lib/commons-io-2.4.jar lib/commons-codec-1.11.jar ../asterics.ARE.jar ../org.eclipse.osgi_3.6.0.v20100517.jar ../org.eclipse.osgi.services_3.2.100.v20100503.jar
+Class-Path: ../ARE/asterics.ARE.jar ../ARE/org.eclipse.osgi_3.14.0.v20
+ 190517-1309.jar ../ARE/org.eclipse.osgi.services_3.8.0.v20190206-2147
+ .jar lib/commons-io-2.4.jar lib/commons-codec-1.11.jar ../asterics.AR
+ E.jar ../org.eclipse.osgi_3.14.0.v20190517-1309.jar ../org.eclipse.os
+ gi.services_3.8.0.v20190206-2147.jar
+

@@ -7,7 +7,7 @@
 	<!-- set global properties for this build -->
 	<property name="build" location="./out/${component.id}" />
 	<property name="src.java" location="JavaLibrary/src" />
-	<property name="lib.path" location="JavaLibrary/lib/" />
+	<property name="lib.path" location="../ARE/services/WebService/src/main/resources/lib/" />
 	<property name="dist" location="." />
 	<path id="asterics.classpath">
 		<pathelement location="bin" />
@@ -17,6 +17,8 @@
 		<pathelement location="${lib.path}/javax.annotation-api-1.2.jar" />
 		<pathelement location="${lib.path}/javax.inject-2.4.0-b06.jar" />
 		<pathelement location="${lib.path}/javax.ws.rs-api-2.0.1.jar" />
+	       	<pathelement location="${lib.path}/javax.activation-1.2.0.jar"/>
+	       	<pathelement location="${lib.path}/jaxb-api-2.3.0-b170201.1204.jar"/>
 		<pathelement location="${lib.path}/jersey-client-2.8.jar" />
 		<pathelement location="${lib.path}/jersey-common-2.8.jar" />
 		<pathelement location="${lib.path}/jersey-container-grizzly2-http-2.8.jar" />
