@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: asterics-services.cimcommunication
 Bundle-SymbolicName: eu.asterics.mw.cimcommunication
 Bundle-Version: 0.1.0
-Bundle-ClassPath: ., lib/native/nrjavaserial-3.13.0.jar, lib/native/jna-4.2.2.jar, lib/native/jna-platform-4.2.2.jar
+Bundle-ClassPath: ., lib/native/nrjavaserial-3.15.0-java11.jar, lib/native/jna-4.2.2.jar, lib/native/jna-platform-4.2.2.jar
 Export-Package: eu.asterics.mw.cimcommunication
 Require-Bundle: org.asterics.middleware
 Bundle-Activator: eu.asterics.mw.cimcommunication.CIMCommunicationBundleActivator
