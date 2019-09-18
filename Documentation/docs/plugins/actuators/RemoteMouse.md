@@ -2,7 +2,7 @@
 title: RemoteMouse
 ---
 
-# {{frontmatter.$title}}
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Input Device Emulation)
 
