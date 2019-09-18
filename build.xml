@@ -115,11 +115,11 @@
 	<!-- helper target to rename license files, unfortunately it is not a rename but a move -->
 	<target name="replaceVersion">
 		<getversionnumber text="${env.VERSION}" property="app_version_number" />
-		<replace file="./Installer/setup.iss" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
-		<replace file="./Installer/asterics-are/package/linux/control" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
-		<replace file="./Installer/asterics-are/APE.properties" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
-		<replace file="./ARE/middleware/src/main/java/eu/asterics/mw/gui/AstericsGUI.java" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
-		<replace file="./ARE/services/WebService/src/main/java/eu/asterics/mw/webservice/RestServer.java" token="#{APPLICATION_VERSION_NUMBER}#" value="${app_version_number}"/>
+		<replace file="./Installer/setup.iss" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
+		<replace file="./Installer/asterics-are/package/linux/control" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
+		<replace file="./Installer/asterics-are/APE.properties" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
+		<replace file="./ARE/middleware/src/main/java/eu/asterics/mw/gui/AstericsGUI.java" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
+		<replace file="./ARE/services/WebService/src/main/java/eu/asterics/mw/webservice/RestServer.java" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
 	</target>
 	
 	<scriptdef name="getversionnumber" language="javascript">
