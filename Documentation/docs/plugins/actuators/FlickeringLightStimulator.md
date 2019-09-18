@@ -1,8 +1,8 @@
 ---
-title: Flickering Light Stimulator
+title: FlickeringLightStimulator
 ---
 
-# Flickering Light Stimulator
+# {{$frontmatter.title}}
 
 ## Component Type: Actuator (Subcategory: Brain Computer Interface)
 

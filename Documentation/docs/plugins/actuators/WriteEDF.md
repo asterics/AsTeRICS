@@ -2,7 +2,7 @@
 title: WriteEDF
 ---
 
-# EDF Writer
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: File System)
 

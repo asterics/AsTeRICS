@@ -2,7 +2,7 @@
 title: RemoteJoystick
 ---
 
-# Remote Joystick
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Input Device Emulation)
 

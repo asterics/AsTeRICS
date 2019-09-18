@@ -2,7 +2,7 @@
 title: FS20Sender
 ---
 
-# FS20 Sender
+# {{$frontmatter.title}}
 
 ## Component Type: Actuator (Subcategory: Home Control)
 

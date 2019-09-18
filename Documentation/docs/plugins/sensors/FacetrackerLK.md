@@ -2,7 +2,7 @@
 title: FacetrackerLK
 ---
 
-# Facetracker LK
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Computer Vision)
 

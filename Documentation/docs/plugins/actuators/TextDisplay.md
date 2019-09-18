@@ -2,7 +2,7 @@
 title: TextDisplay
 ---
 
-# Text Display
+# {{$frontmatter.title}}
 
 ### Component Type: Actuator (Subcategory: Graphical User Interface)
 

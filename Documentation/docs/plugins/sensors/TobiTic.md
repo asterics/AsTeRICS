@@ -2,7 +2,7 @@
 title: TobiTic
 ---
 
-# Tobi TiC
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Bioelectric Measurement)
 

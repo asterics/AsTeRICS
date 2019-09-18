@@ -1,8 +1,8 @@
 ---
-title: Android Connection
+title: AndroidConnection
 ---
 
-# Preparation of the connection with Android Phone
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Phone Interface)
 

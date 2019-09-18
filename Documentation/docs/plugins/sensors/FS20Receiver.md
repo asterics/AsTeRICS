@@ -2,7 +2,7 @@
 title: FS20Receiver
 ---
 
-# FS20 Receiver
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Home Control)
 

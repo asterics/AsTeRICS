@@ -2,7 +2,7 @@
 title: ConstantDispatcher
 ---
 
-# Constant Dispatcher
+# {{$frontmatter.title}}
 
 Component Type: Processor (Subcategory: Basic Math)
 

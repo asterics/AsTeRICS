@@ -2,7 +2,7 @@
 title: ModelSwitcher
 ---
 
-# Model Switcher
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: File System)
 

@@ -2,7 +2,7 @@
 title: KeyboardCapture
 ---
 
-# Keyboard Capture
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Standard Input Devices)
 

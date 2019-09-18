@@ -1,8 +1,8 @@
 ---
-title: Dot Meter
+title: DotMeter
 ---
 
-# Dot Meter
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Graphical User Interface)
 

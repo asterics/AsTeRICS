@@ -2,7 +2,7 @@
 title: SignalShaper
 ---
 
-# Signal Shaper
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Simulation)
 

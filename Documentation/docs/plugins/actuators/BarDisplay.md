@@ -1,8 +1,8 @@
 ---
-title: Bar Display
+title: BarDisplay
 ---
 
-# Bar Display
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Graphical User Interface)
 

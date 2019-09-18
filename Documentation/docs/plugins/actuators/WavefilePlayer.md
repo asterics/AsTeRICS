@@ -2,7 +2,7 @@
 title: WavefilePlayer
 ---
 
-# Wavefile Player
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Audio and Voice)
 

@@ -2,7 +2,7 @@
 title: StringPathSelector
 ---
 
-# String Path Selector
+# {{$frontmatter.title}}
 
 Component Type: Processor (Subcategory: Signal Pathways)
 

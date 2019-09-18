@@ -1,8 +1,8 @@
 ---
-title: Event Visualizer
+title: EventVisualizer
 ---
 
-# Event Visualizer
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Graphical User Interface)
 

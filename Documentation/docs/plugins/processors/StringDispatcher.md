@@ -2,7 +2,7 @@
 title: String Dispatcher
 ---
 
-# String Dispatcher
+# {{$frontmatter.title}}
 
 Component Type: Processor (Subcategory: Event and String Processing)
 

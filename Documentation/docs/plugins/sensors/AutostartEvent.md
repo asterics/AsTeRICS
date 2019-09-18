@@ -2,7 +2,7 @@
 title: AutostartEvent
 ---
 
-# Autostart Event
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Simulation)
 

@@ -2,7 +2,7 @@
 title: SignalGenerator
 ---
 
-# Signal Generator
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Simulation)
 

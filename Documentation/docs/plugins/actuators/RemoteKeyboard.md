@@ -2,7 +2,7 @@
 title: RemoteKeyboard
 ---
 
-# Remote Keyboard
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Input Device Emulation)
 

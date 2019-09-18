@@ -2,7 +2,7 @@
 title: EditBox
 ---
 
-# Edit Box
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Graphical User Interface)
 

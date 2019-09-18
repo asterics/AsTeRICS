@@ -1,8 +1,8 @@
 ---
-title: IR Trans
+title: IRTrans
 ---
 
-# IRTrans
+# {{$frontmatter.title}}
 
 ## Component Type: Actuator (Subcategory: Home Control)
 

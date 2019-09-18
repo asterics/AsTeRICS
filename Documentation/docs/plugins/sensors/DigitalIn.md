@@ -2,7 +2,7 @@
 title: DigitalIn
 ---
 
-# Digital In
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Generic Control Input)
 

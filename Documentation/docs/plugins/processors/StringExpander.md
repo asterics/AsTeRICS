@@ -2,7 +2,7 @@
 title: StringExpander
 ---
 
-# String Expander
+# {{$frontmatter.title}}
 
 Component Type: Processor (Subcategory: Event and String Processing)
 

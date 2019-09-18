@@ -2,7 +2,7 @@
 title: ReadCSV
 ---
 
-# CSV Reader
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: File System)
 

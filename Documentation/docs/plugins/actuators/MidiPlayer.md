@@ -2,7 +2,7 @@
 title: MidiPlayer
 ---
 
-# Midi Player
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Audio and Voice)
 

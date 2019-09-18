@@ -2,7 +2,7 @@
 title: ApplicationLauncher
 ---
 
-# Application Launcher
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: File System)
 

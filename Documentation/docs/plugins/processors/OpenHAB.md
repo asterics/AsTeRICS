@@ -10,7 +10,7 @@ The openHAB component interfaces to an openHAB instance, which is used to config
 
 This component uses the provided REST API of openHAB to read and write the state of different nodes (called items) within the openHAB system.
 
-![Screenshot: openHAB demo with different options (./light, heating, temperature, ...)](img/openhab_overview.png "Screenshot: openHAB demo with different options (light, heating, temperature, ...)")
+![Screenshot: openHAB demo with different options (./light, heating, temperature, ...)]\(./img/openhab_overview.png "Screenshot: openHAB demo with different options (light, heating, temperature, ...)")
 
 openHAB demo with different options (light, heating, temperature, ...)
 

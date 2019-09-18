@@ -2,7 +2,7 @@
 title: SyntheticVoice
 ---
 
-# Synthetic Voice
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Audio and Voice)
 

@@ -1,8 +1,8 @@
 ---
-title: File Writer
+title: FileWriter
 ---
 
-# File Writer
+# {{$frontmatter.title}}
 
 ## Component Type: Actuator (Subcategory: File System)
 

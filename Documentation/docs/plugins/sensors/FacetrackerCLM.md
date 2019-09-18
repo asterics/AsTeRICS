@@ -2,7 +2,7 @@
 title: FacetrackerCLM
 ---
 
-# Facetracker CLM
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Computer Vision)
 

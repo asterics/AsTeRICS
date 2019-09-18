@@ -2,7 +2,7 @@
 title: Event Generator
 ---
 
-# Event Generator
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Simulation) The event generator plugin can be used to periodically send event triggers at a given time interval.
 

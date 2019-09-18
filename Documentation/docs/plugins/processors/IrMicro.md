@@ -1,8 +1,8 @@
 ---
-title: IR Trans
+title: IrMicro
 ---
 
-# IrMicro
+# {{$frontmatter.title}}
 
 ## Component Type: Processor (Subcategory: Home Control)
 

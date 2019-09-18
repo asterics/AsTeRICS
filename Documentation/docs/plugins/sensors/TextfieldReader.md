@@ -2,7 +2,7 @@
 title: TextfieldReader
 ---
 
-# Textfield Reader
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Graphical User Interface)
 

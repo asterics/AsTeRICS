@@ -1,8 +1,8 @@
 ---
-title: Enobio Display
+title: EnobioDisplay
 ---
 
-# Enobio Display
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Graphical User Interface)
 

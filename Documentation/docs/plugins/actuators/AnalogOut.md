@@ -2,7 +2,7 @@
 title: AnalogOut
 ---
 
-# Analog Out
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Generic Control Output)
 

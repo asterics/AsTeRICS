@@ -2,7 +2,7 @@
 title: EventDelay
 ---
 
-# Event Delay
+# {{$frontmatter.title}}
 
 Component Type: Processor (Subcategory: Event and String Processing)
 

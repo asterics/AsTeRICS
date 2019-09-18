@@ -2,7 +2,7 @@
 title: Math Evaluator
 ---
 
-# Math Evaluator
+# {{$frontmatter.title}}
 
 Component Type: Processor (Subcategory: Basic Math)
 

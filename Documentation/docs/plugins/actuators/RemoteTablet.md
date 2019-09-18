@@ -2,7 +2,7 @@
 title: RemoteTablet
 ---
 
-# Remote Tablet
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Input Device Emulation)
 

@@ -2,7 +2,7 @@
 title: StringPathMultiplexer
 ---
 
-# String Path Multiplexer
+# {{$frontmatter.title}}
 
 Component Type: Processor (Subcategory: Signal Pathways)
 

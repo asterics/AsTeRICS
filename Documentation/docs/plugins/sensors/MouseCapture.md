@@ -2,7 +2,7 @@
 title: MouseCapture
 ---
 
-# Mouse Capture
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Standard Input Devices)
 

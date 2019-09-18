@@ -2,7 +2,7 @@
 title: Universal Remote Control
 ---
 
-# Universal Remote Control
+# {{$frontmatter.title}}
 
 Component Type: Processor (Subcategory:Microcontroller Interfaces)
 

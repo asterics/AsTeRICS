@@ -2,7 +2,7 @@
 title: Event Dispatcher
 ---
 
-# Event Dispatcher
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Event and String Processing)
 

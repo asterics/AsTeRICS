@@ -2,7 +2,7 @@
 title: WriteCSV
 ---
 
-# CSV Writer
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: File System)
 

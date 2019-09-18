@@ -2,7 +2,7 @@
 title: RazorIMU
 ---
 
-# Razor IMU
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Inertial Measurement)
 

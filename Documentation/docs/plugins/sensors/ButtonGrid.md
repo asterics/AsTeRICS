@@ -2,7 +2,7 @@
 title: ButtonGrid
 ---
 
-# Button Grid
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Graphical User Interface)
 

@@ -2,7 +2,7 @@
 title: DigitalOut
 ---
 
-# Digital Out
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Generic Control Output)
 

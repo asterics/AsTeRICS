@@ -2,7 +2,7 @@
 title: GSMModem
 ---
 
-# GSM Modem
+# {{$frontmatter.title}}
 
 ## Component Type: Actuator (Subcategory: Communication)
 

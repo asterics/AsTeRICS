@@ -16,7 +16,7 @@ PlatformDigitalIn plugin
 
 This component requires the Core CIM (CIM Id: 0x0602) of the AsTeRICS Personal Platform.
 
-![The AsteRICS Personal Platform (./preliminary version)](img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
+![The AsteRICS Personal Platform (./preliminary version)]\(./img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
 
 The AsteRICS Personal Platform
 
