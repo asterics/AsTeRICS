@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\EEG&amp;EMG\ECG_feedback.acs_2017_12_14_11_50" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\useCaseDemos\EEG&amp;EMG\ECG_feedback.acs_2019_9_18_21_22" version="20130320">
   <components>
     <component id="IIRFilter.1" type_id="asterics.IIRFilter">
       <description>This plugin provides various filter implementations</description>
@@ -39,8 +39,10 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
         <property name="bufferSize" value="1" />
         <property name="mode" value="0" />
+        <property name="autoReenableTime" value="0" />
       </properties>
       <layout>
         <posX>326</posX>
@@ -222,7 +224,7 @@
       <properties>
         <property name="midiDevice" value="Gervill" />
         <property name="channel" value="1" />
-        <property name="instrument" value="Halo Pad    " />
+        <property name="instrument" value="Taiko       " />
         <property name="triggerThreshold" value="10" />
         <property name="triggerMax" value="10" />
         <property name="pitchMin" value="30" />
@@ -258,7 +260,7 @@
         <property name="thresholdLow" value="3" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="0" />
-        <property name="operationMode" value="deadzone" />
+        <property name="operationMode" value="0" />
         <property name="eventCondition" value="0" />
       </properties>
       <layout>
@@ -318,16 +320,6 @@
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.9">
-      <source>
-        <component id="Threshold.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="MidiPlayer.1" />
-        <port id="trigger" />
-      </target>
-    </channel>
     <channel id="binding.8">
       <source>
         <component id="Averager.1" />
@@ -340,8 +332,8 @@
     </channel>
     <channel id="binding.7">
       <source>
-        <component id="Threshold.1" />
-        <port id="out" />
+        <component id="Averager.1" />
+        <port id="output" />
       </source>
       <target>
         <component id="MidiPlayer.1" />
