@@ -13,6 +13,12 @@
 #include <malloc.h>
 #include <memory.h>
 
+
+#include <string>
+#include <shlobj.h>
+#include <iostream>
+#include <sstream>
+
 #define MAX_LOADSTRING 256
 #define MAX_BUFFER_LEN 100000
 #define MAX_TEMPSTR_LEN 20000

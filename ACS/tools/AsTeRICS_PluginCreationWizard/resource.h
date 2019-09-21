@@ -49,6 +49,8 @@
 #define IDC_HASJNI                      1029
 #define IDC_PLUGINNAME2                 1030
 #define IDC_SUBCATEGORY                 1030
+#define IDC_DEL_ETP2                    1031
+#define IDC_CHOOSEDIR                   1031
 #define IDC_KUND_NEW                    1032
 #define IDC_KUND_RECHNUNG               1033
 #define IDC_KUND_ALL                    1034

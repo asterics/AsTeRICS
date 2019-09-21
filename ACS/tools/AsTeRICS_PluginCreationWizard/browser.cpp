@@ -143,10 +143,61 @@ void convert_to_lowercase(char * name)
 	}
 }
 
+
+
+static int CALLBACK BrowseCallbackProc(HWND hwnd,UINT uMsg, LPARAM lParam, LPARAM lpData)
+{
+
+    if(uMsg == BFFM_INITIALIZED)
+    {
+        std::string tmp = (const char *) lpData;
+        std::cout << "path: " << tmp << std::endl;
+        SendMessage(hwnd, BFFM_SETSELECTION, TRUE, lpData);
+    }
+
+    return 0;
+}
+
+std::string BrowseFolder(std::string saved_path)
+{
+    TCHAR path[MAX_PATH];
+
+    const char * path_param = saved_path.c_str();
+
+    BROWSEINFO bi = { 0 };
+    bi.lpszTitle  = ("Browse for folder...");
+    bi.ulFlags    = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+    bi.lpfn       = BrowseCallbackProc;
+    bi.lParam     = (LPARAM) path_param;
+
+    LPITEMIDLIST pidl = SHBrowseForFolder ( &bi );
+
+    if ( pidl != 0 )
+    {
+        //get the name of the folder and put it in path
+        SHGetPathFromIDList ( pidl, path );
+
+        //free memory used
+        IMalloc * imalloc = 0;
+        if ( SUCCEEDED( SHGetMalloc ( &imalloc )) )
+        {
+            imalloc->Free ( pidl );
+            imalloc->Release ( );
+        }
+
+        return path;
+    }
+
+    return "";
+}
+
+
+
 INT_PTR CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	int i;
 	int exists;
+	char tmpstr[1024];
 	HWND hwnd=hDlg;
 
 	switch( message )
@@ -230,6 +281,11 @@ INT_PTR CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 
 		case WM_COMMAND:
 			switch (LOWORD(wParam)) {
+				case IDC_CHOOSEDIR:
+					 
+					 SetDlgItemText(hDlg,IDC_AREPATH,BrowseFolder("").c_str());
+
+					break;
 			    case IDC_IPLIST:
 					if (HIWORD(wParam)==LBN_SELCHANGE)
 					{
@@ -511,7 +567,12 @@ INT_PTR CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 						strcat(tmpstr,setup.pluginname);
 						convert_to_lowercase (tmpstr);
 						strcat(actdir,tmpstr);
-						if (!CreateDirectory(actdir,NULL)) { MessageBox(NULL,"Please specify an absolute path to the ARE components folder, e.g. C:\\AsTeRICS\\ARE\\components\\ (under Linux without 'C:')","Could not create directory or plugin already exists", MB_OK); break; }
+						if (!CreateDirectory(actdir,NULL)) {
+							if (GetLastError() == ERROR_ALREADY_EXISTS) 
+								MessageBox(NULL,"The Plugin Directory already exisits - Please specify another name or delete the directory","Plugin already exists", MB_OK); 
+							else MessageBox(NULL,"Please specify an absolute path to the ARE components folder, e.g. C:\\AsTeRICS\\ARE\\components\\ (Windows) or /home/user/AsTeRICS/ARE/components (Linux)","Could not create directory", MB_OK);
+							break; 
+						}
 						// here goes the build script
 						// @type: actuator
 						// @name: bardisplay
