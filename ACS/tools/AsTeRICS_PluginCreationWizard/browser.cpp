@@ -221,7 +221,7 @@ INT_PTR CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 				SetDlgItemText(hDlg,IDC_GUI_XSIZE,"30");
 				SetDlgItemText(hDlg,IDC_GUI_YSIZE,"20");
 
-				SetDlgItemText(hDlg,IDC_AREPATH,"C:\\asterics\\are\\components\\");
+				SetDlgItemText(hDlg,IDC_AREPATH,"\\AsTeRICS\\ARE\\components\\");
       			return TRUE;
 			}
 		case WM_CLOSE:
@@ -498,19 +498,20 @@ INT_PTR CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 
 						if (IsDlgButtonChecked(hDlg,IDC_SINGLETON)) strcpy(setup.singleton,"true"); else strcpy(setup.singleton,"false");
 
-						if ((strlen(setup.arepath)<3) || (setup.arepath[1]!=':')) 
+						if (strlen(setup.arepath)<3) 
 						{
-							MessageBox(NULL,"Please specify an absolute path to the ARE components folder, e.g. c:\\asterics\\ARE\\components\\","Error", MB_OK);
+							MessageBox(NULL,"Please specify an absolute path to the ARE components folder, e.g. \\AsTeRICS\\ARE\\components\\","Error", MB_OK);
 							break;
 						}
 						if (setup.arepath[strlen(setup.arepath)-1]!='\\') strcat(setup.arepath,"\\");
 
 						strcpy(actdir,setup.arepath);
-						strcat(actdir,setup.plugintype);
-						strcat(actdir,".");
-						strcat(actdir,setup.pluginname);
-						convert_to_lowercase (actdir);
-						if (!CreateDirectory(actdir,NULL)) { MessageBox(NULL,actdir,"Problem creating folder", MB_OK); break; }
+						strcpy (tmpstr,setup.plugintype);
+						strcat(tmpstr,".");
+						strcat(tmpstr,setup.pluginname);
+						convert_to_lowercase (tmpstr);
+						strcat(actdir,tmpstr);
+						if (!CreateDirectory(actdir,NULL)) { MessageBox(NULL,"Please specify an absolute path to the ARE components folder, e.g. C:\\AsTeRICS\\ARE\\components\\ (under Linux without 'C:')","Could not create directory or plugin already exists", MB_OK); break; }
 						// here goes the build script
 						// @type: actuator
 						// @name: bardisplay
