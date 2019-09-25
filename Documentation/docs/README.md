@@ -17,7 +17,7 @@ jumbotron:
   description="Control your computer by switches, head movements or eyetracking, depending on your capabilities."
   image="/assets/img/harry-shutterstock_213119035.jpg"
 />
-<ShowCase left
+<ShowCase
   link=""
   title="Accessible Environmental Control"
   description="Switch on/off lights or control your TV and stereo."
@@ -29,7 +29,7 @@ jumbotron:
   description="Create your own communication grid and use it on all your devices."
   image="/assets/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"
 />
-<Youtube nocookie left
+<Youtube nocookie
   code="JwL_zS3fpnU"
   title="Accessible Gaming &amp; Toys"
   description="Emulate mouse, keyboard or joystick for playing games or remote control toy helicopters or cars."
@@ -63,5 +63,3 @@ The AsTeRICS project was funded by international and national research grants. A
 ## AsTeRICS Project Web Page
 
 This is a newly created web page to present AsTeRICS technologies and corresponding documentation. If you are looking for the web page of the original AsTeRICS project, please go to [https://project.asterics.eu](https://project.asterics.eu).
-
-

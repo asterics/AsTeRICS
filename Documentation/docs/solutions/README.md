@@ -26,7 +26,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     docs="/solutions/Camera-Mouse.html"
 />
 
-<br/><br/>
+<br/>
 
 <Model
     title="Eye Tracking Mouse"
@@ -39,7 +39,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     docs="/solutions/Eye-Tracking-Mouse.html"
 />
 
-<br/><br/>
+<br/>
 
 <Model left
     title="Switch-controlled Mouse"
@@ -50,7 +50,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     docs="/solutions/Switch-Mouse.html"
 />
 
-<br/><br/>
+<br/>
 
 ## AAC
 
@@ -63,7 +63,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     docs="/solutions/AAC-Basic.html"
 />
 
-<br/><br/>
+<br/>
 
 ## Occupational Therapy
 
@@ -76,4 +76,4 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     docs="/solutions/Head-Sound.html"
 />
 
-<br/><br/>
+<br/>
