@@ -2,6 +2,10 @@
 layout: Home
 title: Home
 metaTitle: Home | AsTeRICS
+jumbotron:
+  title: AsTeRICS
+  lead: Create Customized Low-Cost Assistive Technologies for People with Disabilities.
+  footer: Are you looking for special solutions to use a computer, control your environment or play games?
 ---
 
 ## Use Cases
