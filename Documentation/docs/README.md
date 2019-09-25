@@ -1,5 +1,5 @@
 ---
-layout: FrontLayout
+layout: Home
 title: Home
 metaTitle: Home | AsTeRICS
 ---
