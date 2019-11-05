@@ -586,9 +586,12 @@ Returns the URI according to the given resourcePath string and the given resourc
 
 Please refer to the Javadoc of the class and to the [wiki page](https://github.com/asterics/AsTeRICS/wiki/Fetching-resources-with-class-ResourceRegistry) for further examples.
 
-## Logging
-    
+## Error Reporting (AstericsErrorHandling)
 
+The ```AstericsErrorHandling``` provides a unified logging and error reporting mechanism. It contains methods for reporting an error of a component or even the ARE. 
+
+### Logging
+    
 The Logging support provides a uniform way of error reporting in the runtime environment so we have utilized the Java logging libraries and the various severity levels supported. The AsTeRICS error handling mechanism is used extensively from the runtime core classes but also utilized by the AsTeRICS components via the AstericsErrorHandling interface.
 
 Each component is allowed to report an error message, a debug information or a simple information to be displayed on the screen. The ARE maintains four separate log files and updates them whenever a new error occurs. In particular there are different loggers for reporting severe errors, warnings, fine errors and one logger that contains them all.
@@ -603,52 +606,25 @@ Using a Logger is the recommended way to report notifications or error descripti
 ```java
 import java.util.logging.Logger;
 (…) 
-Logger.getAnonymousLogger().info("Component started ");
+private static Logger logger = AstericsErrorHandling.instance.getLogger();
 ```
   
+### Error Reporting of components
 
-  
+If a component wants to notify an error it should use the following method:
 
-  
-  
-
-ARE provides a unified logging and error reporting mechanism. The AstericsErrorHandling class provides 4 types of loggers to be used by the ARE, deployed components and the ACS. It also provides methods for status checking which are responsible for monitoring the current status of the ARE and deployed Components.
-
-The 4 different loggers correspond to different severity levels as follows:
-
-Level _severe_: only severe errors are logged. Such errors cause an ARE failure and must be addressed immediately. Severe loggers should be used only by ARE. Errors of this type will be written in the “asterics\_logger\_severe.log” file.
-
-Level _warning_: only warnings and upper level messages are logged. Warnings are important and must be addressed soon but not as fatal as the severe errors. Warnings can be logged by components using the following method call:
-
-  
 ```java
 public void reportError(IRuntimeComponentInstance component, String errorMsg)
 ```
-  
-The messages will be written in the “asterics\_logger\_warning.log” file.
 
-Level _info_: only informative and upper level messages are logged. Use this logger when you normally wanted to print something on the screen.
+The messages will be written in the “asterics\_logger\_warning.log” file. Additionally the status of the component is set to error with the given error message and an error dialog is shown in the ARE gui, if enabled.
 
-  
 ```java
 public void reportInfo(IRuntimeComponentInstance component, String info)
 ```
-The messages will be written in the “asterics\_logger.log” file.
-
-Level _fine_: only debug and upper level messages are logged. Usage of this logger is mainly for debugging or development time. Use the following command:
-
-  
-```java
-public void reportInfo(IRuntimeComponentInstance component, String info)
-```
-  
-  
-
 The messages will be written in the “asterics\_logger\_fine.log” file.
 
-Please note that each logger by default also logs all messages with severity level higher than its own as well. E.g. the warning logger logs warning and severe messages, the info logger logs informative, warning and severe messages etc.
-
-## Status checking
+### Status checking
     
 
 The status checking mechanism is responsible for recording the current status of the ARE or the error state of a component. The status is recorded by creating and storing objects called _statusObjects_. A statusObject stores the status of its creator as a string, its creator (the ARE or the specific component) and the error message.
