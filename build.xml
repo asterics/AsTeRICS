@@ -5,7 +5,7 @@
 	<property name="runtime" location="bin/ARE"/>
 	<property name="web.docroot" location="${runtime}/web/"/>
 	<property name="WebACS.bin" location="${web.docroot}/WebACS"/>
-	<property name="WebACS.version" value="v1.1.0"/>
+	<property name="WebACS.version" value="v1.2.0"/>
 	<property name="tmp.dir" location="tmp"/>
 
 	<target name="clean" description="Clean the whole project">
