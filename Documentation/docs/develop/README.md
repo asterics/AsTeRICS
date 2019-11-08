@@ -5,9 +5,3 @@ If you are a **developer** or an AT expert with **technical background**, this i
 
 In this section, you will find information for developing AsTeRICS or elements of it like plugins or AT solutions.
 :::
-
-## Go to
-
-::: warning TODO
-Add TOC
-:::

@@ -1,62 +1,4 @@
-# ARE Middleware
-
-
-## The AsTeRICS Runtime Environment
-    
-
-The AsTeRICS Runtime environment (ARE) is an OSGi-based middleware \[3\] which allows software plugins to run in parallel. The plugins usually represent a sensor or an actuator and are implemented as independent OSGi bundles. The runtime environment identifies AsTeRICS plugins from other OSGi bundles based on metadata defined inside the plugins.
-
-The ARE expects from plugin-developers to define the structure of their plugins (properties, inputs, outputs and event ports) in XML files. Based on these XMLs, the middleware constructs a runtime representation of each installed AsTeRICS plugin.
-
-Furthermore, the ARE expects a runtime model (system model) which usually comes from the AsTeRICS Configuration Suite (ACS). The ACS is running on a Windows Personal Computer (.net 4.0 required) and mainly used to graphically design the layout of the system as a network of interconnected components. The system model is another XML file that defines the components participating in a specific application, connections between them, events and other properties. Based on this file, ARE knows which plugins to activate and how to define the data flow between them. Since the system model represents the main communication means between the ACS and the ARE, it is expected to be a serialisable object, easy to transfer and translate. ARE and ACS communicate through an appropriate TCP/IP-based communication protocol named ASAPI.
-
-  
-![](./images/DeveloperManual_html_74b8c615b8455605.png)
-
-  
-  
-
-The ARE also provides “services” to plugin developers (for example communication support for COM ports) and it allows reporting errors on the runtime environment, registering event listeners and interacting with its graphical user interface (ARE GUI).
-
-The ARE GUI is a simple graphical environment developed to allow end-users to interact directly with the runtime environment. It may be used to modify runtime parameters of a model via buttons or sliders, and to monitor live signals and events of the running model.
-
-  
-  
-
-## ARE Components
-    
-
-The ARE consist of the following main parts:
-
-*   The ARE middleware
-    
-*   ARE plugins (also referred to as “components”) – sensor, processor and actuator modules which provide functional building blocks for assistive functionalities
-    
-*   A service layer which provides infrastructure to the ARE components,  
-    for example COM port and communication management for connection of the Communication Interface Modules (CIMs)
-    
-
-  
-The ARE is commonly deployed on an embedded device, running an appropriate operating system (OS), typically an embedded variant of Windows. On top of the OS, an appropriate Java Virtual Machine (JVM) is used to host the OSGi component framework which provides support for modularity and dynamic loading/unloading of components.
-
-All the core components of the framework (described in detail later) are defined as OSGi modules. Certain components that need to access legacy code (e.g., written in C or C++) are also deployed on top of OSGi, and are interfaced to the native code using Java Native Interface (JNI) as needed. In this regard, and with the exception of the pluggable components that use native code interfaces with platform-specific JNI bindings, the ARE middleware is expected to be _platform independent_.
-
-The implementation requires basically JAVA 1.7 (JDK/JRE 7) and an OSGi framework (which is part of the source code downloads).
-
-## About OSGi
-    
-
-The Open Service Gateway initiative (OSGi) is an open specification that enables the modular assembly of software built with the Java technology \[3\]. The OSGi Service Platform facilitates the componentization of software modules and applications and assures interoperability of applications and services over a variety of networked devices.
-
-OSGi technology is the dynamic module system for Java™. Java provides the portability that is required to support products on many different platforms. The OSGi technology provides the standardized primitives that allow applications to be constructed from small, reusable and collaborative components. These components can be composed into an application and deployed; The OSGi Service Platform provides a service-oriented architecture that enables these components to dynamically discover each other for collaboration, and thereby forms the optimal basis for the AsTeRICS middleware.
-
-  
-  
-
-  
-  
-
-## Getting Started with AsTeRICS Development
+# ARE Development Manual
     
 The AsTeRICS source code repository is hosted at github and located at
 
@@ -68,12 +10,7 @@ The licenses of the utilized software packages and 3rd party products can be vie
 
 Currently, the editor for OSKA (the on-screen keyboard application) is the only commercial software package within the AsTeRICS framework – and not included in the free downloads. The OSKA editor is only needed if you want to design custom on-screen keyboard layouts for OSKA (see AsTeRICS User Manual).
 
-  
-  
-
-
 ## Understanding the component build-scripts
-    
 
 A typical ANT build script for an ARE component looks like the following:
 ```xml
@@ -240,12 +177,12 @@ The file “areProperties” contains properties to configure ARE features and t
 ## Debugging the ARE
     
 
-If the ARE is started using the “start\_debug.bat” script and source-level debug information was added during the compilation (see section 2.3), debugging with Eclipse is supported via a remote debugging connection. This is a convenient way for debugging an OSGI-based java framework with a lot of plugins. To enable the debugging support in Eclipse, a Debug Configuration is created via the dedicated menu entry:
+If the ARE is started using the “start\_debug.bat” script and source-level debug information was added during the compilation (see section 2.3), debugging with Eclipse is supported via a remote debugging connection. This is a convenient way for dimagesebugging an OSGI-based java framework with a lot of plugins. To enable the debugging support in Eclipse, a Debug Configuration is created via the dedicated menu entry:
 
   
   
 
-![](./images/DeveloperManual_html_c0991ef32ae9b458.png)
+![](../images/DeveloperManual_html_c0991ef32ae9b458.png)
 
   
   
@@ -255,7 +192,7 @@ Create a “Remote Java Application” Debug Configuration and assign a name for
   
   
 
-![](./images/DeveloperManual_html_4dfe72317ab9f571.jpg)
+![](../images/DeveloperManual_html_4dfe72317ab9f571.jpg)
 
   
   
@@ -264,18 +201,20 @@ Now launch the ARE using “start\_debug.bat”. The messages in the console win
   
   
 
-![](./images/DeveloperManual_html_b6693a1cbcd9178a.png)
+![](../images/DeveloperManual_html_b6693a1cbcd9178a.png)
 
 Now, the usual debugging support of Eclipse can be used, including breakpoints in middleware or components, variable and context watch windows, single stepping etc. All these operations are performed in the Eclipse “Debug” perspective.
 
 The following screenshot shows a program execution of the ARE which ran into a breakpoint (here: the OSKA plugin was halted as a command was selected in the OSKA-application and transferred to the ARE plugin’s command handler:
 
-![](./images/DeveloperManual_html_f1a0b4f36dd370ba.jpg)
+![](../images/DeveloperManual_html_f1a0b4f36dd370ba.jpg)
 
   
   
 
-I![](./images/DeveloperManual_html_fb7627584ba9d5d7.png) f the source-level debug information is missing (due to compilation without debugging support) an error message indicates a problem, e.g. the missing line number for breakpoint installation:
+![](../images/DeveloperManual_html_fb7627584ba9d5d7.png) 
+
+If the source-level debug information is missing (due to compilation without debugging support) an error message indicates a problem, e.g. the missing line number for breakpoint installation:
 
 ## Services and Utils: Infrastructure for plugins
     
@@ -682,7 +621,7 @@ Developers are expected to use the ARE thread pool for executing their tasks tha
 
 The ARE provides a panel area (“ARE Desktop”) where plugins can display their graphical elements using the ARE GUI support classes. The ACS provides a dedicated canvas editor that allows end users positioning and resizing graphical elements of the plugins. Based on this information, the ARE displays plugins on the local device, maintaining the correct screen position and aspect ratio of graphical elements with respect to the screen resolution of the deployment device. (For more information about the usage of the ACS GUI editor and the ARE GUI control panel refer to the User Manual.)
 
-![](./images/DeveloperManual_html_3e993efbc73f2910.png)
+![](../images/DeveloperManual_html_3e993efbc73f2910.png)
 
 **GUI composition using the ACS GUI designer (right), resulting ARE GUI (left)**
 
