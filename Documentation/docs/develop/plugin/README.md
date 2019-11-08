@@ -1,11 +1,11 @@
-# Plugin Introduction
+# Plugin Development
 
 ## A Quick Guide to AsTeRICS Plugin Development
     
 
 This section describes the AsTeRICS Plugin-Creation tool and the plugin-activation process. These tools make it easy to create new plugins and make them available in ACS and ARE. They can be started manually from their location in the **AsTeRICS\_runtime.zip** package (folder: “ACS/tools”) – or they can be launched from the “Misc.” – Tab in the main menu of the ACS:
 
-![](./images/DeveloperManual_html_c2213f881cbf5182.png)
+![](../images/DeveloperManual_html_c2213f881cbf5182.png)
 
   
   
@@ -43,7 +43,7 @@ The purpose of the AsTeRICS Plugin Creation Tools is to make it easy to create n
 
 The plugin Creation wizard allows definition of characteristics of a new plugin and creates the needed folders and files for the Eclipse build flow, including the JAVA source code skeleton and the plugin’s bundle descriptor.
 
-![](./images/./DeveloperManual_html_ae369b509ff2c0e5.png)
+![](../images/./DeveloperManual_html_ae369b509ff2c0e5.png)
 
   
   
@@ -64,43 +64,43 @@ Important Notes:
 
 After “Create Plugin!” has been pressed and the plugin creation was completed successfully, following sub-folders and files are begin created:
 
-![](./images/DeveloperManual_html_dd4b70e6240040e3.png)
+![](../images/DeveloperManual_html_dd4b70e6240040e3.png)
 
   
   
 
 The root folder contains the build script, which can be executed inside Eclipse to compile and build the plugin (.jar) file:
 
-![](./images/DeveloperManual_html_a82259165c76b9df.png)
+![](../images/DeveloperManual_html_a82259165c76b9df.png)
 
   
   
 
 The META-INF folder contains the manifest file
 
-![](./images/DeveloperManual_html_3d4398abcb45cc73.png)
+![](../images/DeveloperManual_html_3d4398abcb45cc73.png)
 
 The “resources” folder contains the bundle descriptor (bundle\_descriptor.xml):
 
-![](./images/DeveloperManual_html_fbbda5b6e8f42820.png)
+![](../images/DeveloperManual_html_fbbda5b6e8f42820.png)
 
   
   
 
 The source code folder `src/main/java/eu/asterics/component/<pluginType>/<pluginName>` contains a template for the plugin source code in JAVA, including the definitions of the selected ports and properties and the needed get- and set- methods for ports and property values. The code skeleton complies to the AsTeRICS coding guidelines and contains the AsTeRICS source file header (only a small portion is shown in the following screenshot).
 
-![](./images/DeveloperManual_html_a0117682e4ae2ecc.png)
+![](../images/DeveloperManual_html_a0117682e4ae2ecc.png)
 
 After the Eclipse IDE has been opened, Eclipse must be pushed to refresh the folder structure by pushing F5. Furthermore, the path `src/main/java` must be configured as source folder.
 
-![](./images/DeveloperManual_html_4304f99776fb485f.png)
+![](../images/DeveloperManual_html_4304f99776fb485f.png)
 
   
   
 
 The plugin code can be built using the provided build script (right-click build.xml -> RunAs -> Ant Build in the plugin’s folder)
 
-![](./images/DeveloperManual_html_f35fad4db20b5c1.png)
+![](../images/DeveloperManual_html_f35fad4db20b5c1.png)
 
   
 To see the plugin in the ACS editor window and/or start it inside the runtime environment, the Plugin Activation Tool can be used (see section 3).
@@ -129,7 +129,7 @@ Subsequently, the plugin can be selected in the “components” menu of the ACS
 
 The ACS provides a function for downloading the bundle descriptions of all active plugins directly from a running ARE and creating a component collection file from this information. (“System”- tab, Button “Download Component Collection”):
 
-![](./images/DeveloperManual_html_2672e47f28834257.png)
+![](../images/DeveloperManual_html_2672e47f28834257.png)
 
 The component collection will be stored as “.abd” – file in the ACS folder, subfolder “componentcollections”. The new component collection can be used right after download, but will not be available after an ACS restart.
 

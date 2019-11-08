@@ -1,4 +1,4 @@
-# Plugin Tutorial
+# Plugin Development: Averager
 
 ## Step-by-Step implementation: Averager processor
     
