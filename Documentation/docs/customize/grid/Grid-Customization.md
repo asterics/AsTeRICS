@@ -16,8 +16,8 @@ First you have to open the grid you want to change.
 
 If you click the button ```Manage Grids```, you can open other grids from the list of ```Saved Grids``` by clicking on the ```Edit``` button.
 
-1. ![Screenshot with button Manage Grids highlighted](./img/grid-customize-01.png)
-2. ![Screenshot with button Edit highlighted](./img/grid-customize-02.png)
+1. ![Screenshot with button Manage Grids highlighted](../img/grid-customize-01.png)
+2. ![Screenshot with button Edit highlighted](../img/grid-customize-02.png)
 
 ### Import Grid file
 
@@ -33,7 +33,7 @@ You can change the cell text, image and spoken text of a cell. In order for that
 2. Select the menu entry ```Edit```
 3. Now you can change the label in the text field and select a new image by clicking on ```Choose file```. To clear the image click on ```Clear image```.
 
-![Screenshot of edit cell dialog](./img/grid-customize-edit-cell-01.png)
+![Screenshot of edit cell dialog](../img/grid-customize-edit-cell-01.png)
 
 ### Spoken text
 
@@ -42,13 +42,13 @@ You can also change the spoken text of a grid by the following steps
 1. Move the mouse cursor to the cell you want to edit and click the right mouse button.
 2. Select the menu entry ```Actions```
 3. Delete ```Speak label``` action
-![Screenshot of edit actions dialog](./img/grid-customize-edit-cell-02a.png)
+![Screenshot of edit actions dialog](../img/grid-customize-edit-cell-02a.png)
 4. Add ```Speak custom text``` action
 5. Enter text and click on ```Test```
 6. Finally, save the custom text by clicking on ```OK```
 
-![Screenshot of edit actions dialog](./img/grid-customize-edit-cell-02b.png)
-![Screenshot of edit actions dialog](./img/grid-customize-edit-cell-03.png)
+![Screenshot of edit actions dialog](../img/grid-customize-edit-cell-02b.png)
+![Screenshot of edit actions dialog](../img/grid-customize-edit-cell-03.png)
 
 ### Close Edit mode
 

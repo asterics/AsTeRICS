@@ -12,13 +12,13 @@ If you want to customize a model of the [solutions](/solutions/) page, click the
 
 ### Deployed Model
 
-If the ARE is running, you can press ```F8``` or click the ![Edit button](./img/are-model-edit.png) button in the control panel. This opens the WebACS with the given model in a new browser tab.
+If the ARE is running, you can press ```F8``` or click the ![Edit button](../img/are-model-edit.png) button in the control panel. This opens the WebACS with the given model in a new browser tab.
 
 ## Change Plugin Property
 
 As soon as the model is opened, you can click onto a plugin to change it's property values. A property is a configuration item to modify the behaviour of that plugin.
 
-![Screenshot of WebACS with steps for changing a property value](./img/model-property-change.png)
+![Screenshot of WebACS with steps for changing a property value](../img/model-property-change.png)
 
 ### Change Property Value
 
