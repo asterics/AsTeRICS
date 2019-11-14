@@ -4,7 +4,7 @@
 
 The source code repository is organised in the following subfolders:
 
-![](./images/DeveloperManual_html_27e824dab978d7f3.png)
+![](../images/DeveloperManual_html_27e824dab978d7f3.png)
 
 The _**ACS**_ folder contains the AsTeRICS Configuration Suite source code.
 
@@ -47,7 +47,7 @@ You need:
 
 See below an example of how to set the environment variable ```JAVA_HOME``` on Windows 7.
 
-![Setting Environment Variable JAVA_HOME on Windows 7](./images/DeveloperManual_html_e0e56374eade1421.png)
+![Setting Environment Variable JAVA_HOME on Windows 7](../images/DeveloperManual_html_e0e56374eade1421.png)
 
 ## Build
 
@@ -108,10 +108,10 @@ You must create a ```Java Project``` first:
 
 Choose _File -> New -> JavaProject_ in the Eclipse main menu, disable the option _“Use default location”_ and browse to the _ARE_ subfolder: 
 
-![](./images/DeveloperManual_html_33ee9963708d1fff.png)
+![](../images/DeveloperManual_html_33ee9963708d1fff.png)
 
 Then you should see something like this:
-![](./images/DeveloperManual_html_f830b9b181946728.png)
+![](../images/DeveloperManual_html_f830b9b181946728.png)
 
 Eclipse provides different views (_Window -> Show View_), where the _Navigator_ and the _Package Explorer_ are most useful for Java source code development.
 
@@ -121,7 +121,7 @@ Note that the “_Refresh_” command (_F5_) synchronizes the Navigator view wit
 
 Incorrect character encoding settings can cause problems with ANT-based builds in eclipse, especially if special characters like ö, ä, etc. are used in the source code. Be sure to use ISO-8859-1 as character encoding in _Configuations and Lauch_ settings (in the _Common_ tab) as shown in the screenshot (note that this is not the default setting in some versions of eclipse):
 
-![](./images/DeveloperManual_html_d5be58f6ea0f5f1.png)
+![](../images/DeveloperManual_html_d5be58f6ea0f5f1.png)
 
 ### Editing Model Files (windows-only)
 
@@ -150,4 +150,4 @@ You can run the _ant_ targets of the AsTeRICS build system from within Eclipse.
 5. Click onto ```Apply``` and ```Run```
 
 The screenshot below shows the dialog for build target selection:
-![Screenshot of ant build target selection](./images/eclipse-ant-buildtarget.png)
+![Screenshot of ant build target selection](../images/eclipse-ant-buildtarget.png)
