@@ -1,1 +1,0 @@
-Here you will find information for writing unit tests for ARE functionality.
