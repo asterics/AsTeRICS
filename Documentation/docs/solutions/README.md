@@ -21,8 +21,8 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     :os='["Windows", "Linux", "macOS"]'
     description="Mouse control according to your head movements with configurable settings."
     image="/assets/img/face-shutterstock_717365779.jpg"
-    model="https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs"
-    webapp="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-cameramouse"
+    model="/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs"
+    webapp="/webapps/asterics-camerainput-cameramouse/"
     docs="/solutions/Camera-Mouse.html"
 />
 
@@ -34,8 +34,8 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     :os='["Windows"]'
     description="Mouse control by eye tracking with configurable settings."
     image="/assets/img/eye-tracking-shutterstock_195898592.jpg"
-    model="https://raw.githubusercontent.com/asterics/AsTeRICS/gh-pages/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs"
-    webapp="http://asterics.github.io/AsTeRICS/webapps/startpage/#submenuSolutionDemos:asterics-camerainput-eyecontrol"
+    model="/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs"
+    webapp="/webapps/asterics-camerainput-eyecontrol/"
     docs="/solutions/Eye-Tracking-Mouse.html"
 />
 
