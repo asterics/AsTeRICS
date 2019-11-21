@@ -21,7 +21,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     :os='["Windows", "Linux", "macOS"]'
     description="Mouse control according to your head movements with configurable settings."
     image="/assets/img/face-shutterstock_717365779.jpg"
-    model="/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs"
+    model="https://www.asterics.eu/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs"
     webapp="/webapps/asterics-camerainput-cameramouse/"
     docs="/solutions/Camera-Mouse.html"
 />
@@ -34,7 +34,7 @@ If you want to customize a solution, click onto `Edit` or go to [**Customize**](
     :os='["Windows"]'
     description="Mouse control by eye tracking with configurable settings."
     image="/assets/img/eye-tracking-shutterstock_195898592.jpg"
-    model="/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs"
+    model="https://www.asterics.eu/webapps/asterics-camerainput-eyecontrol/models/EyeControlledMouse(W).acs"
     webapp="/webapps/asterics-camerainput-eyecontrol/"
     docs="/solutions/Eye-Tracking-Mouse.html"
 />
