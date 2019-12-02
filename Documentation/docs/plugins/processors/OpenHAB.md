@@ -10,7 +10,7 @@ The openHAB component interfaces to an openHAB instance, which is used to config
 
 This component uses the provided REST API of openHAB to read and write the state of different nodes (called items) within the openHAB system.
 
-![Screenshot: openHAB demo with different options (./light, heating, temperature, ...)]\(./img/openhab_overview.png "Screenshot: openHAB demo with different options (light, heating, temperature, ...)")
+![Screenshot: openHAB demo with different options (./light, heating, temperature, ...)](./img/openhab_overview.png "Screenshot: openHAB demo with different options (light, heating, temperature, ...)")
 
 openHAB demo with different options (light, heating, temperature, ...)
 
@@ -18,11 +18,24 @@ openHAB demo with different options (light, heating, temperature, ...)
 
 A functional openHAB installation, which is accessible via the web interface (the plugin connects via HTTP REST API). You can run either HTTP or HTTPS, in order to fulfill any security requirements. In addition, it is also possible to provide HTTP basic authentication with username/password. Please note, that any saved password in the AsTeRICS model is stored in the model file in PLAINTEXT!  
 To run openHAB without password authentication, start openHAB with this command:  
-_bash ./start\_debug.sh_  
-To start with password authentication, use following command:  
-_bash ./start\_debug.sh -Djava.security.auth.login.config=./etc/login.conf_  
+
+```sh
+./start_debug.sh
+```
+
+To start with password authentication, use following command:
+
+```sh
+bash ./start_debug.sh -Djava.security.auth.login.config=./etc/login.conf
+```
+
 The user configuration is handled via this file:  
-_openHAB\_runtime/configurations/users.cfg_ Please note, that the first line is necessary, so do not remove it!  
+
+```sh
+openHAB_runtime/configurations/users.cfg
+```
+
+Please note, that the first line is necessary, so do not remove it!  
 Further information on configuration and usage of openHAB is available on the openHAB GitHub page ([openHAB wiki][2]).
 
 ## Input Port Description
