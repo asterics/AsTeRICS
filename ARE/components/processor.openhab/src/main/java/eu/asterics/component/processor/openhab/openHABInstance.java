@@ -26,12 +26,10 @@
 
 package eu.asterics.component.processor.openhab;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
@@ -722,18 +720,49 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
 
     public String setItemState(String item, String state) {
 
+        String urlParameters = state;
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
         // http://localhost:8080/CMD?Temperature_FF_Office=12.3
         try {
-            AstericsErrorHandling.instance.reportDebugInfo(this, "Set item (name: " + item + ",state: " + state + "):"
-                    + protocol + "://" + hostname + ":" + port + "/CMD?" + item + "=" + state);
-            return httpGet(protocol + "://" + hostname + ":" + port + "/CMD?" + item + "=" + state);
-        } catch (KeyManagementException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
-                    "KeyManagement exception, try to use lazyCertificate option (property)");
-        } catch (NoSuchAlgorithmException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportError(this, "Algortihm exception, please contact the AsTeRICS team");
+            //AstericsErrorHandling.instance.reportDebugInfo(this, "Set item (name: " + item + ",state: " + state + "):"
+                  //  + protocol + "://" + hostname + ":" + port + "/CMD?" + item + "=" + state);
+
+            URL url = new URL("http://localhost:8080/rest/items/"+item);
+
+
+
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+            con.setDoOutput(true);
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Accept", "application/json");
+            con.setRequestProperty("Content-Type", "text/plain");
+
+            try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+
+                wr.write(postData);
+            }
+
+            StringBuilder content;
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()))) {
+
+                String line;
+                content = new StringBuilder();
+
+                while ((line = br.readLine()) != null) {
+                    content.append(line);
+                    content.append(System.lineSeparator());
+                }
+            }
+
+
+            AstericsErrorHandling.instance.reportDebugInfo(this, "change to :" + state);
+            return content.toString();
+            //return httpGet(protocol + "://" + hostname + ":" + port + "/CMD?" + item + "=" + state);
+
         } catch (IOException e) {
             tg.stop();
             if (e.getMessage().equalsIgnoreCase("Not Found")) {
