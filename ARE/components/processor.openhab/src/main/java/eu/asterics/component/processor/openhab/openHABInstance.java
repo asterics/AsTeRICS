@@ -48,6 +48,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -106,7 +108,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     boolean lazyCertificate = true;
 
     /** protocol to be connected with, either http or https */
-    String protocol = "https";
+    String protocol = "http";
 
     /** update rate to fetch all necessary items [ms] */
     int updateRate = 1000;
@@ -751,15 +753,27 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
 
         try {
             // create DOM object
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            //DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            //DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             // read the XML response via httpGet, REST api and determine type
             // via parameter
             AstericsErrorHandling.instance.reportDebugInfo(this,
                     "Get list (type: " + type + ": " + hostname + "/rest/" + type + "s");
-            InputSource is = new InputSource(new StringReader(httpGet(hostname + "/rest/" + type + "s")));
-            Document doc = dBuilder.parse(is);
+            //InputSource is = new InputSource(new StringReader(httpGet(hostname + "/rest/" + type + "s")));
+            //Document doc = dBuilder.parse(is);
 
+
+            //create JSON Array
+            JSONArray jsonArray = new JSONArray(httpGet(hostname + "/rest/" + type + "s"));
+
+            // parse all objects, and extract name
+            for (int i=0; i<jsonArray.length();i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String name = jsonObject.getString("name");
+                response.add(name);
+            }
+
+            /*
             NodeList nodes = doc.getElementsByTagName(type);
 
             // parse all nodes, and extract item/sitemap name
@@ -770,19 +784,13 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
                 // add to list
                 response.add(name);
             }
-        } catch (SAXException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
-                    "SAX exception, unable to parse the openHAB data, maybe a transmission error?");
+
+             */
         } catch (IOException e) {
             tg.stop();
             AstericsErrorHandling.instance.reportError(this,
                     "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
                             + e.getMessage());
-        } catch (ParserConfigurationException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
-                    "Parser exception, unable to parse the openHAB data, maybe a transmission error?");
         } catch (KeyManagementException e) {
             tg.stop();
             AstericsErrorHandling.instance.reportError(this,

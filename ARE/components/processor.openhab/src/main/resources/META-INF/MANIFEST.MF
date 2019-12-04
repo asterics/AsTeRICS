@@ -4,3 +4,4 @@ Bundle-Name: asterics-processors.openhab
 Bundle-SymbolicName: eu.asterics.component.processor.openhab
 Bundle-Version: 0.1.0
 DynamicImport-Package: *
+Bundle-ClassPath: . , lib/json-20190722.jar
