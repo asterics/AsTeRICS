@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.AmazonEchoControl"
+                   canonical_name="eu.asterics.component.processor.amazonechocontrol.amazonEchoControlInstance">
+        <type subtype="other">processor</type>
+        <singleton>false</singleton>
+        <description>OpenHAB Binding - Interfacing to the openHAB home automation suite</description>
+        <ports>
+			<inputPort id="jsonCommand">
+				<description>Value for item1 (name is set via property)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="currentState">
+				<description>Output of currentState (name is set via property)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="currentDevice">
+				<description>Output of currentDevice (name is set via property)</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+        <properties>
+			<property name="updaterate"
+				type="integer"
+				value="1000"
+				description="update rate of the openHAB items (time in milliseconds)"/>
+			<property name="hostname"
+				type="string"
+				value="localhost"
+				description="Base address of the openHAB installation"/>
+			<property name="port"
+				type="string"
+				value="8080"
+				description="Port for connection (default for openHAB: 8080 for non-HTTPS, 8443 for HTTPS)"/>
+			<property name="protocol"
+				type="integer"
+				value="0"
+				combobox="http//https"
+				description="Protocol to be used for connection, either http or https"/>
+			<property name="lazyCertificates"
+				type="boolean"
+				value="false"
+				description="if true, any SSL certificate validation will be deactivated for the given hostname"/>
+			<property name="username"
+				type="string"
+				value=""
+				description="Username, if required by openHAB configuration"/>
+			<property name="password"
+				type="string"
+				value=""
+				description="Password, if required by openHAB configuration"/>
+				
+				
+
+
+        </properties>
+
+    </componentType>
+</componentTypes>

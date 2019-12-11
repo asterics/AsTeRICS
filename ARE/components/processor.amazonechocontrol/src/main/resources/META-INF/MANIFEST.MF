@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-processors.amazonechocontrol
+Bundle-SymbolicName: eu.asterics.component.processor.amazonechocontrol
+Bundle-Version: 0.1.0
+DynamicImport-Package: *
+Bundle-ClassPath: . , lib/json-20190722.jar

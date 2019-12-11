@@ -74,6 +74,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  * 
  * @author Benjamin Aigner[aignerb@technikum-wien.at] Date: 27.07.2015 Time:
  *         00:07 AM
+ *         Updated by: Manuel Nagel Date: 02.12.2019 Time: 4:23 PM
  */
 public class openHABInstance extends AbstractRuntimeComponentInstance {
     /**
@@ -87,7 +88,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
      * This port will be used to access openHAB (default: 8080 for non-HTTPS,
      * 8443 for HTTPS)
      */
-    String port = "8443";
+    String port = "8080";
 
     /**
      * If a authentication is configured, use this username for HTTP
@@ -106,7 +107,9 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     boolean lazyCertificate = true;
 
     /** protocol to be connected with, either http or https */
-    String protocol = "http";
+    int propProtocol = 0;
+
+    //String protocol = "http";
 
     /** update rate to fetch all necessary items [ms] */
     int updateRate = 1000;
@@ -317,7 +320,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
             return port;
         }
         if ("protocol".equalsIgnoreCase(propertyName)) {
-            return protocol;
+            return propProtocol;
         }
         if ("lazyCertificates".equalsIgnoreCase(propertyName)) {
             return lazyCertificate;
@@ -424,8 +427,8 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
             return oldValue;
         }
         if ("protocol".equalsIgnoreCase(propertyName)) {
-            final Object oldValue = protocol;
-            protocol = newValue.toString();
+            final Object oldValue = propProtocol;
+            propProtocol = Integer.parseInt(newValue.toString());
             return oldValue;
         }
         if ("lazyCertificates".equalsIgnoreCase(propertyName)) {
@@ -637,6 +640,15 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void start() {
+
+        String protocol = "http";
+        switch (propProtocol)  {
+            case 0: protocol = "http"; break;
+            case 1: protocol = "https"; break;
+            default:  protocol = "http"; break;
+        }
+
+
         AstericsErrorHandling.instance.reportDebugInfo(this, "Connecting to openHAB:");
         AstericsErrorHandling.instance.reportDebugInfo(this, "Host: " + hostname + ":" + port);
         AstericsErrorHandling.instance.reportDebugInfo(this, "Username: " + username);
@@ -684,14 +696,35 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     }
 
     public List<String> getSitemaps() {
+        String protocol = "http";
+        switch (propProtocol)  {
+            case 0: protocol = "http"; break;
+            case 1: protocol = "https"; break;
+            default:  protocol = "http"; break;
+        }
+
         return getList(protocol + "://" + hostname + ":" + port, "sitemap");
     }
 
     public List<String> getItems() {
+        String protocol = "http";
+        switch (propProtocol)  {
+            case 0: protocol = "http"; break;
+            case 1: protocol = "https"; break;
+            default:  protocol = "http"; break;
+        }
+
         return getList(protocol + "://" + hostname + ":" + port, "item");
     }
 
     public String getItemState(String item) {
+
+        String protocol = "http";
+        switch (propProtocol)  {
+            case 0: protocol = "http"; break;
+            case 1: protocol = "https"; break;
+            default:  protocol = "http"; break;
+        }
         try {
             AstericsErrorHandling.instance.reportDebugInfo(this, "Get item (name: " + item + ": " + protocol + "://"
                     + hostname + ":" + port + "/rest/items/" + item + "/state");
@@ -720,15 +753,21 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
 
     public String setItemState(String item, String state) {
 
+        String protocol = "http";
+        switch (propProtocol)  {
+            case 0: protocol = "http"; break;
+            case 1: protocol = "https"; break;
+            default:  protocol = "http"; break;
+        }
+
         String urlParameters = state;
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-        // http://localhost:8080/CMD?Temperature_FF_Office=12.3
         try {
-            //AstericsErrorHandling.instance.reportDebugInfo(this, "Set item (name: " + item + ",state: " + state + "):"
-                  //  + protocol + "://" + hostname + ":" + port + "/CMD?" + item + "=" + state);
+            AstericsErrorHandling.instance.reportDebugInfo(this, "Set item (name: " + item + ",state: " + state + "):"
+                   + protocol + "://" + hostname + ":" + port + "/rest/items/"+item + " HTTP POST");
 
-            URL url = new URL("http://localhost:8080/rest/items/"+item);
+            URL url = new URL(protocol + "://" + hostname + ":" + port + "/rest/items/"+item);
 
 
 
@@ -781,16 +820,8 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
         List<String> response = new ArrayList<String>();
 
         try {
-            // create DOM object
-            //DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            //DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            // read the XML response via httpGet, REST api and determine type
-            // via parameter
             AstericsErrorHandling.instance.reportDebugInfo(this,
                     "Get list (type: " + type + ": " + hostname + "/rest/" + type + "s");
-            //InputSource is = new InputSource(new StringReader(httpGet(hostname + "/rest/" + type + "s")));
-            //Document doc = dBuilder.parse(is);
-
 
             //create JSON Array
             JSONArray jsonArray = new JSONArray(httpGet(hostname + "/rest/" + type + "s"));
@@ -802,19 +833,6 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
                 response.add(name);
             }
 
-            /*
-            NodeList nodes = doc.getElementsByTagName(type);
-
-            // parse all nodes, and extract item/sitemap name
-            for (int i = 0; i < nodes.getLength(); i++) {
-                Node item = nodes.item(i);
-                Element element = (Element) item;
-                String name = element.getElementsByTagName("name").item(0).getChildNodes().item(0).getNodeValue();
-                // add to list
-                response.add(name);
-            }
-
-             */
         } catch (IOException e) {
             tg.stop();
             AstericsErrorHandling.instance.reportError(this,
