@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-16"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\2019-12-16-eyetracking_configuration.acs_2019_12_16_12_35" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\2019-12-16-eyetracking_configuration.acs_2019_12_17_11_2" version="20130320">
   <components>
     <component id="EyeX.1" type_id="asterics.EyeX">
       <description>interfaces to the EyeX Gaze tracking system</description>
@@ -28,6 +28,15 @@
         <outputPort portTypeID="closeTime">
           <properties />
         </outputPort>
+        <inputPort portTypeID="blinkMinTime">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="blinkMidTime">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="blinkMaxTime">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="enabled" value="True" />
@@ -41,8 +50,8 @@
         <property name="offsetCorrectionMode" value="1" />
       </properties>
       <layout>
-        <posX>228</posX>
-        <posY>341</posY>
+        <posX>251</posX>
+        <posY>347</posY>
       </layout>
     </component>
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
@@ -282,6 +291,129 @@
         <posY>51</posY>
       </layout>
     </component>
+    <component id="Slider.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="0" />
+        <property name="max" value="5000" />
+        <property name="default" value="500" />
+        <property name="gain" value="0.01" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="Blinzeldauer Min" />
+        <property name="majorTickSpacing" value="500" />
+        <property name="minorTickSpacing" value="100" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="storeValue" value="True" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>85</posX>
+        <posY>295</posY>
+      </layout>
+      <gui>
+        <posX>3822</posX>
+        <posY>454</posY>
+        <width>3562</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="Slider.1.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="0" />
+        <property name="max" value="5000" />
+        <property name="default" value="1500" />
+        <property name="gain" value="0.01" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="Blinzeldauer Mitte" />
+        <property name="majorTickSpacing" value="500" />
+        <property name="minorTickSpacing" value="100" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="storeValue" value="True" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>82</posX>
+        <posY>437</posY>
+      </layout>
+      <gui>
+        <posX>3822</posX>
+        <posY>1454</posY>
+        <width>3562</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="Slider.1.1.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="0" />
+        <property name="max" value="5000" />
+        <property name="default" value="3500" />
+        <property name="gain" value="0.01" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="Blinzeldauer Max" />
+        <property name="majorTickSpacing" value="500" />
+        <property name="minorTickSpacing" value="100" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="storeValue" value="True" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>83</posX>
+        <posY>589</posY>
+      </layout>
+      <gui>
+        <posX>3822</posX>
+        <posY>2454</posY>
+        <width>3562</width>
+        <height>889</height>
+      </gui>
+    </component>
   </components>
   <channels>
     <channel id="binding.17">
@@ -332,6 +464,36 @@
       <target>
         <component id="MidiPlayer.1" />
         <port id="trigger" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="EyeX.1" />
+        <port id="blinkMinTime" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="Slider.1.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="EyeX.1" />
+        <port id="blinkMidTime" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Slider.1.1.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="EyeX.1" />
+        <port id="blinkMaxTime" />
       </target>
     </channel>
   </channels>
@@ -526,8 +688,8 @@
     <AREGUIWindow>
       <posX>0</posX>
       <posY>0</posY>
-      <width>4375</width>
-      <height>8667</height>
+      <width>7938</width>
+      <height>8556</height>
     </AREGUIWindow>
   </modelGUI>
 </model>
