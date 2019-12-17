@@ -30,6 +30,7 @@ import java.awt.Point;
 import java.util.LinkedList;
 
 import eu.asterics.component.sensor.eyex.jni.Bridge;
+import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
@@ -39,7 +40,7 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
- 
+
 /**
  * 
  * Interfaces to the Tobii EyeX Gaze tracker server
@@ -62,6 +63,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     final static IRuntimeEventTriggererPort etpLongblink = new DefaultRuntimeEventTriggererPort();
     final static IRuntimeEventTriggererPort etpFixation = new DefaultRuntimeEventTriggererPort();
     final static IRuntimeEventTriggererPort etpFixationEnd = new DefaultRuntimeEventTriggererPort();
+
+    public static final String PROP_EYEX_OFFSET_X = "ARE.plugin.eyex.offsetX";
+    public static final String PROP_EYEX_OFFSET_Y = "ARE.plugin.eyex.offsetY";
 
     final static int MANUALOFFSETBOX = 200;
     final static int MANUALOFFSETMAXTIME = 7000;
@@ -128,12 +132,17 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     private final LinkedList<Integer> bufferY = new LinkedList<Integer>();
     private int sumX = 0, sumY = 0, combinedCorrectionMode = COMBINED_CORRECTION_IDLE;
     private Point offset = new Point(0, 0);
+    private EyeXInstance instance;
+    
+    private ManualCalibrationGUI manualCalibrationGUI;
 
     /**
      * The class constructor.
      */
     public EyeXInstance() {
-        // empty constructor
+        instance = this;
+        AREProperties.instance.setDefaultPropertyValue(PROP_EYEX_OFFSET_X, "0", "Eyex OffsetX");
+        AREProperties.instance.setDefaultPropertyValue(PROP_EYEX_OFFSET_Y, "0", "Eyex OffsetY");
     }
 
     /**
@@ -232,6 +241,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         }
         if ("deactivate".equalsIgnoreCase(eventPortID)) {
             return elpDeactivate;
+        }
+        if ("startManualCalibration".equalsIgnoreCase(eventPortID)) {
+            return elpStartManualCalibration;
         }
 
         return null;
@@ -370,19 +382,27 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     private final IRuntimeInputPort ipXOffset = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
-            offsetX += ConversionUtils.doubleFromBytes(data);
-
+            addOffsetX(ConversionUtils.doubleFromBytes(data));
         }
-
     };
 
     private final IRuntimeInputPort ipYOffset = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
-            offsetY += ConversionUtils.doubleFromBytes(data);
+            addOffsetY(ConversionUtils.doubleFromBytes(data));
         }
 
     };
+
+    public void addOffsetX(double value) {
+        offsetX += value;
+        AREProperties.instance.setProperty(PROP_EYEX_OFFSET_X, Double.toString(offsetX));
+    }
+
+    public void addOffsetY(double value) {
+        offsetY += value;
+        AREProperties.instance.setProperty(PROP_EYEX_OFFSET_Y, Double.toString(offsetY));
+    }
 
     /**
      * Event Listener Port for offset correction.
@@ -499,6 +519,13 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
                 opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX));
                 opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY));
             }
+        }
+    };
+
+    final IRuntimeEventListenerPort elpStartManualCalibration = new IRuntimeEventListenerPort() {
+        @Override
+        public synchronized void receiveEvent(String data) {
+            manualCalibrationGUI = new ManualCalibrationGUI(instance);
         }
     };
 
@@ -744,6 +771,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
                     }
                 }
             } else if (propOffsetCorrectionMode == MODE_PERMANENT_CORRECTION) {
+                if (this.manualCalibrationGUI != null) {
+                    this.manualCalibrationGUI.setPositionMarker(correctedGazeX + (int) offsetX, correctedGazeY + (int) offsetY);
+                }
                 opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX + (int) offsetX));
                 opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY + (int) offsetY));
 
@@ -816,10 +846,10 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     }
 
     synchronized private void initTrackingVars() {
-        offsetX = 0;
-        offsetY = 0;
-        oldOffsetX = 0;
-        oldOffsetY = 0;
+        offsetX = Double.parseDouble(AREProperties.instance.getProperty(PROP_EYEX_OFFSET_X));
+        offsetY = Double.parseDouble(AREProperties.instance.getProperty(PROP_EYEX_OFFSET_Y));
+        oldOffsetX = offsetX;
+        oldOffsetY = offsetY;
         combinedCorrectionMode = COMBINED_CORRECTION_IDLE;
         sumX = 0;
         sumY = 0;
@@ -829,6 +859,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     }
 
     synchronized public void stopTracker() {
+        if (manualCalibrationGUI != null) {
+            manualCalibrationGUI.stop();
+        }
         if (running == true) {
             closeTimeWatchDogStop();
             bridge.deactivate();

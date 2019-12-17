@@ -1,429 +1,518 @@
-<?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ARE\autostart.acs_2017_12_14_11_53" version="20130320">
-  <modelDescription>
-    <shortDescription>A menu selection for some demo models which do not need special hardware.</shortDescription>
-    <requirements>none</requirements>
-    <description>The Cellboard plugin is used as an On-Screen selection with automatic scanning. The desired Model can be started by pressing the Spacebar key on the keyboard.</description>
-  </modelDescription>
+<?xml version="1.0" encoding="utf-16"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\2019-12-16-eyetracking_configuration.acs_2019_12_16_12_35" version="20130320">
   <components>
-    <component id="CellBoard.1" type_id="asterics.CellBoard">
-      <description>Adjustable matrix of button cells with scanning support</description>
+    <component id="EyeX.1" type_id="asterics.EyeX">
+      <description>interfaces to the EyeX Gaze tracking system</description>
       <ports>
-        <inputPort portTypeID="row">
+        <inputPort portTypeID="xOffset">
           <properties />
         </inputPort>
-        <inputPort portTypeID="column">
+        <inputPort portTypeID="yOffset">
           <properties />
         </inputPort>
-        <inputPort portTypeID="cellNumber">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="xmlFile">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="actCell">
+        <outputPort portTypeID="gazeX">
           <properties />
         </outputPort>
-        <outputPort portTypeID="actCellCaption">
+        <outputPort portTypeID="gazeY">
           <properties />
         </outputPort>
-        <outputPort portTypeID="actCellText">
+        <outputPort portTypeID="posX">
           <properties />
         </outputPort>
-        <outputPort portTypeID="selectedCell">
+        <outputPort portTypeID="posY">
           <properties />
         </outputPort>
-        <outputPort portTypeID="selectedCellCaption">
+        <outputPort portTypeID="fixationTime">
           <properties />
         </outputPort>
-        <outputPort portTypeID="selectedCellText">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="scanRow">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="scanColumn">
+        <outputPort portTypeID="closeTime">
           <properties />
         </outputPort>
       </ports>
       <properties>
-        <property name="caption" value="" />
-        <property name="rows" value="6" />
-        <property name="columns" value="0" />
-        <property name="textColor" value="3" />
-        <property name="backgroundColor" value="11" />
-        <property name="scanColor" value="10" />
-        <property name="scanMode" value="0" />
-        <property name="scanCycles" value="3" />
-        <property name="hoverTime" value="1000" />
-        <property name="hoverIndicator" value="0" />
-        <property name="hoverFrameThickness" value="4" />
-        <property name="enableEdit" value="true" />
-        <property name="enableClickSelection" value="true" />
-        <property name="commandSeparator" value="" />
-        <property name="keyboardFile" value="" />
-        <property name="ignoreKeyboardFileProperties" value="false" />
-        <property name="displayGUI" value="true" />
-        <property name="cellText1" value="XCameraMouse (W, L, M)" />
-        <property name="cellImage1" value="" />
-        <property name="actionText1" value="" />
-        <property name="cellText2" value="OskaWriting (W)" />
-        <property name="cellImage2" value="" />
-        <property name="actionText2" value="" />
-        <property name="cellText3" value="SpeechControl (W)" />
-        <property name="cellImage3" value="" />
-        <property name="actionText3" value="" />
-        <property name="cellText4" value="GamepadMouse (W)" />
-        <property name="cellImage4" value="" />
-        <property name="actionText4" value="" />
-        <property name="cellText5" value="ImageDemo (W, L, M)" />
-        <property name="cellImage5" value="" />
-        <property name="actionText5" value="" />
-        <property name="cellText6" value="Ergotherapie" />
-        <property name="cellImage6" value="" />
-        <property name="actionText6" value="" />
-        <property name="cellText7" value="CameraMouse (W)" />
-        <property name="cellImage7" value="" />
-        <property name="actionText7" value="" />
-        <property name="cellText8" value="" />
-        <property name="cellImage8" value="" />
-        <property name="actionText8" value="" />
-        <property name="cellText9" value="" />
-        <property name="cellImage9" value="" />
-        <property name="actionText9" value="" />
-        <property name="cellText10" value="" />
-        <property name="cellImage10" value="" />
-        <property name="actionText10" value="" />
-        <property name="cellText11" value="" />
-        <property name="cellImage11" value="" />
-        <property name="actionText11" value="" />
-        <property name="cellText12" value="" />
-        <property name="cellImage12" value="" />
-        <property name="actionText12" value="" />
-        <property name="cellText13" value="" />
-        <property name="cellImage13" value="" />
-        <property name="actionText13" value="" />
-        <property name="cellText14" value="" />
-        <property name="cellImage14" value="" />
-        <property name="actionText14" value="" />
-        <property name="cellText15" value="" />
-        <property name="cellImage15" value="" />
-        <property name="actionText15" value="" />
-        <property name="cellText16" value="" />
-        <property name="cellImage16" value="" />
-        <property name="actionText16" value="" />
-        <property name="cellText17" value="" />
-        <property name="cellImage17" value="" />
-        <property name="actionText17" value="" />
-        <property name="cellText18" value="" />
-        <property name="cellImage18" value="" />
-        <property name="actionText18" value="" />
-        <property name="cellText19" value="" />
-        <property name="cellImage19" value="" />
-        <property name="actionText19" value="" />
-        <property name="cellText20" value="" />
-        <property name="cellImage20" value="" />
-        <property name="actionText20" value="" />
-        <property name="cellText21" value="" />
-        <property name="cellImage21" value="" />
-        <property name="actionText21" value="" />
-        <property name="cellText22" value="" />
-        <property name="cellImage22" value="" />
-        <property name="actionText22" value="" />
-        <property name="cellText23" value="" />
-        <property name="cellImage23" value="" />
-        <property name="actionText23" value="" />
-        <property name="cellText24" value="" />
-        <property name="cellImage24" value="" />
-        <property name="actionText24" value="" />
-        <property name="cellText25" value="" />
-        <property name="cellImage25" value="" />
-        <property name="actionText25" value="" />
-        <property name="cellText26" value="" />
-        <property name="cellImage26" value="" />
-        <property name="actionText26" value="" />
-        <property name="cellText27" value="" />
-        <property name="cellImage27" value="" />
-        <property name="actionText27" value="" />
-        <property name="cellText28" value="" />
-        <property name="cellImage28" value="" />
-        <property name="actionText28" value="" />
-        <property name="cellText29" value="" />
-        <property name="cellImage29" value="" />
-        <property name="actionText29" value="" />
-        <property name="cellText30" value="" />
-        <property name="cellImage30" value="" />
-        <property name="actionText30" value="" />
-        <property name="cellText31" value="" />
-        <property name="cellImage31" value="" />
-        <property name="actionText31" value="" />
-        <property name="cellText32" value="" />
-        <property name="cellImage32" value="" />
-        <property name="actionText32" value="" />
-        <property name="cellText33" value="" />
-        <property name="cellImage33" value="" />
-        <property name="actionText33" value="" />
-        <property name="cellText34" value="" />
-        <property name="cellImage34" value="" />
-        <property name="actionText34" value="" />
-        <property name="cellText35" value="" />
-        <property name="cellImage35" value="" />
-        <property name="actionText35" value="" />
-        <property name="cellText36" value="" />
-        <property name="cellImage36" value="" />
-        <property name="actionText36" value="" />
+        <property name="enabled" value="True" />
+        <property name="averaging" value="35" />
+        <property name="minBlinkTime" value="500" />
+        <property name="midBlinkTime" value="1500" />
+        <property name="maxBlinkTime" value="3500" />
+        <property name="fixationTime" value="700" />
+        <property name="pupilPositionMode" value="2" />
+        <property name="offsetCorrectionRadius" value="150" />
+        <property name="offsetCorrectionMode" value="1" />
       </properties>
       <layout>
-        <posX>334</posX>
-        <posY>133</posY>
+        <posX>228</posX>
+        <posY>341</posY>
       </layout>
-      <gui>
-        <posX>7712</posX>
-        <posY>1622</posY>
-        <width>1663</width>
-        <height>5689</height>
-      </gui>
     </component>
-    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
-      <description>GUI component, which displays text.</description>
-      <ports>
-        <inputPort portTypeID="input">
-          <properties />
-        </inputPort>
-      </ports>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
       <properties>
-        <property name="caption" value="" />
-        <property name="default" value="Welcome to AsTeRICS !" />
-        <property name="textPosition" value="1" />
-        <property name="textColor" value="10" />
-        <property name="backgroundColor" value="11" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>154</posX>
-        <posY>184</posY>
+        <posX>371</posX>
+        <posY>548</posY>
       </layout>
       <gui>
-        <posX>7697</posX>
-        <posY>1232</posY>
-        <width>1750</width>
-        <height>333</height>
+        <posX>10</posX>
+        <posY>4121</posY>
+        <width>3750</width>
+        <height>4222</height>
       </gui>
     </component>
-    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
-      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+    <component id="EventBlock.1.1" type_id="asterics.EventBlock">
+      <description>Pass or block event</description>
+      <ports />
+      <properties>
+        <property name="block" value="True" />
+        <property name="blockAfterEvent" value="false" />
+      </properties>
+      <layout>
+        <posX>658</posX>
+        <posY>61</posY>
+      </layout>
+    </component>
+    <component id="EventBlock.1" type_id="asterics.EventBlock">
+      <description>Pass or block event</description>
+      <ports />
+      <properties>
+        <property name="block" value="True" />
+        <property name="blockAfterEvent" value="false" />
+      </properties>
+      <layout>
+        <posX>634</posX>
+        <posY>25</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
       <ports>
-        <inputPort portTypeID="modelName">
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="False" />
+        <property name="absolutePosition" value="true" />
+        <property name="startCentered" value="true" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="2000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1024" />
+      </properties>
+      <layout>
+        <posX>574</posX>
+        <posY>362</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Ton ein/aus" />
+        <property name="buttonCaption2" value="Maus ein/aus" />
+        <property name="buttonCaption3" value="Kalibrierung Tobii" />
+        <property name="buttonCaption4" value="Kalibrierung AsTeRICS" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>180</posX>
+        <posY>29</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>444</posY>
+        <width>3750</width>
+        <height>3667</height>
+      </gui>
+    </component>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
           <properties />
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="autostart.acs" />
+        <property name="midiDevice" value="Gervill" />
+        <property name="channel" value="1" />
+        <property name="instrument" value="Marimba     " />
+        <property name="triggerThreshold" value="50" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="110" />
+        <property name="toneScale" value="A-Major.sc" />
+        <property name="playOnlyChangingNotes" value="False" />
+        <property name="displayGUI" value="False" />
+        <property name="displayNoteNames" value="false" />
       </properties>
       <layout>
-        <posX>619</posX>
-        <posY>134</posY>
+        <posX>1187</posX>
+        <posY>159</posY>
       </layout>
+      <gui>
+        <posX>-1365</posX>
+        <posY>2565</posY>
+        <width>5000</width>
+        <height>2000</height>
+      </gui>
     </component>
-    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
-      <description>Send test from chosen slot</description>
+    <component id="ConstantDispatcher.2" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
       <ports>
-        <inputPort portTypeID="slotDispatch">
-          <properties />
-        </inputPort>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
+        <property name="number" value="20" />
         <property name="delay" value="300" />
-        <property name="slot1" value="XFaceTrackerMouse.acs" />
-        <property name="slot2" value="OskaWriting.acs" />
-        <property name="slot3" value="SpeechControl.acs" />
-        <property name="slot4" value="GamepadMouse.acs" />
-        <property name="slot5" value="ImageDemo.acs" />
-        <property name="slot6" value="Ergotherapie/ergomenu.acs" />
-        <property name="slot7" value="CameraMouse.acs" />
-        <property name="slot8" value="" />
-        <property name="slot9" value="" />
-        <property name="slot10" value="" />
-        <property name="slot11" value="" />
-        <property name="slot12" value="" />
-        <property name="slot13" value="" />
-        <property name="slot14" value="" />
-        <property name="slot15" value="" />
-        <property name="slot16" value="" />
-        <property name="slot17" value="" />
-        <property name="slot18" value="" />
-        <property name="slot19" value="" />
-        <property name="slot20" value="" />
+        <property name="slot1" value="100" />
+        <property name="slot2" value="70" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
       </properties>
       <layout>
-        <posX>491</posX>
-        <posY>127</posY>
+        <posX>868</posX>
+        <posY>134</posY>
       </layout>
     </component>
-    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
-      <description>GUI component, which displays text.</description>
+    <component id="Delay.1" type_id="asterics.Delay">
+      <description>delays the incoming signal by a given time</description>
       <ports>
-        <inputPort portTypeID="input">
+        <inputPort portTypeID="in">
           <properties />
         </inputPort>
-      </ports>
-      <properties>
-        <property name="caption" value="" />
-        <property name="default" value="Choose or deploy a model" />
-        <property name="textPosition" value="1" />
-        <property name="textColor" value="10" />
-        <property name="backgroundColor" value="11" />
-        <property name="displayGUI" value="true" />
-      </properties>
-      <layout>
-        <posX>304</posX>
-        <posY>334</posY>
-      </layout>
-      <gui>
-        <posX>7697</posX>
-        <posY>7454</posY>
-        <width>1750</width>
-        <height>333</height>
-      </gui>
-    </component>
-    <component id="TextDisplay.1.1.1" type_id="asterics.TextDisplay">
-      <description>GUI component, which displays text.</description>
-      <ports>
-        <inputPort portTypeID="input">
+        <outputPort portTypeID="out">
           <properties />
-        </inputPort>
+        </outputPort>
       </ports>
       <properties>
-        <property name="caption" value="" />
-        <property name="default" value="W=Win, L=Linux, M=Mac" />
-        <property name="textPosition" value="1" />
-        <property name="textColor" value="10" />
-        <property name="backgroundColor" value="11" />
-        <property name="displayGUI" value="true" />
+        <property name="delay" value="20" />
       </properties>
       <layout>
-        <posX>425</posX>
-        <posY>343</posY>
+        <posX>996</posX>
+        <posY>51</posY>
       </layout>
-      <gui>
-        <posX>7697</posX>
-        <posY>7787</posY>
-        <width>1750</width>
-        <height>333</height>
-      </gui>
     </component>
   </components>
   <channels>
-    <channel id="binding.0">
+    <channel id="binding.17">
       <source>
-        <component id="StringDispatcher.1" />
+        <component id="EyeX.1" />
+        <port id="gazeY" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="EyeX.1" />
+        <port id="gazeX" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="ConstantDispatcher.2" />
         <port id="output" />
       </source>
       <target>
-        <component id="modelSwitcher.1" />
-        <port id="modelName" />
+        <component id="Delay.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="ConstantDispatcher.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="Delay.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="trigger" />
       </target>
     </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="cell1_dispatchSlot1">
+    <eventChannel id="blink_eventDisplay">
+      <description />
       <sources>
         <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell1" />
+          <component id="EyeX.1" />
+          <eventPort id="blink" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="StringDispatcher.1" />
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="longblink_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="EyeX.1" />
+          <eventPort id="longblink" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="blink_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="EyeX.1" />
+          <eventPort id="blink" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_change">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="change" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="blink_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EyeX.1" />
+          <eventPort id="blink" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="longblink_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EyeX.1" />
+          <eventPort id="longblink" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_change">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1.1" />
+          <eventPort id="change" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="EventBlock.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.2" />
           <eventPort id="dispatchSlot1" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="cell2_dispatchSlot2">
+    <eventChannel id="output_dispatchSlot2">
+      <description />
       <sources>
         <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell2" />
+          <component id="EventBlock.1.1" />
+          <eventPort id="output" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="StringDispatcher.1" />
+          <component id="ConstantDispatcher.2" />
           <eventPort id="dispatchSlot2" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="cell3_dispatchSlot3">
+    <eventChannel id="button2_toggle">
+      <description />
       <sources>
         <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell3" />
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot3" />
+          <component id="Mouse.1" />
+          <eventPort id="toggle" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="cell4_dispatchSlot4">
+    <eventChannel id="button3_calibrateCurrentProfile">
+      <description />
       <sources>
         <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell4" />
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot4" />
+          <component id="EyeX.1" />
+          <eventPort id="calibrateCurrentProfile" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="cell5_dispatchSlot5">
+    <eventChannel id="button4_startManualCalibration">
+      <description />
       <sources>
         <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell5" />
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot5" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell6_dispatchSlot6">
-      <sources>
-        <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell6" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot6" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell7_dispatchSlot7">
-      <sources>
-        <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell7" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="StringDispatcher.1" />
-          <eventPort id="dispatchSlot7" />
+          <component id="EyeX.1" />
+          <eventPort id="startManualCalibration" />
         </target>
       </targets>
     </eventChannel>
@@ -435,10 +524,10 @@
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>true</ShopControlPanel>
     <AREGUIWindow>
-      <posX>7612</posX>
-      <posY>578</posY>
-      <width>2312</width>
-      <height>7667</height>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4375</width>
+      <height>8667</height>
     </AREGUIWindow>
   </modelGUI>
 </model>

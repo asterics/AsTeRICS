@@ -78,6 +78,13 @@ public class AREProperties extends Properties {
         return propValue;
     }
 
+    @Override
+    public synchronized Object setProperty(String key, String value) {
+        Object returnValue = super.setProperty(key, value);
+        this.storeProperties();
+        return returnValue;
+    }
+
     /**
      * This method saves the given default value, if the property was not set. Additionally, the given propertyComment is registered for being stored right
      * before the property in the {{@link #PROPERTY_FILENAME} file when {{@link #storeProperties()} is called.

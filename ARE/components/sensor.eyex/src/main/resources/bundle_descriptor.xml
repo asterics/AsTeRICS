@@ -84,6 +84,9 @@
 			<eventListenerPort id="deactivate">
 				<description>deactivate eyetracker</description>
 			</eventListenerPort>
+			<eventListenerPort id="startManualCalibration">
+				<description>start manual calibration of eyetracker (AsTeRICS based)</description>
+			</eventListenerPort>
 			<eventTriggererPort id="blink">
 				<description>triggered when eye blink occurs</description>
 			</eventTriggererPort>
