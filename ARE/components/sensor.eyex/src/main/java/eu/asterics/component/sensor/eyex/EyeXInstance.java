@@ -160,6 +160,15 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         if ("yOffset".equalsIgnoreCase(portID)) {
             return ipYOffset;
         }
+        if ("blinkMinTime".equalsIgnoreCase(portID)) {
+            return ipBlinkMinTime;
+        }
+        if ("blinkMidTime".equalsIgnoreCase(portID)) {
+            return ipBlinkMidTime;
+        }
+        if ("blinkMaxTime".equalsIgnoreCase(portID)) {
+            return ipBlinkMaxTime;
+        }
 
         return null;
     }
@@ -392,6 +401,27 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
             addOffsetY(ConversionUtils.doubleFromBytes(data));
         }
 
+    };
+
+    private final IRuntimeInputPort ipBlinkMinTime = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            propMinBlinkTime = ConversionUtils.intFromBytes(data);
+        }
+    };
+
+    private final IRuntimeInputPort ipBlinkMidTime = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            propMidBlinkTime = ConversionUtils.intFromBytes(data);
+        }
+    };
+
+    private final IRuntimeInputPort ipBlinkMaxTime = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            propMaxBlinkTime = ConversionUtils.intFromBytes(data);
+        }
     };
 
     public void addOffsetX(double value) {
@@ -862,6 +892,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         if (manualCalibrationGUI != null) {
             manualCalibrationGUI.stop();
         }
+        manualCalibrationGUI = null;
         if (running == true) {
             closeTimeWatchDogStop();
             bridge.deactivate();

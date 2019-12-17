@@ -18,6 +18,21 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
+			<inputPort id="blinkMinTime">
+				<description>minimum blink time</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="blinkMidTime">
+				<description>middle blink time</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="blinkMaxTime">
+				<description>max blink time</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
 			<outputPort id="gazeX">
 				<description>eye gaze x-coordinate</description>
 				<dataType>integer</dataType>
