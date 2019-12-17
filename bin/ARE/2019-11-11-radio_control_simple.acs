@@ -1,0 +1,615 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\radio_control_simple.acs_2019_11_6_14_52" version="20130320">
+  <components>
+    <component id="IrTrans.1" type_id="asterics.IrTrans">
+      <description>Infrared Transmission Module, interfaces to the IrTrans device</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputResult">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="localhost" />
+        <property name="port" value="21000" />
+        <property name="prestring" value="" />
+        <property name="send1" value="" />
+        <property name="send2" value="" />
+        <property name="send3" value="" />
+        <property name="send4" value="" />
+        <property name="send5" value="" />
+        <property name="send6" value="" />
+        <property name="send7" value="" />
+        <property name="send8" value="" />
+        <property name="send9" value="" />
+        <property name="send10" value="" />
+        <property name="send11" value="" />
+        <property name="send12" value="" />
+        <property name="send13" value="" />
+        <property name="send14" value="" />
+        <property name="send15" value="" />
+        <property name="send16" value="" />
+        <property name="send17" value="" />
+        <property name="send18" value="" />
+        <property name="send19" value="" />
+        <property name="send20" value="" />
+        <property name="send21" value="" />
+        <property name="send22" value="" />
+        <property name="send23" value="" />
+        <property name="send24" value="" />
+      </properties>
+      <layout>
+        <posX>1072</posX>
+        <posY>107</posY>
+      </layout>
+    </component>
+    <component id="TextSender.MODE(OFF)" type_id="asterics.TextSender">
+      <description>Send text when gets event</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="text" value="@IRTRANS:sndhex H5001000000002426010236004600D7011C136B000000000000047400480041046F0048000000000000050100533030303030303030313131313131313130303031303030303131313031313131333230" />
+      </properties>
+      <layout>
+        <posX>436</posX>
+        <posY>12</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.A" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="30" />
+        <property name="block" value="false" />
+      </properties>
+      <layout>
+        <posX>145</posX>
+        <posY>39</posY>
+      </layout>
+    </component>
+    <component id="TextSender.RADIO" type_id="asterics.TextSender">
+      <description>Send text when gets event</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="text" value="@IRTRANS:sndhex H5001000000002426010235004700D8011C136A000000000000047300480042046F0048000000000000050100533030303030303030313131313131313130303131303030303131303031313131333230" />
+      </properties>
+      <layout>
+        <posX>437</posX>
+        <posY>174</posY>
+      </layout>
+    </component>
+    <component id="MultiSourceString.1" type_id="asterics.MultiSourceString">
+      <description>Passes strings from input ports to the one output port</description>
+      <ports>
+        <inputPort portTypeID="input1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input4">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>797</posX>
+        <posY>70</posY>
+      </layout>
+    </component>
+    <component id="TextSender.VOL+(NEXT)" type_id="asterics.TextSender">
+      <description>Send text when gets event</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="text" value="@IRTRANS:sndhex H5001000000002426010236004700D7011C132E000000000000046E0047004004720048000000000000050100533030303030303030313131313131313130313130303030303130303131313131333230" />
+      </properties>
+      <layout>
+        <posX>435</posX>
+        <posY>505</posY>
+      </layout>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="20" />
+        <property name="timePeriod" value="2000" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="False" />
+      </properties>
+      <layout>
+        <posX>311</posX>
+        <posY>313</posY>
+      </layout>
+    </component>
+    <component id="TextSender.SET" type_id="asterics.TextSender">
+      <description>Send text when gets event</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="text" value="@IRTRANS:sndhex H5001000000002426010235004700D6011B137100000000000004710047004104730041000000000000050100533030303030303030313131313131313130303130303030303131303131313131333230" />
+      </properties>
+      <layout>
+        <posX>435</posX>
+        <posY>334</posY>
+      </layout>
+    </component>
+    <component id="EventBlock.1" type_id="asterics.EventBlock">
+      <description>Pass or block event</description>
+      <ports />
+      <properties>
+        <property name="block" value="false" />
+        <property name="blockAfterEvent" value="false" />
+      </properties>
+      <layout>
+        <posX>164</posX>
+        <posY>329</posY>
+      </layout>
+    </component>
+    <component id="Timer.1.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="20" />
+        <property name="timePeriod" value="1000" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="False" />
+      </properties>
+      <layout>
+        <posX>300</posX>
+        <posY>497</posY>
+      </layout>
+    </component>
+    <component id="EventFlipFlop.1" type_id="asterics.EventFlipFlop">
+      <description>Event Flip-flop: First event-in fires event-out1, second event-in fires event-out2, etc.</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>297</posX>
+        <posY>42</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.B" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="48" />
+        <property name="block" value="false" />
+      </properties>
+      <layout>
+        <posX>161</posX>
+        <posY>712</posY>
+      </layout>
+    </component>
+    <component id="EventFlipFlop.1.1" type_id="asterics.EventFlipFlop">
+      <description>Event Flip-flop: First event-in fires event-out1, second event-in fires event-out2, etc.</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>286</posX>
+        <posY>712</posY>
+      </layout>
+    </component>
+    <component id="TextSender.LightON" type_id="asterics.TextSender">
+      <description>Send text when gets event</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="text" value="@IRTRANS:sndhex H5001000000002426010239004F00D9011E141A00000000000004910042004204960042000000000000050100533030303030303030313131313031313131313030303030303030313131313131333230" />
+      </properties>
+      <layout>
+        <posX>412</posX>
+        <posY>717</posY>
+      </layout>
+    </component>
+    <component id="TextSender.LightOff" type_id="asterics.TextSender">
+      <description>Send text when gets event</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="text" value="@IRTRANS:sndhex H500100000000242601023B0032004F00D9011C141F000000000489004D004100410487004100000000060100533131313131313131323232323132323231323131313131313231323232323232343330" />
+      </properties>
+      <layout>
+        <posX>414</posX>
+        <posY>882</posY>
+      </layout>
+    </component>
+    <component id="MultiSourceString.1.1" type_id="asterics.MultiSourceString">
+      <description>Passes strings from input ports to the one output port</description>
+      <ports>
+        <inputPort portTypeID="input1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input4">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>799</posX>
+        <posY>269</posY>
+      </layout>
+    </component>
+    <component id="MultiSourceString.1.1.1" type_id="asterics.MultiSourceString">
+      <description>Passes strings from input ports to the one output port</description>
+      <ports>
+        <inputPort portTypeID="input1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input4">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>939</posX>
+        <posY>107</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="TextSender.MODE(OFF)" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input1" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="TextSender.RADIO" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input2" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="MultiSourceString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1.1.1" />
+        <port id="input1" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="TextSender.SET" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input3" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="TextSender.VOL+(NEXT)" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input4" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="MultiSourceString.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1.1.1" />
+        <port id="input2" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="MultiSourceString.1.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="IrTrans.1" />
+        <port id="action" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="TextSender.LightON" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1.1" />
+        <port id="input1" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="TextSender.LightOff" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1.1" />
+        <port id="input2" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="output_start">
+      <description />
+      <sources>
+        <source>
+          <component id="EventBlock.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_sendText">
+      <description />
+      <sources>
+        <source>
+          <component id="EventBlock.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextSender.SET" />
+          <eventPort id="sendText" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_sendText">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextSender.VOL+(NEXT)" />
+          <eventPort id="sendText" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_sendText">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextSender.SET" />
+          <eventPort id="sendText" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_start">
+      <description />
+      <sources>
+        <source>
+          <component id="EventBlock.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_event-in">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.A" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_sendText">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextSender.MODE(OFF)" />
+          <eventPort id="sendText" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_sendText">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextSender.RADIO" />
+          <eventPort id="sendText" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_event-in">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.B" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventFlipFlop.1.1" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_sendText">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1.1" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextSender.LightON" />
+          <eventPort id="sendText" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out2_sendText">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1.1" />
+          <eventPort id="event-out2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextSender.LightOff" />
+          <eventPort id="sendText" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9000</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
