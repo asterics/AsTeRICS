@@ -42,6 +42,7 @@ public class ManualCalibrationGUI extends JFrame {
 
     public Dimension screenDimension;
     int posMarkerX = 0, posMarkerY = 0;
+    boolean stopped = false;
 
     
     
@@ -131,8 +132,13 @@ public class ManualCalibrationGUI extends JFrame {
     }
 
     void stop() {
-        this.dispose();
-        keyboardManager.removeKeyEventPostProcessor(keyProcessor);
+        if (!stopped) {
+            stopped = true;
+            this.dispose();
+            keyboardManager.removeKeyEventPostProcessor(keyProcessor);
+            owner = null;
+            instance = null;
+        }
     }
 
     @Override
