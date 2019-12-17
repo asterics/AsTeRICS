@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\data\src\AsTeRICS\bin\ARE\2019-12-16-eyetracking_configuration.acs_2019_12_17_11_8" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\bin\ARE\2019-12-16-eyetracking_configuration.acs_2019_12_17_12_0" version="20130320">
+  <modelDescription>
+    <shortDescription />
+    <requirements />
+    <description />
+  </modelDescription>
   <components>
     <component id="EyeX.1" type_id="asterics.EyeX">
       <description>interfaces to the EyeX Gaze tracking system</description>
@@ -8,6 +13,15 @@
           <properties />
         </inputPort>
         <inputPort portTypeID="yOffset">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="blinkMinTime">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="blinkMidTime">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="blinkMaxTime">
           <properties />
         </inputPort>
         <outputPort portTypeID="gazeX">
@@ -28,19 +42,10 @@
         <outputPort portTypeID="closeTime">
           <properties />
         </outputPort>
-        <inputPort portTypeID="blinkMinTime">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="blinkMidTime">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="blinkMaxTime">
-          <properties />
-        </inputPort>
       </ports>
       <properties>
         <property name="enabled" value="True" />
-        <property name="averaging" value="35" />
+        <property name="averaging" value="30" />
         <property name="minBlinkTime" value="500" />
         <property name="midBlinkTime" value="1500" />
         <property name="maxBlinkTime" value="3500" />
@@ -51,7 +56,7 @@
       </properties>
       <layout>
         <posX>251</posX>
-        <posY>347</posY>
+        <posY>404</posY>
       </layout>
     </component>
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
@@ -91,8 +96,8 @@
         <property name="blockAfterEvent" value="false" />
       </properties>
       <layout>
-        <posX>634</posX>
-        <posY>25</posY>
+        <posX>646</posX>
+        <posY>5</posY>
       </layout>
     </component>
     <component id="Mouse.1" type_id="asterics.Mouse">
@@ -196,10 +201,10 @@
     <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
       <description>This plugin is used for MIDI applications</description>
       <ports>
-        <inputPort portTypeID="trigger" sync="true">
+        <inputPort portTypeID="trigger">
           <properties />
         </inputPort>
-        <inputPort portTypeID="pitch" sync="true">
+        <inputPort portTypeID="pitch">
           <properties />
         </inputPort>
         <inputPort portTypeID="instrument">
@@ -210,9 +215,9 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="midiDevice" value="Gervill" />
+        <property name="midiDevice" value="Microsoft MIDI Mapper" />
         <property name="channel" value="1" />
-        <property name="instrument" value="Marimba     " />
+        <property name="instrument" value="10 Glockenspiel" />
         <property name="triggerThreshold" value="50" />
         <property name="triggerMax" value="100" />
         <property name="pitchMin" value="0" />
@@ -236,12 +241,12 @@
     <component id="ConstantDispatcher.2" type_id="asterics.ConstantDispatcher">
       <description>Send double values from chosen slot</description>
       <ports>
-        <outputPort portTypeID="output">
-          <properties />
-        </outputPort>
         <inputPort portTypeID="slotDispatch">
           <properties />
         </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="number" value="20" />
@@ -269,7 +274,7 @@
         <property name="autosendSlot" value="0" />
       </properties>
       <layout>
-        <posX>868</posX>
+        <posX>899</posX>
         <posY>134</posY>
       </layout>
     </component>
@@ -287,7 +292,7 @@
         <property name="delay" value="20" />
       </properties>
       <layout>
-        <posX>996</posX>
+        <posX>1066</posX>
         <posY>51</posY>
       </layout>
     </component>
@@ -414,9 +419,37 @@
         <height>889</height>
       </gui>
     </component>
+    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="50" />
+        <property name="block" value="false" />
+      </properties>
+      <layout>
+        <posX>447</posX>
+        <posY>235</posY>
+      </layout>
+    </component>
+    <component id="EventDelay.1" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="20" />
+      </properties>
+      <layout>
+        <posX>432</posX>
+        <posY>33</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.17">
+      <description />
       <source>
         <component id="EyeX.1" />
         <port id="gazeY" />
@@ -427,6 +460,7 @@
       </target>
     </channel>
     <channel id="binding.16">
+      <description />
       <source>
         <component id="EyeX.1" />
         <port id="gazeX" />
@@ -437,6 +471,7 @@
       </target>
     </channel>
     <channel id="binding.19">
+      <description />
       <source>
         <component id="ConstantDispatcher.2" />
         <port id="output" />
@@ -447,6 +482,7 @@
       </target>
     </channel>
     <channel id="binding.20">
+      <description />
       <source>
         <component id="ConstantDispatcher.2" />
         <port id="output" />
@@ -457,6 +493,7 @@
       </target>
     </channel>
     <channel id="binding.21">
+      <description />
       <source>
         <component id="Delay.1" />
         <port id="out" />
@@ -467,6 +504,7 @@
       </target>
     </channel>
     <channel id="binding.5">
+      <description />
       <source>
         <component id="Slider.1" />
         <port id="value" />
@@ -477,6 +515,7 @@
       </target>
     </channel>
     <channel id="binding.6">
+      <description />
       <source>
         <component id="Slider.1.1" />
         <port id="value" />
@@ -487,6 +526,7 @@
       </target>
     </channel>
     <channel id="binding.7">
+      <description />
       <source>
         <component id="Slider.1.1.1" />
         <port id="value" />
@@ -499,7 +539,6 @@
   </channels>
   <eventChannels>
     <eventChannel id="blink_eventDisplay">
-      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -514,7 +553,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="longblink_eventDisplay">
-      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -529,7 +567,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="blink_leftClick">
-      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -544,7 +581,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="button1_change">
-      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -559,7 +595,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="blink_input">
-      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -574,7 +609,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="longblink_input">
-      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -589,7 +623,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="button1_change">
-      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -600,6 +633,63 @@
         <target>
           <component id="EventBlock.1.1" />
           <eventPort id="change" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_toggle">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="toggle" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_calibrateCurrentProfile">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EyeX.1" />
+          <eventPort id="calibrateCurrentProfile" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_startManualCalibration">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EyeX.1" />
+          <eventPort id="startManualCalibration" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_toggle">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="toggle" />
         </target>
       </targets>
     </eventChannel>
@@ -633,48 +723,33 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button2_toggle">
+    <eventChannel id="button1_input">
       <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button2" />
+          <eventPort id="button1" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="Mouse.1" />
-          <eventPort id="toggle" />
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button3_calibrateCurrentProfile">
+    <eventChannel id="output_input">
       <description />
       <sources>
         <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button3" />
+          <component id="EventDelay.1" />
+          <eventPort id="output" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="EyeX.1" />
-          <eventPort id="calibrateCurrentProfile" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button4_startManualCalibration">
-      <description />
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button4" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EyeX.1" />
-          <eventPort id="startManualCalibration" />
+          <component id="EventBlock.1" />
+          <eventPort id="input" />
         </target>
       </targets>
     </eventChannel>
