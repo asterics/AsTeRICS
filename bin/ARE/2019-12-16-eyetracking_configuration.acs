@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\bin\ARE\2019-12-16-eyetracking_configuration.acs_2019_12_17_12_0" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\bin\ARE\2019-12-16-eyetracking_configuration.acs_2019_12_19_16_39" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />
@@ -188,8 +188,8 @@
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>180</posX>
-        <posY>29</posY>
+        <posX>170</posX>
+        <posY>30</posY>
       </layout>
       <gui>
         <posX>0</posX>
@@ -446,10 +446,25 @@
         <posY>33</posY>
       </layout>
     </component>
+    <component id="KeyCapture.1.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="20" />
+        <property name="block" value="false" />
+      </properties>
+      <layout>
+        <posX>317</posX>
+        <posY>4</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.17">
-      <description />
       <source>
         <component id="EyeX.1" />
         <port id="gazeY" />
@@ -460,7 +475,6 @@
       </target>
     </channel>
     <channel id="binding.16">
-      <description />
       <source>
         <component id="EyeX.1" />
         <port id="gazeX" />
@@ -471,7 +485,6 @@
       </target>
     </channel>
     <channel id="binding.19">
-      <description />
       <source>
         <component id="ConstantDispatcher.2" />
         <port id="output" />
@@ -482,7 +495,6 @@
       </target>
     </channel>
     <channel id="binding.20">
-      <description />
       <source>
         <component id="ConstantDispatcher.2" />
         <port id="output" />
@@ -493,7 +505,6 @@
       </target>
     </channel>
     <channel id="binding.21">
-      <description />
       <source>
         <component id="Delay.1" />
         <port id="out" />
@@ -504,7 +515,6 @@
       </target>
     </channel>
     <channel id="binding.5">
-      <description />
       <source>
         <component id="Slider.1" />
         <port id="value" />
@@ -515,7 +525,6 @@
       </target>
     </channel>
     <channel id="binding.6">
-      <description />
       <source>
         <component id="Slider.1.1" />
         <port id="value" />
@@ -526,7 +535,6 @@
       </target>
     </channel>
     <channel id="binding.7">
-      <description />
       <source>
         <component id="Slider.1.1.1" />
         <port id="value" />
@@ -539,6 +547,7 @@
   </channels>
   <eventChannels>
     <eventChannel id="blink_eventDisplay">
+      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -553,6 +562,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="longblink_eventDisplay">
+      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -567,6 +577,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="blink_leftClick">
+      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -581,6 +592,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="button1_change">
+      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -595,6 +607,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="blink_input">
+      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -609,6 +622,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="longblink_input">
+      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -623,6 +637,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="button1_change">
+      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -637,6 +652,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="button2_toggle">
+      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -651,6 +667,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="button3_calibrateCurrentProfile">
+      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -665,6 +682,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="button4_startManualCalibration">
+      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -679,7 +697,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="keyPressed_toggle">
-      <description />
       <sources>
         <source>
           <component id="KeyCapture.1" />
@@ -694,7 +711,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="output_dispatchSlot1">
-      <description />
       <sources>
         <source>
           <component id="EventBlock.1" />
@@ -709,7 +725,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="output_dispatchSlot2">
-      <description />
       <sources>
         <source>
           <component id="EventBlock.1.1" />
@@ -724,7 +739,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="button1_input">
-      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -739,7 +753,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="output_input">
-      <description />
       <sources>
         <source>
           <component id="EventDelay.1" />
@@ -750,6 +763,51 @@
         <target>
           <component id="EventBlock.1" />
           <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_input">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_change">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="change" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_change">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1.1" />
+          <eventPort id="change" />
         </target>
       </targets>
     </eventChannel>
