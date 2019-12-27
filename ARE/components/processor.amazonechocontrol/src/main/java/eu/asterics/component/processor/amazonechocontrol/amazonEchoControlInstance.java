@@ -67,13 +67,15 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- * interfaces to the openHAB home automation suite The interface is handled via
- * the REST API of openHAB (see:
- * https://github.com/openhab/openhab/wiki/REST-API)
+ * openHAB-based AsTeRICS Plugin to control Amazon Echo Dot
+ * (see:
+ * https://github.com/openhab/openhab/wiki/REST-API
+ * and
+ * https://www.openhab.org/addons/bindings/amazonechocontrol/#amazon-echo-control-binding)
+ * <p>
+ * based on Benjamin Aigners openHAB Plugin, which i updated
  *
- * @author Benjamin Aigner[aignerb@technikum-wien.at] Date: 27.07.2015 Time:
- * 00:07 AM
- * Updated by: Manuel Nagel Date: 02.12.2019 Time: 4:23 PM
+ * @author Manuel Nagel [sa17b004@technikum-wien.at Date: 11.12.2019 Time: 4:23 PM
  */
 public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance {
     /**
@@ -112,8 +114,6 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
      */
     int propProtocol = 0;
 
-    //String protocol = "http";
-
     /**
      * update rate to fetch all necessary items [ms]
      */
@@ -136,7 +136,12 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
     /**
      * get itemsuffix from json
      */
-    public static String itemSuffix = "";
+    String itemSuffix = "";
+
+    /**
+     * response from command
+     */
+    String response_output = "";
 
     /**
      * all available items of the selected openHAB instance
@@ -183,7 +188,7 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
         if ("currentState".equalsIgnoreCase(portID)) {
             return opCurrentState;
         }
-        if ("currentDevice".equalsIgnoreCase(portID)) {
+        if ("cmdResponse".equalsIgnoreCase(portID)) {
             return opResponse;
         }
         return null;
@@ -304,22 +309,46 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
     private final IRuntimeInputPort ipItem1 = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
-
+            String s, s1;
+            String value = "";
             json_input = ConversionUtils.stringFromBytes(data);
 
             AstericsErrorHandling.instance.reportDebugInfo(null, "Input:" + json_input);
 
             JSONObject jsonObject = new JSONObject(json_input);
 
-            itemSuffix = jsonObject.getString("ItemSuffix");
-            String value = jsonObject.getString("value");
+            try {
 
-            AstericsErrorHandling.instance.reportDebugInfo(null, "Input:" + itemSuffix + " state: " + value);
+                itemSuffix = jsonObject.getString("ItemSuffix");
+                if (jsonObject.getString("value") != "") {
+                    value = jsonObject.getString("value");
+                }
 
-            opResponse.sendData(ConversionUtils.stringToBytes(itemSuffix));
-            opCurrentState.sendData(ConversionUtils.stringToBytes(getItemState(itemSuffix)));
-            setItemState(itemSuffix, value);
-            //opItem1.sendData(ConversionUtils.stringToBytes(getCurrentState()));
+                AstericsErrorHandling.instance.reportDebugInfo(null, "Input:" + itemSuffix + " state: " + value);
+
+                if (itemSuffix != "") {
+                    response_output = "OK";
+                    s = getItemState(itemSuffix);
+                    opCurrentState.sendData(s.getBytes());
+                    AstericsErrorHandling.instance.reportDebugInfo(null, itemSuffix + " state: " + s);
+
+                    opResponse.sendData(response_output.getBytes());
+                    AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
+
+                }
+                if (value != "") {
+                    setItemState(itemSuffix, value);
+                }
+                //opItem1.sendData(ConversionUtils.stringToBytes(getCurrentState()));
+            } catch (Exception e) {
+                response_output = "ERROR";
+                opResponse.sendData(response_output.getBytes());
+                AstericsErrorHandling.instance.reportDebugInfo(null, "Command Error");
+
+                AstericsErrorHandling.instance.reportError(null,
+                        "Input Error,\n message: "
+                                + e.getMessage());
+            }
 
 
         }
@@ -462,6 +491,8 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
                 AstericsErrorHandling.instance.reportError(this,
                         "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
                                 + e.getMessage());
+                response_output = "ERROR";
+                opResponse.sendData(response_output.getBytes());
             }
         }
         return "";
@@ -555,7 +586,7 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
 
         try {
             AstericsErrorHandling.instance.reportDebugInfo(this,
-                    "Get list (type: " + type + ": " + hostname + "/rest/" + type + "s");
+                    "Get list (type: " + type + ": " + hostname + "/rest/" + type + "s)");
 
             //create JSON Array
             JSONArray jsonArray = new JSONArray(httpGet(hostname + "/rest/" + type + "s"));
@@ -741,12 +772,18 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
      * updateRate)
      */
     public void fetchState() {
+        String s, s1;
         AstericsErrorHandling.instance.reportDebugInfo(this, "Fetching data, updateRate: " + updateRate);
         AstericsErrorHandling.instance.reportDebugInfo(this, "UPDATE:" + itemSuffix);
 
-        opCurrentState.sendData(ConversionUtils.stringToBytes(getItemState(itemSuffix)));
+        if (itemSuffix != "") {
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, itemSuffix + " state: " + s);
 
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
 
-
+        }
     }
 }

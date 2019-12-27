@@ -6,7 +6,7 @@
                    canonical_name="eu.asterics.component.processor.amazonechocontrol.amazonEchoControlInstance">
         <type subtype="other">processor</type>
         <singleton>false</singleton>
-        <description>OpenHAB Binding - Interfacing to the openHAB home automation suite</description>
+        <description>OpenHAB based Plugin to Control Amazon Echo Dot</description>
         <ports>
 			<inputPort id="jsonCommand">
 				<description>Value for item1 (name is set via property)</description>
@@ -18,7 +18,7 @@
 				<description>Output of currentState (name is set via property)</description>
 				<dataType>string</dataType>
 			</outputPort>
-			<outputPort id="currentDevice">
+			<outputPort id="cmdResponse">
 				<description>Output of currentDevice (name is set via property)</description>
 				<dataType>string</dataType>
 			</outputPort>

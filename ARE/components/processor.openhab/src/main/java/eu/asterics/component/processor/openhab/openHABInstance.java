@@ -769,8 +769,6 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
 
             URL url = new URL(protocol + "://" + hostname + ":" + port + "/rest/items/"+item);
 
-
-
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
             con.setDoOutput(true);

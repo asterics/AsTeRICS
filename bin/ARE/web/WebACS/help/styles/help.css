@@ -1,0 +1,188 @@
+body {
+    position: relative;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 90%;
+    margin: 0em;
+    padding: 0em;
+}
+
+.hidden {
+    display: block;
+    position: absolute;
+    left: -1000em;
+    height: 0em;
+    width: 0em;
+    overflow: hidden;
+}
+
+#container {
+    width: 90em;
+    text-align: left;
+    padding: 2em;
+}
+
+/* ********** header *********** */
+header {
+    height: 8em;
+    margin-top: 10px;
+    margin-bottom: 0.5em;
+	width: 29em;
+}
+
+.headerLogo {
+    float: left;
+    width: 11em;
+}
+
+.headerText {
+    text-align: right;
+    font-weight: bold;
+	width: 55.5em;
+	margin-left: 13em;
+	padding-top: 6em;
+    padding-bottom: 0.1em;
+    border-bottom: 1px solid #18BEF0;
+}
+
+/* ********** menu *********** */
+nav {
+	clear: left;
+}
+
+.menuList {
+	clear: left;
+	width: 10em;
+}
+
+#menuBlock {
+	float: left;
+	height: 40em;
+}
+
+.mainList {
+	border: none !important;
+	padding-bottom: 2em !important;
+}
+
+#quickselectLabel, #quickselect {
+	display: block;
+}
+
+#quickselectLabel {
+	color: grey;
+}
+
+#quickselectGroup {
+	padding-top: 2em;
+}
+
+/* ********* content ********* */
+#mainContent {
+	margin-left: 2em;
+	padding-left: 2em;
+	padding-right: 2em;
+	border: none;
+	border-left: 1px solid #18BEF0;
+	width: 54.3em;
+	height: 47em;
+}
+
+.innerBody {
+	width: 53em;
+}
+
+.componentType {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+figure {
+	font-size: 0.9em;
+	text-align: center;
+	font-style: italic;
+}
+
+.image {
+	width: 97%;
+}
+
+.medium_image {
+	width: 70%;
+}
+
+.small_image {
+	width: 50%;
+}
+
+.tiny_image {
+	width: 30%;
+}
+
+.bullet_imageContainer {
+	padding: 0.5em;
+}
+
+table, th, td {
+   border: 1px solid black;
+   border-collapse: collapse;
+   padding: 0 0.5em 0 0.5em;
+}
+
+th {
+   border-bottom: 2px solid black;
+}
+
+td, th {
+	text-align: center;
+}
+
+caption {
+    caption-side: bottom;
+	font-size: 0.8em;
+	font-weight: bold;
+	font-style: italic;
+}
+
+/* ********* page areas ********* */
+#page_areas {
+    background-color: #F0F0F0;
+    color: #000;
+    border-bottom: 1px solid #555;
+    margin-bottom: 1em;
+    text-align: center;
+    position: relative;
+    height: 1.1em;
+    overflow: hidden;
+}
+
+#page_areas ul {
+    margin: 0em auto 0em 0px;
+    padding: 0em;
+    width: 64em;
+}
+
+#page_areas a:hover, #page_areas a:active, #page_areas a:focus {
+    color: #FFF;
+    background-color: #3A5876;
+}
+
+#page_areas a, #page_areas a:visited {
+    position: relative;
+    padding: 0.25em;
+    background-color: #F0F0F0;
+    color: #000;
+    text-decoration: none;
+    font-size: 70%;
+    top: 0.2em;
+    vertical-align: top;
+}
+
+#page_areas li {
+    position: relative;
+    margin: 0em;
+    padding: 0em;
+    list-style: outside none none;
+    border-right: 1px solid #555;
+    float: left;
+    height: 1.1em;
+}
