@@ -202,6 +202,40 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
      */
     @Override
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if ("playerPlay".equalsIgnoreCase(eventPortID)) {
+            return elPlayerPlay;
+        }
+        if ("playerPause".equalsIgnoreCase(eventPortID)) {
+            return elPlayerPause;
+        }
+        if ("playerNext".equalsIgnoreCase(eventPortID)) {
+            return elPlayerNext;
+        }
+        if ("playerPrevious".equalsIgnoreCase(eventPortID)) {
+            return elPlayerPrevious;
+        }
+        if ("volumeMute".equalsIgnoreCase(eventPortID)) {
+            return elVolumeMute;
+        }
+        if ("volume30".equalsIgnoreCase(eventPortID)) {
+            return elVolume30;
+        }
+        if ("weather".equalsIgnoreCase(eventPortID)) {
+            return elWeather;
+        }
+        if ("tellStory".equalsIgnoreCase(eventPortID)) {
+            return elTellStory;
+        }
+        if ("traffic".equalsIgnoreCase(eventPortID)) {
+            return elTraffic;
+        }
+        if ("singASong".equalsIgnoreCase(eventPortID)) {
+            return elSingASong;
+        }
+        if ("flashBriefing".equalsIgnoreCase(eventPortID)) {
+            return elFlashBriefing;
+        }
+
         return null;
     }
 
@@ -353,6 +387,68 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
 
         }
 
+    };
+
+    /**
+     * Event Listerner Ports.
+     */
+
+    // event listener for Echo Dot:
+
+    final IRuntimeEventListenerPort elPlayerPlay = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("player", "PLAY");
+        }
+    };
+    final IRuntimeEventListenerPort elPlayerPause = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("player", "PAUSE");
+        }
+    };
+    final IRuntimeEventListenerPort elPlayerNext = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("player", "NEXT");
+        }
+    };
+    final IRuntimeEventListenerPort elPlayerPrevious = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("player", "PREVIOUS");
+        }
+    };
+    final IRuntimeEventListenerPort elVolumeMute = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("volume", "0");
+        }
+    };
+    final IRuntimeEventListenerPort elVolume30 = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("volume", "30");
+        }
+    };
+    final IRuntimeEventListenerPort elWeather = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("startCommand", "Weather");
+        }
+    };
+    final IRuntimeEventListenerPort elTellStory = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("startCommand", "TellStory");
+        }
+    };
+    final IRuntimeEventListenerPort elTraffic = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("startCommand", "Traffic");
+        }
+    };
+    final IRuntimeEventListenerPort elSingASong = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("startCommand", "SingASong");
+        }
+    };
+    final IRuntimeEventListenerPort elFlashBriefing = new IRuntimeEventListenerPort() {
+        public void receiveEvent(final String data) {
+            setItemState("startCommand", "FlashBriefing");
+        }
     };
 
     /**

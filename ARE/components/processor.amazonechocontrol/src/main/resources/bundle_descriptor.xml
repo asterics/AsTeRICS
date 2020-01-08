@@ -22,8 +22,44 @@
 				<description>Output of currentDevice (name is set via property)</description>
 				<dataType>string</dataType>
 			</outputPort>
+		</ports>
+			<events>
+			<eventListenerPort id="playerPlay">
+				<description>turn Player on</description>
+			</eventListenerPort>
+				<eventListenerPort id="playerPause">
+					<description>turn Player off</description>
+				</eventListenerPort>
+				<eventListenerPort id="playerNext">
+					<description>Next Song</description>
+				</eventListenerPort>
+				<eventListenerPort id="playerPrevious">
+				<description>Next Song</description>
+			</eventListenerPort>
+				<eventListenerPort id="volumeMute">
+					<description>Mute Echo Dot</description>
+				</eventListenerPort>
+				<eventListenerPort id="volume30">
+					<description>volume 30%</description>
+				</eventListenerPort>
+				<eventListenerPort id="weather">
+					<description>weather</description>
+				</eventListenerPort>
+				<eventListenerPort id="tellStory">
+					<description>Tell a Story</description>
+				</eventListenerPort>
+				<eventListenerPort id="traffic">
+					<description>traffic</description>
+				</eventListenerPort>
+				<eventListenerPort id="singASong">
+					<description>sing a song</description>
+				</eventListenerPort>
+				<eventListenerPort id="flashBriefing">
+					<description>flashBriefing</description>
+				</eventListenerPort>
+			</events>
 
-        </ports>
+
         <properties>
 			<property name="updaterate"
 				type="integer"
