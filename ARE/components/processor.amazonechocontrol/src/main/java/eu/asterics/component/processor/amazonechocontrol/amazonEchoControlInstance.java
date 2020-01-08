@@ -324,21 +324,21 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
                     value = jsonObject.getString("value");
                 }
 
-                AstericsErrorHandling.instance.reportDebugInfo(null, "Input:" + itemSuffix + " state: " + value);
+                AstericsErrorHandling.instance.reportDebugInfo(null, "Input: " + itemSuffix + " state: " + value);
 
-                if (itemSuffix != "") {
+               if (itemSuffix != "") {
                     response_output = "OK";
-                    s = getItemState(itemSuffix);
+                   s = getItemState(itemSuffix);
                     opCurrentState.sendData(s.getBytes());
-                    AstericsErrorHandling.instance.reportDebugInfo(null, itemSuffix + " state: " + s);
+                   AstericsErrorHandling.instance.reportDebugInfo(null, itemSuffix + " state: " + s);
 
                     opResponse.sendData(response_output.getBytes());
-                    AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
+                   AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
 
                 }
-                if (value != "") {
+               if (value != "") {
                     setItemState(itemSuffix, value);
-                }
+               }
                 //opItem1.sendData(ConversionUtils.stringToBytes(getCurrentState()));
             } catch (Exception e) {
                 response_output = "ERROR";
@@ -460,7 +460,7 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
 
                 String[] data = searchItem.split("_", 5);
 
-                if (data[4].equals(item)) {
+                if (data[data.length-1].equals(item)) {
 
                     //url = new URL("http://localhost:8080/rest/items/" + searchItem);
                     itemstate = searchItem;
@@ -529,7 +529,7 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
 
                 String[] data = searchItem.split("_", 5);
 
-                if (data[4].equals(item)) {
+                if (data[data.length-1].equals(item)) {
 
                     url = new URL("http://localhost:8080/rest/items/" + searchItem);
                 }
