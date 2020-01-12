@@ -4,7 +4,7 @@
 
     <componentType id="asterics.AmazonEchoControl"
                    canonical_name="eu.asterics.component.processor.amazonechocontrol.amazonEchoControlInstance">
-        <type subtype="other">processor</type>
+        <type subtype="Home Control">processor</type>
         <singleton>false</singleton>
         <description>OpenHAB based Plugin to Control Amazon Echo Dot</description>
         <ports>

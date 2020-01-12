@@ -16,15 +16,28 @@ openHAB demo with different options (light, heating, temperature, ...)
 
 ## Requirements
 
-A functional openHAB installation, which is accessible via the web interface (the plugin connects via HTTP REST API). You can run either HTTP or HTTPS, in order to fulfill any security requirements. In addition, it is also possible to provide HTTP basic authentication with username/password. Please note, that any saved password in the AsTeRICS model is stored in the model file in PLAINTEXT!  
-To run openHAB without password authentication, start openHAB with this command:  
-_bash ./start\_debug.sh_  
+A functional openHAB installation, 
+which is accessible via the web interface (the plugin connects via HTTP REST API). 
+You can run either HTTP or HTTPS, in order to fulfill any security requirements. 
+
+**Is not implemented right now. (Date: 12.01.2020)** <br/>
+In addition, it is also possible to provide HTTP basic authentication with username/password. 
+Please note, that any saved password in the AsTeRICS model is stored in the model file in PLAINTEXT!
+  
+To run openHAB without password authentication, start openHAB with this command:
+
+On Linux:  
+_bash ./start\_debug.sh_
+
+On Windows:  
+in the openHAB folder, double click on start_debug.sh
+
+**Is not implemented right now. (Date: 12.01.2020)**  
 To start with password authentication, use following command:  
 _bash ./start\_debug.sh -Djava.security.auth.login.config=./etc/login.conf_  
 The user configuration is handled via this file:  
 _openHAB\_runtime/configurations/users.cfg_ Please note, that the first line is necessary, so do not remove it!  
 Further information on configuration and usage of openHAB is available on the openHAB GitHub page ([openHAB wiki][2]).
-
 ## Input Port Description
 
 *   **item1in \[string\]:** New state for item1 (the corresponding name is set in the property item1in). For example: set the property item1in to Light\_GF\_Bed\_Ceiling and send "ON" to the input port to switch on the light which is connected to this item.
