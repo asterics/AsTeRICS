@@ -127,6 +127,10 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
      * item name for fetching data, output port item2
      */
     String item2out = "";
+    /**
+     * item name for fetching data, song title output
+     */
+    String item2outtitle = "";
 
     /**
      * get json formatted string
@@ -141,7 +145,7 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
     /**
      * response from command
      */
-    String response_output = "";
+    String response_output = "OK";
 
     /**
      * all available items of the selected openHAB instance
@@ -152,7 +156,11 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
     // output ports
     public final IRuntimeOutputPort opCurrentState = new DefaultRuntimeOutputPort();
     public final IRuntimeOutputPort opResponse = new DefaultRuntimeOutputPort();
+    public final IRuntimeOutputPort opCurrentTitle = new DefaultRuntimeOutputPort();
 
+    // event trigger
+    final IRuntimeEventTriggererPort etpTurnedOn = new DefaultRuntimeEventTriggererPort();
+    final IRuntimeEventTriggererPort etpTurnedOff = new DefaultRuntimeEventTriggererPort();
 
     // tick generator for fetching item state
     private final TickGenerator tg = new TickGenerator(this);
@@ -190,6 +198,9 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
         }
         if ("cmdResponse".equalsIgnoreCase(portID)) {
             return opResponse;
+        }
+        if("currentTitle".equalsIgnoreCase(portID)) {
+            return opCurrentTitle;
         }
         return null;
     }
@@ -245,8 +256,14 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
      * @param eventPortID the name of the port
      * @return the EventTriggerer port or null if not found
      */
-    @Override
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+
+        if ("turnedOn".equalsIgnoreCase(eventPortID)) {
+            return etpTurnedOn;
+        }
+        if ("turnedOff".equalsIgnoreCase(eventPortID)) {
+            return etpTurnedOff;
+        }
 
         return null;
     }
@@ -398,56 +415,144 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
     final IRuntimeEventListenerPort elPlayerPlay = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("player", "PLAY");
+            itemSuffix = "player";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "Player state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
     final IRuntimeEventListenerPort elPlayerPause = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("player", "PAUSE");
+            itemSuffix = "player";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "Player state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
     final IRuntimeEventListenerPort elPlayerNext = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("player", "NEXT");
+            itemSuffix = "player";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "Player state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
     final IRuntimeEventListenerPort elPlayerPrevious = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("player", "PREVIOUS");
+            itemSuffix = "player";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "Player state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
     final IRuntimeEventListenerPort elVolumeMute = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("volume", "0");
+            itemSuffix = "volume";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "volume state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
     final IRuntimeEventListenerPort elVolume30 = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("volume", "30");
+            itemSuffix = "volume";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "volume state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
     final IRuntimeEventListenerPort elWeather = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("startCommand", "Weather");
+            itemSuffix = "startCommand";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "startCommand state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
     final IRuntimeEventListenerPort elTellStory = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("startCommand", "TellStory");
+            itemSuffix = "startCommand";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "startCommand state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
     final IRuntimeEventListenerPort elTraffic = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("startCommand", "Traffic");
+            itemSuffix = "startCommand";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "startCommand state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
     final IRuntimeEventListenerPort elSingASong = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("startCommand", "SingASong");
+            itemSuffix = "startCommand";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "startCommand state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
     final IRuntimeEventListenerPort elFlashBriefing = new IRuntimeEventListenerPort() {
         public void receiveEvent(final String data) {
             setItemState("startCommand", "FlashBriefing");
+            itemSuffix = "startCommand";
+            String s;
+            s = getItemState(itemSuffix);
+            opCurrentState.sendData(s.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null,  "startCommand state: " + s);
+
+            opResponse.sendData(response_output.getBytes());
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
         }
     };
 
@@ -626,7 +731,6 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
                 String[] data = searchItem.split("_", 5);
 
                 if (data[data.length-1].equals(item)) {
-
                     url = new URL("http://localhost:8080/rest/items/" + searchItem);
                 }
 
@@ -868,9 +972,13 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
      * updateRate)
      */
     public void fetchState() {
-        String s, s1;
+        String s, s_title, s_event;
         AstericsErrorHandling.instance.reportDebugInfo(this, "Fetching data, updateRate: " + updateRate);
         AstericsErrorHandling.instance.reportDebugInfo(this, "UPDATE:" + itemSuffix);
+
+        s_title = getItemState("title");
+        opCurrentTitle.sendData(s_title.getBytes());
+        AstericsErrorHandling.instance.reportDebugInfo(null, "current title: " + s_title);
 
         if (itemSuffix != "") {
             s = getItemState(itemSuffix);
@@ -880,6 +988,20 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
             opResponse.sendData(response_output.getBytes());
             AstericsErrorHandling.instance.reportDebugInfo(null, "Command complete");
 
+
+
         }
+
+        s_event = getItemState("player");
+        if(s_event.equals("PLAY")){
+            etpTurnedOn.raiseEvent();
+            AstericsErrorHandling.instance.reportDebugInfo(null, "current event trigger: " + s_event);
+        }else if(s_event.equals("PAUSE")){
+            etpTurnedOff.raiseEvent();
+            AstericsErrorHandling.instance.reportDebugInfo(null, "current event trigger: " + s_event);
+        }
+
+
+
     }
 }

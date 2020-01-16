@@ -9,17 +9,21 @@
         <description>OpenHAB based Plugin to Control Amazon Echo Dot</description>
         <ports>
 			<inputPort id="jsonCommand">
-				<description>Value for item1 (name is set via property)</description>
+				<description>JSON Command {"ItemSuffix":"itemname","value":"state"}</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
 
 			<outputPort id="currentState">
-				<description>Output of currentState (name is set via property)</description>
+				<description>Output of currentState of the current used item</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="currentTitle">
+				<description>Output of currentTitle which is played</description>
 				<dataType>string</dataType>
 			</outputPort>
 			<outputPort id="cmdResponse">
-				<description>Output of currentDevice (name is set via property)</description>
+				<description>Response with OK or ERROR</description>
 				<dataType>string</dataType>
 			</outputPort>
 		</ports>
@@ -57,6 +61,14 @@
 				<eventListenerPort id="flashBriefing">
 					<description>flashBriefing</description>
 				</eventListenerPort>
+
+				<eventTriggererPort id="turnedOn">
+					<description>fires if the player is turned on</description>
+				</eventTriggererPort>
+
+				<eventTriggererPort id="turnedOff">
+					<description>fires if the player is turned off</description>
+				</eventTriggererPort>
 			</events>
 
 
