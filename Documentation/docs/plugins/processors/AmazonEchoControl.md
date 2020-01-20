@@ -55,7 +55,7 @@ Initial setup of openHAB and installation of the AmazonEchoControl binding:<br/>
 
 #### Input Port Description
 
-*   **jsonCommand \[string\]:** New state for a item, for example {"ItemSuffix": "player", "value": "PLAY"}, 
+*   **jsonCommand \[string\]:** New state for a item, for example ```{"ItemSuffix": "player", "value": "PLAY"}```, 
 ItemSuffix is the name of the item and value is the new state of this item (http://localhost:8080/rest/items), 
 the itemsuffix has to be written lowercase and the value has to be written in uppercase
 
@@ -74,6 +74,10 @@ the itemsuffix has to be written lowercase and the value has to be written in up
 #### Event Listener Description
 
 ![Screenshot: AmazonEchoControl Eventlistener](img/amazonechocontrol_eventlistener.PNG "Screenshot: AmazonEchoControl Eventlistener")
+
+#### Event Trigger Description
+
+This plugin has two triggers, one when the music starts and one when the music is paused.
 
 ## Properties
 
