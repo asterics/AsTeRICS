@@ -1,4 +1,0 @@
-[submodule "help"]
-	path = help
-	url = https://github.com/asterics/AsTeRICS-help.git
-	ignore=dirty
