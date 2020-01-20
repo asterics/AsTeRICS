@@ -44,16 +44,18 @@ Further information on configuration and usage of openHAB is available on the op
 After the installation and openHAB is running, start the browser and use localhost:8080 for HTTP and localhost:8443 for HTTPS.
 ([openHAB installation guide][3]).
 
-First-time setup of openHAB and installtion of the AmazonEchoControl binding:<br/> ([openHAB first-time setup][4])
-1. Use the **Standard (recommended setup)**, this step can take a while
-2. Use the **PAPER UI**
-3. Go on **Add-ons** in the control panel and on **BINDINGS** and search for **Amazon Echo Control Binding** and click on install 
-4. Go to **Configuration** and on **Things** and create a new Amazon Echo Control Binding Thing
-4.1 Click on **Amazon Account** and accept it, by pressing on the tick
-5. After that, use this link to connect openHAB with your **Amazon Account** (http://localhost:8080/amazonechocontrol/) 
-6. Back at **Configuration => Things**, the Account should be online 
-7. If everything worked, go to **Inbox** and accept the two new Things
-8. The things will show up in **Control**(if not look at this link ([openHAB: AmazonEchoControl-Binding][5]))
+Initial setup of openHAB and installation of the AmazonEchoControl binding:<br/> ([openHAB first-time setup][4])
+1. Select the **Standard (recommended setup)**, this step can take a while
+2. Select the **PAPER UI**
+3. Go to **Add-ons** in the control panel and on Tab **BINDINGS** and search for **Amazon Echo Control Binding** and click on install 
+4. Go to **Configuration** and click on **Things** and create a new Amazon Echo Control Binding Thing
+5. Click on **Amazon Account** and accept it by pressing on the tick
+6. After that, use this link to connect openHAB with your **Amazon Account** (http://localhost:8080/amazonechocontrol/) 
+7. Back in the **Configuration** menu and click on **Things**, the account should be online 
+8. If everything worked, go to **Inbox** and accept the two new **Things**
+9. The things will show up in the **Control** area 
+
+(if not follow the instruction at: [openHAB: AmazonEchoControl-Binding][5])
  
 
 ![Screenshot: Amazon Account Online](img/amazonaccount.JPG "Screenshot: Amazon Account Online")
