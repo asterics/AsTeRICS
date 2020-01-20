@@ -28,9 +28,9 @@ On Linux and macOS:
 _bash ./start\_debug.sh_
 
 On Windows:  
-in the openHAB folder, double click on start_debug.sh
+in the openHAB folder, double click on start_debug.bat
 
-After the installing and running openHAB, start the browser and use localhost:8080 for HTTP and localhost:8443 for HTTPS.
+After installing and running openHAB, start the browser and use localhost:8080 for HTTP and localhost:8443 for HTTPS.
 ([openHAB installation guide][3]).
 
 Initial setup of openHAB and installation of the AmazonEchoControl binding:<br/> ([openHAB first-time setup][4])
@@ -66,9 +66,9 @@ the itemsuffix has to be written lowercase and the value has to be written in up
 
 #### Output Port Description
 
-*   **currentState** The current state of the item, which was last change
+*   **currentState** The current state of the item, which was changed last
 *   **currentTitle** The current title of the song, which is playing right now
-*   **cmdResponse** Shows **OK** if the cmd was correct and **ERROR** if it was not and an error message
+*   **cmdResponse** Shows **OK** if the cmd was correct or **ERROR** if it was not (plus a more detailed error message)
 
 
 #### Event Listener Description
@@ -77,7 +77,7 @@ the itemsuffix has to be written lowercase and the value has to be written in up
 
 #### Event Trigger Description
 
-This plugin has two triggers, one when the music starts and one when the music is paused.
+This plugin has two triggers, one **turnedOn** when the music starts and one **turnedOff** when the music is paused.
 
 ## Properties
 
