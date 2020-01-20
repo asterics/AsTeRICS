@@ -6,7 +6,7 @@ title: AmazonEchoControl
 
 Component Type: Processors (Subcategory: Home Control)
 
-This plugin is based on the openHAB plugin, but is only to control the AmazonEchoControl binding from openHAB.
+This plugin is based on the openHAB plugin, but is only used to control the AmazonEchoControl binding from openHAB.
 
 The plugin controls the AmazonEchoControl binding from openHAB.
 It is configured to interact directly with the binding. [openHAB documentation][1].
@@ -21,46 +21,35 @@ A functional openHAB installation,
 which is accessible via the web interface (the plugin connects via HTTP REST API). 
 You can run either HTTP or HTTPS, in order to fulfill any security requirements. 
 
-**Is not implemented right now. (Date: 12.01.2020)**
-
-In addition, it is also possible to provide HTTP basic authentication with username/password. 
-Please note, that any saved password in the AsTeRICS model is stored in the model file in PLAINTEXT!
-  
+### Installation
 To run openHAB without password authentication, start openHAB with this command:
 
-On Linux:  
+On Linux and macOS:  
 _bash ./start\_debug.sh_
 
 On Windows:  
 in the openHAB folder, double click on start_debug.sh
 
-**Is not implemented right now. (Date: 12.01.2020)**  
-To start with password authentication, use following command:  
-_bash ./start\_debug.sh -Djava.security.auth.login.config=./etc/login.conf_  
-The user configuration is handled via this file:  
-_openHAB\_runtime/configurations/users.cfg_ Please note, that the first line is necessary, so do not remove it!  
-Further information on configuration and usage of openHAB is available on the openHAB GitHub page ([openHAB wiki][2]).
-
-After the installation and openHAB is running, start the browser and use localhost:8080 for HTTP and localhost:8443 for HTTPS.
+After the installing and running openHAB, start the browser and use localhost:8080 for HTTP and localhost:8443 for HTTPS.
 ([openHAB installation guide][3]).
 
 Initial setup of openHAB and installation of the AmazonEchoControl binding:<br/> ([openHAB first-time setup][4])
-1. Select the **Standard (recommended setup)**, this step can take a while
+1. Select **Standard (recommended setup)**, this step can take a while
 2. Select the **PAPER UI**
 3. Go to **Add-ons** in the control panel and on Tab **BINDINGS** and search for **Amazon Echo Control Binding** and click on install 
 4. Go to **Configuration** and click on **Things** and create a new Amazon Echo Control Binding Thing
 5. Click on **Amazon Account** and accept it by pressing on the tick
 6. After that, use this link to connect openHAB with your **Amazon Account** (http://localhost:8080/amazonechocontrol/) 
-7. Back in the **Configuration** menu and click on **Things**, the account should be online 
+7. Back in the **Configuration** menu click on **Things**, the account should be online 
 8. If everything worked, go to **Inbox** and accept the two new **Things**
 9. The things will show up in the **Control** area 
 
-(if not follow the instruction at: [openHAB: AmazonEchoControl-Binding][5])
+(if not, follow the instruction at: [openHAB: AmazonEchoControl-Binding][5])
  
 
 ![Screenshot: Amazon Account Online](img/amazonaccount.JPG "Screenshot: Amazon Account Online")
 
-##AmazonEchoControl Plugin
+## AmazonEchoControl Plugin
 
 ![Screenshot: AmazonEchoControl Plugin](img/amazonechocontrolplugin.PNG "Screenshot: AmazonEchoControl Plugin")
 
@@ -70,15 +59,17 @@ Initial setup of openHAB and installation of the AmazonEchoControl binding:<br/>
 ItemSuffix is the name of the item and value is the new state of this item (http://localhost:8080/rest/items), 
 the itemsuffix has to be written lowercase and the value has to be written in uppercase
 
-    * {"musicProviderId": "player", "value": "SPOTIFY"} for changing the provider
-    * {"musicProviderId": "volume", "value": "50"} for changing the volume
-    * {"musicProviderId": "playMusicVoiceCommand", "value": "Yesterday from the Beatles"} for listening to a new song
+    * ```{"musicProviderId": "player", "value": "SPOTIFY"}``` for changing the provider
+    * ```{"musicProviderId": "volume", "value": "50"}``` for changing the volume
+    * ```{"musicProviderId": "playMusicVoiceCommand", "value": "Yesterday from the Beatles"}``` for listening to a new song
 
 
 #### Output Port Description
 
 *   **currentState** The current state of the item, which was last change
+*   **currentTitle** The current title of the song, which is playing right now
 *   **cmdResponse** Shows **OK** if the cmd was correct and **ERROR** if it was not and an error message
+
 
 #### Event Listener Description
 
