@@ -8,12 +8,8 @@ Component Type: Processors (Subcategory: Home Control)
 
 This plugin is based on the openHAB plugin, but is only to control the AmazonEchoControl binding from openHAB.
 
-The openHAB component interfaces to an openHAB instance, 
-which is used to configure and use a home control environment. 
-Usually, openHAB is stand-alone. 
-Therefore it has its own GUI, 
-many many possible interfacing solutions (called bindings) and a configuration tool (based on Eclipse). 
-More information is available here: [openHAB documentation][1].
+The plugin controls the AmazonEchoControl binding from openHAB.
+It is configured to interact directly with the binding. [openHAB documentation][1].
 
 This component uses the provided REST API of openHAB to read and write the state of different nodes 
 (called items) within the openHAB system.
@@ -51,11 +47,14 @@ After the installation and openHAB is running, start the browser and use localho
 First-time setup of openHAB and installtion of the AmazonEchoControl binding:<br/> ([openHAB first-time setup][4])
 1. Use the **Standard (recommended setup)**, this step can take a while
 2. Use the **PAPER UI**
-3. Go on **Add-ons** in the control panel and on **BINDINGS** and search for **Amazon Echo Control Binding** and install it
+3. Go on **Add-ons** in the control panel and on **BINDINGS** and search for **Amazon Echo Control Binding** and click on install 
 4. Go to **Configuration** and on **Things** and create a new Amazon Echo Control Binding Thing
-5. Click on Amazon Account and accept it, by pressing on the tick
-6. After that use this link to connect openHAB with your Amazon Account (http://localhost:8080/amazonechocontrol/) 
-7. Back at Configuration => Things, the Account should be online (if not look at this link ([openHAB: AmazonEchoControl-Binding][5]))
+4.1 Click on **Amazon Account** and accept it, by pressing on the tick
+5. After that, use this link to connect openHAB with your **Amazon Account** (http://localhost:8080/amazonechocontrol/) 
+6. Back at **Configuration => Things**, the Account should be online 
+7. If everything worked, go to **Inbox** and accept the two new Things
+8. The things will show up in **Control**(if not look at this link ([openHAB: AmazonEchoControl-Binding][5]))
+ 
 
 ![Screenshot: Amazon Account Online](img/amazonaccount.JPG "Screenshot: Amazon Account Online")
 
