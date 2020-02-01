@@ -19,7 +19,7 @@ Philips Hue plugin
 ## Requirements
 
 * A Philips Hue hardware Bridge
-* A Philips Hue Light (such as a fixture, a light bulb or an LED stripe)
+* A Philips Hue Light (such as a fixture, a light bulb or an LED strip)
 
 ## Initial Setup
 
@@ -40,7 +40,7 @@ and tap search again.
 
 ###  Bridge IP address and API key
 
-The plugin requires the an the IP address of the bridge and an API key.
+The plugin requires the IP address of the bridge and an API key.
 
 First let's find out the IP address:
 
@@ -131,5 +131,7 @@ and the values can be used to identify the lights (by name, model or serial numb
 * There is an example file (`philipshue.acs`) that demonstrates the full capabilities of the plugin.
 it can be found in the folder: `bin/ARE/models/useCaseDemos/environmentControl/`.
 * The CLIP API debugger will not work if your browser has strict XSS (cross-site scripting) protection enabled.
-In that case you can use another REST API debugger (like [Postman](https://www.getpostman.com/)).
+In that case you can use another REST API debugger (like [Postman](https://www.getpostman.com/)). You can also
+install a [Chrome extension](https://github.com/PhilGrayson/chrome-csp-disable) that disables strict XSS checking 
+for specific sites.
 * If you have any other issue or need help you can drop the author a line: bmedicke@gmail.com
