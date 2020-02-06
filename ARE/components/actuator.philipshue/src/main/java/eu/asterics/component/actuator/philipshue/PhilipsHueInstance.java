@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -47,7 +46,6 @@
  * one of two events is fires: turnedOn or turnedOff.
  */
 
-
 package eu.asterics.component.actuator.philipshue;
 
 import java.io.*;
@@ -60,7 +58,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.data.ConversionUtils;
@@ -106,12 +106,11 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     final static String LIGHTS_GREEN = "{\"on\":true, \"sat\": 121, \"hue\": 18962}";
     final static String LIGHTS_BLUE = "{\"on\":true, \"sat\": 121, \"hue\": 45840}";
     final static String LIGHTS_COLORLOOP = "{\"on\":true, \"effect\": \"colorloop\"}"; // loop through hue.
-    final static String LIGHTS_BRI_LOW = "{\"bri\": 25}";   //  10% brightness.
-    final static String LIGHTS_BRI_HALF = "{\"bri\": 128}"; //  50% brightness.
+    final static String LIGHTS_BRI_LOW = "{\"bri\": 25}"; // 10% brightness.
+    final static String LIGHTS_BRI_HALF = "{\"bri\": 128}"; // 50% brightness.
     final static String LIGHTS_BRI_FULL = "{\"bri\": 255}"; // 100% brightness.
     final static String LIGHTS_SATURATE = "{\"sat\": 255}"; // 100% saturation.
-    final static String LIGHTS_DESATURATE = "{\"sat\": 0}"; //   0% saturation.
-
+    final static String LIGHTS_DESATURATE = "{\"sat\": 0}"; // 0% saturation.
 
     // properties that can be changed from the UI:
     /**
@@ -125,15 +124,12 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     String propIp = "192.168.0.115";
 
     /**
-     * default target device to be controlled
-     * (if not configured otherwise)
+     * default target device to be controlled (if not configured otherwise)
      */
     String propTarget = DEFAULT_LIGHT;
 
     /**
-     * update rate to fetch all necessary items [ms]
-     * once per second (1000) is a good starting point. any more than that and the
-     * Hue Bridge might start lagging.
+     * update rate to fetch all necessary items [ms] once per second (1000) is a good starting point. any more than that and the Hue Bridge might start lagging.
      */
     int propUpdateRate = 1000;
 
@@ -144,7 +140,12 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     boolean lastPowerState; // same thing for the power state on its own.
 
     // allows to periodically call a function that fetches the current state of the Hue devices:
-    private final TickGenerator tg = new TickGenerator(this);
+    private ScheduledExecutorService ses;
+    private Runnable fetchStateRunnable = new Runnable() {
+        public void run() {
+            fetchState();
+        }
+    };
 
     /**
      * The class constructor.
@@ -155,7 +156,8 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Input Port.
      *
-     * @param portID the name of the port
+     * @param portID
+     *            the name of the port
      * @return the input port or null if not found
      */
     public IRuntimeInputPort getInputPort(String portID) {
@@ -169,7 +171,8 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Output Port.
      *
-     * @param portID the name of the port
+     * @param portID
+     *            the name of the port
      * @return the output port or null if not found
      */
     public IRuntimeOutputPort getOutputPort(String portID) {
@@ -186,7 +189,8 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Event Listener Port.
      *
-     * @param eventPortID the name of the port
+     * @param eventPortID
+     *            the name of the port
      * @return the EventListener port or null if not found
      */
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
@@ -268,7 +272,8 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Event Triggerer Port.
      *
-     * @param eventPortID the name of the port
+     * @param eventPortID
+     *            the name of the port
      * @return the EventTriggerer port or null if not found
      */
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
@@ -291,7 +296,8 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns the value of the given property.
      *
-     * @param propertyName the name of the property
+     * @param propertyName
+     *            the name of the property
      * @return the property value or null if not found
      */
     public Object getRuntimePropertyValue(String propertyName) {
@@ -314,8 +320,10 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     /**
      * sets a new value for the given property.
      *
-     * @param propertyName the name of the property
-     * @param newValue     the desired property value or null if not found
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         if ("apiKey".equalsIgnoreCase(propertyName)) {
@@ -352,10 +360,13 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
             cmd = ConversionUtils.stringFromBytes(data);
             String cmdResponse = sendPayload(propTarget, ENDPOINT_LIGHT, cmd);
             opCmd.sendData(ConversionUtils.stringToBytes(cmdResponse));
-            opCurrentState.sendData(ConversionUtils.stringToBytes(getCurrentState()));
+            try {
+                opCurrentState.sendData(ConversionUtils.stringToBytes(getCurrentState()));
+            } catch (IOException e) {
+                AstericsErrorHandling.instance.reportDebugInfo(PhilipsHueInstance.this, "HueConnectionError: Could not fetch current state: " + e.getMessage());
+            }
         }
     };
-
 
     /**
      * Event Listerner Ports.
@@ -511,7 +522,8 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
         AstericsErrorHandling.instance.reportDebugInfo(this, "start()");
 
         super.start();
-        tg.start();
+        ses = Executors.newScheduledThreadPool(1);
+        ses.schedule(fetchStateRunnable, updateRate, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -520,7 +532,7 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void pause() {
         super.pause();
-        tg.stop();
+        ses.shutdownNow();
     }
 
     /**
@@ -529,7 +541,8 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void resume() {
         super.resume();
-        tg.start();
+        ses = Executors.newScheduledThreadPool(1);
+        ses.schedule(fetchStateRunnable, updateRate, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -541,7 +554,7 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
         AstericsErrorHandling.instance.reportDebugInfo(this, "stop()");
 
         super.stop();
-        tg.stop();
+        ses.shutdownNow();
     }
 
     // functions for controlling all lights at the same time (group 0):
@@ -595,28 +608,31 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     }
 
     /**
-     * Fetch current state of the configured (via property) light
-     * (power state, hue, saturation, brightness, effects, etc.)
+     * Fetch current state of the configured (via property) light (power state, hue, saturation, brightness, effects, etc.)
+     * 
      * @return state as JSON
      */
-    private String getCurrentState() {
+    private String getCurrentState() throws IOException {
         return getResponse(propTarget);
     }
 
     /**
      * getResponse() uses the GET method and returns JSON.
      *
-     * @param target URL of the Hue bridge
+     * @param target
+     *            URL of the Hue bridge
      * @return JSON response from the Hue bridge
      */
-    private String getResponse(String target) {
+    private String getResponse(String target) throws IOException {
         StringBuffer response = new StringBuffer();
 
-        try {
-            URL url = new URL("http://" + propIp + "/api/" + propApiKey + target);
-            AstericsErrorHandling.instance.reportDebugInfo(this, "calling: " + url.toString());
+        URL url = new URL("http://" + propIp + "/api/" + propApiKey + target);
+        AstericsErrorHandling.instance.reportDebugInfo(this, "calling: " + url.toString());
 
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        HttpURLConnection con = null;
+        BufferedReader in = null;
+        try {
+            con = (HttpURLConnection) url.openConnection();
 
             // setup connection:
             con.setRequestMethod("GET");
@@ -624,32 +640,33 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
             con.setRequestProperty("Accept", "application/json");
 
             // read body of response:
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
 
-            // clean up:
-            in.close();
-            con.disconnect();
-
             // log return code and response body:
-            AstericsErrorHandling.instance.reportDebugInfo(this, "response: " + response.toString()
-                    + " with status code " + String.valueOf(con.getResponseCode()));
-        } catch (IOException e) {
-            AstericsErrorHandling.instance.reportError(this, "HueConnectionError: " + e.getMessage());
+            AstericsErrorHandling.instance.reportDebugInfo(this,
+                    "response: " + response.toString() + " with status code " + String.valueOf(con.getResponseCode()));
+        } finally {
+            // clean up:
+            if (in != null) in.close();
+            if (con != null) con.disconnect();
         }
 
         return response.toString(); // return string representation of response.
     }
 
     /**
-     * sendPayload() uses the PUT method and expects JSON as a payload.
-     * It returns JSON.
-     * @param target URL of the Hue Bridge
-     * @param endpoint should be "/state" for lights and "/action" for groups
-     * @param payload JSON that will be sent to the bridge (https://developers.meethue.com/develop/hue-api)
+     * sendPayload() uses the PUT method and expects JSON as a payload. It returns JSON.
+     * 
+     * @param target
+     *            URL of the Hue Bridge
+     * @param endpoint
+     *            should be "/state" for lights and "/action" for groups
+     * @param payload
+     *            JSON that will be sent to the bridge (https://developers.meethue.com/develop/hue-api)
      * @return response of HTTP call (usually JSON)
      */
     private String sendPayload(String target, String endpoint, String payload) {
@@ -657,8 +674,7 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
 
         try {
             URL url = new URL("http://" + propIp + "/api/" + propApiKey + target + endpoint);
-            AstericsErrorHandling.instance.reportDebugInfo(this, "calling: " + url.toString()
-                    + "with payload: " + payload);
+            AstericsErrorHandling.instance.reportDebugInfo(this, "sendPayload: calling: " + url.toString() + "with payload: " + payload);
 
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
@@ -674,7 +690,6 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
             osw.flush();
             osw.close();
 
-
             // read body of response:
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
@@ -687,8 +702,8 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
             con.disconnect();
 
             // log return code and response body:
-            AstericsErrorHandling.instance.reportDebugInfo(this, "response: " + response.toString()
-                    + " with status code " + String.valueOf(con.getResponseCode()));
+            AstericsErrorHandling.instance.reportDebugInfo(this,
+                    "response: " + response.toString() + " with status code " + String.valueOf(con.getResponseCode()));
         } catch (IOException e) {
             AstericsErrorHandling.instance.reportError(this, "HueConnectionError: " + e.getMessage());
         }
@@ -697,39 +712,48 @@ public class PhilipsHueInstance extends AbstractRuntimeComponentInstance {
     }
 
     /**
-     * This function is periodically called by the TickGenerator instance.
-     * See updateRate variable.
+     * This function is periodically called by the TickGenerator instance. See updateRate variable.
      */
     public void fetchState() {
-        etpTick.raiseEvent(); // fire tick event.
 
-        AstericsErrorHandling.instance.reportDebugInfo(this, "Fetching data, updateRate: " + updateRate);
+        try {
+            etpTick.raiseEvent(); // fire tick event.
 
-        // fetch the current settings of the light (as JSON):
-        String currentState = getCurrentState();
+            AstericsErrorHandling.instance.reportDebugInfo(this, "fetchState: Fetching data, updateRate: " + updateRate);
 
-        // strip possible whitespaces and extract power state from JSON response:
-        boolean currentPowerState = currentState.replaceAll(" ", "").contains("\"on\":true");
+            // fetch the current settings of the light (as JSON):
+            String currentState = getCurrentState();
 
-        // detect changed state of Hue devices:
-        if (!lastState.equals(currentState)) {
-            opCurrentState.sendData(ConversionUtils.stringToBytes(currentState));
-            etpStatusChanged.raiseEvent(); // fire statusChanged event.
-        }
+            // strip possible whitespaces and extract power state from JSON response:
+            boolean currentPowerState = currentState.replaceAll(" ", "").contains("\"on\":true");
 
-        // send events (turnedOn/turnedOff) if the power state has changed:
-        if (lastPowerState != currentPowerState) {
-            // strip possible whitespaces and check JSON:
-            if (currentState.replaceAll(" ", "").contains("\"on\":true")) {
-                etpTurnedOn.raiseEvent();
-            } else {
-                etpTurnedOff.raiseEvent();
+            // detect changed state of Hue devices:
+            if (!lastState.equals(currentState)) {
+                opCurrentState.sendData(ConversionUtils.stringToBytes(currentState));
+                etpStatusChanged.raiseEvent(); // fire statusChanged event.
             }
+
+            // send events (turnedOn/turnedOff) if the power state has changed:
+            if (lastPowerState != currentPowerState) {
+                // strip possible whitespaces and check JSON:
+                if (currentState.replaceAll(" ", "").contains("\"on\":true")) {
+                    etpTurnedOn.raiseEvent();
+                } else {
+                    etpTurnedOff.raiseEvent();
+                }
+            }
+
+            // update state variables for next tick.
+            lastPowerState = currentPowerState;
+            lastState = currentState;
+
+            AstericsErrorHandling.instance.reportDebugInfo(this, "Scheduling next bridge polling, updateRate: " + updateRate);
+            ses.schedule(fetchStateRunnable, updateRate, TimeUnit.MILLISECONDS);
+        } catch (IOException e) {
+            // AstericsErrorHandling.instance.reportError(this, "HueConnectionError: " + e.getMessage());
+            AstericsErrorHandling.instance.reportDebugInfo(this, "HueConnectionError: polling failed: " + e.getMessage());
+            // In case of an error slow down polling to not flood the user with error messages.
+            ses.schedule(fetchStateRunnable, updateRate * 10, TimeUnit.MILLISECONDS);
         }
-
-        // update state variables for next tick.
-        lastPowerState = currentPowerState;
-        lastState = currentState;
-
     }
 }
