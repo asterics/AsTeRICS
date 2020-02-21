@@ -537,9 +537,10 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
             int virtualKeycode = 0;
             Field f;
             try {
-
-                String val = getVirtualKeycode(actcode);
-                f = NativeKeyEvent.class.getField(val);
+                NativeKeyHelper helper = fixNativeHook21KeyLocation(getVirtualKeycode(actcode));
+                AstericsErrorHandling.instance.getLogger().fine("KeyboardInstance: "+helper.toString());
+                
+                f = NativeKeyEvent.class.getField(helper.VC_name);
                 Class<?> t = f.getType();
                 if (t == int.class) {
                     try {
@@ -548,10 +549,10 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
                         // virtual keycode="+virtualKeycode);
 
                         NativeKeyEvent keyEvent = new NativeKeyEvent(NativeKeyEvent.NATIVE_KEY_PRESSED,
-                                System.currentTimeMillis(), 0x00, // Modifiers
+                                0x00, // Modifiers
                                 0x00, // Raw Code
                                 virtualKeycode, // NativeKeyEvent.VC_UNDEFINED,
-                                NativeKeyEvent.CHAR_UNDEFINED, NativeKeyEvent.KEY_LOCATION_STANDARD);
+                                NativeKeyEvent.CHAR_UNDEFINED, helper.keyLocation);
 
                         GlobalScreen.postNativeEvent(keyEvent);
                     } catch (IllegalArgumentException | IllegalAccessException e) {
@@ -581,9 +582,10 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
             int virtualKeycode = 0;
             Field f;
             try {
-
-                String val = getVirtualKeycode(actcode);
-                f = NativeKeyEvent.class.getField(val);
+                NativeKeyHelper helper = fixNativeHook21KeyLocation(getVirtualKeycode(actcode));
+                AstericsErrorHandling.instance.getLogger().fine("KeyboardInstance: "+helper.toString());
+                
+                f = NativeKeyEvent.class.getField(helper.VC_name);
                 Class<?> t = f.getType();
                 if (t == int.class) {
                     try {
@@ -592,10 +594,10 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
                         // virtual keycode="+virtualKeycode);
 
                         NativeKeyEvent keyEvent = new NativeKeyEvent(NativeKeyEvent.NATIVE_KEY_RELEASED,
-                                System.currentTimeMillis(), 0x00, // Modifiers
+                                0x00, // Modifiers
                                 0x00, // Raw Code
                                 virtualKeycode, // NativeKeyEvent.VC_UNDEFINED
-                                NativeKeyEvent.CHAR_UNDEFINED, NativeKeyEvent.KEY_LOCATION_UNKNOWN);
+                                NativeKeyEvent.CHAR_UNDEFINED, helper.keyLocation);
 
                         GlobalScreen.postNativeEvent(keyEvent);
 
@@ -613,7 +615,29 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
             break;
         }
     }
-
+    
+    /**
+     * Fix for JNativeHook 2.1 where no VC_xx_L or VC_xx_R fields are supported any more.
+     * Instead there is a KEY_LOCATION indicating if, e.g. ALT LEFT or ALT RIGHT was pressed.
+     * @param val
+     * @return
+     */
+    NativeKeyHelper fixNativeHook21KeyLocation(String val) {
+        NativeKeyHelper helper=new NativeKeyHelper();
+        
+        helper.keyLocation=NativeKeyEvent.KEY_LOCATION_STANDARD;
+        helper.VC_name=val;
+        
+        if(val.endsWith("_L")) {
+            helper.VC_name=val.substring(0,val.length()-2);
+            helper.keyLocation=NativeKeyEvent.KEY_LOCATION_LEFT;
+        } else if(val.endsWith("_R")) {
+            helper.VC_name=val.substring(0,val.length()-2);
+            helper.keyLocation=NativeKeyEvent.KEY_LOCATION_RIGHT;
+        }              
+        return helper;
+    }
+     
     /**
      * sends a keycode of given index (in the keycode vector) and mode
      */
@@ -799,5 +823,14 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
         sendKeyCode(actSendPos, MODE_RELEASE);
         super.stop();
         AstericsErrorHandling.instance.reportInfo(this, "Keyboard Instance stopped");
+    }
+}
+
+class NativeKeyHelper {
+    int keyLocation=NativeKeyEvent.KEY_LOCATION_UNKNOWN;
+    String VC_name="";
+    @Override
+    public String toString() {
+        return "NativeKeyHelper [keyLocation=" + keyLocation + ", VC_name=" + VC_name + "]";
     }
 }
