@@ -628,10 +628,10 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
         helper.keyLocation=NativeKeyEvent.KEY_LOCATION_STANDARD;
         helper.VC_name=val;
         
-        if(val.endsWith("_L")) {
+        if(!"VC_L".equals(val) && val.endsWith("_L")) {
             helper.VC_name=val.substring(0,val.length()-2);
             helper.keyLocation=NativeKeyEvent.KEY_LOCATION_LEFT;
-        } else if(val.endsWith("_R")) {
+        } else if(!"VC_R".equals(val) && val.endsWith("_R")) {
             helper.VC_name=val.substring(0,val.length()-2);
             helper.keyLocation=NativeKeyEvent.KEY_LOCATION_RIGHT;
         }              
