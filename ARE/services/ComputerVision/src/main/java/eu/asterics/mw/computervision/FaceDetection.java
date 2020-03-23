@@ -25,29 +25,20 @@
 
 package eu.asterics.mw.computervision;
 
-import static org.bytedeco.javacpp.helper.opencv_objdetect.cvHaarDetectObjects;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_AA;
-import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
-import static org.bytedeco.javacpp.opencv_core.cvClearMemStorage;
-import static org.bytedeco.javacpp.opencv_core.cvGetSeqElem;
-import static org.bytedeco.javacpp.opencv_core.cvLoad;
-import static org.bytedeco.javacpp.opencv_core.cvPoint;
-import static org.bytedeco.javacpp.opencv_imgproc.cvRectangle;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_BGR2GRAY;
-import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
-import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_ROUGH_SEARCH;
-import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_FIND_BIGGEST_OBJECT;
+import org.bytedeco.opencv.global.opencv_objdetect;
+import org.bytedeco.opencv.opencv_core.*;
+import org.bytedeco.opencv.opencv_objdetect.*;
+
+import static org.bytedeco.opencv.global.opencv_core.*;
+import static org.bytedeco.opencv.global.opencv_imgproc.*;
+import static org.bytedeco.opencv.global.opencv_objdetect.*;
 
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.opencv_core.CvMemStorage;
-import org.bytedeco.javacpp.opencv_core.CvRect;
-import org.bytedeco.javacpp.opencv_core.CvSeq;
-import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.opencv_objdetect;
-import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
-import org.bytedeco.javacpp.helper.opencv_core.AbstractCvMemStorage;
-import org.bytedeco.javacpp.helper.opencv_core.AbstractCvScalar;
-import org.bytedeco.javacpp.helper.opencv_core.AbstractIplImage;
+import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.OpenCVFrameConverter;
+
 
 /**
  * This class is meant to contain methods simplifying cv/detection-algorithms.
@@ -64,7 +55,7 @@ public class FaceDetection {
     private static final int MIN_FACE_HEIGHT = 80;
     private static final int MIN_FACE_WIDTH = 80;
     String classifierName = "data/service.computervision/haarcascade_frontalface_alt.xml";
-    CvHaarClassifierCascade classifier = null;
+    CascadeClassifier classifier = null;
     // Objects allocated with a create*() or clone() factory method are
     // automatically released
     // by the garbage collector, but may still be explicitly released by calling
@@ -81,18 +72,10 @@ public class FaceDetection {
         // We can "cast" Pointer objects by instantiating a new object of the
         // desired class.
         System.out.println("Loading haarcascade classifier");
-        classifier = new CvHaarClassifierCascade(cvLoad(classifierName));
+        classifier = new CascadeClassifier(classifierName);
         if (classifier.isNull()) {
             System.err.println("Error loading classifier file \"" + classifierName + "\".");
         }
-
-        // Objects allocated with a create*() or clone() factory method are
-        // automatically released
-        // by the garbage collector, but may still be explicitly released by
-        // calling release().
-        // You shall NOT call cvReleaseImage(), cvReleaseMemStorage(), etc. on
-        // objects allocated this way.
-        storage = AbstractCvMemStorage.create();
     }
 
     /**
@@ -104,8 +87,8 @@ public class FaceDetection {
      */
     public CvRect detectFace(IplImage grayImage) throws Exception {
         // We already expect getting a grayscale image.
-
-        cvClearMemStorage(storage);
+        Mat grayFrame=cvarrToMat(grayImage);
+        
         System.currentTimeMillis();
 
         /*
@@ -127,17 +110,18 @@ public class FaceDetection {
         // For any reason the javacv binding does not provide the minFeatureSize
         // method signature of cvHaarDetectObjects.
 
-        CvSeq faces = cvHaarDetectObjects(grayImage, classifier, storage, 1.2, 1,
-                CV_HAAR_DO_ROUGH_SEARCH | CV_HAAR_FIND_BIGGEST_OBJECT);
+        RectVector faces = new RectVector();
+        classifier.detectMultiScale(grayFrame, faces,
+                1.1, 3, CASCADE_FIND_BIGGEST_OBJECT | CASCADE_DO_ROUGH_SEARCH, null, null);
 
         System.currentTimeMillis();
 
-        int total = faces.total();
+        long total = faces.size();
         if (total > 0) {
 
-            CvRect faceRect = new CvRect(cvGetSeqElem(faces, 0));
+            Rect faceRect = faces.get(0);
             if (faceRect.width() > MIN_FACE_WIDTH && faceRect.height() > MIN_FACE_HEIGHT) {
-                return faceRect;
+                return new CvRect(faceRect.x(),faceRect.y(),faceRect.width(),faceRect.height());
             }
             // System.out.println("ignoring face with width:
             // "+faceRect.width());

@@ -10,17 +10,19 @@
 	<property name="middleware" location="../../middleware"/>
 	<property name="services" location="../../services"/>
 	<property name="resources" location="src/main/resources"/>
+	<property name="javacv.dest" location="javacv/src/main/resources/lib/native"/>
+	<property name="javacv.version" value="1.5.2"/>
 	<!-- don't forget to also update the MANIFEST file!! -->
 	
 	<property name="jar.os.name.windows" value="windows"/>
 	<property name="jar.os.name.linux" value="linux"/>
 	<property name="jar.os.name.macosx" value="macosx"/>
 
-	<property name="javacv.target.file" location="${services}/javacv-1.3.0-full-all.jar"/>
-	<property name="javacv.windows.target.file" location="${services}/javacv-1.3.0-basic-${jar.os.name.windows}.jar"/>
-	<property name="javacv.linux.target.file" location="${services}/javacv-1.3.0-basic-${jar.os.name.linux}.jar"/>
-	<property name="javacv.macosx.target.file" location="${services}/javacv-1.3.0-basic-${jar.os.name.macosx}.jar"/>
-	<property name="javacv.ffmpeg.target.file" location="${services}/javacv-1.3.0-ffmpeg-all.jar"/>
+	<property name="javacv.target.file" location="${services}/javacv-${javacv.version}-full-all.jar"/>
+	<property name="javacv.windows.target.file" location="${services}/javacv-${javacv.version}-basic-${jar.os.name.windows}.jar"/>
+	<property name="javacv.linux.target.file" location="${services}/javacv-${javacv.version}-basic-${jar.os.name.linux}.jar"/>
+	<property name="javacv.macosx.target.file" location="${services}/javacv-${javacv.version}-basic-${jar.os.name.macosx}.jar"/>
+	<property name="javacv.ffmpeg.target.file" location="${services}/javacv-${javacv.version}-ffmpeg-all.jar"/>
 
 	<fileset id="javacv-files-windows" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/*-linux-*.jar, **/*-macosx-*.jar" includes="lib/native/*.jar">
 	</fileset>
@@ -48,6 +50,16 @@
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${build}"/>
 	</target>
+	
+	<target name="download-javacv" description="Downloads the javacv jars">
+		<!-- Checks, if there is a local file already and if the remote file does not have a newer timestamp -->
+		<get src="https://repo1.maven.org/maven2/org/bytedeco/javacv/1.5.2/javacv-1.5.2.jar"
+		     dest="${javacv.dest}"
+		     verbose="true"
+		     usetimestamp="true"
+		     ignoreerrors="true"
+			tryGzipEncoding="true"/>
+	</target>	
 
 	<target name="compile" depends="init, merge-jars" description="compile the source ">
 		<javac source="${javac.source}" target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build}"  verbose="true" debug="${debug}" 

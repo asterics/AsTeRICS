@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.bytedeco.javacpp.opencv_core.IplImage;
+import org.bytedeco.opencv.opencv_core.IplImage;
 import org.bytedeco.javacv.CameraDevice;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameConverter;

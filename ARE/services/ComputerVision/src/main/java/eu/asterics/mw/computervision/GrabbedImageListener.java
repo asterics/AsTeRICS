@@ -25,7 +25,7 @@
 
 package eu.asterics.mw.computervision;
 
-import org.bytedeco.javacpp.opencv_core.IplImage;
+import org.bytedeco.opencv.opencv_core.IplImage;
 
 /**
  * Defines callback method(s) for a registered image listener. Is called in case

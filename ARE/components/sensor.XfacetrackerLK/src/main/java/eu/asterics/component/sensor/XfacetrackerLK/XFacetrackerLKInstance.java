@@ -26,43 +26,30 @@
 
 package eu.asterics.component.sensor.XfacetrackerLK;
 
-import static org.bytedeco.javacpp.opencv_core.CV_TERMCRIT_EPS;
-import static org.bytedeco.javacpp.opencv_core.CV_TERMCRIT_ITER;
-import static org.bytedeco.javacpp.opencv_core.FONT_HERSHEY_SIMPLEX;
-import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
-import static org.bytedeco.javacpp.opencv_core.cvFlip;
-import static org.bytedeco.javacpp.opencv_core.cvPoint;
-import static org.bytedeco.javacpp.opencv_core.cvRect;
-import static org.bytedeco.javacpp.opencv_core.cvResetImageROI;
-import static org.bytedeco.javacpp.opencv_core.cvSetImageROI;
-import static org.bytedeco.javacpp.opencv_core.cvSize;
-import static org.bytedeco.javacpp.opencv_core.cvTermCriteria;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_BGR2GRAY;
-import static org.bytedeco.javacpp.opencv_imgproc.cvCircle;
-import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
-import static org.bytedeco.javacpp.opencv_imgproc.cvFindCornerSubPix;
-import static org.bytedeco.javacpp.opencv_imgproc.cvInitFont;
-import static org.bytedeco.javacpp.opencv_imgproc.cvPutText;
-import static org.bytedeco.javacpp.opencv_video.CV_LKFLOW_PYR_A_READY;
-import static org.bytedeco.javacpp.opencv_video.cvCalcOpticalFlowPyrLK;
+import org.bytedeco.opencv.global.*;
+import org.bytedeco.opencv.opencv_core.*;
+import org.bytedeco.opencv.opencv_objdetect.*;
+import org.bytedeco.opencv.opencv_highgui.*;
+import org.bytedeco.opencv.opencv_imgproc.*;
+import org.bytedeco.opencv.opencv_tracking.*;
+import org.bytedeco.opencv.opencv_optflow.*;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
+import static org.bytedeco.opencv.global.opencv_core.*;
+import static org.bytedeco.opencv.global.opencv_imgproc.*;
+import static org.bytedeco.opencv.global.opencv_objdetect.*;
+import static org.bytedeco.opencv.global.opencv_highgui.*;
+import static org.bytedeco.opencv.global.opencv_imgcodecs.*;
+import static org.bytedeco.opencv.global.opencv_video.*;
+import static org.bytedeco.opencv.global.opencv_optflow.*;
+import static org.bytedeco.opencv.global.opencv_tracking.*;
 
-import org.bytedeco.javacpp.BytePointer;
-import org.bytedeco.javacpp.FloatPointer;
-import org.bytedeco.javacpp.IntPointer;
-import org.bytedeco.javacpp.opencv_core.CvPoint;
-import org.bytedeco.javacpp.opencv_core.CvPoint2D32f;
-import org.bytedeco.javacpp.opencv_core.CvRect;
-import org.bytedeco.javacpp.opencv_core.CvScalar;
-import org.bytedeco.javacpp.opencv_core.CvSize;
-import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.opencv_imgproc.CvFont;
-import org.bytedeco.javacpp.helper.opencv_core.AbstractIplImage;
+import org.bytedeco.javacpp.*;
+import org.bytedeco.javacpp.indexer.*;
+import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.computervision.FaceDetection;
@@ -77,6 +64,11 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
+
+import java.awt.Dimension;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -527,7 +519,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
                 sendPortData(points);
 
                 points[A] = points[B];
-                flags |= CV_LKFLOW_PYR_A_READY;
+//                flags |= CV_LKFLOW_PYR_A_READY;
             }
         }
 
@@ -599,14 +591,29 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
      */
     public CvPoint2D32f trackOpticalFlow(IplImage[] imgGrey, IplImage[] imgPyr, CvPoint2D32f pointsA) {
         // Call Lucas Kanade algorithm
-        BytePointer features_found = new BytePointer(MAX_POINTS);
-        FloatPointer feature_errors = new FloatPointer(MAX_POINTS);
+//        BytePointer features_found = new BytePointer(MAX_POINTS);
+//        FloatPointer feature_errors = new FloatPointer(MAX_POINTS);
 
         CvPoint2D32f pointsB = new CvPoint2D32f(MAX_POINTS);
-        cvCalcOpticalFlowPyrLK(imgGrey[A], imgGrey[B], imgPyr[A], imgPyr[B], pointsA, pointsB, nrPoints.get(), cvSize(winSize, winSize), 5, features_found,
-                feature_errors, cvTermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.3), flags);
+        
+        Mat matPointsA=new Mat(pointsA);
+        Mat matPointsB=new Mat(pointsB);
+        Mat matFeaturesFound=new Mat();
+        Mat matFeaturesErrors=new Mat();
+        
+        calcOpticalFlowPyrLK(cvarrToMat(imgPyr[A]), cvarrToMat(imgPyr[B]), matPointsA, matPointsB, matFeaturesFound,
+                matFeaturesErrors,new Size(winSize, winSize), 5, new TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.3), 0, 1e-4);        
+        
 
-        return rejectBadPoints(pointsA, pointsB, features_found, feature_errors);
+        return rejectBadPoints(pointsA, pointsB, matFeaturesFound, matFeaturesErrors);
+    }
+    
+    private Mat[] iplImageToMat(IplImage[] iplImgArr) {
+        Mat[] matArr=new Mat[iplImgArr.length];
+        for(int i=0; i< iplImgArr.length ; i++) {
+            matArr[i]=cvarrToMat(iplImgArr[i]);
+        }
+        return matArr;
     }
 
     /**
@@ -619,12 +626,16 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
      * @param feature_errors
      * @return
      */
-    private CvPoint2D32f rejectBadPoints(CvPoint2D32f pointsA, CvPoint2D32f pointsB, BytePointer features_found, FloatPointer feature_errors) {
+    private CvPoint2D32f rejectBadPoints(CvPoint2D32f pointsA, CvPoint2D32f pointsB, Mat features_found, Mat feature_errors) {
         needToInit = false;
+        
+        UByteIndexer features_found_idx = features_found.createIndexer();
+        FloatIndexer feature_errors_idx = feature_errors.createIndexer();
+        
         // Make an image of the results
         for (int i = 0; i < nrPoints.get(); i++) {
-            if (features_found.get(i) == 0 || feature_errors.get(i) > 550) {
-                System.out.println("Error is " + feature_errors.get(i) + "/n");
+            if (features_found_idx.get(i) == 0 || feature_errors_idx.get(i) > 550) {
+                System.out.println("Error is " + feature_errors_idx.get(i) + "/n");
                 needToInit = true;
                 initCycles = 0;
                 return pointsB;
