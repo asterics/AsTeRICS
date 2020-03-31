@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.8.4
+Created-By: bnd
+Archiver-Version: Plexus Archiver
+Built-By: deinhofer
+Build-Jdk: 1.8.0_25
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-services.javacv
+Bundle-SymbolicName: org.bytedeco.javacv
+Bundle-Version: 1.5.2
+Bundle-ClassPath: ., javacv-1.5.2.jar, javacv-platform-1.5.2.jar, javacpp-1.5.2.jar, opencv-4.1.2-1.5.2.jar, opencv-4.1.2-1.5.2-linux-x86_64.jar, opencv-4.1.2-1.5.2-linux-x86.jar, opencv-platform-4.1.2-1.5.2.jar 
+Export-Package: org.bytedeco.javacv.*, org.bytedeco.javacpp.*, org.opencv.*
+DynamicImport-Package: *
+-includeresource: ./javacv/src/main/resources/lib/native/javacv-1.5.2.jar, ./javacv/src/main/resources/lib/native/javacv-platform-1.5.2.jar, ./javacv/src/main/resources/lib/native/javacpp-1.5.2.jar, ./javacv/src/main/resources/lib/native/opencv-4.1.2-1.5.2.jar, ./javacv/src/main/resources/lib/native/opencv-4.1.2-1.5.2-linux-x86_64.jar, ./javacv/src/main/resources/lib/native/opencv-4.1.2-1.5.2-linux-x86.jar, ./javacv/src/main/resources/lib/native/opencv-platform-4.1.2-1.5.2.jar 
+-exportcontents: org.bytedeco
