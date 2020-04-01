@@ -9,7 +9,7 @@
     NOTE: Windows 10 seems to have an built in **"bash"** command, so the git bash has to be renamed in the
 		**ProgramFiles/bin** folder to another name, e.g. **git-bash.exe**
 
-## Build for Windows Installer
+## Windows
 
 To build a full installer for Windwos containing all components (ACS, ARE, WebACS, APE) please invoke the following script:
 
