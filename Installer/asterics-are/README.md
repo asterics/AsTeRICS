@@ -1,4 +1,4 @@
-# Build instructions for Linux and Mac
+# Installer Build instructions (Linux and Mac)
 
 ## Prerequisites
 
@@ -6,13 +6,13 @@
 * ant: see [README of root page](/README.md)
 * APE: Is included in the repository
 
-## Linux Build
+## Linux
 
 ```bash
 ant deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=<version-string>
 ```
 
-## Mac OSX Build
+## Mac OSX
 
 ```bash
 ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=<version-string>
