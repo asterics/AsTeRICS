@@ -15,7 +15,14 @@ ant deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=<version-strin
 ## Mac OSX Build
 
 ```bash
-ant deploy -Dfx.deploy.nativeBundles=dmg -Dfx.application.version=<version-string>
+ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=<version-string>
 ```
+
+or if you want to specify the Java version that should be used for embedding add the ```-Dfx.application.version``` parameter:
+
+```bash
+ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=<version-string> -Dfx.platform.basedir=<path to JRE Home>
+```
+
 
 
