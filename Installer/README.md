@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-* Build requirements for AsTeRICS, see [README of root page](/README.md)
+* Build requirements for AsTeRICS, see [README of root page](/ReadMe.md)
 * [InnoSetup tool, iscc.exe](http://www.jrsoftware.org/isinfo.php)
 * [git cmdline tool](http://git-scm.com/):
   * (git.exe, bash.exe download from http://git-scm.com/, add e.g. **"C:\Program Files\Git\bin"** to **PATH**)
