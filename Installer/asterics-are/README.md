@@ -18,24 +18,26 @@ ant -Dfx.application.version=<xxx> ...
 
 ## Linux
 
-The Linux installer has some custom debian-specific files in [packages/linux](./packages/linux/). The file [packages/linux/control](./packages/linux/control) contains the meta-information for the package e.g. version string or package dependencies.
+The Linux installer has some custom debian-specific files in [package/linux](./package/linux/). The file [package/linux/control](./package/linux/control) contains the meta-information for the package e.g. version string or package dependencies.
 
-If you freshly checkout AsTeRICS, the version string in ```APE.properties``` and the ``` control``` file will automatically be replaced when calling ```ant deploy```. For subsequent calls you would have to update the files manually or perform ```git checkout .``` in the AsTeRICS root directory if you want to change the version number again.
+If you freshly checkout AsTeRICS, the version string in ```APE.properties``` and the ``` control``` file will automatically be replaced with the value of the environment variable ```$VERSION``` when calling ```ant deploy```. For subsequent calls you would have to update the files manually or perform ```git checkout .``` in the AsTeRICS root directory if you want to change the version number again.
+
+To create a .deb installer call:
 
 ```bash
-VERSION=<version string> ant deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION
+VERSION=<version string> ; ant deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION
 ```
 
 ## Mac OSX
 
 ```bash
-VERSION=<version string> ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION
+VERSION=<version string> ; ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION
 ```
 
 or if you want to specify the Java version that should be used for embedding add the ```-Dfx.application.version``` parameter:
 
 ```bash
-VERSION=<version string> ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.platform.basedir=<path to JRE Home> 
+VERSION=<version string> ; ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.platform.basedir=<path to JRE Home> 
 ```
 
 
