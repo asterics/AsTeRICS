@@ -79,10 +79,10 @@ case "$1" in
 
 		echo ""
 		echo ""
-		echo "You need a Java Runtime, zulu jdk 8 is recommended:\n"
-		echo -e "Zulu: https://www.azul.com/downloads/zulu-community/?version=java-8-lts&os=linux&package=jdk"
-		echo -e "\nor OpenJDK\n"
-		echo sudo apt-get install openjdk-8-jre
+		echo "You need a Java Runtime Standard Edition 8, Zulu JDK 8 is recommended:"
+		echo -e "\nZulu: https://www.azul.com/downloads/zulu-community/?version=java-8-lts&os=linux&package=jdk"
+		echo -e "\nbut you can also use Oracle Java 8 or OpendJDK 8:"
+		echo -e "\nOpenJDK: sudo apt-get install openjdk-8-jre"
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
