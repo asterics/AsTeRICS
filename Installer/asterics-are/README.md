@@ -25,19 +25,19 @@ If you freshly checkout AsTeRICS, the version string in ```APE.properties``` and
 To create a .deb installer call:
 
 ```bash
-VERSION=<version string> ; ant deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION
+VERSION=<version string>; ant deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION
 ```
 
 ## Mac OSX
 
 ```bash
-VERSION=<version string> ; ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION
+VERSION=<version string>; ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION
 ```
 
 or if you want to specify the Java version that should be used for embedding add the ```-Dfx.platform.basedir=<path to JRE Home>``` parameter:
 
 ```bash
-VERSION=<version string> ; ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.platform.basedir=<path to JRE Home> 
+VERSION=<version string>; ant deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.platform.basedir=<path to JRE Home> 
 ```
 
 ## Troubleshooting
