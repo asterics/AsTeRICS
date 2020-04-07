@@ -8,8 +8,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: asterics-services.javacv
 Bundle-SymbolicName: org.bytedeco.javacv
 Bundle-Version: 1.5.2
-Bundle-ClassPath: ., javacv-1.5.2.jar, javacv-platform-1.5.2.jar, javacpp-1.5.2.jar, opencv-4.1.2-1.5.2.jar, opencv-4.1.2-1.5.2-linux-x86_64.jar, opencv-4.1.2-1.5.2-linux-x86.jar, opencv-platform-4.1.2-1.5.2.jar 
-Export-Package: org.bytedeco.javacv.*, org.bytedeco.javacpp.*, org.opencv.*
-DynamicImport-Package: *
--includeresource: ./javacv/src/main/resources/lib/native/javacv-1.5.2.jar, ./javacv/src/main/resources/lib/native/javacv-platform-1.5.2.jar, ./javacv/src/main/resources/lib/native/javacpp-1.5.2.jar, ./javacv/src/main/resources/lib/native/opencv-4.1.2-1.5.2.jar, ./javacv/src/main/resources/lib/native/opencv-4.1.2-1.5.2-linux-x86_64.jar, ./javacv/src/main/resources/lib/native/opencv-4.1.2-1.5.2-linux-x86.jar, ./javacv/src/main/resources/lib/native/opencv-platform-4.1.2-1.5.2.jar 
+Bundle-ClassPath: ., javacv-1.5.2.jar, javacv-platform-1.5.2.jar, javacpp-1.5.2.jar, opencv-4.1.2-1.5.2.jar, opencv-4.1.2-1.5.2-linux-x86_64.jar, opencv-4.1.2-1.5.2-linux-x86.jar, opencv-platform-4.1.2-1.5.2.jar openblas-platform-0.3.7-1.5.2.jar, openblas-0.3.7-1.5.2.jar, openblas-0.3.7-1.5.2-linux-x86.jar, openblas-0.3.7-1.5.2-linux-x86_64.jar, ffmpeg-4.2.1-1.5.2.jar, ffmpeg-platform-4.2.1-1.5.2.jar
+Export-Package: *
+Import-Package: *;resolution:=optional
+DynamicImport-Package: 
+-includeresource: ./javacv/src/main/resources/lib/native/javacv-1.5.2.jar, ./javacv/src/main/resources/lib/native/javacv-platform-1.5.2.jar, ./javacv/src/main/resources/lib/native/javacpp-1.5.2.jar, ./javacv/src/main/resources/lib/native/opencv-4.1.2-1.5.2.jar, ./javacv/src/main/resources/lib/native/opencv-4.1.2-1.5.2-linux-x86_64.jar, ./javacv/src/main/resources/lib/native/opencv-4.1.2-1.5.2-linux-x86.jar, ./javacv/src/main/resources/lib/native/opencv-platform-4.1.2-1.5.2.jar, ./javacv/src/main/resources/lib/native/openblas-platform-0.3.7-1.5.2.jar, ./javacv/src/main/resources/lib/native/openblas-0.3.7-1.5.2.jar, ./javacv/src/main/resources/lib/native/openblas-0.3.7-1.5.2-linux-x86.jar, ./javacv/src/main/resources/lib/native/openblas-0.3.7-1.5.2-linux-x86_64.jar, ./javacv/src/main/resources/lib/native/ffmpeg-4.2.1-1.5.2.jar, ./javacv/src/main/resources/lib/native/ffmpeg-platform-4.2.1-1.5.2.jar  
 -exportcontents: org.bytedeco
