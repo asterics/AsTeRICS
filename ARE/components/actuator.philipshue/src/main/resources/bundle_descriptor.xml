@@ -148,11 +148,11 @@
             <property name="target"
                       type="string"
                       value="/lights/2"
-                      description="Philips Hue Bridge IP"/>
+                      description="light to be controlled in the form /light/&lt;id&gt;"/>
             <property name="updateRate"
                       type="integer"
                       value="1000"
-                      description="Philips Hue Bridge IP"/>
+                      description="Update rate for Hue bridge polling in ms. Don't use rate below 500ms."/>
 
         </properties>
 
