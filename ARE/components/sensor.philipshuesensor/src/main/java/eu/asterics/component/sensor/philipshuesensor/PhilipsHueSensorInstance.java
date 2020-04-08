@@ -59,14 +59,19 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
@@ -123,7 +128,12 @@ public class PhilipsHueSensorInstance extends AbstractRuntimeComponentInstance {
 
 
     // allows to periodically call a function that fetches the current state of the Hue devices:
-    private final TickGenerator tg = new TickGenerator(this);
+    private ScheduledExecutorService ses;
+    private Runnable fetchStateRunnable = new Runnable() {
+        public void run() {
+            fetchState();
+        }
+    };
 
     /**
      * The class constructor.
@@ -242,7 +252,8 @@ public class PhilipsHueSensorInstance extends AbstractRuntimeComponentInstance {
         AstericsErrorHandling.instance.reportDebugInfo(this, "start()");
 
         super.start();
-        tg.start();
+        ses = Executors.newScheduledThreadPool(1);
+        ses.schedule(fetchStateRunnable, updateRate, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -251,7 +262,7 @@ public class PhilipsHueSensorInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void pause() {
         super.pause();
-        tg.stop();
+        ses.shutdownNow();
     }
 
     /**
@@ -260,7 +271,8 @@ public class PhilipsHueSensorInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void resume() {
         super.resume();
-        tg.start();
+        ses = Executors.newScheduledThreadPool(1);
+        ses.schedule(fetchStateRunnable, updateRate, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -272,7 +284,7 @@ public class PhilipsHueSensorInstance extends AbstractRuntimeComponentInstance {
         AstericsErrorHandling.instance.reportDebugInfo(this, "stop()");
 
         super.stop();
-        tg.stop();
+        ses.shutdownNow();
     }
 
     /**
@@ -281,7 +293,7 @@ public class PhilipsHueSensorInstance extends AbstractRuntimeComponentInstance {
      *
      * @return state as JSON
      */
-    private String getCurrentState() {
+    private String getCurrentState() throws IOException {
         return getResponse(propTarget);
     }
 
@@ -327,50 +339,58 @@ public class PhilipsHueSensorInstance extends AbstractRuntimeComponentInstance {
     }
 
     /**
-     * This function is periodically called by the TickGenerator instance.
+     * This function is periodically called.
      * See updateRate variable.
      */
     public void fetchState() {
-        etpTick.raiseEvent(); // fire tick event.
+        try {
+            etpTick.raiseEvent(); // fire tick event.
 
-        //AstericsErrorHandling.instance.reportDebugInfo(this, "Fetching data, updateRate: " + updateRate);
+            //AstericsErrorHandling.instance.reportDebugInfo(this, "Fetching data, updateRate: " + updateRate);
 
-        // fetch the current settings of the light (as JSON):
-        String currentState = getCurrentState();
+            // fetch the current settings of the light (as JSON):
+            String currentState = getCurrentState();
 
-        // strip possible whitespaces and extract sensor type from JSON response:
-        boolean isDimmerSwitch = currentState.replaceAll(" ", "").contains("\"productname\":\"Huedimmerswitch\"");
-        boolean isMotionSensor = currentState.replaceAll(" ", "").contains("\"productname\":\"Huemotionsensor\"");
+            // strip possible whitespaces and extract sensor type from JSON response:
+            boolean isDimmerSwitch = currentState.replaceAll(" ", "").contains("\"productname\":\"Huedimmerswitch\"");
+            boolean isMotionSensor = currentState.replaceAll(" ", "").contains("\"productname\":\"Huemotionsensor\"");
 
-        // detect changed state of Hue device:
-        if (!lastState.equals(currentState)) {
+            // detect changed state of Hue device:
+            if (!lastState.equals(currentState)) {
 
-            // on button pressed:
-            if (isDimmerSwitch && currentState.replaceAll(" ", "").contains("\"state\":{\"buttonevent\":1002"))
-                etpDimmerButtonOn.raiseEvent();
+                // on button pressed:
+                if (isDimmerSwitch && currentState.replaceAll(" ", "").contains("\"state\":{\"buttonevent\":1002"))
+                    etpDimmerButtonOn.raiseEvent();
 
-            // brightness up button pressed:
-            else if (isDimmerSwitch && currentState.replaceAll(" ", "").contains("\"state\":{\"buttonevent\":2002"))
-                etpDimmerButtonBrighter.raiseEvent();
+                    // brightness up button pressed:
+                else if (isDimmerSwitch && currentState.replaceAll(" ", "").contains("\"state\":{\"buttonevent\":2002"))
+                    etpDimmerButtonBrighter.raiseEvent();
 
-            // brightness down button pressed:
-            else if (isDimmerSwitch && currentState.replaceAll(" ", "").contains("\"state\":{\"buttonevent\":3002"))
-                etpDimmerButtonDarker.raiseEvent();
+                    // brightness down button pressed:
+                else if (isDimmerSwitch && currentState.replaceAll(" ", "").contains("\"state\":{\"buttonevent\":3002"))
+                    etpDimmerButtonDarker.raiseEvent();
 
-            // off button pressed:
-            else if (isDimmerSwitch && currentState.replaceAll(" ", "").contains("\"state\":{\"buttonevent\":4002"))
-                etpDimmerButtonOff.raiseEvent();
+                    // off button pressed:
+                else if (isDimmerSwitch && currentState.replaceAll(" ", "").contains("\"state\":{\"buttonevent\":4002"))
+                    etpDimmerButtonOff.raiseEvent();
 
-            // presence detected by motion sensor:
-            else if (isMotionSensor && currentState.replaceAll(" ", "").contains("\"presence\":true")) {
-                etpMotionDetected.raiseEvent();
+                    // presence detected by motion sensor:
+                else if (isMotionSensor && currentState.replaceAll(" ", "").contains("\"presence\":true")) {
+                    etpMotionDetected.raiseEvent();
+                }
+
+
+                opCurrentState.sendData(ConversionUtils.stringToBytes(currentState));
+                etpStatusChanged.raiseEvent(); // fire statusChanged event.
             }
-
-            opCurrentState.sendData(ConversionUtils.stringToBytes(currentState));
-            etpStatusChanged.raiseEvent(); // fire statusChanged event.
+            // update state variables for next tick.
+            lastState = currentState;
+            ses.schedule(fetchStateRunnable, updateRate, TimeUnit.MILLISECONDS);
+        } catch (IOException e) {
+            // AstericsErrorHandling.instance.reportError(this, "HueConnectionError: " + e.getMessage());
+            AstericsErrorHandling.instance.reportDebugInfo(this, "HueConnectionError: polling failed: " + e.getMessage());
+            // In case of an error slow down polling to not flood the user with error messages.
+            ses.schedule(fetchStateRunnable, updateRate * 10, TimeUnit.MILLISECONDS);
         }
-
-        // update state variables for next tick.
-        lastState = currentState;
     }
 }
