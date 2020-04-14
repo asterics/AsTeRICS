@@ -1,4 +1,3 @@
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -70,7 +69,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Impelements a haardcascade combined with Lukas Kanade flow algorithm to detect face tracking. Based on FacetrackerLK from Chris Veigl.
  * 
@@ -124,7 +122,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     private String propTitleVideoFrameWindow = "";
     private Integer propFrameRate = 0;
     private boolean propDisplayGUI = true;
-    private boolean propEnableOverlaySettings=true;
+    private boolean propEnableOverlaySettings = true;
 
     private String instanceId = "XFacetrackerLK";
 
@@ -519,11 +517,11 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
                 sendPortData(points);
 
                 points[A] = points[B];
-//                flags |= CV_LKFLOW_PYR_A_READY;
+                // flags |= CV_LKFLOW_PYR_A_READY;
             }
         }
 
-        //Only show fps and device name if enabled by the property.
+        // Only show fps and device name if enabled by the property.
         if (propEnableOverlaySettings) {
             // Count frames after tracking to reflect real frame rate including tracking.
             frameCount++;
@@ -590,30 +588,67 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
      * @return
      */
     public CvPoint2D32f trackOpticalFlow(IplImage[] imgGrey, IplImage[] imgPyr, CvPoint2D32f pointsA) {
-        // Call Lucas Kanade algorithm
-//        BytePointer features_found = new BytePointer(MAX_POINTS);
-//        FloatPointer feature_errors = new FloatPointer(MAX_POINTS);
+        Mat matPointsA= cvPoint2D32fToMat(pointsA);
+        Mat matPointsB = cvPoint2D32fToMat(new CvPoint2D32f(nrPoints.get()));
 
-        CvPoint2D32f pointsB = new CvPoint2D32f(MAX_POINTS);
-        
-        Mat matPointsA=new Mat(pointsA);
-        Mat matPointsB=new Mat(pointsB);
-        Mat matFeaturesFound=new Mat();
-        Mat matFeaturesErrors=new Mat();
-        
-        calcOpticalFlowPyrLK(cvarrToMat(imgPyr[A]), cvarrToMat(imgPyr[B]), matPointsA, matPointsB, matFeaturesFound,
-                matFeaturesErrors,new Size(winSize, winSize), 5, new TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.3), 0, 1e-4);        
-        
+        Mat matFeaturesFound = new Mat();
+        Mat matFeaturesErrors = new Mat();
 
-        return rejectBadPoints(pointsA, pointsB, matFeaturesFound, matFeaturesErrors);
+//        System.out.println("imgGrey.length: " + imgGrey.length + ", imgGrey[A]: " + imgGrey[A]);
+        Mat matImgA = new Mat(imgGrey[A].asCvMat());
+        Mat matImgB = new Mat(imgGrey[B].asCvMat());
+        Mat matImgPyrA = new Mat(imgPyr[A].asCvMat());
+        Mat matImgPyrB = new Mat(imgPyr[B].asCvMat());
+
+//        System.out.println("matImgPyrA: " + matImgPyrA + ", matImgPyrB: " + matImgPyrB);
+
+        calcOpticalFlowPyrLK(matImgA, matImgB, matPointsA, matPointsB, matFeaturesFound, matFeaturesErrors, new Size(winSize, winSize), 5,
+                new TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.3), 0, 1e-4);
+
+        // matPointsB=matPointsA;
+        // CvPoint2D32f pointsB=matTocvPoint2D32f(matPointsB);
+        // System.out.println("pointsA: "+matTocvPoint2D32f(matPointsA)+", pointsB: "+pointsB);
+        return rejectBadPoints(matTocvPoint2D32f(matPointsA), matTocvPoint2D32f(matPointsB), matFeaturesFound, matFeaturesErrors);
     }
-    
-    private Mat[] iplImageToMat(IplImage[] iplImgArr) {
-        Mat[] matArr=new Mat[iplImgArr.length];
-        for(int i=0; i< iplImgArr.length ; i++) {
-            matArr[i]=cvarrToMat(iplImgArr[i]);
+
+    /**
+     * Converts a given Mat object into a CvPoint2D32f object containing several points extracted from Mat objects returned by Mat.row(i).
+     * @param points
+     * @return
+     */
+    private CvPoint2D32f matTocvPoint2D32f(Mat points) {
+        CvPoint2D32f cvPoints = new CvPoint2D32f(points.rows());
+        FloatIndexer pointsIdx = points.createIndexer();
+
+        for (int i = 0; i < points.rows(); i++) {
+            cvPoints.position(i);
+
+            CvPoint2D32f p = cvPoint2D32f(pointsIdx.get(i, 0), pointsIdx.get(i, 1));
+//            System.out.println("adding point: " + p);
+            cvPoints.put(p);
         }
-        return matArr;
+        cvPoints.position(0);
+        return cvPoints;
+    }
+
+    /**
+     * Converts a given CvPoint2D32f object (with several points) to a Mat object of type CV_32FC2.
+     * The points are added as Mat objects (1x2,CV_32FC2) having one row per point. 
+     * 
+     * @param points2D32f
+     * @return
+     */
+    private Mat cvPoint2D32fToMat(CvPoint2D32f points2D32f) {
+        int[] pSize = { nrPoints.get(), 1 };
+        Mat matPoints = new Mat(1, pSize, CV_32FC2);
+
+        for (int i = 0; i < nrPoints.get(); i++) {
+            points2D32f.position(i);
+            Point2f p=new Point2f(points2D32f.x(),points2D32f.y());
+            matPoints.row(i).setTo(new Mat(1, 2, CV_32FC2, p));
+        }
+        points2D32f.position(0);
+        return matPoints;
     }
 
     /**
@@ -627,13 +662,16 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
      * @return
      */
     private CvPoint2D32f rejectBadPoints(CvPoint2D32f pointsA, CvPoint2D32f pointsB, Mat features_found, Mat feature_errors) {
+        System.out.println("rejectBadPoints: pointsA: " + pointsA + ", pointsB: " + pointsB);
+
         needToInit = false;
-        
         UByteIndexer features_found_idx = features_found.createIndexer();
         FloatIndexer feature_errors_idx = feature_errors.createIndexer();
-        
+        System.out.println("features_found_idx.size(0)" + features_found_idx.size(0));
         // Make an image of the results
-        for (int i = 0; i < nrPoints.get(); i++) {
+        for (int i = 0; i < features_found_idx.size(0); i++) {
+            System.out.println(
+                    "features_found_idx.get(" + i + ")=" + features_found_idx.get(i) + ", feature_errors_idx.get(" + i + ")=" + feature_errors_idx.get(i));
             if (features_found_idx.get(i) == 0 || feature_errors_idx.get(i) > 550) {
                 System.out.println("Error is " + feature_errors_idx.get(i) + "/n");
                 needToInit = true;
@@ -643,6 +681,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 
             pointsA.position(i);
             pointsB.position(i);
+//            System.out.println("pointsB[" + i + "](" + pointsB.x() + ", " + pointsB.y() + ")");
 
             // Ignore points lying outside ROI, actually we should try to use
             // cvSetImageROI
