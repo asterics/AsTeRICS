@@ -1,7 +1,6 @@
-   
----
-Neural Network Loader
----
+##
+
+## Neural Network Loader
 
 # Neural Network Loader
 
@@ -9,21 +8,20 @@ Neural Network Loader
 
 This plugin uses the [Encog framework](http://www.heatonresearch.com/encog) (version: 3.0.1). The plugin can load a neural network configuration stored in the Encog EG file. The neural network‘s output is calculated for the input data.
 
-![Screenshot: NeuralNetworkLoader plugin](img/NeuralNetworkLoader.jpg "Screenshot:
+![Screenshot: NeuralNetworkLoader plugin](./img/NeuralNetworkLoader.jpg "Screenshot:
         NeuralNetworkLoader plugin")  
 NeuralNetworkLoader plugin
 
 ## Input Port Description
 
-*   **input1...input32 \[double\]:** The Neural network inputs.
+- **input1...input32 \[double\]:** The Neural network inputs.
 
 ## Output Port Description
 
-*   **output1...output32 \[****double****\]:** The Neural network outputs.
+- **output1...output32 \[\*\***double\***\*\]:** The Neural network outputs.
 
 ## Properties
 
-*   **filePath \[string\]:** The EG file path.
+- **filePath \[string\]:** The EG file path.
 
-  
 [How to prepare example EG file for the Neural Network Loader plugin.](eg_example.htm)

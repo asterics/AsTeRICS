@@ -1,7 +1,6 @@
-  
----
-XFacetrackerLK
----
+##
+
+## XFacetrackerLK
 
 # XFacetrackerLK
 
@@ -15,29 +14,29 @@ This component provides a cross-platform face tracking computer vision algorithm
 
 A camera has to be available (this can be any webcam or a camera which is available as image acquisition device via the operating system). The picture below shows the Logitech Webcam 9000 Pro. Also the camera device of a Kinect sensor or PS3Eye should work. Furthermore, a video stream of an IP camera can be used for tracking.
 
-![Logitech Webcam 9000 Pro](img/webcam.jpg "Logitech Webcam 9000 Pro")  
+![Logitech Webcam 9000 Pro](./img/webcam.jpg "Logitech Webcam 9000 Pro")  
 Logitech Webcam 9000 Pro
 
 ## Output Port Description
 
-*   **noseX \[integer\]:** This value specifies the relative change in the x coordinate of the user's nose with respect to the previous image frame.
-*   **noseY \[integer\]:** This value specifies the relative change in the y coordinate of the user's nose with respect to the previous image frame.
-*   **chinX \[integer\]:** This value specifies the relative change in the x coordinate of the user's chin with respect to the previous image frame.
-*   **chinY \[integer\]:** This value specifies the relative change in the y coordinate of the user's chin with respect to the previous image frame.
+- **noseX \[integer\]:** This value specifies the relative change in the x coordinate of the user's nose with respect to the previous image frame.
+- **noseY \[integer\]:** This value specifies the relative change in the y coordinate of the user's nose with respect to the previous image frame.
+- **chinX \[integer\]:** This value specifies the relative change in the x coordinate of the user's chin with respect to the previous image frame.
+- **chinY \[integer\]:** This value specifies the relative change in the y coordinate of the user's chin with respect to the previous image frame.
 
 ## Event Listener Description
 
-*   **init:** if this event is triggered, the face recognition procedure is initiated. This can be useful if the correct face position has been lost due to drifting of the LK algorithm.
-*   **showCameraSettings** an incoming event displays the settings window for the camera device (only on Windows), where parameters like image brightness or contrast can be adjusted.
+- **init:** if this event is triggered, the face recognition procedure is initiated. This can be useful if the correct face position has been lost due to drifting of the LK algorithm.
+- **showCameraSettings** an incoming event displays the settings window for the camera device (only on Windows), where parameters like image brightness or contrast can be adjusted.
 
 ## Properties
 
-*   **frameGrabber\[string, combobox selection\]:**Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera).
-*   **frameGrabberFormat\[string\]:**Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'.
-*   **deviceList \[string, combobox selection\]:**List of available devices, if supported by grabber
-*   **cameraSelection \[string\]:** The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera.
-*   **cameraResolution \[string, combobox selection\]:** This selection box provides several standard camera resolutions. Changing the resolution affects accuracy and performance (CPU load of the runtime system). Provided selections include �160x120�, �320x240�, �640x480�, �800x600�, �1024x768� and �1600x1200�.
-*   **titleVideoFrameWindow \[string\]:**The title of the window showing the video frame.
+- **frameGrabber\[string, combobox selection\]:**Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera).
+- **frameGrabberFormat\[string\]:**Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'.
+- **deviceList \[string, combobox selection\]:**List of available devices, if supported by grabber
+- **cameraSelection \[string\]:** The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera.
+- **cameraResolution \[string, combobox selection\]:** This selection box provides several standard camera resolutions. Changing the resolution affects accuracy and performance (CPU load of the runtime system). Provided selections include �160x120�, �320x240�, �640x480�, �800x600�, �1024x768� and �1600x1200�.
+- **titleVideoFrameWindow \[string\]:**The title of the window showing the video frame.
 
 ## Example Configuraitons
 
@@ -51,24 +50,24 @@ Let the plugin probe available framegrabbers and choose the first available one.
 
 Configuration
 
-*   frameGrabber:Default
-*   cameraSelection:0
+- frameGrabber:Default
+- cameraSelection:0
 
 ### OpenCV
 
-*   frameGrabber:OpenCV
-*   cameraSelection:0
+- frameGrabber:OpenCV
+- cameraSelection:0
 
 ### VideoInput
 
-*   frameGrabber:VideoInput
-*   cameraSelection:0
+- frameGrabber:VideoInput
+- cameraSelection:0
 
 ### FFmpeg
 
-*   frameGrabber:FFmpeg
-*   frameGrabberFormat (or vfwcap):dshow
-*   cameraSelection (device name as of device manager):video=Integrated Camera
+- frameGrabber:FFmpeg
+- frameGrabberFormat (or vfwcap):dshow
+- cameraSelection (device name as of device manager):video=Integrated Camera
 
 ### MJPEG stream of SmartPhone camera
 
@@ -84,5 +83,5 @@ Set the cameraSelection property of the XFacetrackerLK plugin to this url.
 
 Configuration
 
-*   frameGrabber:IPCamera
-*   cameraSelection:http://192.168.1.100:8080/video
+- frameGrabber:IPCamera
+- cameraSelection:http://192.168.1.100:8080/video

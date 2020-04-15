@@ -1,7 +1,7 @@
-  
----
+##
+
 KeyCapture
---- table, th, td { border: 1px solid black; } th { padding-left: 20px; padding-right: 20px; } td{ text-align: center; } 
+--- table, th, td { border: 1px solid black; } th { padding-left: 20px; padding-right: 20px; } td{ text-align: center; }
 
 # Key Capture
 
@@ -9,7 +9,7 @@ KeyCapture
 
 This component provides access to keystrokes of a single key on the keyboard. The keystroke capture does not depend on a particular window or text field to have the input focus. For every keypress and release of the specified key an event gets fired. Possible applications include triggering functions by keyboard input, interfacing to speech recognition software or remapping keys to other keycodes.
 
-![Screenshot: KeyCapture plugin](img/keycapture.jpg "Screenshot: KeyCapture plugin")  
+![Screenshot: KeyCapture plugin](./img/keycapture.jpg "Screenshot: KeyCapture plugin")  
 KeybCapture plugin
 
 ## Requirements
@@ -406,21 +406,21 @@ The full list of keycodes is defined here: https://github.com/kwhat/jnativehook/
 
 ## Input Port Description
 
-*   **keyCode \[integer\]:** The keycode of the key which should be captured. For a list of the mapping between keycodes and keys see the graphics above.
+- **keyCode \[integer\]:** The keycode of the key which should be captured. For a list of the mapping between keycodes and keys see the graphics above.
 
 ## Event Trigger Description
 
-*   **keyPressed:** This event port fires an event if the key with the specified keyCode was pressed.
-*   **keyReleased:** This event port fires an event if the key with the specified keyCode was released.
+- **keyPressed:** This event port fires an event if the key with the specified keyCode was pressed.
+- **keyReleased:** This event port fires an event if the key with the specified keyCode was released.
 
 ## Event Listener Description
 
-*   **enable:** The keystate is captured and events get fired
-*   **disable:** The plugin does not fire any event.
-*   **block:** After this event, the keystroke of the key with the specified keyCode is not forwarded to the operating system.
-*   **unblock:** After this event, the keystroke of the key with the specified keyCode is forwarded to the operating system.
+- **enable:** The keystate is captured and events get fired
+- **disable:** The plugin does not fire any event.
+- **block:** After this event, the keystroke of the key with the specified keyCode is not forwarded to the operating system.
+- **unblock:** After this event, the keystroke of the key with the specified keyCode is forwarded to the operating system.
 
 ## Properties
 
-*   **block \[boolean\]:** If this property is set to true, no key press activities will be routed to the operating system
-*   **keyCode\[integer\]:**The keycode of the key which should be captured. For a list of the mapping between keycodes and keys see the graphics above.
+- **block \[boolean\]:** If this property is set to true, no key press activities will be routed to the operating system
+- **keyCode\[integer\]:**The keycode of the key which should be captured. For a list of the mapping between keycodes and keys see the graphics above.

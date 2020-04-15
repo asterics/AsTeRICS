@@ -1,7 +1,6 @@
-  
----
-Amplifier
----
+##
+
+## Amplifier
 
 # Amplifier
 
@@ -9,17 +8,17 @@ Amplifier
 
 This component takes an input and multiplies it with a gain factor set in the properties. It can be used to amplify or reduce signal values or to invert them.
 
-![Screenshot: Amplifier plugin](img/Amplifier.jpg "Screenshot: Amplifier plugin")  
+![Screenshot: Amplifier plugin](./img/Amplifier.jpg "Screenshot: Amplifier plugin")  
 Amplifier plugin
 
 ## Input Port Description
 
-*   **sigIn \[double\]:** The input value to be amplified.
+- **sigIn \[double\]:** The input value to be amplified.
 
 ## Output Port Description
 
-*   **sigOut \[double\]:** The amplified output value.
+- **sigOut \[double\]:** The amplified output value.
 
 ## Properties
 
-*   **factor \[double\]:** The gain factor that inputs are multiplied with.
+- **factor \[double\]:** The gain factor that inputs are multiplied with.

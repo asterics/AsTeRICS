@@ -1,7 +1,6 @@
-  
----
-Math Evaluator
----
+##
+
+## Math Evaluator
 
 # Math Evaluator
 
@@ -11,7 +10,7 @@ The math evaluator is a component with four inputs. These inputs can be combined
 
 The list of supported mathematical functions is sin(), cos(), tan(), asin(), ,acos(), atan(), sqrt(), log(), ln(), angle(), abs(), mod(), sum(), rand(), umin(), add().
 
-![Screenshot: MathEvaluator plugin](img/MathEvaluator.jpg "Screenshot: MathEvaluator plugin")  
+![Screenshot: MathEvaluator plugin](./img/MathEvaluator.jpg "Screenshot: MathEvaluator plugin")  
 MathEvaluator plugin
 
 ## Requirements
@@ -20,12 +19,12 @@ The component depends on the JEPlite library which is included in the component'
 
 ## Input Port Description
 
-*   **inA to inD \[double\]:** The inputs which can be accessed in the mathematical expression via a to d. **These 4 input ports support synchronization**
+- **inA to inD \[double\]:** The inputs which can be accessed in the mathematical expression via a to d. **These 4 input ports support synchronization**
 
 ## Output Port Description
 
-*   **out \[double\]:** the result of the expression.
+- **out \[double\]:** the result of the expression.
 
 ## Properties
 
-*   **expression \[string\]:** Mathematical expression to be evaluated.
+- **expression \[string\]:** Mathematical expression to be evaluated.

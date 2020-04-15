@@ -1,7 +1,6 @@
-  
----
-FS20Receiver
----
+##
+
+## FS20Receiver
 
 # FS20 Receiver
 
@@ -9,14 +8,14 @@ FS20Receiver
 
 The FS20Receiver receives commands of the home automation system FS20 for ELV Electronics. Depending on the received commands, events will be fired.
 
-![FS20 Receiver Plugin](img/FS20Receiver.jpg "FS20 Receiver Plugin")  
+![FS20 Receiver Plugin](./img/FS20Receiver.jpg "FS20 Receiver Plugin")  
 FS20 Receiver Plugin
 
 ## Requirements
 
 This component requires the [FS20 PCE Receiver](http://www.elv.de/empfaenger-fs20-funkschaltsystem.html) connected to a USB port.
 
-![FS20 PCE Receiver](img/fs20pce.jpg "FS20 PCE Receiver")  
+![FS20 PCE Receiver](./img/fs20pce.jpg "FS20 PCE Receiver")  
 FS20 PCE Receiver
 
 ## Supported OSes
@@ -29,7 +28,7 @@ You must run the ARE as root for being able to access the device. Alternatively 
 
 ## Output Port Description
 
-*   **fs20command \[string\]:** The received FS20 command will be send out of the plugin. The data has the following format: housecode\_sendaddress\_command, e.g. 11111111\_3343\_17
+- **fs20command \[string\]:** The received FS20 command will be send out of the plugin. The data has the following format: housecode_sendaddress_command, e.g. 11111111_3343_17
 
 ## Event Trigger Description
 
@@ -155,5 +154,5 @@ On for old level then previous state
 
 ## Properties
 
-*   **housecode \[integer\]** The housecode, the system should react on. The housecode has 8 digits, each from 1 to 4. This property influences the event triggers, but not the _fs20command_ output port.
-*   **sendaddress \[integer\]** The sendaddress, the system should react on. The sendaddress has 4 digits, each from 1 to 4. This property influences the event triggers, but not the _fs20command_ output port.
+- **housecode \[integer\]** The housecode, the system should react on. The housecode has 8 digits, each from 1 to 4. This property influences the event triggers, but not the _fs20command_ output port.
+- **sendaddress \[integer\]** The sendaddress, the system should react on. The sendaddress has 4 digits, each from 1 to 4. This property influences the event triggers, but not the _fs20command_ output port.

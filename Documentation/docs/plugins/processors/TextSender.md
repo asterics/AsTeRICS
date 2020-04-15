@@ -1,7 +1,6 @@
-   
----
-TextSender
----
+##
+
+## TextSender
 
 # Text Sender
 
@@ -10,21 +9,21 @@ TextSender
 This component sends the string data through the output port when it receives the trigger event.
 
 ![Screenshot:
-        TextSender plugin](img/TextSender.jpg "Screenshot: TextSender plugin")  
+        TextSender plugin](./img/TextSender.jpg "Screenshot: TextSender plugin")  
 TextSender plugin
 
 ## Input Port Description
 
-*   **setText \[string\]:** Updates the text with the incoming string.
+- **setText \[string\]:** Updates the text with the incoming string.
 
 ## Output Port Description
 
-*   **output \[string\]:** String output port.
+- **output \[string\]:** String output port.
 
 ## Event Listener Description
 
-*   **sendText:** This event causes text to be sent.
+- **sendText:** This event causes text to be sent.
 
 ## Properties
 
-*   **text \[string\]:** The default text to be sent.
+- **text \[string\]:** The default text to be sent.

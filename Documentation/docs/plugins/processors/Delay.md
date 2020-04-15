@@ -1,27 +1,25 @@
-   
----
-Delay
----
+##
+
+## Delay
 
 # Delay
 
 ### Component Type: Processor (Subcategory: Basic Math)
 
-This plugin passes received double values after a defined delay.  
+This plugin passes received double values after a defined delay.
 
 ![Screenshot:
-        Delay plugin](img/Delay.jpg "Screenshot: Delay plugin")  
+        Delay plugin](./img/Delay.jpg "Screenshot: Delay plugin")  
 Delay plugin
 
-## Input Port Description  
+## Input Port Description
 
-*   **in (double):** Input port for the incoming signal.  
-    
+- **in (double):** Input port for the incoming signal.
 
-## Output Port Description  
+## Output Port Description
 
-*   **out (double):** Output port for the delayed signal.
+- **out (double):** Output port for the delayed signal.
 
 ## Properties
 
-*   **delay \[integer\]:** Delay between input and output signal (in milliseconds).
+- **delay \[integer\]:** Delay between input and output signal (in milliseconds).
