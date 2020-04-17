@@ -91,7 +91,15 @@
 				<exclusion coords="org.bytedeco:libdc1394"/>
 				<exclusion coords="org.bytedeco:libdc1394-platform"/>
 				<exclusion coords="org.bytedeco:tesseract"/>
-				<exclusion coords="org.bytedeco:tesseract-platform"/>		
+				<exclusion coords="org.bytedeco:tesseract-platform"/>
+				<exclusion coords="org.bytedeco:librealsense"/>
+				<exclusion coords="org.bytedeco:librealsense-platform"/>		
+				<exclusion coords="org.bytedeco:librealsense2"/>
+				<exclusion coords="org.bytedeco:librealsense2-platform"/>		
+				<exclusion coords="org.bytedeco:libfreenect"/>
+				<exclusion coords="org.bytedeco:libfreenect-platform"/>		
+				<exclusion coords="org.bytedeco:libfreenect2"/>
+				<exclusion coords="org.bytedeco:libfreenect2-platform"/>				
 			</dependencies>
 			<!-- downloads the resolved artifacts and stores them at ${javacv.dest} -->
 			<files refid="api.files" dir="${javacv.dest}"
