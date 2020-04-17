@@ -662,16 +662,16 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
      * @return
      */
     private CvPoint2D32f rejectBadPoints(CvPoint2D32f pointsA, CvPoint2D32f pointsB, Mat features_found, Mat feature_errors) {
-        System.out.println("rejectBadPoints: pointsA: " + pointsA + ", pointsB: " + pointsB);
+//        System.out.println("rejectBadPoints: pointsA: " + pointsA + ", pointsB: " + pointsB);
 
         needToInit = false;
         UByteIndexer features_found_idx = features_found.createIndexer();
         FloatIndexer feature_errors_idx = feature_errors.createIndexer();
-        System.out.println("features_found_idx.size(0)" + features_found_idx.size(0));
+//        System.out.println("features_found_idx.size(0)" + features_found_idx.size(0));
         // Make an image of the results
         for (int i = 0; i < features_found_idx.size(0); i++) {
-            System.out.println(
-                    "features_found_idx.get(" + i + ")=" + features_found_idx.get(i) + ", feature_errors_idx.get(" + i + ")=" + feature_errors_idx.get(i));
+//            System.out.println(
+//                    "features_found_idx.get(" + i + ")=" + features_found_idx.get(i) + ", feature_errors_idx.get(" + i + ")=" + feature_errors_idx.get(i));
             if (features_found_idx.get(i) == 0 || feature_errors_idx.get(i) > 550) {
                 System.out.println("Error is " + feature_errors_idx.get(i) + "/n");
                 needToInit = true;
