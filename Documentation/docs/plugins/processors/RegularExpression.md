@@ -8,8 +8,7 @@ title: RegularExpression
 
 This component processes strings with regular expressions. It can work in two modes: match strings with the pattern or replace string parts which match the pattern with another string.
 
-![Screenshot: RegularExpression plugin](./img/RegularExpression.jpg "Screenshot:
-        RegularExpression plugin")  
+![Screenshot: RegularExpression plugin](./img/RegularExpression.jpg "Screenshot: RegularExpression plugin")  
 RegularExpression plugin
 
 ## Input Port Description

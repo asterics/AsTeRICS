@@ -8,8 +8,7 @@ title: String Dispatcher
 
 This component has twenty slots for text strings. These strings can be sent to the output port via incoming events or by directly addressing a slot number using the input port.
 
-![Screenshot: StringDispatcher plugin](./img/StringDispatcher.jpg "Screenshot:
-        StringDispatcher plugin")  
+![Screenshot: StringDispatcher plugin](./img/StringDispatcher.jpg "Screenshot: StringDispatcher plugin")  
 StringDispatcher plugin
 
 ## Input Port Description

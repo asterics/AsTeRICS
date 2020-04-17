@@ -8,8 +8,7 @@ title: ButtonGrid
 
 The Button Grid component is a simple GUI on-screen keyboard. It sends events after buttons have been pressed.
 
-![Screenshot:
-        ButtonGrid plugin](./img/ButtonGrid.jpg "Screenshot: ButtonGrid plugin")  
+![Screenshot: ButtonGrid plugin](./img/ButtonGrid.jpg "Screenshot: ButtonGrid plugin")  
 ButtonGrid plugin
 
 ## Event Trigger Description

@@ -8,8 +8,7 @@ title: EditBox
 
 This component creates a GUI edit field which can send the text to other components. The text will be sent to the output port when enter is pressed or when the edit box looses the input focus (when the cursor is removed from the edit field).
 
-![Screenshot:
-        EditBox plugin](./img/EditBox.jpg "Screenshot: EditBox plugin")  
+![Screenshot: EditBox plugin](./img/EditBox.jpg "Screenshot: EditBox plugin")  
 EditBox plugin
 
 ## Output Port Description

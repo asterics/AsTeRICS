@@ -1,5 +1,3 @@
-  
-
 ---
 title: WebSocket
 ---
@@ -14,10 +12,10 @@ The websocket plugin can only be used if the ARE was started with the flag **\--
 
 ## Input Port Description
 
-*   **InA \[string\]:** Incoming messages are sent to the websocket as string.
+- **InA \[string\]:** Incoming messages are sent to the websocket as string.
 
 ## Output Port Description
 
-*   **OutA \[string\]:** Incoming messages from the websocket are sent to this output port as string.
+- **OutA \[string\]:** Incoming messages from the websocket are sent to this output port as string.
 
 ## Properties

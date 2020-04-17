@@ -8,8 +8,7 @@ title: TextSender
 
 This component sends the string data through the output port when it receives the trigger event.
 
-![Screenshot:
-        TextSender plugin](./img/TextSender.jpg "Screenshot: TextSender plugin")  
+![Screenshot: TextSender plugin](./img/TextSender.jpg "Screenshot: TextSender plugin")  
 TextSender plugin
 
 ## Input Port Description

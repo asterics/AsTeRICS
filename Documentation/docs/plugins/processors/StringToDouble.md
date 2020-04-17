@@ -8,8 +8,7 @@ title: StringToDouble
 
 This component converts the incoming string values into the integer values at the output port.
 
-![Screenshot: StringToDouble plugin](./img/StringToDouble.jpg "Screenshot:
-        StringToDouble plugin")  
+![Screenshot: StringToDouble plugin](./img/StringToDouble.jpg "Screenshot: StringToDouble plugin")  
 StringToDouble plugin
 
 ## Input Port Description

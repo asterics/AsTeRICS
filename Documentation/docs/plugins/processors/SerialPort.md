@@ -8,8 +8,7 @@ title: SerialPort
 
 The SerialPort plugin can be used to send and receive data from serial devices (e.g. microcontrollers/embedded devices/wireless links etc.) via a COM port or virtual COM port. The plugin adds some convinience methods to append or wait for termination characters.
 
-![Screenshot: COMPort plugin](./img/COMPort.jpg "Screenshot:
-        COMPort plugin")  
+![Screenshot: COMPort plugin](./img/COMPort.jpg "Screenshot: COMPort plugin")  
 SerialPort plugin
 
 ## Input Port Description

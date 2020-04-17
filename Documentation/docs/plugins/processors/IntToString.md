@@ -8,8 +8,7 @@ title: IntToString
 
 This component converts the incoming integer values to the string values at the output port.
 
-![Screenshot:
-        IntToString plugin](./img/IntToString.jpg "Screenshot: IntToString plugin")  
+![Screenshot: IntToString plugin](./img/IntToString.jpg "Screenshot: IntToString plugin")  
 IntToString plugin
 
 ## Input Port Description

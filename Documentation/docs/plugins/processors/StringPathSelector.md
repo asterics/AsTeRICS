@@ -8,8 +8,7 @@ title: StringPathSelector
 
 The StringPathSelector component allows routing of incoming strings between up to 4 output ports. The desired output port can be directly selected by a dedicated event listener port, or the strings can be switched to the next or previous output port.
 
-![Screenshot: StringPathSelector plugin](./img/StringPathSelector.jpg "Screenshot:
-        StringPathSelector plugin")  
+![Screenshot: StringPathSelector plugin](./img/StringPathSelector.jpg "Screenshot: StringPathSelector plugin")  
 StringPathSelector plugin
 
 ## Input Port Description

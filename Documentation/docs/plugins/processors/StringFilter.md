@@ -8,8 +8,7 @@ title: StringFilter
 
 Applies a given filter text to the incoming string. It can be selected if only strings that contain the filter text are passed to the output port, and/or if the filter text shall be removed from the incoming string. Please note that the filter text is applied case sensitive.
 
-![Screenshot: StringFilter plugin](./img/StringFilter.jpg "Screenshot:
-        StringFilter plugin")  
+![Screenshot: StringFilter plugin](./img/StringFilter.jpg "Screenshot: StringFilter plugin")  
 StringFilter plugin
 
 ## Input Port Description

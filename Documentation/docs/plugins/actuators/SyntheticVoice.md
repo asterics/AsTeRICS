@@ -8,8 +8,7 @@ title: SyntheticVoice
 
 The Synthetic Voice component uses the SAPI 5 technology to generate synthetic voice.
 
-![Screenshot: SyntheticVoice plugin](./img/SyntheticVoice.jpg "Screenshot:
-        SyntheticVoice plugin")  
+![Screenshot: SyntheticVoice plugin](./img/SyntheticVoice.jpg "Screenshot: SyntheticVoice plugin")  
 SyntheticVoice plugin
 
 ## Requirements

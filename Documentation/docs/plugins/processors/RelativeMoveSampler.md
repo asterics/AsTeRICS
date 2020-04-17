@@ -8,8 +8,7 @@ title: Relative Move Sampler
 
 This plugin was developed for models where a constant rate of value updates is needed. The plugin sums incoming relative position packages for three coordinates. The sums are sent to the output ports according to sampling rate. When the sums are sent, the accumulation values are reset to zero.
 
-![Screenshot: Relative Move Sampler](./img/RelativeMoveSampler.jpg "Screenshot:
-        Relative Move Sampler")  
+![Screenshot: Relative Move Sampler](./img/RelativeMoveSampler.jpg "Screenshot: Relative Move Sampler")  
 Relative Move Sampler
 
 ## Input Port Description

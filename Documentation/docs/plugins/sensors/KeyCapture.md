@@ -1,7 +1,6 @@
 ---
-
 title: KeyCapture
---- table, th, td { border: 1px solid black; } th { padding-left: 20px; padding-right: 20px; } td{ text-align: center; }
+---
 
 # Key Capture
 

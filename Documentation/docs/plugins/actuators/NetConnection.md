@@ -8,8 +8,7 @@ title: Net Connection
 
 This component provides interface to pass the data through the network. It allows to pass data to the another NetConnection component or to the application which uses the NetConnection Native ASAPI library.
 
-![Screenshot:
-        NetConnection plugin](./img/NetConnection.jpg "Screenshot: NetConnection plugin")  
+![Screenshot: NetConnection plugin](./img/NetConnection.jpg "Screenshot: NetConnection plugin")  
 NetConnection plugin
 
 ## Input Port Description

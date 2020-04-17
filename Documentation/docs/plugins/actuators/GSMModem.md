@@ -8,8 +8,7 @@ title: GSMModem
 
 This component can perform send and receive SMS action through the GSM modem.
 
-![Screenshot:
-        GSMModem plugin](./img/GSMModem.jpg "Screenshot: GSMModem plugin")  
+![Screenshot: GSMModem plugin](./img/GSMModem.jpg "Screenshot: GSMModem plugin")  
 GSMModem plugin
 
 ## Requirements

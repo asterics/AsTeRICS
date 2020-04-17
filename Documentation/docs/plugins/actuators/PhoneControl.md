@@ -8,8 +8,7 @@ title: PhoneControl
 
 This component controls a mobile phone with Windows Mobile operating system (v. 5.0 and above) through a Bluetooth connection. Currently supported functions are: Calling a phone number and accepting an incoming call, sending and receiving SMS messages. These functions can either be triggered by incoming events or by sending string commands to the phone plugin.
 
-![Screenshot:
-        PhoneControl plugin](./img/PhoneControl.jpg "Screenshot: PhoneControl plugin")  
+![Screenshot: PhoneControl plugin](./img/PhoneControl.jpg "Screenshot: PhoneControl plugin")  
 PhoneControl plugin
 
 ## Requirements

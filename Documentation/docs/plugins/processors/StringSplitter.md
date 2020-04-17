@@ -8,8 +8,7 @@ title: StringSplitter
 
 Splits a string with seperators in up to 16 outputports.
 
-![Screenshot: StringSplitter plugin](./img/StringSplitter.png "Screenshot:
-        StringSplitter plugin")  
+![Screenshot: StringSplitter plugin](./img/StringSplitter.png "Screenshot: StringSplitter plugin")  
 StringSplitter plugin
 
 ## Input Port Description

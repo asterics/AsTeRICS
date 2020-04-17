@@ -8,8 +8,7 @@ title: ConstantDispatcher
 
 This component sends double values from the chosen slot.
 
-![Screenshot: ConstantDispatcher plugin](./img/ConstantDispatcher.jpg "Screenshot:
-        ConstantDispatcher plugin")  
+![Screenshot: ConstantDispatcher plugin](./img/ConstantDispatcher.jpg "Screenshot: ConstantDispatcher plugin")  
 ConstantDispatcher plugin
 
 ## Input Port Description

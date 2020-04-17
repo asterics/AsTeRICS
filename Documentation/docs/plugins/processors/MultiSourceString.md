@@ -8,8 +8,7 @@ title: MultiSourceString
 
 This plugin passes string inputs from up to four input ports to one output port.
 
-![Screenshot: MultiSourceString plugin](./img/MultiSourceString.jpg "Screenshot:
-        MultiSourceString plugin")  
+![Screenshot: MultiSourceString plugin](./img/MultiSourceString.jpg "Screenshot: MultiSourceString plugin")  
 MultiSourceString plugin
 
 ## Input Port Description

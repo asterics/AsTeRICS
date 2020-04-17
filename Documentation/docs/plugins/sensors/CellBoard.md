@@ -8,16 +8,14 @@ title: CellBoard
 
 The CellBoard plugin is a GUI plugin which can display a panel with multiple cells. It can be used as a simple on-screen keyboard. Each cell can contain text and a picture, and it can provide acoustic feedback on selection. Cells can emit command strings and sounds or switch to other cellboards (which can be stored as .xml files). The CellBoard plugin provides basic scanning options (to select a cell via a stepwise process). It also provides a small editor for designing the cells and saving the whole cellboard grid as an .xml file.
 
-![Screenshot:
-        CellBoard plugin](./img/CellBoard.jpg "Screenshot: CellBoard plugin")  
+![Screenshot: CellBoard plugin](./img/CellBoard.jpg "Screenshot: CellBoard plugin")  
 CellBoard plugin
 
 ## Using the cell editor
 
 The cell editor can be opened by right-clicking a cell. (This option can be enabled/disabled by using the property "enableEdit"). The cell editor allows to define the content of a cell (cell caption, action string, cell image and sounds for cell-selection or acoustic preview during cell scanning). "Switch to Cellboard" allows to specify a cellboard grid which will be loaded when this cell is selected. When "back" is entered here, the previously loded cellboard will be restored. Thus, complex communication/selection grids can be layered. The whole current cellboard is saved as an .xml file when "Save Cellboard" is clicked. Existing .xml files can be selected to be loaded on startup via the "keyboardFile"-property of the cellboard plugin in the ACS property editor.
 
-![Screenshot:
-        CellBoard editor](./img/CellBoardEditor.jpg "Screenshot: CellBoard editor")  
+![Screenshot: CellBoard editor](./img/CellBoardEditor.jpg "Screenshot: CellBoard editor")  
 CellBoard editor
 
 ## Input Port Description

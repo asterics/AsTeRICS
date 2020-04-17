@@ -13,7 +13,7 @@ Mouse plugin
 
 #### Please Note: Mouse emulation on Windows 7
 
-The mouse emulation on Windows 7 does not always work as expected due to User Account Control (UAC) settings. Especially when you want to use the Windows 7 On-Screen-Keyboard dragging the keyboard does not work. To troubleshoot [turn off the User Account Control (UAC)](http://windows.microsoft.com/en-au/windows/turn-user-account-control-on-off#1TC=windows-7) � change the level to "Never notify"
+The mouse emulation on Windows 7 does not always work as expected due to User Account Control (UAC) settings. Especially when you want to use the Windows 7 On-Screen-Keyboard dragging the keyboard does not work. To troubleshoot [turn off the User Account Control (UAC)](http://windows.microsoft.com/en-au/windows/turn-user-account-control-on-off#1TC=windows-7) change the level to "Never notify"
 
 ## Input Port Description
 

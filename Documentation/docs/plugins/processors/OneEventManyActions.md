@@ -8,8 +8,7 @@ title: OneEventManyActions
 
 This component allows the user to control up to 10 actions using just one or two input events. In the first step, the event actions are scanned so that the user can choose the action, in the next step the selected action event is triggered. The detailed functionality depends upon the selected mode.
 
-![Screenshot: OneEventManyActions plugin](./img/OneEventManyActions.jpg "Screenshot:
-        OneEventManyActions plugin")  
+![Screenshot: OneEventManyActions plugin](./img/OneEventManyActions.jpg "Screenshot: OneEventManyActions plugin")  
 OneEventManyActions plugin
 
 ## Event Listener Description
@@ -29,9 +28,11 @@ OneEventManyActions plugin
 - **actionsNumber \[integer\]:** Number of action used.
 
 - **mode \[integer\]:** The component's working mode:
+
   - **mode 1:** The input event starts the scanning, the inputOff event selects the action.
 
   - **mode 2:** The first input event starts the scanning, the second input event selects the action.
 
   - **mode 3:** The first input event starts the scanning and highlights the first action, the next input events highlight the next actions. If there is no input event for the selected delay time, the currently highlighted action is selected.
+
 - **delay \[integer\]:** Delay used for the scanning process (in milliseconds).

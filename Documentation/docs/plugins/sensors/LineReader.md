@@ -8,8 +8,7 @@ title: LineReader
 
 This component reads lines from a text file and sends them to an output port. The line reading can be triggered by an incoming event.
 
-![Screenshot:
-        LineReader plugin](./img/LineReader.jpg "Screenshot: LineReader plugin")  
+![Screenshot: LineReader plugin](./img/LineReader.jpg "Screenshot: LineReader plugin")  
 ButtonGrid plugin
 
 ## Input port Description

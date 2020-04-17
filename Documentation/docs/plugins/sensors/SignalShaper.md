@@ -8,12 +8,10 @@ title: SignalShaper
 
 The SignalShaper component can be used to generate signal composed from basic linear functions.
 
-![Screenshot:
-        SignalShaper plugin](./img/SignalShaper.jpg "Screenshot: SignalShaper plugin")  
+![Screenshot: SignalShaper plugin](./img/SignalShaper.jpg "Screenshot: SignalShaper plugin")  
 SignalShaper plugin
 
-![Example
-        composed signal created from three linear signals](./img/SignalShaper.png "Example composed signal")  
+![Example composed signal created from three linear signals](./img/SignalShaper.png "Example composed signal")  
 Example composed signal created from three linear signals
 
 ## Output Port Description
@@ -31,11 +29,13 @@ Example composed signal created from three linear signals
 - **numberOfLines \[integer\]:** The number of linear signals used to shape the output signal.
 
 - **behaviourAfterFinish \[\*\***integer\***\*\]:** Defines the component behaviour after all signal lines have been sent:
+
   - **do nothing:** stop any action.
 
   - **repeat:** Send the signal lines from beginning.
 
   - **send the last value:** Continue to send the last value of the signal.
+
 - **beginValue1...beginValue5 \[double\]:** The begin value of the linear signals.
 - **endValue1...endValue5 \[double\]:** The end value of the linear signals.
 - **time1...time5 \[integer\]:** The duration of the linear signals in milliseconds.

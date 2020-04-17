@@ -8,8 +8,7 @@ title: ImageBox
 
 The Image Box is a GUI component which displays images loaded from image files.
 
-![Screenshot:
-        ImgeBox plugin](./img/ImageBox.jpg "Screenshot: ImageBox plugin")  
+![Screenshot: ImgeBox plugin](./img/ImageBox.jpg "Screenshot: ImageBox plugin")  
 ImageBox plugin
 
 ## Input Port Description

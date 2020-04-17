@@ -8,8 +8,7 @@ title: LineWriter
 
 This component writes lines from an input port to a text file.
 
-![Screenshot:
-        LineWriter plugin](./img/LineWriter.jpg "Screenshot: LineWriter plugin")  
+![Screenshot: LineWriter plugin](./img/LineWriter.jpg "Screenshot: LineWriter plugin")  
 ButtonGrid plugin
 
 ## Input port Description

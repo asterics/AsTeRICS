@@ -8,8 +8,7 @@ title: MultiSource
 
 This plugin passes signals from up to four input ports to one output port.
 
-![Screenshot:
-        MultiSource plugin](./img/MultiSource.jpg "Screenshot: MultiSource plugin")  
+![Screenshot: MultiSource plugin](./img/MultiSource.jpg "Screenshot: MultiSource plugin")  
 MultiSource plugin
 
 ## Input Port Description

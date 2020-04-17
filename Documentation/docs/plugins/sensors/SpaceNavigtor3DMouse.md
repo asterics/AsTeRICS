@@ -8,9 +8,7 @@ title: SpaceNavigtor3DMouse
 
 This component interfaces the 3Dconnexion 3D Mouse device.
 
-![Screenshot:
-        SpaceNavigator3DMouse plugin](./img/SpaceNavigator3DMouse.jpg "Screenshot:
-        SpaceNavigator3DMouse plugin")  
+![Screenshot: SpaceNavigator3DMouse plugin](./img/SpaceNavigator3DMouse.jpg "Screenshot: SpaceNavigator3DMouse plugin")  
 SpaceNavigator3DMouse plugin
 
 ## Requirements

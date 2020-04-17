@@ -8,8 +8,7 @@ title: Delay
 
 This plugin passes received double values after a defined delay.
 
-![Screenshot:
-        Delay plugin](./img/Delay.jpg "Screenshot: Delay plugin")  
+![Screenshot: Delay plugin](./img/Delay.jpg "Screenshot: Delay plugin")  
 Delay plugin
 
 ## Input Port Description

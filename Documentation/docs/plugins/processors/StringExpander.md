@@ -8,8 +8,7 @@ title: StringExpander
 
 Adds the preString and postString strings to the incoming string and sends the new string to the output port.
 
-![Screenshot: StringExpander plugin](./img/StringExpander.jpg "Screenshot:
-        StringExpander plugin")  
+![Screenshot: StringExpander plugin](./img/StringExpander.jpg "Screenshot: StringExpander plugin")  
 StringExpander plugin
 
 ## Input Port Description
