@@ -26,15 +26,15 @@
 	<property name="javacv.macosx.target.file" location="${services}/javacv-${javacv.version}-basic-${jar.os.name.macosx}.jar"/>
 	<property name="javacv.ffmpeg.target.file" location="${services}/javacv-${javacv.version}-ffmpeg-all.jar"/>
 
-	<fileset id="javacv-files-windows" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/*-linux-*.jar, **/*-macosx-*.jar" includes="lib/native/*.jar">
+	<fileset id="javacv-files-windows" dir="javacv/org/bytedeco" excludes="**/ffmpeg*.jar, **/*-linux-*.jar, **/*-macosx-*.jar" includes="**/*.jar">
 	</fileset>
 
 	<fileset id="javacv-files-linux" dir="javacv/org/bytedeco" excludes="**/videoinput*.jar, **/*-windows-*.jar, **/*-macosx-*.jar" includes="**/*.jar">
 	</fileset>
-	<fileset id="javacv-files-macosx" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/videoinput*.jar, **/*-windows-*.jar, **/*-linux-*.jar" includes="lib/native/*.jar">
+	<fileset id="javacv-files-macosx" dir="javacv/org/bytedeco" excludes="**/ffmpeg*.jar, **/videoinput*.jar, **/*-windows-*.jar, **/*-linux-*.jar" includes="**/*.jar">
 	</fileset>
 	
-	<fileset id="javacv-files-ffmpeg" dir="javacv/src/main/resources" excludes="**/opencv*.jar, **/videoinput*.jar, **/libfreenect*.jar" includes="lib/native/*.jar">
+	<fileset id="javacv-files-ffmpeg" dir="javacv/org/bytedeco" excludes="**/opencv*.jar, **/videoinput*.jar, **/libfreenect*.jar" includes="**/*.jar">
 	</fileset>
 	
 	<property name="classpath" location=".."/>
