@@ -1,4 +1,4 @@
-<project name="asterics.${component.id}" default="jar" basedir=".">
+<project xmlns:resolver="antlib:org.apache.maven.resolver.ant" name="asterics.${component.id}" default="jar" basedir=".">
 
 	<property name="component.id" value="mw.computervision"/>
 	<!-- set global properties for this build -->
@@ -6,11 +6,13 @@
 	<property name="src.java" location="src/main/java"/>
 	<property name="dist" location=".."/>
 	<property name="runtime" location="../../../bin/ARE"/>
+	<property name="dev.libs" location="../../../lib"/>
+	<property name="biz.aQute:bnd:jar" location="${dev.libs}/biz.aQute.bnd-5.0.1.jar"/>
 	<property name="osgi" location="../../osgi"/>
 	<property name="middleware" location="../../middleware"/>
 	<property name="services" location="../../services"/>
 	<property name="resources" location="src/main/resources"/>
-	<property name="javacv.dest" location="javacv/src/main/resources/lib/native"/>
+	<property name="javacv.dest" location="javacv/"/>
 	<property name="javacv.version" value="1.5.2"/>
 	<!-- don't forget to also update the MANIFEST file!! -->
 	
@@ -27,21 +29,21 @@
 	<fileset id="javacv-files-windows" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/*-linux-*.jar, **/*-macosx-*.jar" includes="lib/native/*.jar">
 	</fileset>
 
-	<fileset id="javacv-files-linux" dir="javacv/src/main/resources" excludes="**/videoinput*.jar, **/*-windows-*.jar, **/*-macosx-*.jar" includes="lib/native/*.jar">
+	<fileset id="javacv-files-linux" dir="javacv/org/bytedeco" excludes="**/videoinput*.jar, **/*-windows-*.jar, **/*-macosx-*.jar" includes="**/*.jar">
 	</fileset>
 	<fileset id="javacv-files-macosx" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/videoinput*.jar, **/*-windows-*.jar, **/*-linux-*.jar" includes="lib/native/*.jar">
 	</fileset>
 	
 	<fileset id="javacv-files-ffmpeg" dir="javacv/src/main/resources" excludes="**/opencv*.jar, **/videoinput*.jar, **/libfreenect*.jar" includes="lib/native/*.jar">
 	</fileset>
-
+	
 	<property name="classpath" location=".."/>
 	<path id="asterics.classpath">
 		<pathelement path="${classpath}"/>
 		<pathelement location="bin"/>
 		<pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
 		<pathelement location="${middleware}/asterics.ARE.jar"/>
-		<pathelement location="${javacv.windows.target.file}" />
+		<fileset refid="javacv-files-linux"/>
 	</path>
 
 	<target name="init">
@@ -51,16 +53,52 @@
 		<mkdir dir="${build}"/>
 	</target>
 	
-	<target name="download-javacv" description="Downloads the javacv jars">
-		<!-- Checks, if there is a local file already and if the remote file does not have a newer timestamp -->
-		<get src="https://repo1.maven.org/maven2/org/bytedeco/javacv/1.5.2/javacv-1.5.2.jar"
-		     dest="${javacv.dest}"
-		     verbose="true"
-		     usetimestamp="true"
-		     ignoreerrors="true"
-			tryGzipEncoding="true"/>
-	</target>	
+	<!-- taskdef bnd, unfortunately it's very bad documented -->
+	<taskdef resource="aQute/bnd/ant/taskdef.properties" classpath="${biz.aQute:bnd:jar}"/>
 
+	<!-- taskdef maven-resolver-ant-tasks -->
+	<taskdef uri="antlib:org.apache.maven.resolver.ant" resource="org/apache/maven/resolver/ant/antlib.xml">
+		<classpath>
+		  <fileset dir="${dev.libs}" includes="*.jar"/>
+		</classpath>
+	</taskdef>
+
+	<!-- define repositories for maven -->
+	<resolver:localrepo dir="${javacv.dest}"/>
+	<resolver:remoterepo id="central-https" url="https://repo1.maven.org/maven2/" type="default"
+	          releases="true" snapshots="false" updates="daily" checksums="fail"/>
+	<resolver:remoterepos id="resolver.repositories">
+		<resolver:remoterepo refid="central-https"/>
+	</resolver:remoterepos>
+	
+	<!-- use javacv pom file for dependency resolving -->
+	<resolver:pom file="pom.xml" id="pom"/>
+	
+	<target name="download-javacv" description="Downloads the javacv jars">		
+		<resolver:resolve>
+			<dependencies pomRef="pom">
+				<!-- exclude all unneeded artifacts here -->
+				<exclusion coords="org.bytedeco:flycapture"/>
+				<exclusion coords="org.bytedeco:flycapture-platform"/>
+				<exclusion coords="org.bytedeco:ffmpeg"/>
+				<exclusion coords="org.bytedeco:ffmpeg-platform"/>
+				<exclusion coords="org.bytedeco:artoolkitplus"/>
+				<exclusion coords="org.bytedeco:artoolkitplus-platform"/>
+				<exclusion coords="org.bytedeco:flandmark"/>
+				<exclusion coords="org.bytedeco:flandmark-platform"/>
+				<exclusion coords="org.bytedeco:leptonica"/>
+				<exclusion coords="org.bytedeco:leptonica-platform"/>
+				<exclusion coords="org.bytedeco:libdc1394"/>
+				<exclusion coords="org.bytedeco:libdc1394-platform"/>
+				<exclusion coords="org.bytedeco:tesseract"/>
+				<exclusion coords="org.bytedeco:tesseract-platform"/>		
+			</dependencies>
+			<!-- downloads the resolved artifacts and stores them at ${javacv.dest} -->
+			<files refid="api.files" dir="${javacv.dest}"
+			       layout="javacv-platform.jar"/>
+		</resolver:resolve>
+	</target>	
+			
 	<target name="compile" depends="init, merge-jars" description="compile the source ">
 		<javac source="${javac.source}" target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build}"  verbose="true" debug="${debug}" 
            classpath="${classpath}">
@@ -76,7 +114,7 @@
 	</target>
 
 	<!-- Generates the platform dependendant smaller jars for javacv -->
-	<target name="merge-jars" depends="check-merged-jar, do-merge-jars-windows, do-merge-jars-linux, do-merge-jars-macosx">
+	<target name="merge-jars" depends="download-javacv, check-merged-jar, do-merge-jars-windows, do-merge-jars-linux, do-merge-jars-macosx">
 	</target>
 	
 	<target name="check-merged-jar">
@@ -117,6 +155,12 @@
 	
 	<!-- A windows-only version with opencv, libfreenect, and videoInput -->
 	<target name="do-merge-jars-windows" description="Generate a merged javacv OSGI-bundle with windows-only jars" unless="javacv.windows.exists">
+		<java jar="${biz.aQute:bnd:jar}" fork="true">
+			<arg value="bnd"/>
+			<arg value="-f"/>
+			<arg value="javacv-windows.bnd"/>
+		</java>
+		<!--				
 		<jar jarfile="${javacv.windows.target.file}"
       	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
 			<archives>
@@ -125,9 +169,16 @@
 				</zips>
 			</archives>
 		</jar>
+		-->
 	</target>
 	<!-- a linux-only version with opencv, libfreenect -->
 	<target name="do-merge-jars-linux" description="Generate a merged javacv OSGI-bundle with linux-only jars" unless="javacv.linux.exists">
+		<java jar="${biz.aQute:bnd:jar}" fork="true">
+			<arg value="bnd"/>
+			<arg value="-f"/>
+			<arg value="javacv-linux.bnd"/>
+		</java>
+		<!--
 		<jar jarfile="${javacv.linux.target.file}"
       	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
 			<archives>
@@ -136,9 +187,16 @@
 				</zips>
 			</archives>
 		</jar>
+		-->
 	</target>
 	<!-- a macosx-only version with opencv, libfreenect -->
 	<target name="do-merge-jars-macosx" description="Generate a merged javacv OSGI-bundle with macosx-only jars" unless="javacv.macosx.exists">
+		<java jar="${biz.aQute:bnd:jar}" fork="true">
+			<arg value="bnd"/>
+			<arg value="-f"/>
+			<arg value="javacv-macosx.bnd"/>
+		</java>
+		<!--
 		<jar jarfile="${javacv.macosx.target.file}"
       	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
 			<archives>
@@ -147,6 +205,7 @@
 				</zips>
 			</archives>
 		</jar>
+		-->
 	</target>
 
 	<!-- 
