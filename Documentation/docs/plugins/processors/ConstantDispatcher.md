@@ -1,6 +1,6 @@
-##
-
-## ConstantDispatcher
+---
+title: ConstantDispatcher
+---
 
 # Constant Dispatcher
 

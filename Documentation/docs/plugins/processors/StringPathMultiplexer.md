@@ -1,6 +1,6 @@
-##
-
-## StringPathMultiplexer
+---
+title: StringPathMultiplexer
+---
 
 # String Path Multiplexer
 

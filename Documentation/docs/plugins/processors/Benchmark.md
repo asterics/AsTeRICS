@@ -1,6 +1,6 @@
-##
-
-## Benchmark
+---
+title: Benchmark
+---
 
 # Benchmark
 

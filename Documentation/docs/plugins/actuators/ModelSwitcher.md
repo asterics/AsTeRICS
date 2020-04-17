@@ -1,6 +1,6 @@
-##
-
-## ModelSwitcher
+---
+title: ModelSwitcher
+---
 
 # Model Switcher
 

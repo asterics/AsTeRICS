@@ -1,6 +1,6 @@
-##
-
-## PathMultiplexer
+---
+title: PathMultiplexer
+---
 
 # Path Multiplexer
 

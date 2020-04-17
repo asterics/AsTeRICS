@@ -1,6 +1,6 @@
-##
-
-## AnalogOut
+---
+title: AnalogOut
+---
 
 # Analog Out
 

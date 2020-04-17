@@ -1,6 +1,6 @@
-##
-
-## Averager
+---
+title: Averager
+---
 
 # Averager
 

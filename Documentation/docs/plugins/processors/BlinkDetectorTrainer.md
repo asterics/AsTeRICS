@@ -1,6 +1,6 @@
-##
-
-## Blink Detector Trainer
+---
+title: Blink Detector Trainer
+---
 
 # Blink Detector Trainer
 

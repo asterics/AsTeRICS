@@ -1,6 +1,6 @@
-##
-
-## TeensyRC
+---
+title: TeensyRC
+---
 
 # TeensyRCprototype
 

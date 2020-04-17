@@ -1,6 +1,6 @@
-##
-
-## Compute Bandpower
+---
+title: Compute Bandpower
+---
 
 # Compute Bandpower
 

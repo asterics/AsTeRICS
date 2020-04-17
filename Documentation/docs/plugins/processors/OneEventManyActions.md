@@ -1,6 +1,6 @@
-##
-
-## OneEventManyActions
+---
+title: OneEventManyActions
+---
 
 # One Event Many Actions
 

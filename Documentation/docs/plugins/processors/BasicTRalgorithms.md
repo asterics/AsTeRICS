@@ -1,6 +1,6 @@
-##
-
-## Basic Tremor Reduction algorithms
+---
+title: Basic Tremor Reduction algorithms
+---
 
 # Basic Tremor Reduction algorithms
 

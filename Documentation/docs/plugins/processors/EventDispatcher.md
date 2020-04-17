@@ -1,6 +1,6 @@
-##
-
-## Event Dispatcher
+---
+title: Event Dispatcher
+---
 
 # Event Dispatcher
 

@@ -1,6 +1,6 @@
-##
-
-## Math Evaluator
+---
+title: Math Evaluator
+---
 
 # Math Evaluator
 

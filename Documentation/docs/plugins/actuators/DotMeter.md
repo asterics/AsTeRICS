@@ -1,6 +1,6 @@
-##
-
-## Dot Meter
+---
+title: Dot Meter
+---
 
 # Dot Meter
 

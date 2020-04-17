@@ -1,6 +1,6 @@
-##
-
-## Create EG file
+---
+title: Create EG file
+---
 
 # Create Encog EG file
 

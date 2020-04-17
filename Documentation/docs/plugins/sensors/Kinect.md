@@ -1,6 +1,6 @@
-##
-
-## Kinect
+---
+title: Kinect
+---
 
 # Kinect
 

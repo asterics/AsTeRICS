@@ -1,6 +1,6 @@
-##
-
-## Pong
+---
+title: Pong
+---
 
 # Pong
 

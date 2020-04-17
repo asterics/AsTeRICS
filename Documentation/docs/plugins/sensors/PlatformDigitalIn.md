@@ -1,6 +1,6 @@
-##
-
-## PlatformDigitalIn
+---
+title: PlatformDigitalIn
+---
 
 # Platform Digital In
 

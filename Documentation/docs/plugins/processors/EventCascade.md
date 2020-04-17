@@ -1,6 +1,6 @@
-##
-
-## EventCascade
+---
+title: EventCascade
+---
 
 # Event Cascade
 

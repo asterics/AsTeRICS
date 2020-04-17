@@ -1,6 +1,6 @@
-##
-
-## Acceleration
+---
+title: Acceleration
+---
 
 # Acceleration
 

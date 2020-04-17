@@ -1,6 +1,6 @@
-##
-
-## OskaExternalScanning2D
+---
+title: OskaExternalScanning2D
+---
 
 # Oska External Scanning2D
 

@@ -1,6 +1,6 @@
-##
-
-## ButtonGrid
+---
+title: ButtonGrid
+---
 
 # Button Grid
 

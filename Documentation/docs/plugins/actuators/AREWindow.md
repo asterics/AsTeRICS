@@ -1,6 +1,6 @@
-##
-
-## AREWindow
+---
+title: AREWindow
+---
 
 # AREWindow
 

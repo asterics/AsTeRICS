@@ -1,6 +1,6 @@
-##
-
-## Legacy Digital In
+---
+title: Legacy Digital In
+---
 
 # Legacy Digital In
 

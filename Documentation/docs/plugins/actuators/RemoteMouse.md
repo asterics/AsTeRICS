@@ -1,6 +1,6 @@
-##
-
-## RemoteMouse
+---
+title: RemoteMouse
+---
 
 # Remote Mouse
 

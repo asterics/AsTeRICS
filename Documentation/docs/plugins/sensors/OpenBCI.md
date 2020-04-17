@@ -1,6 +1,6 @@
-##
-
-## OpenBCI
+---
+title: OpenBCI
+---
 
 # OpenBCI
 

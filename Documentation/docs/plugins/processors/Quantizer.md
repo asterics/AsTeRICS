@@ -1,6 +1,6 @@
-##
-
-## Quantizer
+---
+title: Quantizer
+---
 
 # Quantizer
 

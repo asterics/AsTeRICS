@@ -1,6 +1,6 @@
-##
-
-## AnalogIn
+---
+title: AnalogIn
+---
 
 # Analog In
 

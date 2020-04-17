@@ -1,6 +1,6 @@
-##
-
-## ReadEDF
+---
+title: ReadEDF
+---
 
 # EDF Reader
 

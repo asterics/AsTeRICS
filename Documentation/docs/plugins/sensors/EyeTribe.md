@@ -1,6 +1,6 @@
-##
-
-## Eyetribe
+---
+title: Eyetribe
+---
 
 # Eyetribe
 

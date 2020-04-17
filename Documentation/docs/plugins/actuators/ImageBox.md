@@ -1,6 +1,6 @@
-##
-
-## ImageBox
+---
+title: ImageBox
+---
 
 # Image Box
 

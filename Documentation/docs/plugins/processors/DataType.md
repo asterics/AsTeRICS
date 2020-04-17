@@ -1,6 +1,7 @@
    
+
 ---
-DataType
+title: DataType
 ---
 
 # DataType conversion

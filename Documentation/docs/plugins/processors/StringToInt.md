@@ -1,6 +1,6 @@
-##
-
-## StringToInt
+---
+title: StringToInt
+---
 
 # String To Int
 

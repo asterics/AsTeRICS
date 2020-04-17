@@ -1,6 +1,6 @@
-##
-
-## StringPathSelector
+---
+title: StringPathSelector
+---
 
 # String Path Selector
 

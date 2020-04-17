@@ -1,6 +1,6 @@
-##
-
-## SignalShaper
+---
+title: SignalShaper
+---
 
 # Signal Shaper
 

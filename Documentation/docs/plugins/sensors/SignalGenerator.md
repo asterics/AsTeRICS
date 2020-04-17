@@ -1,6 +1,6 @@
-##
-
-## SignalGenerator
+---
+title: SignalGenerator
+---
 
 # Signal Generator
 

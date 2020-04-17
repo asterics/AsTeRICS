@@ -1,6 +1,6 @@
-##
-
-## MediaPlayer
+---
+title: MediaPlayer
+---
 
 # MediaPlayer
 

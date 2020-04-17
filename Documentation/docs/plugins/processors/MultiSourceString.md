@@ -1,6 +1,6 @@
-##
-
-## MultiSourceString
+---
+title: MultiSourceString
+---
 
 # MultiSourceString
 

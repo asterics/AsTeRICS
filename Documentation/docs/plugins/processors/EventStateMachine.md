@@ -1,6 +1,6 @@
-##
-
-## Event State Machine
+---
+title: Event State Machine
+---
 
 # EventStateMachine
 

@@ -1,6 +1,6 @@
-##
-
-## AndroidPhoneControl
+---
+title: AndroidPhoneControl
+---
 
 # AndroidPhoneControl
 

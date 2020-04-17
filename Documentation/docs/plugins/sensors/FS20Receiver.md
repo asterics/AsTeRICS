@@ -1,6 +1,6 @@
-##
-
-## FS20Receiver
+---
+title: FS20Receiver
+---
 
 # FS20 Receiver
 

@@ -1,6 +1,6 @@
-##
-
-## SSVEP Stimulator
+---
+title: SSVEP Stimulator
+---
 
 # SSVEP Stimulator
 

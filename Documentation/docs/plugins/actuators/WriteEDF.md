@@ -1,6 +1,6 @@
-##
-
-## WriteEDF
+---
+title: WriteEDF
+---
 
 # EDF Writer
 

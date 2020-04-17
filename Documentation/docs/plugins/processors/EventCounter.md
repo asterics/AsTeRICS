@@ -1,6 +1,6 @@
-##
-
-## EventCounter
+---
+title: EventCounter
+---
 
 # Event Counter
 

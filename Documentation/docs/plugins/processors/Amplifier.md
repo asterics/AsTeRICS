@@ -1,6 +1,6 @@
-##
-
-## Amplifier
+---
+title: Amplifier
+---
 
 # Amplifier
 

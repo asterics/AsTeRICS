@@ -1,6 +1,6 @@
-##
-
-## Platform Analog In
+---
+title: Platform Analog In
+---
 
 # Platform Analog In
 

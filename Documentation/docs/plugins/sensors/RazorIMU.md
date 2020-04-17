@@ -1,6 +1,6 @@
-##
-
-## RazorIMU
+---
+title: RazorIMU
+---
 
 # Razor IMU
 

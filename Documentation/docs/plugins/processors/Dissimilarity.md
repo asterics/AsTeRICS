@@ -1,6 +1,6 @@
-##
-
-## Dissimilarity
+---
+title: Dissimilarity
+---
 
 # Dissimilarity
 

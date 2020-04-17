@@ -1,6 +1,6 @@
-##
-
-## StringDelay
+---
+title: StringDelay
+---
 
 # StringDelay
 

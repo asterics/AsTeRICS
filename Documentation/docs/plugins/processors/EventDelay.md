@@ -1,6 +1,6 @@
-##
-
-## EventDelay
+---
+title: EventDelay
+---
 
 # Event Delay
 

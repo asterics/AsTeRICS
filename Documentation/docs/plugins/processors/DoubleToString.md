@@ -1,6 +1,6 @@
-##
-
-## DoubleToString
+---
+title: DoubleToString
+---
 
 # Double To String
 

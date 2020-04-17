@@ -1,6 +1,7 @@
   
+
 ---
-Event Generator
+title: Event Generator
 ---
 
 # Event Generator

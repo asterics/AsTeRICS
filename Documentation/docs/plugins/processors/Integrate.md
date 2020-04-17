@@ -1,6 +1,6 @@
-##
-
-## Integrate
+---
+title: Integrate
+---
 
 # Integrate
 

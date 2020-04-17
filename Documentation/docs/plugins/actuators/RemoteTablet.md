@@ -1,6 +1,6 @@
-##
-
-## RemoteTablet
+---
+title: RemoteTablet
+---
 
 # Remote Tablet
 

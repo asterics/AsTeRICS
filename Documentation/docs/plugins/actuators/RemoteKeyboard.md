@@ -1,6 +1,6 @@
-##
-
-## RemoteKeyboard
+---
+title: RemoteKeyboard
+---
 
 # Remote Keyboard
 

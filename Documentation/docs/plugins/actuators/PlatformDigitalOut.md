@@ -1,6 +1,6 @@
-##
-
-## PlatformDigitalOut
+---
+title: PlatformDigitalOut
+---
 
 # Platform Digital Out
 

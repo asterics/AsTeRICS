@@ -1,6 +1,6 @@
-##
-
-## StringSplitter
+---
+title: StringSplitter
+---
 
 # String Splitter
 

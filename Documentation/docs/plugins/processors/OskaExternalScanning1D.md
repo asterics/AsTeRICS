@@ -1,6 +1,6 @@
-##
-
-## OskaExternalScanning1D
+---
+title: OskaExternalScanning1D
+---
 
 # OskaExternalScanning1D
 

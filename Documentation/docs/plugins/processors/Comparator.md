@@ -1,6 +1,6 @@
-##
-
-## Comparator
+---
+title: Comparator
+---
 
 # Comparator
 

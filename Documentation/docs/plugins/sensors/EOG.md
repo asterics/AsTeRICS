@@ -1,6 +1,6 @@
-##
-
-## EOG
+---
+title: EOG
+---
 
 # EOG
 

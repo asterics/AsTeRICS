@@ -1,6 +1,6 @@
-##
-
-## Enobio Display
+---
+title: Enobio Display
+---
 
 # Enobio Display
 

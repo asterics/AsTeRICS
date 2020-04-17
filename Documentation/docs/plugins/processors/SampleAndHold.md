@@ -1,6 +1,6 @@
-##
-
-## SampleAndHold
+---
+title: SampleAndHold
+---
 
 # Sample and Hold
 

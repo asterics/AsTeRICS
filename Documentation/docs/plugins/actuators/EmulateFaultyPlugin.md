@@ -1,6 +1,7 @@
   
+
 ---
-EmulateFaultyPlugin
+title: EmulateFaultyPlugin
 ---
 
 # EmulateFaultyPlugin

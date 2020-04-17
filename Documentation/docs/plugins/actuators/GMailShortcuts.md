@@ -1,6 +1,6 @@
-##
-
-## GMailShortcuts
+---
+title: GMailShortcuts
+---
 
 # GMailShortcuts
 

@@ -1,6 +1,6 @@
-##
-
-## LineWriter
+---
+title: LineWriter
+---
 
 # LineWriter
 

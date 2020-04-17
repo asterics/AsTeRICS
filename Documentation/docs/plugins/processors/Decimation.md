@@ -1,6 +1,6 @@
-##
-
-## Decimation
+---
+title: Decimation
+---
 
 # Decimation
 

@@ -1,6 +1,6 @@
-##
-
-## AdjustmentCurve
+---
+title: AdjustmentCurve
+---
 
 # AdjustmentCurve
 

@@ -1,6 +1,6 @@
-##
-
-## StringAppend
+---
+title: StringAppend
+---
 
 # String Append
 

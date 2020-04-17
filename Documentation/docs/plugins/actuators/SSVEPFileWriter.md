@@ -1,6 +1,6 @@
-##
-
-## SSVEP File Writer
+---
+title: SSVEP File Writer
+---
 
 # SSVEP File Writer
 

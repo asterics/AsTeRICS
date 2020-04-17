@@ -1,6 +1,6 @@
-##
-
-## MicGPI
+---
+title: MicGPI
+---
 
 # MicGPI
 

@@ -1,6 +1,7 @@
   
+
 ---
-WebSocket
+title: WebSocket
 ---
 
 # WebSocket

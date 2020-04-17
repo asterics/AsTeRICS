@@ -1,6 +1,6 @@
-##
-
-## KNX
+---
+title: KNX
+---
 
 # KNX
 

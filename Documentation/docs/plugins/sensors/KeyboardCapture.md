@@ -1,6 +1,6 @@
-##
-
-## KeyboardCapture
+---
+title: KeyboardCapture
+---
 
 # Keyboard Capture
 

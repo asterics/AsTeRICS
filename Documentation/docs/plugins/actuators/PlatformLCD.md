@@ -1,6 +1,6 @@
-##
-
-## PlatformLCD
+---
+title: PlatformLCD
+---
 
 # Platform LCD
 

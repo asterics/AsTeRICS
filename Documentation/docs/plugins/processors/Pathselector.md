@@ -1,6 +1,6 @@
-##
-
-## Pathselector
+---
+title: Pathselector
+---
 
 # Pathselector
 

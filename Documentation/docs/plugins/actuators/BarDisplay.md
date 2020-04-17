@@ -1,6 +1,6 @@
-##
-
-## Bar Display
+---
+title: Bar Display
+---
 
 # Bar Display
 

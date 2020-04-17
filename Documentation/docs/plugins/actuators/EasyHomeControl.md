@@ -1,6 +1,6 @@
-##
-
-## EasyHomeControl
+---
+title: EasyHomeControl
+---
 
 # EasyHomeControl
 

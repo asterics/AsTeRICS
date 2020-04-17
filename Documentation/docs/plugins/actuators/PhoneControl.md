@@ -1,6 +1,6 @@
-##
-
-## PhoneControl
+---
+title: PhoneControl
+---
 
 # Phone Control
 

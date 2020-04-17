@@ -1,6 +1,7 @@
  
+
 ---
-Plugins
+title: Plugins
 ---
 
 # Plugins

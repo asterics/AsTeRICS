@@ -1,6 +1,6 @@
-##
-
-## KinectJ4K
+---
+title: KinectJ4K
+---
 
 # KinectJ4K
 

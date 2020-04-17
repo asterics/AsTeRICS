@@ -1,6 +1,6 @@
-##
-
-## Relative Move Sampler
+---
+title: Relative Move Sampler
+---
 
 # Relative Move Sampler
 

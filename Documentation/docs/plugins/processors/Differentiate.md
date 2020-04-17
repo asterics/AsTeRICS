@@ -1,6 +1,6 @@
-##
-
-## Differentiate
+---
+title: Differentiate
+---
 
 # Differentiate
 

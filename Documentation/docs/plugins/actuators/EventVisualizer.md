@@ -1,6 +1,6 @@
-##
-
-## Event Visualizer
+---
+title: Event Visualizer
+---
 
 # Event Visualizer
 

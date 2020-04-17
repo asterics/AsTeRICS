@@ -1,6 +1,6 @@
-##
-
-## TobiTic
+---
+title: TobiTic
+---
 
 # Tobi TiC
 

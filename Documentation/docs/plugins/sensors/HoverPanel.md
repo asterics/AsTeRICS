@@ -1,6 +1,6 @@
-##
-
-## HoverPanel
+---
+title: HoverPanel
+---
 
 # HoverPanel
 

@@ -1,6 +1,7 @@
   
+
 ---
-DialogBox
+title: DialogBox
 ---
 
 # DialogBox

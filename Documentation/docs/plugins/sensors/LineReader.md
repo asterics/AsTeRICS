@@ -1,6 +1,6 @@
-##
-
-## LineReader
+---
+title: LineReader
+---
 
 # LineReader
 

@@ -1,6 +1,6 @@
-##
-
-## MouseCapture
+---
+title: MouseCapture
+---
 
 # Mouse Capture
 

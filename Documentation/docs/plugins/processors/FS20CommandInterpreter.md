@@ -1,6 +1,6 @@
-##
-
-## FS20CommandInterpreter
+---
+title: FS20CommandInterpreter
+---
 
 # FS20 Command Interpreter
 

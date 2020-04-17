@@ -1,6 +1,6 @@
-##
-
-## Sampler
+---
+title: Sampler
+---
 
 # Sampler
 

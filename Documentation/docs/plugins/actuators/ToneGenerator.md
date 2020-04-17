@@ -1,6 +1,6 @@
-##
-
-## ToneGenerator
+---
+title: ToneGenerator
+---
 
 # ToneGenerator
 

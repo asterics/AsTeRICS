@@ -1,6 +1,6 @@
-##
-
-## OpenVibe
+---
+title: OpenVibe
+---
 
 # OpenVibe
 

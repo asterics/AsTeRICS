@@ -1,6 +1,6 @@
-##
-
-## Sensorboard
+---
+title: Sensorboard
+---
 
 # Sensorboard
 

@@ -1,6 +1,6 @@
-##
-
-## EditBox
+---
+title: EditBox
+---
 
 # Edit Box
 

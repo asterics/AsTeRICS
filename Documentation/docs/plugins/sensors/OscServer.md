@@ -1,6 +1,6 @@
-##
-
-## Osc Server
+---
+title: Osc Server
+---
 
 # Osc Server
 

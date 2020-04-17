@@ -1,6 +1,6 @@
-##
-
-## Universal Remote Control
+---
+title: Universal Remote Control
+---
 
 # Universal Remote Control
 

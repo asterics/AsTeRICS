@@ -1,6 +1,6 @@
-##
-
-## WiiMote
+---
+title: WiiMote
+---
 
 # WiiMote
 

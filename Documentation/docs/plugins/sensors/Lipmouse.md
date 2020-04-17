@@ -1,6 +1,6 @@
-##
-
-## Lipmouse
+---
+title: Lipmouse
+---
 
 # Lipmouse
 

@@ -1,6 +1,6 @@
-##
-
-## Signal Translation
+---
+title: Signal Translation
+---
 
 # Signal Translation
 

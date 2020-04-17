@@ -1,6 +1,6 @@
-##
-
-## Osc Gesture Follower
+---
+title: Osc Gesture Follower
+---
 
 # Osc Gesture Follower
 

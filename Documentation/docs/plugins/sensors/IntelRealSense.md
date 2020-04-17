@@ -1,6 +1,6 @@
-##
-
-## IntelRealSense
+---
+title: IntelRealSense
+---
 
 # IntelRealSense
 

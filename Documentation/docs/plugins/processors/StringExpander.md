@@ -1,6 +1,6 @@
-##
-
-## StringExpander
+---
+title: StringExpander
+---
 
 # String Expander
 

@@ -1,6 +1,7 @@
   
+
 ---
-RandomNumber
+title: RandomNumber
 ---
 
 # RandomNumber

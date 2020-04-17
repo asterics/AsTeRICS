@@ -1,6 +1,6 @@
-##
-
-## TextArea
+---
+title: TextArea
+---
 
 # TextArea
 

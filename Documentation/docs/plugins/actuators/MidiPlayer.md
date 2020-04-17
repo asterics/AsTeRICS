@@ -1,6 +1,6 @@
-##
-
-## MidiPlayer
+---
+title: MidiPlayer
+---
 
 # Midi Player
 

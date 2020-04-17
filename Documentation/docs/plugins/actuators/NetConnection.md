@@ -1,6 +1,6 @@
-##
-
-## Net Connection
+---
+title: Net Connection
+---
 
 # Net Connection
 

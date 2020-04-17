@@ -1,6 +1,6 @@
-##
-
-## Deadzone
+---
+title: Deadzone
+---
 
 # Deadzone
 

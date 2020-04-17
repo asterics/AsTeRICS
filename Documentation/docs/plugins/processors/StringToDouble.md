@@ -1,6 +1,6 @@
-##
-
-## StringToDouble
+---
+title: StringToDouble
+---
 
 # String To Double
 

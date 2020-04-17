@@ -1,6 +1,6 @@
-##
-
-## Osc Out Client
+---
+title: Osc Out Client
+---
 
 # Osc Out Client
 

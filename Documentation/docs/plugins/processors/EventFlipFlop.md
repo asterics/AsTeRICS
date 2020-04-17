@@ -1,6 +1,6 @@
-##
-
-## Event Flip Flop
+---
+title: Event Flip Flop
+---
 
 # Event Flip Flop
 

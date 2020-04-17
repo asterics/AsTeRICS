@@ -1,6 +1,6 @@
-##
-
-## TextDisplay
+---
+title: TextDisplay
+---
 
 # Text Display
 

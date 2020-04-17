@@ -1,6 +1,6 @@
-##
-
-## Proximity
+---
+title: Proximity
+---
 
 # Proximity
 

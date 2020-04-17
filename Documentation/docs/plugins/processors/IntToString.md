@@ -1,6 +1,6 @@
-##
-
-## IntToString
+---
+title: IntToString
+---
 
 # Int To String
 

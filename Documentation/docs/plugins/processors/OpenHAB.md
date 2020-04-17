@@ -1,6 +1,6 @@
-##
-
-## openHAB
+---
+title: openHAB
+---
 
 # openHAB
 

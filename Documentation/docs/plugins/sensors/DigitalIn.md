@@ -1,6 +1,6 @@
-##
-
-## DigitalIn
+---
+title: DigitalIn
+---
 
 # Digital In
 

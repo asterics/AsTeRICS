@@ -1,6 +1,6 @@
-##
-
-## Oscilloscope
+---
+title: Oscilloscope
+---
 
 # Oscilloscope
 

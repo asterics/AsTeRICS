@@ -1,6 +1,6 @@
-##
-
-## MinMax
+---
+title: MinMax
+---
 
 # MinMax
 

@@ -1,6 +1,6 @@
-##
-
-## CellBoard
+---
+title: CellBoard
+---
 
 # CellBoard
 

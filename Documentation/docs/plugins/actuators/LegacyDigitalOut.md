@@ -1,6 +1,6 @@
-##
-
-## Legacy Digital Out
+---
+title: Legacy Digital Out
+---
 
 # Legacy Digital Out
 

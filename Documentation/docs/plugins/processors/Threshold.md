@@ -1,6 +1,6 @@
-##
-
-## Threshold
+---
+title: Threshold
+---
 
 # Threshold
 

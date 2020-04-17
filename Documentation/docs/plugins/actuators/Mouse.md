@@ -1,6 +1,6 @@
-##
-
-## Mouse
+---
+title: Mouse
+---
 
 # Mouse
 

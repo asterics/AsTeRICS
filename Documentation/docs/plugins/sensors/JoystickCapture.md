@@ -1,6 +1,6 @@
-##
-
-## JoystickCapture
+---
+title: JoystickCapture
+---
 
 # Joystick Capture
 

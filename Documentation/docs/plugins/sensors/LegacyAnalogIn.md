@@ -1,6 +1,6 @@
-##
-
-## Legacy Analog In
+---
+title: Legacy Analog In
+---
 
 # Legacy Analog In
 

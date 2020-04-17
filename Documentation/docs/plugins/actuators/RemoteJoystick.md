@@ -1,6 +1,6 @@
-##
-
-## RemoteJoystick
+---
+title: RemoteJoystick
+---
 
 # Remote Joystick
 

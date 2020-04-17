@@ -1,6 +1,6 @@
-##
-
-## IIRFilter
+---
+title: IIRFilter
+---
 
 # IIRFilter
 

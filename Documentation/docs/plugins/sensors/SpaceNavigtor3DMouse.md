@@ -1,6 +1,6 @@
-##
-
-## SpaceNavigtor3DMouse
+---
+title: SpaceNavigtor3DMouse
+---
 
 # Space Navigtor 3D Mouse
 

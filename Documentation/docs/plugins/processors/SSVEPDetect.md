@@ -1,6 +1,6 @@
-##
-
-## SSVEP Detect
+---
+title: SSVEP Detect
+---
 
 # SSVEP Detect
 

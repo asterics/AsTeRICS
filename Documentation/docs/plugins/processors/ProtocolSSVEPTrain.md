@@ -1,6 +1,6 @@
-##
-
-## Protocol SSVEP Train
+---
+title: Protocol SSVEP Train
+---
 
 # Protocol SSVEP Train
 

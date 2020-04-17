@@ -1,6 +1,6 @@
-##
-
-## EventRouter
+---
+title: EventRouter
+---
 
 # EventRouter
 

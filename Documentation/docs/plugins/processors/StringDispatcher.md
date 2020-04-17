@@ -1,6 +1,6 @@
-##
-
-## String Dispatcher
+---
+title: String Dispatcher
+---
 
 # String Dispatcher
 

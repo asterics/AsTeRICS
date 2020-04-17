@@ -1,6 +1,6 @@
-##
-
-## SyntheticVoice
+---
+title: SyntheticVoice
+---
 
 # Synthetic Voice
 

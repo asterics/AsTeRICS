@@ -1,6 +1,6 @@
-##
-
-## SkyWatcher Mount
+---
+title: SkyWatcher Mount
+---
 
 # SkyWatcherMount
 

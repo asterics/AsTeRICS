@@ -1,6 +1,6 @@
-##
-
-## PeakDetector
+---
+title: PeakDetector
+---
 
 # PeakDetector
 

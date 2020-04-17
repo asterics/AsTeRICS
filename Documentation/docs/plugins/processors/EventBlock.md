@@ -1,6 +1,6 @@
-##
-
-## EventBlock
+---
+title: EventBlock
+---
 
 # Event Block
 

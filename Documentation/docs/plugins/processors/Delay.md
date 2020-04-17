@@ -1,6 +1,6 @@
-##
-
-## Delay
+---
+title: Delay
+---
 
 # Delay
 

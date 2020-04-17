@@ -1,6 +1,6 @@
-##
-
-## Slider
+---
+title: Slider
+---
 
 # Slider
 

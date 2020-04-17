@@ -1,6 +1,6 @@
-##
-
-## AutostartEvent
+---
+title: AutostartEvent
+---
 
 # Autostart Event
 

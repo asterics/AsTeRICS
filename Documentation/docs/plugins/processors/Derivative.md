@@ -1,6 +1,6 @@
-##
-
-## Derivative
+---
+title: Derivative
+---
 
 # Derivative
 

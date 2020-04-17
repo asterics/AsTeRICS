@@ -1,6 +1,6 @@
-##
-
-## DigitalOut
+---
+title: DigitalOut
+---
 
 # Digital Out
 

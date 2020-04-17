@@ -1,6 +1,6 @@
-##
-
-## Flickering Light Stimulator
+---
+title: Flickering Light Stimulator
+---
 
 # Flickering Light Stimulator
 

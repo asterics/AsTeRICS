@@ -1,6 +1,6 @@
-##
-
-## Blink Detection
+---
+title: Blink Detection
+---
 
 # Blink Detection
 

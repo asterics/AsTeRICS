@@ -1,6 +1,6 @@
-##
-
-## Android Connection
+---
+title: Android Connection
+---
 
 # Preparation of the connection with Android Phone
 

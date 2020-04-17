@@ -1,6 +1,6 @@
-##
-
-## WavefilePlayer
+---
+title: WavefilePlayer
+---
 
 # Wavefile Player
 

@@ -1,6 +1,6 @@
-##
-
-## ApplicationLauncher
+---
+title: ApplicationLauncher
+---
 
 # Application Launcher
 

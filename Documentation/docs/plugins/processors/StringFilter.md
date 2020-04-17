@@ -1,6 +1,6 @@
-##
-
-## StringFilter
+---
+title: StringFilter
+---
 
 # String Filter
 
