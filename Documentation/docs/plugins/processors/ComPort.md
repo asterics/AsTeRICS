@@ -14,21 +14,21 @@ COMPort plugin
 
 ## Input Port Description
 
-*   **send \[string\]:** string which will be sent to the microcontroller / embedded module
+- **send \[string\]:** string which will be sent to the microcontroller / embedded module
 
 ## Output Port Description
 
-*   **received \[string\]:** string which has been received (was sent from the microcontroller / embedded module)
+- **received \[string\]:** string which has been received (was sent from the microcontroller / embedded module)
 
 ## Event Listener Description
 
-*   **enablePlugin:** Enables the functionality of this plugin.
-*   **disablePlugin:** Disables the functionality of this plugin. Any open COM port is closed and no new values are received.
+- **enablePlugin:** Enables the functionality of this plugin.
+- **disablePlugin:** Disables the functionality of this plugin. Any open COM port is closed and no new values are received.
 
 ## Properties
 
-*   **enabled \[boolean\]:** If true (default), the plugin is enabled, if false the plugin does nothing and doesn't attempt to open the given COM port.
-*   **ComPort \[string\]:** Defines the COM Port of the target serial device. e.g. COM0
-*   **BaudRate \[integer\]:** Defines the Baudrate for the communication. It must match the baudrate of the target device
-*   **ReceivedDataType \[combobox selection\]:**can be used to indicate other data type like binary integer type etc. (currently, only string is supported)
-*   **SendDataType \[combobox selection\]:**can be used to indicate data type for sending (currently, string is supported and a selectable termination character can be added)
+- **enabled \[boolean\]:** If true (default), the plugin is enabled, if false the plugin does nothing and doesn't attempt to open the given COM port.
+- **ComPort \[string\]:** Defines the COM Port of the target serial device, e.g. COM0.
+- **BaudRate \[integer\]:** Defines the Baudrate for the communication. It must match the baudrate of the target device
+- **ReceivedDataType \[combobox selection\]:**can be used to indicate other data type like binary integer type etc. (currently, only string is supported)
+- **SendDataType \[combobox selection\]:**can be used to indicate data type for sending (currently, string is supported and a selectable termination character can be added)
