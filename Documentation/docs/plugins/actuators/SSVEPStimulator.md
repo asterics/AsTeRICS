@@ -32,7 +32,7 @@ A recent version of DirectX has to be installed.
 ## Properties
 
 - **onBitmapFile \[string\]:** filename of a bitmap file which is used in the on-phase of the stimulation. The file is expected in the data/SSVEPStimulator subfolder of the ARE. The filename is given without extenstion (e.g. "arrow_up" for the file "ARE/data/SSVEPStimulator/arrow_up.bmp")
-- **offBitmapFile \[string\]:** filename of a bitmap file which is used in the off-phase of the stimulation. (same filname format as above)
+- **offBitmapFile \[string\]:** filename of a bitmap file which is used in the off-phase of the stimulation (same filename as above).
 - **xPosition \[integer\]:** x-position of the flickering surface on the desktop/screen.
 - **yPosition \[integer\]:** y-position of the flickering surface on the desktop/screen.
 - **frequency \[integer\]:** default stimulation frequency of in Hertz. This property ranges from 1 to 20 Hertz.
