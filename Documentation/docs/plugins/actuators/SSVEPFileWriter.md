@@ -6,7 +6,8 @@ title: SSVEP File Writer
 
 ### Component Type: Actuator (Subcategory: Brain Computer Interface)
 
-This plugin writes to a text file the 4 EEG channels along with a software trigger received through the event listener ports. This file is lately analyzed by the [ProtocolSSVEPTrain](../processors/ProtocolSSVEPTrain.htm) plugin to obtain the optimus frequencies to be used on the SSVEP detection.
+This plugin writes to a text file the 4 EEG channels along with a software trigger received through the event listener ports.
+This file is lately analyzed by the [ProtocolSSVEPTrain](../processors/ProtocolSSVEPTrain.htm) plugin to obtain the optimus frequencies to be used on the SSVEP detection.
 
 ![Screenshot: SSVEPFileWriter plugin](./img/SSVEPFileWriter.jpg "Screenshot: SSVEPFileWriter plugin")  
 SSVEPFileWriter plugin

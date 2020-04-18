@@ -6,7 +6,8 @@ title: ToneGenerator
 
 ### Component Type: Actuator (Subcategory: Audio and Voice)
 
-This plugin generates a stereo sound. The frequency of the tone for the left and right channel can be set individually.
+This plugin generates a stereo sound.
+The frequency of the tone for the left and right channel can be set individually.
 
 ![Screenshot: ToneGenerator plugin](./img/tonegenerator.png "Screenshot: ToneGenerator plugin")  
 ToneGenerator plugin

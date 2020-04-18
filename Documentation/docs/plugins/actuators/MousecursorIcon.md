@@ -2,7 +2,7 @@
 title: MousecursorIcon
 ---
 
-# Mousecursor Icon
+# MousecursorIcon
 
 ### Component Type: Actuator (Subcategory: Input Device Emulation)
 

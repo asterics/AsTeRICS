@@ -6,20 +6,22 @@ title: TextArea
 
 ### Component Type: Actuator (Subcategory: Graphical User Interface)
 
-The TextArea is a GUI component which displays (optionally user-editable) text information. It features multiple rows and a scrollbar, and event for appending string text, deleting characters or sending the text content
+The TextArea is a GUI component which displays (optionally user-editable) text information.
+It features multiple rows and a scrollbar, and event for appending string text, deleting characters or sending the text content
 
-![Screenshot:
-        TextArea plugin](./img/TextArea.jpg "Screenshot: TextArea plugin")  
+![Screenshot: TextArea plugin](./img/TextArea.jpg "Screenshot: TextArea plugin")  
 TextArea plugin
 
 ## Input Port Description
 
-- **setText \[string\]:** The text which will be displayed. It replaces the prior content of the Text Area.
+- **setText \[string\]:** The text which will be displayed.
+  It replaces the prior content of the Text Area.
 - **appendText \[string\]:** This string input will be appended to te current content of the Text Area.
 
 ## Output Port Description
 
-- **text \[string\]:** The current content of the text area. Sent on incoming events at the "send" or "sendAndClear" event listener ports
+- **text \[string\]:** The current content of the text area.
+  Sent on incoming events at the "send" or "sendAndClear" event listener ports
 
 ## Event Listener Description
 

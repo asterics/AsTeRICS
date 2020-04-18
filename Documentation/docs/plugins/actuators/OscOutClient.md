@@ -1,12 +1,13 @@
 ---
-title: Osc Out Client
+title: OscOutClient
 ---
 
-# Osc Out Client
+# OscOutClient
 
 ### Component Type: actuator (Subcategory: Communication)
 
-The OscOutClient plugin enables the ARE to broadcast messages using the OpenSoundControl (OSC) protocol. This plugin utilizes the NetUtil java library (http://www.sciss.de/netutil/) for the OSC implementation, it is (C)opyrighted 2004-2011 by Hanns Holger Rutz and released under the GNU Lesser General Public License.
+The OscOutClient plugin enables the ARE to broadcast messages using the OpenSoundControl (OSC) protocol.
+This plugin utilizes the NetUtil java library (http://www.sciss.de/netutil/) for the OSC implementation, it is (C)opyrighted 2004-2011 by Hanns Holger Rutz and released under the GNU Lesser General Public License.
 
 ![Screenshot: OscServer plugin](./img/OscOutClient.jpg "Screenshot: OscServer plugin")  
 OscOutClient plugin
@@ -18,7 +19,11 @@ OscOutClient plugin
 
 ## Functional Description
 
-The OscOutClient collects data form the inputs CH1-4 and assamble it to one OSC message with 4 arguments. The address for the OSC channel is set by the property AddressCh1. Furthermore the plugin has a StringIN input port. If the plugin receives a string it broadcast one OSC message with one string argument. The address for the string OSC channel is set by the property AddressStringCh.
+The OscOutClient collects data form the inputs CH1-4 and assamble it to one OSC message with 4 arguments.
+The address for the OSC channel is set by the property AddressCh1.
+Furthermore the plugin has a StringIN input port.
+If the plugin receives a string it broadcast one OSC message with one string argument.
+The address for the string OSC channel is set by the property AddressStringCh.
 
 ## Input Port Description
 

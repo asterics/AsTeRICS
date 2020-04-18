@@ -6,7 +6,8 @@ title: PlatformLCD
 
 ### Component Type: Actuator (Subcategory: Personal Platform)
 
-The PlatformLCD component handles interaction with the display and the input buttons of the AsTeRICS Personal Platform. The component allows other components to send messages to the display.
+The PlatformLCD component handles interaction with the display and the input buttons of the AsTeRICS Personal Platform.
+The component allows other components to send messages to the display.
 
 ![Screenshot: PlatformLCD plugin](./img/PlatformLCD.jpg "Screenshot: PlatformLCD plugin")  
 PlatformLCD plugin

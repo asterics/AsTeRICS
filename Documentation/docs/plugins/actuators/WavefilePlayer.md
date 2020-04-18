@@ -13,7 +13,8 @@ WavefilePlayer plugin
 
 ## Input port Description
 
-- **wavefileName\[string\]:** this port will change the property filename to the string on the input. Thus it is possible to have other plugins change the file to be played.
+- **wavefileName\[string\]:** this port will change the property filename to the string on the input.
+  Thus it is possible to have other plugins change the file to be played.
 
 ## Event Listener Description
 
@@ -24,4 +25,5 @@ WavefilePlayer plugin
 
 ## Properties
 
-- **filename\[string\]:** The value of this property specifies the file name of the wave file to be played. **Supports value suggestions from ARE (dynamic property)**
+- **filename\[string\]:** The value of this property specifies the file name of the wave file to be played.
+  **Supports value suggestions from ARE (dynamic property)**

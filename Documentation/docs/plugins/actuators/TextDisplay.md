@@ -8,13 +8,13 @@ title: TextDisplay
 
 The Text Display is the GUI component, which displays the text information.
 
-![Screenshot:
-        TextDisplay plugin](./img/TextDisplay.jpg "Screenshot: TextDisplay plugin")  
+![Screenshot: TextDisplay plugin](./img/TextDisplay.jpg "Screenshot: TextDisplay plugin")  
 TextDisplay plugin
 
 ## Input Port Description
 
-- **input \[string\]:** The text which will be displayed. **This input port supports synchronization**
+- **input \[string\]:** The text which will be displayed.
+  **This input port supports synchronization**
 
 ## Event Listener Description
 

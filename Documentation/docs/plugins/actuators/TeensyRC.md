@@ -6,7 +6,8 @@ title: TeensyRC
 
 ### Component Type: Actuator (Subcategory: Others)
 
-The TeensyRCprototype component allows to use radio-controlled toys from within the AsTeRICS framework. As a prerequisite, the Teensy_RC_CIM.hex firmware (see /CIMS/Teensy_RC_CIM) must be installed on a teensy microcontroller (see [http://www.pjrc.com](http://www.pjrc.com)), and the teensy must be connected to a Walkera MTC-01 "MagicCube" or a similar remote control unit with PPM-signal input, which allows sending up to 8 channel values to a connected RC-receiver:
+The TeensyRCprototype component allows to use radio-controlled toys from within the AsTeRICS framework.
+As a prerequisite, the Teensy_RC_CIM.hex firmware (see /CIMS/Teensy_RC_CIM) must be installed on a teensy microcontroller (see [http://www.pjrc.com](http://www.pjrc.com)), and the teensy must be connected to a Walkera MTC-01 "MagicCube" or a similar remote control unit with PPM-signal input, which allows sending up to 8 channel values to a connected RC-receiver:
 
 ![Screenshot: TeensyRC plugin](./img/TeensyRC.jpg "Screenshot: TeensyRC plugin")  
 TeensyRC plugin
@@ -16,7 +17,9 @@ TeensyRC Remot control gear
 
 ## Application
 
-The channel values which are sent into the plugin are transformed into so-called "PPM-signals" which are supported by several toy remote controls. For example to use a RC-model car, only 2 channels are needed. For more information about the firmware, the needed modules and their application, please refer to the Bachelor-thesis by Alexander Frimmel in the documentation section (/Documenation/DIYGuides/RC_ToyControl_Frimmel.pdf).
+The channel values which are sent into the plugin are transformed into so-called "PPM-signals" which are supported by several toy remote controls.
+For example to use a RC-model car, only 2 channels are needed.
+For more information about the firmware, the needed modules and their application, please refer to the Bachelor-thesis by Alexander Frimmel in the documentation section (/Documenation/DIYGuides/RC_ToyControl_Frimmel.pdf).
 
 ![remote control of a toy car](./img/TeensyRCApplication.jpg "remote control of a toy car")  
 remote control of a toy car
