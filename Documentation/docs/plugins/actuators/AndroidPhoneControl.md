@@ -6,7 +6,8 @@ title: AndroidPhoneControl
 
 ### Component Type: Actuator (Subcategory: Phone Interface)
 
-This component controls a mobile phone with Android operating system through the TCP/IP connection. Currently this component is able to perform such action as: call a remote phone, drop a phone call, send and receive SMS message.
+This component controls a mobile phone with Android operating system through the TCP/IP connection.
+Currently this component is able to perform such action as: call a remote phone, drop a phone call, send and receive SMS message.
 
 ![Screenshot: AndroidPhoneControl plugin](./img/AndroidPhoneControl.jpg "Screenshot: AndroidPhoneControl plugin")  
 AndroidPhoneControl plugin
@@ -19,7 +20,8 @@ Android phone running AsTeRICSPhoneServer application.
 
 - **phoneID \[string\]:** The phone number used for outgoing SMS and make phone calls.
 - **SMSContent \[string\]:** The SMS content which will be used for the send SMS action.
-- **command \[string\]:** String command that can be sent to this component from other plugins to trigger phone actions. Currently supported commands are:
+- **command \[string\]:** String command that can be sent to this component from other plugins to trigger phone actions.
+  Currently supported commands are:
   - @PHONE: SMS:Phone_ID, "Message_content"
   - @PHONE: SMS
   - @PHONE: CALL: Phone_ID
