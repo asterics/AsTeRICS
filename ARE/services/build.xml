@@ -21,7 +21,8 @@
 	<target name="clean">
         <delete dir="out"/>
 		<delete>
-			<fileset dir="." includes="asterics.*.jar"/>
+      <fileset dir="." includes="asterics.*.jar"/>
+      <fileset dir="." includes="javacv-*.jar"/>
 		</delete>
     </target>
 	
