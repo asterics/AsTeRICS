@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Event and String Processing)
 
 This plugin passes received events after a defined delay.
 
-![Screenshot: EventDelay plugin](./img/EventDelay.jpg "Screenshot: EventDelay plugin")
-
+![Screenshot: EventDelay plugin](./img/EventDelay.jpg "Screenshot: EventDelay plugin")  
 EventDelay plugin
 
 ## Event Listener Description

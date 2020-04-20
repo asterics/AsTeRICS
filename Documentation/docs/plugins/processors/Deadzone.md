@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Signal Shaping)
 
 The purpose of this component is to define active and passive areas (zones) for one- or two dimensional sensor values. This function could also be called "resting zone" or "centerzone". It can be useful for example when a mouse pointer should not move before a certain value of a sensor (displacement of an analogue sensor, strength of activity) is reached.
 
-![Screenshot: Deadzone plugin](./img/Deadzone.jpg "Screenshot: Deadzone plugin")
-
+![Screenshot: Deadzone plugin](./img/Deadzone.jpg "Screenshot: Deadzone plugin")  
 Deadzone plugin
 
 ## Input Port Description

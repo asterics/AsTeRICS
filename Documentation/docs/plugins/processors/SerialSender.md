@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Serial Communication)
 
 The Serialsender can be used to send structured data to Serial devices. It has 16 data slots. Whenever a send event occurs the plugin sends every slot which is active to the device, beginning with slot0
 
-![Screenshot: SerialSender plugin](./img/SerialSender.png "Screenshot: SerialSender plugin")
-
+![Screenshot: SerialSender plugin](./img/SerialSender.png "Screenshot: SerialSender plugin")  
 SerialSender plugin
 
 ## Input Port Description

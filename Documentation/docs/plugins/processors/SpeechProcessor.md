@@ -2,14 +2,13 @@
 title: SpeechProcessor
 ---
 
-# Speech Processor
+# SpeechProcessor
 
 Component Type: Processor (Subcategory: Audio and Voice)
 
 The SpeechProcessor component provides methods to use a speech recognition engine and a speech synthesizer, provided via the Microsoft Speech Platform Server version 11 (see [http://www.microsoft.com/en-us/download/details.aspx?id=27225](http://www.microsoft.com/en-us/download/details.aspx?id=27225)). The Microsoft Speech Platform provides enables recognition of spoken words and generation of synthesized speech (text-to-speech, TTS). Engines and language packs for 26 languages can be downloaded for free (see above link). The language (culture) of speech recognition and synthesis can be adjusted as a plugin property (currently English, German, Spanish and Polish are supported by the plugin, if the language packs are installed.) The supported voice commands can be set by the plugin properties. Recognized commands trigger events and are put to an output port as stings. Moreover, the component can receive strings which are spoken via the selected speech synthesizer. The component features special commands for activation, deactivation and speaking all supported commands
 
-![Screenshot: SpeechProcessor plugin](./img/SpeechProcessor.jpg "Screenshot: SpeechProcessor plugin")
-
+![Screenshot: SpeechProcessor plugin](./img/SpeechProcessor.jpg "Screenshot: SpeechProcessor plugin")  
 SpeechProcessor plugin
 
 ## Requirements

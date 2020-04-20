@@ -2,14 +2,13 @@
 title: OskaExternalScanning2D
 ---
 
-# Oska External Scanning2D
+# OskaExternalScanning2D
 
 Component Type: Processor (Subcategory: OSKA)
 
 This component interacts with the On Screen Keyboard Application (OSKA) and forwards key selections and command (action-) strings to other ARE plugins. The scanning function of OSKA can be controlled via this plugin, allowing 1-dimensional input values to be used for direct scanning position selection. Scanning is operated using two float inputs which take inputs in a range defined by the according property (between 0.0 and 1.0. or integer values). The two inputs control the position of the highlighted cell in a grid with values being mapped to a corresponding position in the grid. An event input allows pressing selected cells in the grid.
 
-![Screenshot: OskaExternalScanning2D plugin](./img/OskaExternalScanning2D.jpg "Screenshot: OskaExternalScanning2D plugin")
-
+![Screenshot: OskaExternalScanning2D plugin](./img/OskaExternalScanning2D.jpg "Screenshot: OskaExternalScanning2D plugin")  
 OskaExternalScanning2D plugin
 
 ## Requirements

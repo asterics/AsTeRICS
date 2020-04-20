@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Event and Signal Processing)
 
 This component allows routing up to 6 incoming events to one of 8 corresponding output (trigger) event ports.
 
-![Screenshot: EventRouter](./img/EventRouter.jpg "Screenshot: Event Router plugin")
-
+![Screenshot: EventRouter](./img/EventRouter.jpg "Screenshot: Event Router plugin")  
 Event Router plugin
 
 ## Event Listener Description

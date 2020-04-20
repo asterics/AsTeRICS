@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 The averager component takes an input stream and forwards the average of certain amount of buffered last inputs. The size of the buffer can be set via a property. The component can be used to eliminate spikes in an input data stream. Furthermore the unit can also be used as an accumulator which accumulates all inputs within a certain time interval.
 
-![Screenshot: Averager plugin](./img/Averager.jpg "Screenshot: Averager plugin")
-
+![Screenshot: Averager plugin](./img/Averager.jpg "Screenshot: Averager plugin")  
 Averager plugin
 
 ## Input Port Description

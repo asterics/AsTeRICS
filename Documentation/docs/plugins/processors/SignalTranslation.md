@@ -1,15 +1,14 @@
 ---
-title: Signal Translation
+title: SignalTranslation
 ---
 
-# Signal Translation
+# SignalTranslation
 
 Component Type: Processor (Subcategory: Signal Shaping)
 
 The signal translation component is used to translate an input value which resides in a certain value range to a given output range. Interpolation of the position in the output range is done linearly. The component provides two inputs which allow other components to set the minimum and maximum value of the input range.
 
-![Screenshot: SignalTranslation plugin](./img/SignalTranslation.jpg "Screenshot: SignalTranslation plugin")
-
+![Screenshot: SignalTranslation plugin](./img/SignalTranslation.jpg "Screenshot: SignalTranslation plugin")  
 SignalTranslation plugin
 
 ## Input Port Description

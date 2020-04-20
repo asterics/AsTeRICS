@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Event and String Processing)
 
 The EventCascade component can be used to generate a sequence (or loops) of events with selectable delay times. The sequence can be started and stopped via incoming events.
 
-![Screenshot: EventCascade plugin](./img/EventCascade.jpg "Screenshot: EventCascade plugin")
-
+![Screenshot: EventCascade plugin](./img/EventCascade.jpg "Screenshot: EventCascade plugin")  
 EventCascade plugin
 
 ## Event Listener Description

@@ -1,15 +1,14 @@
 ---
-title: Blink Detector Trainer
+title: BlinkDetectorTrainer
 ---
 
-# Blink Detector Trainer
+# BlinkDetectorTrainer
 
 Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 This component calculates the maxThreshold, minThreshold, BlinkLength and DoubleBlinkSeparation customized properties of the [Blink Detector](../processors/BlinkDetector.htm) plugin for each specific subject. For a description of the meaning of these properties, please see [Blink Detector](../processors/BlinkDetector.htm). The training of the system consists on asking the subject to follow a protocol. This protocol consists on a series of 5 simple blinks and 5 double blinks. Note that the subject can perform only **one** simple (or double) blink each time the protocol indicates so through its Protocol port. When the protocol finishes, the results show up through the Results output port.
 
-![Screenshot: Blink Detector Trainer plugin](./img/BlinkDetectorTrainer.jpg "Screenshot: Blink Detector Trainer plugin")
-
+![Screenshot: Blink Detector Trainer plugin](./img/BlinkDetectorTrainer.jpg "Screenshot: Blink Detector Trainer plugin")  
 Blink Detector plugin
 
 ## Requirements

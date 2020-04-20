@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 This plugin generates a constant rate of sampling for the input port signal.
 
-![Screenshot: Sampler plugin](./img/Sampler.jpg "Screenshot: Sampler plugin")
-
+![Screenshot: Sampler plugin](./img/Sampler.jpg "Screenshot: Sampler plugin")  
 Sampler plugin
 
 ## Input Port Description

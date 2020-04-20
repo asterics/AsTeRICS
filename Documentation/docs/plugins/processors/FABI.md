@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Microcontroller Interface)
 
 This component provides an interface for a FABI controller and enables the programming process. It is possible to configure the buttons which are connected to the FABI controller and store the set to the built in EEPROM.
 
-![Screenshot: FABI plugin](./img/FABI.png "Screenshot: FABI plugin")
-
+![Screenshot: FABI plugin](./img/FABI.png "Screenshot: FABI plugin")  
 FABI plugin
 
 ## Requirements
@@ -37,7 +36,6 @@ The Plugin requires a FABI2.0 compatible Version as well as the right COM Port. 
       				KEY\_HOME    KEY\_PAGE\_UP    KEY\_PAGE\_DOWN   KEY\_DELETE  KEY\_INSERT   KEY\_END	  KEY\_NUM\_LOCK    KEY\_SCROLL\_LOCK
       				KEY\_SPACE   KEY\_CAPS\_LOCK  KEY\_PAUSE       KEY\_SHIFT   KEY\_CTRL     KEY\_ALT   KEY\_RIGHT\_ALT   KEY\_GUI
       				KEY\_RIGHT\_GUI
-
 
 ## Output Port Description
 

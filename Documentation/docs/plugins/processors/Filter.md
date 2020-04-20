@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 This plugin implements a FIR Filter
 
-![Screenshot: Filter plugin](./img/Filter.jpg "Screenshot: Filter plugin")
-
+![Screenshot: Filter plugin](./img/Filter.jpg "Screenshot: Filter plugin")  
 Filter plugin
 
 ## Input Port Description

@@ -2,14 +2,13 @@
 title: RegularExpression
 ---
 
-# Regular Expression
+# RegularExpression
 
 Component Type: Processor (Subcategory: Event and String Processing)
 
 This component processes strings with regular expressions. It can work in two modes: match strings with the pattern or replace string parts with another string. The regular expression syntax is defined in the [Java class Pattern](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html).
 
-![Screenshot: RegularExpression plugin](./img/RegularExpression.jpg "Screenshot: RegularExpression plugin")
-
+![Screenshot: RegularExpression plugin](./img/RegularExpression.jpg "Screenshot: RegularExpression plugin")  
 RegularExpression plugin
 
 ## Input Port Description

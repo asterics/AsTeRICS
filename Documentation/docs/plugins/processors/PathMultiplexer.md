@@ -2,14 +2,13 @@
 title: PathMultiplexer
 ---
 
-# Path Multiplexer
+# PathMultiplexer
 
 Component Type: Processor (Subcategory: Signal Pathways)
 
 The Path Multiplexer component forwards signal from the selected input port to the output port.
 
-![Screenshot: PathMultiplexer plugin](./img/PathMultiplexer.jpg "Screenshot: PathMultiplexer plugin")
-
+![Screenshot: PathMultiplexer plugin](./img/PathMultiplexer.jpg "Screenshot: PathMultiplexer plugin")  
 PathMultiplexer plugin
 
 ## Input Port Description

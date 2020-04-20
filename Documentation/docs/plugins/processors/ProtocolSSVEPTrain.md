@@ -1,13 +1,12 @@
 ---
-title: Protocol SSVEP Train
+title: ProtocolSSVEPTrain
 ---
 
-# Protocol SSVEP Train
+# ProtocolSSVEPTrain
 
 Component Type: Processor (Subcategory: DSP and Feauture extraction) This component is in charge of managing and configuring the SSVEP training recording protocol. It sends out the corresponding SSVEP stimulation frequencies.
 
-![Screenshot: ProtocolSSVEPTrain plugin](./img/ProtocolSSVEPTrain.jpg "Screenshot: ProtocolSSVEPTrain plugin")
-
+![Screenshot: ProtocolSSVEPTrain plugin](./img/ProtocolSSVEPTrain.jpg "Screenshot: ProtocolSSVEPTrain plugin")  
 ProtocolSSVEPTrain plugin
 
 ## Requirements

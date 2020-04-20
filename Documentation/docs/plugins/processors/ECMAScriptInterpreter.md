@@ -22,14 +22,14 @@ The script is provided with the following external variables:
 
 The sendData method of the output variables has to be called with a string. If necessary this needs to be converted into a Java string, this can be done like this:
 
-    		str = new java.lang.String(in\_data);
-    		output\[in\_nb\].sendData(str.getBytes());
-
+```
+str = new java.lang.String(in\_data);
+output\[in\_nb\].sendData(str.getBytes());
+```
 
 For more information please see a demo script in the plugin source code!
 
-![Screenshot: ECMAScriptInterpreter plugin](./img/ECMAScriptInterpreter.jpg "Screenshot: ECMAScriptInterpreter plugin")
-
+![Screenshot: ECMAScriptInterpreter plugin](./img/ECMAScriptInterpreter.jpg "Screenshot: ECMAScriptInterpreter plugin")  
 ECMAScriptInterpreter plugin
 
 ## Input Port Description

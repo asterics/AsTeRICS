@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 The differentiate component outputs the difference of the previous to the current input value on the output port. This functionality can be considered as a simplified implementation of the derivative component.
 
-![Screenshot: Differentiate plugin](./img/Differentiate.jpg "Screenshot: Differentiate plugin")
-
+![Screenshot: Differentiate plugin](./img/Differentiate.jpg "Screenshot: Differentiate plugin")  
 Differentiate plugin
 
 ## Input Port Description

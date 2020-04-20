@@ -8,12 +8,10 @@ Component Type: Processor (Subcategory: Signal Shaping)
 
 The AdjustmentCurve component allows transformation of an incoming signal to an outgoing signal. The signal mapping can be freely arranged in a drawing window (GUI) during runtime of the model. The resulting mapping can be saved as a curve file. The GUI is optional - an existing curve can be loaded to perform the signal mapping without the GUI.
 
-![Screenshot: AdjustmentCurve plugin](./img/AdjustmentCurve.jpg "Screenshot: AdjustmentCurve plugin")
-
+![Screenshot: AdjustmentCurve plugin](./img/AdjustmentCurve.jpg "Screenshot: AdjustmentCurve plugin")  
 AdjustmentCurve plugin
 
-![Screenshot: AdjustmentCurve GUI during runtime](./img/AdjustmentCurve1.jpg "Screenshot: AdjustmentCurve GUI during runtime")
-
+![Screenshot: AdjustmentCurve GUI during runtime](./img/AdjustmentCurve1.jpg "Screenshot: AdjustmentCurve GUI during runtime")  
 AdjustmentCurve GUI during runtime
 
 ## Input Port Description

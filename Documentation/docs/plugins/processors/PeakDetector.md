@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Basic Math)
 
 The Peakdetector component can be used to detect peaks (top values of the signal) and valleys (bottom values) in a signal. Additionally it can calculate the time between two peaks or two valleys or between a peak and a valley. Optionally, top and bottom values can be compared with an average of the most recent top / bottom values - this allows to detect only peaks which are for example greater than 150% of the last 5 averaged peak values.
 
-![Screenshot: PeakDetector plugin](./img/peakdetector.png "Screenshot: PeakDetector plugin")
-
+![Screenshot: PeakDetector plugin](./img/peakdetector.png "Screenshot: PeakDetector plugin")  
 PeakDetector plugin
 
 ## Input Port Description

@@ -2,14 +2,13 @@
 title: EventBlock
 ---
 
-# Event Block
+# EventBlock
 
 Component Type: Processor (Subcategory: Event and String Processing)
 
 This plugin, depending on its state, can pass or block events from the input port.
 
-![Screenshot: EventBlock plugin](./img/EventBlock.jpg "Screenshot: EventBlock plugin")
-
+![Screenshot: EventBlock plugin](./img/EventBlock.jpg "Screenshot: EventBlock plugin")  
 EventBlock plugin
 
 ## Event Listener Description

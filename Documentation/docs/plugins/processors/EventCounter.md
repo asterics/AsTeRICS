@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Event and String Processing)
 
 This component counts events. It can increase and decrease a counts via incoming events.
 
-![Screenshot: EventCounter plugin](./img/EventCounter.jpg "Screenshot: EventCounter plugin")
-
+![Screenshot: EventCounter plugin](./img/EventCounter.jpg "Screenshot: EventCounter plugin")  
 EventCounter plugin
 
 ## Input Port Description

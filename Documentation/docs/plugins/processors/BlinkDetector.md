@@ -1,27 +1,24 @@
 ---
-title: Blink Detector
+title: BlinkDetector
 ---
 
-# Blink Detector
+# BlinkDetector
 
 Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 This component detects the shape that a blink produces in an electro-oculogram signal. The plugin analyses the input samples and recognises both a single blink and a double blink. Here a single blink is defined by an action whereby both eyes are simultaneously and voluntary closed and open. A double blink refers to the repletion of this action twice in an consecutive way. When one of these conditions is found the corresponding event is fired.  
 Note that the plugin will only detect simple or double blinks with a duration smaller than BlinkLength miliseconds. Similarly, it will only detect double blinks that are separated by less than DoubleBlinkSeparation miliseconds. In addition, the "strength" of the blinks is defined by the maxThreshold and minThreshodld properties:
 
-![Screenshot: EEG signal double blink](./img/double_original.jpg "Screenshot: EEG signal double blink")
-
+![Screenshot: EEG signal double blink](./img/double_original.jpg "Screenshot: EEG signal double blink")  
 EEG signal double blink
 
-![Screenshot: Double blink derivative](./img/double_derivative.jpg "Screenshot: Double blink derivative")
-
+![Screenshot: Double blink derivative](./img/double_derivative.jpg "Screenshot: Double blink derivative")  
 Double blink derivative
 
 In order to propperly configure these 4 properties, they should be previously obtained by running the [BlinkDetectorTrainer](../processors/BlinkDetectorTrainer.htm) plugin for each different subject.  
 In order to correctly detect simple and double blinks, the input signal is internally decimated by a factor of 11 and derivated. For debugging purposes, the decimated samples and the derivated samples are output to the corresponding output ports.
 
-![Screenshot: Blink Detector plugin](./img/BlinkDetector.jpg "Screenshot: Blink Detector plugin")
-
+![Screenshot: Blink Detector plugin](./img/BlinkDetector.jpg "Screenshot: Blink Detector plugin")  
 Blink Detector plugin
 
 ## Requirements

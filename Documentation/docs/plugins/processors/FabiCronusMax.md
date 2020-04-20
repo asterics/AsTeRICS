@@ -8,12 +8,10 @@ Component Type: Processor (Subcategory: Microcontroller Interface)
 
 This component provides an interface for the FABI controller and the CronsuMax USB stick. It enables the programming process of the FABI as well as the configuration for all supported gaming consoles. It is possible to configure the buttons which are connected to the FABI controller and store the set to the built-in EEPROM. Via the plugin the CronusMax stick controls the selected gaming device through the external buttons connected to the FABI. The set of buttons can be defined in a configuration file and modified for each game and console.
 
-![Screenshot: FabiCronusMax plugin](./img/FabiCronusMax.png "Screenshot: FabiCronusMax plugin")
-
+![Screenshot: FabiCronusMax plugin](./img/FabiCronusMax.png "Screenshot: FabiCronusMax plugin")  
 FabiCronusMax plugin
 
-![Screenshot: CronusMax plugin](./img/CronusMax.jpg "Screenshot: CronusMax plugin")
-
+![Screenshot: CronusMax plugin](./img/CronusMax.jpg "Screenshot: CronusMax plugin")  
 CronusMax USB Stick
 
 ## Requirements

@@ -1,13 +1,12 @@
 ---
-title: Audio Selector
+title: AudioSelector
 ---
 
-# Audio Selector
+# AudioSelector
 
 Component Type: Processor (Subcategory: Audio and Voice) This plug-in manages the audio tracks present in the data/music folder and different external request working as an interface with the wavefileplayer plug-in
 
-![Screenshot: AudioSelector plugin](./img/AudioSelector.jpg "Screenshot: AudioSelector plugin")
-
+![Screenshot: AudioSelector plugin](./img/AudioSelector.jpg "Screenshot: AudioSelector plugin")  
 AudioSelector plugin
 
 ## Requirements

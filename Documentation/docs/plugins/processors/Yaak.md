@@ -8,8 +8,7 @@ Component Type: Processor
 
 Yaak is a flexible on-screen-keyboard for the Android operating system. More information can be found in the pdf documentation in the Android/Yaak folder within the release package.
 
-![Yaak plugin in the ACS](./img/yaak.png "Yaak plugin in the ACS")
-
+![Yaak plugin in the ACS](./img/yaak.png "Yaak plugin in the ACS")  
 Yaak plugin in the ACS
 
 ## Requirements

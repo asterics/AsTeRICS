@@ -8,8 +8,7 @@ Component Type: Processor (Subcategory: Communication)
 
 The ComPort plugin can be used to send and receive data from serial devices (e.g. microcontrollers/embedded devices/wireless links etc.) via a COM port or virtual COM port. The plugin provides support for different data formats of serial communication, e.g. string or binary
 
-![Screenshot: COMPort plugin](./img/COMPort.jpg "Screenshot: COMPort plugin")
-
+![Screenshot: COMPort plugin](./img/COMPort.jpg "Screenshot: COMPort plugin")  
 COMPort plugin
 
 ## Input Port Description

@@ -2,14 +2,13 @@
 title: StringPathMultiplexer
 ---
 
-# String Path Multiplexer
+# StringPathMultiplexer
 
 Component Type: Processor (Subcategory: Signal Pathways)
 
 The String Path Multiplexer component forwards strings from the selected input port to the output port.
 
-![Screenshot: StringPathMultiplexer plugin](./img/StringPathMultiplexer.jpg "Screenshot: StringPathMultiplexer plugin")
-
+![Screenshot: StringPathMultiplexer plugin](./img/StringPathMultiplexer.jpg "Screenshot: StringPathMultiplexer plugin")  
 StringPathMultiplexer plugin
 
 ## Input Port Description
