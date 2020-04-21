@@ -33,6 +33,7 @@ Installer/asterics-are/build/
 
 /ARE/services/asterics.*.jar
 /ARE/services/javacv*.jar
+/ARE/services/ComputerVision/javacv/
 /ARE/components/asterics.*.jar
 /ARE/middleware/asterics.*.jar
 /ARE/tools/APE/APE.jar
@@ -445,4 +446,3 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
-
