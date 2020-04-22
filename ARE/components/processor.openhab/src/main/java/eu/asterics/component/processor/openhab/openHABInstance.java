@@ -108,6 +108,11 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
 
     /** protocol to be connected with, either http or https */
     int propProtocol = 0;
+    String protocols[]=new String[]{"http","https"};
+    // enum protocols {
+    //     http,
+    //     https
+    // }
 
     //String protocol = "http";
 
@@ -641,13 +646,8 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void start() {
 
-        String protocol = "http";
-        switch (propProtocol)  {
-            case 0: protocol = "http"; break;
-            case 1: protocol = "https"; break;
-            default:  protocol = "http"; break;
-        }
-
+        String protocol = protocols[propProtocol];
+    
 
         AstericsErrorHandling.instance.reportDebugInfo(this, "Connecting to openHAB:");
         AstericsErrorHandling.instance.reportDebugInfo(this, "Host: " + hostname + ":" + port);
@@ -658,12 +658,6 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
         // get all available items
         this.items = getItems();
 
-        if (items.isEmpty()) {
-            AstericsErrorHandling.instance.reportError(this,
-                    "Could not find openHAB on host " + openHABInstance.hostname
-                            + " Please verify that openHAB is running and there is no firewall related issue");
-            return;
-        }
         super.start();
         tg.start();
     }
@@ -696,35 +690,18 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     }
 
     public List<String> getSitemaps() {
-        String protocol = "http";
-        switch (propProtocol)  {
-            case 0: protocol = "http"; break;
-            case 1: protocol = "https"; break;
-            default:  protocol = "http"; break;
-        }
-
+        String protocol = protocols[propProtocol];
         return getList(protocol + "://" + hostname + ":" + port, "sitemap");
     }
 
     public List<String> getItems() {
-        String protocol = "http";
-        switch (propProtocol)  {
-            case 0: protocol = "http"; break;
-            case 1: protocol = "https"; break;
-            default:  protocol = "http"; break;
-        }
-
+        String protocol = protocols[propProtocol];
         return getList(protocol + "://" + hostname + ":" + port, "item");
     }
 
     public String getItemState(String item) {
 
-        String protocol = "http";
-        switch (propProtocol)  {
-            case 0: protocol = "http"; break;
-            case 1: protocol = "https"; break;
-            default:  protocol = "http"; break;
-        }
+        String protocol = protocols[propProtocol];
         try {
             AstericsErrorHandling.instance.reportDebugInfo(this, "Get item (name: " + item + ": " + protocol + "://"
                     + hostname + ":" + port + "/rest/items/" + item + "/state");
@@ -744,7 +721,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
                         "Item name '" + item + "' not found, please update your model (HTTP 404)");
             } else {
                 AstericsErrorHandling.instance.reportError(this,
-                        "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
+                "Can't connect to openHAB at "+protocol + "://" + hostname + ":" + port+". Verify the running instance in the browser (port?, username/password?),\n message: "
                                 + e.getMessage());
             }
         }
@@ -753,12 +730,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
 
     public String setItemState(String item, String state) {
 
-        String protocol = "http";
-        switch (propProtocol)  {
-            case 0: protocol = "http"; break;
-            case 1: protocol = "https"; break;
-            default:  protocol = "http"; break;
-        }
+        String protocol = protocols[propProtocol];
 
         String urlParameters = state;
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
@@ -807,7 +779,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
                         "Item name '" + item + "' not found, please update your model (HTTP 404)");
             } else {
                 AstericsErrorHandling.instance.reportError(this,
-                        "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
+                "Can't connect to openHAB at "+protocol + "://" + hostname + ":" + port+". Verify the running instance in the browser (port?, username/password?),\n message: "
                                 + e.getMessage());
             }
         }
@@ -834,7 +806,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
         } catch (IOException e) {
             tg.stop();
             AstericsErrorHandling.instance.reportError(this,
-                    "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
+                    "Can't connect to openHAB at "+hostname+". Verify the running instance in the browser (port?, username/password?),\n message: "
                             + e.getMessage());
         } catch (KeyManagementException e) {
             tg.stop();
