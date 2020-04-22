@@ -106,6 +106,7 @@ Further information on configuration and usage of openHAB is available on the op
 ## Additional hints
 
 * [Interactive openHAB REST documentation](https://www.openhab.org/docs/configuration/restdocs.html#rest-api-documentation): Install the add-on ```REST Documentation```. On the welcome screen of openHAB, you will now see a new interface called "REST API" where you can easily see the documentation of the REST API and test it!
+* To find and copy an item name you can click on the copy icon ![Screenshot of Paper UI item configurations](./img/openhab_copy-item-name.png) of an item in the [Paper UI](http://localhost:8080/paperui/index.html#/configuration/items).
 *   The model will stop with an error message, if one of the item names in the properties is not found.
 *   There is no feedback for checking a successful state change. E.g.: if your write to a read-only item (temperature sensor), nothing will happen
 *   Use the _lazyCertificates_ property with care, it will disable a major part of the SSL handshaking for the whole Java session. It should be limited to the given hostname only, but without warranty.
