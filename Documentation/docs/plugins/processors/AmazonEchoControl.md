@@ -8,19 +8,16 @@ Component Type: Processors (Subcategory: Home Control)
 
 This plugin is based on the openHAB plugin, but is only used to control the [AmazonEchoControl binding][5] from openHAB.
 
-The plugin controls the AmazonEchoControl binding from openHAB.
-It is configured to interact directly with the binding. 
-
 See the [openHAB documentation][1].
 
-This component uses the provided REST API of openHAB to read and write the state of different nodes, called items within the openHAB system.
-
+This component uses the provided [REST API of openHAB](https://www.openhab.org/docs/configuration/restdocs.html) to read and write the state of different nodes (called items) within the openHAB system.
 
 ## Requirements
 
-A functional openHAB installation, 
-which is accessible via the web interface (the plugin connects via HTTP REST API). 
-You can run either HTTP or HTTPS, in order to fulfill any security requirements. 
+The plugin expects
+
+* a functional [openHAB installation](https://www.openhab.org/docs/installation/)
+* [Amazon Echo or similar device](https://www.amazon.de/b?ie=UTF8&node=14100226031)
 
 ### Installation
 
@@ -30,7 +27,13 @@ To run openHAB without password authentication, start openHAB with this command:
 
 ```sh
 ./start_debug.sh
-``` 
+```
+
+or on a debian-based system this should be:
+
+```bash
+sudo openhab-cli start
+```
 
 #### Windows
 
@@ -48,20 +51,30 @@ See the ([openHAB installation guide][3]).
 
 Before this plugin can be used, the openHAB must be initialized and the AmazonEchoControl binding must be installed. The following steps, based on the [openHAB first-time setup][4], must be done
 
+### Connect Amazon Account
+
 1. Select **Standard (recommended setup)**, this step can take a while
 2. Select the **PAPER UI**
 3. Go to **Add-ons** in the control panel and on Tab **BINDINGS** and search for **Amazon Echo Control Binding** and click install.
-4. Go to **Configuration** and click on **Things** and create a new Amazon Echo Control Binding Thing.
-5. Click on **Amazon Account** and accept it by pressing on the tick
-6. After that, use this link to connect openHAB with your **Amazon Account** (http://localhost:8080/amazonechocontrol/).
-7. Back in the **Configuration** menu click on **Things**, the account should be online.
-8. If everything worked, go to **Inbox** and accept the two new **Things**.
-9. The things will show up in the **Control** area.
+4. Go to **Configuration** and click on **Things** and click on ```Amazon Echo Control Binding```.
+6. Click on **Amazon Account** and accept it by pressing on the tick
+![Screenshot Amazon Account Thing Creation](./img/amazonechocontrol-addthing-amazonaccount.png)
+7. After that, use this link to connect openHAB with your **Amazon Account** (http://localhost:8080/amazonechocontrol/).
+8. Back in the **Configuration** menu click on **Things**, the account should be online.
 
 if not, follow the instruction at: [openHAB: AmazonEchoControl-Binding][5]
  
-
 ![Screenshot: Amazon Account Online](img/amazonaccount.JPG "Screenshot: Amazon Account Online")
+
+##### Setup Amazon Device
+
+The Amazon device must be setup within your [amazon alexa account](https://alexa.amazon.de) or using the amazon alexa app.
+
+9. Switch on **Simple Mode** in **Configuration/System**
+10. If everything worked, go to **Inbox** and accept the new **Things**.
+11. The things will show up in the **Control** area.
+12. Link all channels to make them available as items
+![Screenshot of how to link amazon echo channels](./img/amazonechocontrol-linkchannels.png)
 
 ## AmazonEchoControl Plugin
 
