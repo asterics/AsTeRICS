@@ -192,6 +192,9 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     // tick generator for fetching item state
     private final TickGenerator tg = new TickGenerator(this);
 
+    //
+    final String CMDSTRING="@OPENHAB";
+
     /**
      * The class constructor.
      */
@@ -223,6 +226,9 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
         }
         if ("item6in".equalsIgnoreCase(portID)) {
             return ipItem6;
+        }
+        if ("actionString".equalsIgnoreCase(portID)) {
+            return ipActionString;
         }
         return null;
     }
@@ -628,8 +634,30 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     private final IRuntimeInputPort ipActionString = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
-            ConversionUtils.stringFromBytes(data);
-            AstericsErrorHandling.instance.reportDebugInfo(null, "ActionString not implemented yet...");
+            if(data==null || data.length==0) return;
+
+            String fullCmd=ConversionUtils.stringFromBytes(data).trim();
+            //if it starts with an action String, split i
+            //Split after action string @OPENHAB and :
+            if(fullCmd.startsWith(CMDSTRING)) {
+                String cmdElems[]=fullCmd.split(":");
+                if(cmdElems.length>1) {    
+                    fullCmd=cmdElems[1].trim();
+                } else {
+                    return;
+                }
+            }  else if(fullCmd.startsWith("@")) {
+                //actions string not targeted to us, e.g. @IRTRANS
+                return;
+            } //if the cmd does not start with @, we also treat it as a command string.
+
+            //Split by comma: itemName,itemValue
+            String itemNameVal[]=fullCmd.split(",");
+            if(itemNameVal.length == 2) {
+                String itemName=itemNameVal[0].trim();
+                String itemVal=itemNameVal[1].trim();
+                setItemState(itemName, itemVal);
+            }
         }
 
     };
