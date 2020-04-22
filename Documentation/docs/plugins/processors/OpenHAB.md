@@ -65,7 +65,8 @@ Further information on configuration and usage of openHAB is available on the op
 *   **item4in \[string\]:** New state for item4 (the corresponding name is set in the property item4in). Example: see input port item1in
 *   **item5in \[string\]:** New state for item5 (the corresponding name is set in the property item5in). Example: see input port item1in
 *   **item6in \[string\]:** New state for item6 (the corresponding name is set in the property item6in). Example: see input port item1in
-*   **actionString \[string\]:** NOT IMPLEMENTED YET: more flexible input, where a random item (referenced by the name) can be set.
+*   **actionString \[string\]:** Action String syntax is as follows: ```@OPENHAB:<itemName>,<itemValue>``` or ```<itemName>,<itemValue>```. 
+Example: ```@OPENHAB:Light_GF_Kitchen_Ceiling,ON``` or ```Light_GF_Kitchen_Ceiling,ON```. For allowed item values, check the [Item Type Description](https://www.openhab.org/docs/configuration/items.html#type).
 
 ## Output Port Description
 
