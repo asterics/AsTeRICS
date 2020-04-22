@@ -113,6 +113,7 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
      * protocol to be connected with, either http or https
      */
     int propProtocol = 0;
+    String protocols[] = new String[] { "http", "https" };
 
     /**
      * update rate to fetch all necessary items [ms]
@@ -394,9 +395,7 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
             } catch (Exception e) {
                 response_output = "ERROR";
                 opResponse.sendData(response_output.getBytes());
-                AstericsErrorHandling.instance.reportDebugInfo(null, "Command Error");
-
-                AstericsErrorHandling.instance.reportError(null,
+                AstericsErrorHandling.instance.reportDebugInfo(null,
                         "Input Error,\n message: "
                                 + e.getMessage());
             }
@@ -562,19 +561,7 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
     @Override
     public void start() {
 
-        String protocol = "http";
-        switch (propProtocol) {
-            case 0:
-                protocol = "http";
-                break;
-            case 1:
-                protocol = "https";
-                break;
-            default:
-                protocol = "http";
-                break;
-        }
-
+        String protocol = protocols[propProtocol];
 
         AstericsErrorHandling.instance.reportDebugInfo(this, "Connecting to openHAB:");
         AstericsErrorHandling.instance.reportDebugInfo(this, "Host: " + hostname + ":" + port);
@@ -583,17 +570,15 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
         AstericsErrorHandling.instance.reportDebugInfo(this, "Protocol: " + protocol);
         AstericsErrorHandling.instance.reportDebugInfo(this, "Using lazyCertificates: " + lazyCertificate);
         // get all available items
-        this.items = getItems();
-
-        if (items.isEmpty()) {
+        try {
+            this.items = getItems();
+            super.start();
+            tg.start();    
+        } catch (IOException e) {
             AstericsErrorHandling.instance.reportError(this,
-                    "Could not find openHAB on host " + amazonEchoControlInstance.hostname
-                            + " Please verify that openHAB is running and there is no firewall related issue");
-            return;
-        }
-        super.start();
-        tg.start();
-    }
+            "Can't connect to openHAB at "+protocol + "://" + hostname + ":" + port+". Verify the running instance in the browser (port?, username/password?),\n message: "
+                            + e.getMessage());
+        }    }
 
     /**
      * called when model is paused.
@@ -623,19 +608,8 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
     }
 
 
-    public List<String> getItems() {
-        String protocol = "http";
-        switch (propProtocol) {
-            case 0:
-                protocol = "http";
-                break;
-            case 1:
-                protocol = "https";
-                break;
-            default:
-                protocol = "http";
-                break;
-        }
+    public List<String> getItems() throws IOException {
+        String protocol = protocols[propProtocol];
 
         return getList(protocol + "://" + hostname + ":" + port, "item");
     }
@@ -643,18 +617,8 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
 
     public String getItemState(String item) {
 
-        String protocol = "http";
-        switch (propProtocol) {
-            case 0:
-                protocol = "http";
-                break;
-            case 1:
-                protocol = "https";
-                break;
-            default:
-                protocol = "http";
-                break;
-        }
+        String protocol = protocols[propProtocol];
+        
         try {
             String itemstate = "";
             for (String searchItem : items) {
@@ -677,20 +641,19 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
             return httpGet(protocol + "://" + hostname + ":" + port + "/rest/items/" + itemstate + "/state");
         } catch (KeyManagementException e) {
             tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
+            AstericsErrorHandling.instance.reportDebugInfo(this,
                     "KeyManagement exception, try to use lazyCertificate option (property)");
         } catch (NoSuchAlgorithmException e) {
             tg.stop();
-            AstericsErrorHandling.instance.reportError(this, "Algortihm exception, please contact the AsTeRICS team");
+            AstericsErrorHandling.instance.reportDebugInfo(this, "Algortihm exception, please contact the AsTeRICS team");
         } catch (IOException e) {
-            tg.stop();
             // catch a wrong item name
             if (e.getMessage().equalsIgnoreCase("Not Found")) {
-                AstericsErrorHandling.instance.reportError(this,
+                AstericsErrorHandling.instance.reportDebugInfo(this,
                         "Item name '" + item + "' not found, please update your model (HTTP 404)");
             } else {
-                AstericsErrorHandling.instance.reportError(this,
-                        "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
+                AstericsErrorHandling.instance.reportDebugInfo(this,
+                "Can't connect to openHAB at "+protocol + "://" + hostname + ":" + port+". Verify the running instance in the browser (port?, username/password?),\n message: "
                                 + e.getMessage());
                 response_output = "ERROR";
                 opResponse.sendData(response_output.getBytes());
@@ -701,18 +664,7 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
 
     public String setItemState(String item, String state) {
 
-        String protocol = "http";
-        switch (propProtocol) {
-            case 0:
-                protocol = "http";
-                break;
-            case 1:
-                protocol = "https";
-                break;
-            default:
-                protocol = "http";
-                break;
-        }
+        String protocol = protocols[propProtocol];
         //List<String> itemList = new ArrayList();
 
         String urlParameters = state;
@@ -768,20 +720,19 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
             //return httpGet(protocol + "://" + hostname + ":" + port + "/CMD?" + item + "=" + state);
 
         } catch (IOException e) {
-            tg.stop();
             if (e.getMessage().equalsIgnoreCase("Not Found")) {
-                AstericsErrorHandling.instance.reportError(this,
+                AstericsErrorHandling.instance.reportDebugInfo(this,
                         "Item name '" + item + "' not found, please update your model (HTTP 404)");
             } else {
-                AstericsErrorHandling.instance.reportError(this,
-                        "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
+                AstericsErrorHandling.instance.reportDebugInfo(this,
+                "Can't connect to openHAB at "+protocol + "://" + hostname + ":" + port+". Verify the running instance in the browser (port?, username/password?),\n message: "
                                 + e.getMessage());
             }
         }
         return "";
     }
 
-    public List<String> getList(String hostname, String type) {
+    public List<String> getList(String hostname, String type) throws IOException {
         List<String> response = new ArrayList<String>();
 
         try {
@@ -797,19 +748,13 @@ public class amazonEchoControlInstance extends AbstractRuntimeComponentInstance 
                 String name = jsonObject.getString("name");
                 response.add(name);
             }
-
-        } catch (IOException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
-                    "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
-                            + e.getMessage());
         } catch (KeyManagementException e) {
             tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
+            AstericsErrorHandling.instance.reportDebugInfo(this,
                     "KeyManagement exception, try to use lazyCertificate option (property)");
         } catch (NoSuchAlgorithmException e) {
             tg.stop();
-            AstericsErrorHandling.instance.reportError(this, "Algortihm exception, please contact the AsTeRICS team");
+            AstericsErrorHandling.instance.reportDebugInfo(this, "Algortihm exception, please contact the AsTeRICS team");
         }
 
         return response;
