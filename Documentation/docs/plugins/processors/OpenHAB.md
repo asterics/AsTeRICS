@@ -6,38 +6,57 @@ title: openHAB
 
 Component Type: Processors (Subcategory: Home Control)
 
-The openHAB component interfaces to an openHAB instance, which is used to configure and use a home control environment. Usually, openHAB is stand-alone. Therefore it has its own GUI, many many possible interfacing solutions (called bindings) and a configuration tool (based on Eclipse). More information is available here: [openHAB wiki][1].
+The openHAB component interfaces to an openHAB instance, which is used to configure and use a home control environment. Usually, openHAB is stand-alone. Therefore it has its own GUI, many many possible interfacing solutions (called bindings) and a configuration tool (based on Eclipse). More information is available here: [openHAB][1].
 
-This component uses the provided REST API of openHAB to read and write the state of different nodes (called items) within the openHAB system.
+This component uses the provided [REST API of openHAB](https://www.openhab.org/docs/configuration/restdocs.html) to read and write the state of different nodes (called items) within the openHAB system.
 
 ![Screenshot: openHAB demo with different options (./light, heating, temperature, ...)](img/openhab_overview.png "Screenshot: openHAB demo with different options (light, heating, temperature, ...)")
 
-openHAB demo with different options (light, heating, temperature, ...)
-
 ## Requirements
 
-A functional openHAB installation, 
-which is accessible via the web interface (the plugin connects via HTTP REST API). 
-You can run either HTTP or HTTPS, in order to fulfill any security requirements. 
+The plugin expects
 
-**Is not implemented right now. (Date: 12.01.2020)** <br/>
-In addition, it is also possible to provide HTTP basic authentication with username/password. 
-Please note, that any saved password in the AsTeRICS model is stored in the model file in PLAINTEXT!
+* a functional [openHAB installation](https://www.openhab.org/docs/installation/)
   
+### Start OpenHAB
+
 To run openHAB without password authentication, start openHAB with this command:
 
-On Linux:  
-_bash ./start\_debug.sh_
+#### Linux
 
-On Windows:  
-in the openHAB folder, double click on start_debug.sh
+On a debian-based system this should be:
 
-**Is not implemented right now. (Date: 12.01.2020)**  
+```bash
+sudo openhab-cli start
+```
+
+#### Windows
+
+in the openHAB folder, double click on ```start_debug.sh```
+
+<!-- ### User Authentication
+
+**not yet implemented**   -->
+<!-- In addition, it is also possible to provide HTTP basic authentication with username/password. 
+Please note, that any saved password in the AsTeRICS model is stored in the model file in PLAINTEXT!
+
 To start with password authentication, use following command:  
 _bash ./start\_debug.sh -Djava.security.auth.login.config=./etc/login.conf_  
 The user configuration is handled via this file:  
 _openHAB\_runtime/configurations/users.cfg_ Please note, that the first line is necessary, so do not remove it!  
-Further information on configuration and usage of openHAB is available on the openHAB GitHub page ([openHAB wiki][2]).
+Further information on configuration and usage of openHAB is available on the openHAB GitHub page ([openHAB][1]). -->
+
+## Example
+
+1. [Install openHAB](https://www.openhab.org/docs/installation/)
+2. Start openHab
+3. [Create demo package](https://www.openhab.org/docs/configuration/packages.html#demo-package-sample-setup) at first time startup
+4. Open the model ```ARE/models/componentTests/processors/openHAB_simple_test.acs```
+5. Upload/Start model
+6. Open [Basic UI of the Kitchen](http://localhost/basicui/app?w=GF_Kitchen&sitemap=demo)
+7. In ARE GUI: Click on ```Item Light_GF_Kitchen_Ceiling ON``` or ```Item Light_GF_Kitchen_Ceiling OFF```. You should see the switching of the item in the basic UI accordingly.
+8. Change a value in the basic UI, you should get an event in the event visualizer of the ARE GUI.
+
 ## Input Port Description
 
 *   **item1in \[string\]:** New state for item1 (the corresponding name is set in the property item1in). For example: set the property item1in to Light\_GF\_Bed\_Ceiling and send "ON" to the input port to switch on the light which is connected to this item.
@@ -86,10 +105,10 @@ Further information on configuration and usage of openHAB is available on the op
 
 ## Additional hints
 
+* [Interactive openHAB REST documentation](https://www.openhab.org/docs/configuration/restdocs.html#rest-api-documentation): Install the add-on ```REST Documentation```. On the welcome screen of openHAB, you will now see a new interface called "REST API" where you can easily see the documentation of the REST API and test it!
 *   The model will stop with an error message, if one of the item names in the properties is not found.
 *   There is no feedback for checking a successful state change. E.g.: if your write to a read-only item (temperature sensor), nothing will happen
 *   Use the _lazyCertificates_ property with care, it will disable a major part of the SSL handshaking for the whole Java session. It should be limited to the given hostname only, but without warranty.
 *   The username/password combination from the properties is saved in PLAINTEXT in the model file, so handle it with care.
 
-[1]: https://github.com/openhab/openhab/wiki
-[2]: https://github.com/openhab/openhab/wiki
+[1]: https://www.openhab.org/
