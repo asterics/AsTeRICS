@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.PhilipsHueSensor"
+                   canonical_name="eu.asterics.component.sensor.philipshuesensor.PhilipsHueSensorInstance">
+        <type subtype="Home Control">sensor</type>
+        <singleton>false</singleton>
+        <description>Control Philips Hue devices via the RESTful API</description>
+        <ports>
+
+            <outputPort id="currentState">
+                <description>Current state of all Philips Hue devices (JSON)</description>
+                <dataType>string</dataType>
+            </outputPort>
+
+        </ports>
+        <events>
+
+            <eventTriggererPort id="statusChanged">
+                <description>fires when the configured sensor changes its status</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="tick">
+                <description>fires for each tick (depends on updateRate variable)</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="dimmerButtonOn">
+                <description>dimmer switch: fires when the first button (on) is pressed</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="dimmerButtonBrighter">
+                <description>dimmer switch: fires when the second button (brightness up) is pressed</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="dimmerButtonDarker">
+                <description>dimmer switch: fires when the third button (brightness down) is pressed</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="dimmerButtonOff">
+                <description>dimmer switch: fires when the last button (off) is pressed</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="motionDetected">
+                <description>motion sensor: fires once, when motion is detected</description>
+            </eventTriggererPort>
+
+        </events>
+        <properties>
+            <property name="apiKey"
+                      type="string"
+                      value="Osq3VsXahrkSEJU3NzPMTnu3mdvL8T0CuTjSlUrH"
+                      description="Philips Hue RESTful API key"/>
+            <property name="ip"
+                      type="string"
+                      value="10.0.0.57"
+                      description="Philips Hue Bridge IP"/>
+            <property name="target"
+                      type="string"
+                      value="/sensors/11"
+                      description="Target device"/>
+            <property name="updateRate"
+                      type="integer"
+                      value="1000"
+                      description="Polling rate for the bridge"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
