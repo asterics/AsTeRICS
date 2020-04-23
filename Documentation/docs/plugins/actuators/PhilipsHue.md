@@ -7,7 +7,8 @@ title: PhilipsHue
 Component Type: Actuator (Subcategory: Home Control)
 
 The PhilipsHue component provides an interface to the
-[Philips Hue smart lighting system](https://www2.meethue.com/en-us). 
+[Philips Hue smart lighting system](https://www2.meethue.com/en-us).
+You can also use [Ikea Tradfri bulbs](https://www.youtube.com/watch?v=z9ayFNhmoBo)
 
 One instance of this plugin can be used to control one specific Philips Hue light
 or all lights connected to the Philips Hue bridge at the same time.
@@ -29,8 +30,8 @@ The bridge has to be connected to the ethernet port of the router. The light has
 
 Any device that ships with the bridge is already paired and ready to be used.
 
-If they have been acquired separately you can pair them like so:
-1. Connect the new light to an outlet or fixture close to the bridge
+If they have been acquired separately you can **pair** them like so:
+1. Connect the new light to an outlet or fixture **close to the bridge**. If the bridge is not in the same room the pairing might not work. In case of Ikea Tradfri bulbs you must switch on/off it 6 times first, to unpair it from any Ikea gateway and make it findable for a Hue bridge.
 2. Open the Philips Hue app on your phone
 3. Go to *Settings*, select *Light Setup* and press the *plus* icon
 4. Tap on *search* to search for the new light
@@ -44,7 +45,7 @@ The plugin requires the IP address of the bridge and an API key.
 
 First let's find out the IP address:
 
-1. Open the Philips Hue app on your phone
+1. Open the [Philips Hue app](https://www2.meethue.com/de-at/philips-hue-app) on your phone. If this does not work, try [Hue Essentials App](https://www.hueessentials.com/).
 2. Go to *Settings*, select *Hue Bridges* and press the *i* icon
 3. Look for the line that says *IP address*
 
