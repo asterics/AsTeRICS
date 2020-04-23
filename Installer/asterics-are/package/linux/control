@@ -1,11 +1,13 @@
 Package: asterics-are
 Version: #{APPLICATION_VERSION_NUMBER}#
-Section: unknown
-Maintainer: Asterics Foundation
+Section: utils
+Maintainer: AsTeRICS Foundation
 Priority: optional
 Architecture: all
-Homepage: https://github.com/asterics/AsTeRICS
+License: MIT or GPL-3 with Classpath exception
+Homepage: https://www.asterics.eu
 Provides: asterics-are
-Description: AsTeRICS Runtime Environment (ARE) - http://www.asterics.org
-Recommends: oracle-java8-installer
-Depends: libttspico-utils, libhidapi-libusb0, libudev1, xdg-utils
+Description: AsTeRICS Runtime Environment (ARE) - http://www.asterics.eu
+Recommends: oracle-java8-installer, libttspico-utils
+Depends: libhidapi-libusb0, libudev1, xdg-utils
+
