@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.AmazonEchoControl"
+                   canonical_name="eu.asterics.component.processor.amazonechocontrol.amazonEchoControlInstance">
+        <type subtype="Home Control">processor</type>
+        <singleton>false</singleton>
+        <description>OpenHAB based Plugin to Control Amazon Echo Dot</description>
+        <ports>
+			<inputPort id="jsonCommand">
+				<description>JSON Command {"ItemSuffix":"itemname","value":"state"}</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="currentState">
+				<description>Output of currentState of the current used item</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="currentTitle">
+				<description>Output of currentTitle which is played</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="cmdResponse">
+				<description>Response with OK or ERROR</description>
+				<dataType>string</dataType>
+			</outputPort>
+		</ports>
+			<events>
+			<eventListenerPort id="playerPlay">
+				<description>turn Player on</description>
+			</eventListenerPort>
+				<eventListenerPort id="playerPause">
+					<description>turn Player off</description>
+				</eventListenerPort>
+				<eventListenerPort id="playerNext">
+					<description>Next Song</description>
+				</eventListenerPort>
+				<eventListenerPort id="playerPrevious">
+				<description>Next Song</description>
+			</eventListenerPort>
+				<eventListenerPort id="volumeMute">
+					<description>Mute Echo Dot</description>
+				</eventListenerPort>
+				<eventListenerPort id="volume30">
+					<description>volume 30%</description>
+				</eventListenerPort>
+				<eventListenerPort id="weather">
+					<description>weather</description>
+				</eventListenerPort>
+				<eventListenerPort id="tellStory">
+					<description>Tell a Story</description>
+				</eventListenerPort>
+				<eventListenerPort id="traffic">
+					<description>traffic</description>
+				</eventListenerPort>
+				<eventListenerPort id="singASong">
+					<description>sing a song</description>
+				</eventListenerPort>
+				<eventListenerPort id="flashBriefing">
+					<description>flashBriefing</description>
+				</eventListenerPort>
+
+				<eventTriggererPort id="turnedOn">
+					<description>fires if the player is turned on</description>
+				</eventTriggererPort>
+
+				<eventTriggererPort id="turnedOff">
+					<description>fires if the player is turned off</description>
+				</eventTriggererPort>
+			</events>
+
+
+        <properties>
+			<property name="updaterate"
+				type="integer"
+				value="1000"
+				description="update rate of the openHAB items (time in milliseconds)"/>
+			<property name="hostname"
+				type="string"
+				value="localhost"
+				description="Base address of the openHAB installation"/>
+			<property name="port"
+				type="string"
+				value="8080"
+				description="Port for connection (default for openHAB: 8080 for non-HTTPS, 8443 for HTTPS)"/>
+			<property name="protocol"
+				type="integer"
+				value="0"
+				combobox="http//https"
+				description="Protocol to be used for connection, either http or https"/>
+			<property name="lazyCertificates"
+				type="boolean"
+				value="false"
+				description="if true, any SSL certificate validation will be deactivated for the given hostname"/>
+			<property name="username"
+				type="string"
+				value=""
+				description="Username, if required by openHAB configuration"/>
+			<property name="password"
+				type="string"
+				value=""
+				description="Password, if required by openHAB configuration"/>
+				
+				
+
+
+        </properties>
+
+    </componentType>
+</componentTypes>

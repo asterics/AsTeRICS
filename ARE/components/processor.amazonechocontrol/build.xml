@@ -1,6 +1,6 @@
 <project name="asterics.${component.id}" default="jar" basedir=".">
 
-    <property name="component.id" value="processor.openHAB"/>
+    <property name="component.id" value="processor.AmazonEchoControl"/>
     <!-- set global properties for this build -->
     <property name="build" location="../out/production/${component.id}"/>
     <property name="src.java" location="src/main/java"/>

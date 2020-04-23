@@ -166,8 +166,8 @@ public class PicoTTSInstance extends AbstractRuntimeComponentInstance
 		if ("language".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propLanguage;
-			propLanguage = Integer.parseInt(newValue.toString());
-			return oldValue;
+            propLanguage = Integer.parseInt(newValue.toString());
+            return oldValue;
 		}
 
         return null;

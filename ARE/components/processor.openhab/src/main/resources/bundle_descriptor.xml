@@ -101,13 +101,13 @@
 				description="Base address of the openHAB installation"/>
 			<property name="port"
 				type="string"
-				value="8443"
+				value="8080"
 				description="Port for connection (default for openHAB: 8080 for non-HTTPS, 8443 for HTTPS)"/>
-			<!--  <property name="protocol"
+			<property name="protocol"
 				type="integer"
 				value="0"
-				combobox="https//http"
-				description="Protocol to be used for connection, either http or https"/> -->
+				combobox="http//https"
+				description="Protocol to be used for connection, either http or https"/>
 			<property name="lazyCertificates"
 				type="boolean"
 				value="false"

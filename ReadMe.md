@@ -15,8 +15,8 @@ Possible applications are
 
 For more information see our website http://www.asterics.eu.
 
-## Demos
-Check out our demos [here](http://asterics.github.io/AsTeRICS/demos.html)
+## Demos (Solutions)
+Check out some solutions [here](https://www.asterics.eu/solutions/)
 
 ## Quick Build Instructions
 To clone and compile the AsTeRICS framework, please execute the following steps:
@@ -41,16 +41,17 @@ To clone and compile the AsTeRICS framework, please execute the following steps:
 ## Documentation
 
 * [AsTeRICS Tutorial with screencasts](https://ds.gpii.net/learn/tutorials/integration-alternative-input-modalities)
-* [Quickstart Guide](https://github.com/asterics/AsTeRICS/blob/master/Documentation/QuickStart.pdf?raw=true)
-* [User Manual](https://github.com/asterics/AsTeRICS/blob/master/Documentation/UserManual.pdf?raw=true)
-* [Developer Manual](https://github.com/asterics/AsTeRICS/blob/master/Documentation/DeveloperManual.pdf?raw=true)
+* [Getting Started](https://www.asterics.eu/get-started/)
+* [Tutorials](https://www.asterics.eu/customize/)
+* [Developer Manual](https://www.asterics.eu/develop/)
+* [Plugin Hellp](https://www.asterics.eu/plugins/)
 
 
 You can find more documentation and build plans for some hardware devices in [ModelGuides](https://github.com/asterics/AsTeRICS/tree/master/Documentation/ModelGuides) and  [DIYGuides](https://github.com/asterics/AsTeRICS/tree/master/Documentation/DIYGuides).
 
 ## Contact
 
-If you want to contribute to the AsTeRICS project, have questions or just need help using it don't bother to create an [issue](https://github.com/asterics/AsTeRICS/issues), pull request or contact us either on the [Forum](http://www.asterics.eu/phpbb/index.php) or via [email](mailto:asterics_info@ki-i.at).
+If you want to contribute to the AsTeRICS project, have questions or just need help using it don't bother to create an [issue](https://github.com/asterics/AsTeRICS/issues), pull request or via the [contact page](https://www.asterics.eu/get-involved/Contact.html).  
 
 
 ## License
@@ -79,4 +80,5 @@ This software is provided 'as-is', without any express or implied warranty.
 In no event will the authors be held liable for any damages arising from the use of this software. See [DISCLAIMER](DISCLAIMER.TXT)
 
 ## Releases
-See [Release Notes](RELEASE_NOTES.md) and the published [releases](https://github.com/asterics/AsTeRICS/releases)
+
+* See [CHANGELOG](./CHANGELOG.md) or old [Release Notes](RELEASE_NOTES.md) and the published [releases](https://github.com/asterics/AsTeRICS/releases)

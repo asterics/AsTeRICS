@@ -26,12 +26,10 @@
 
 package eu.asterics.component.processor.openhab;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
@@ -48,6 +46,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -73,7 +73,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  * https://github.com/openhab/openhab/wiki/REST-API)
  * 
  * @author Benjamin Aigner[aignerb@technikum-wien.at] Date: 27.07.2015 Time:
- *         00:07 AM
+ *         00:07 AM Updated by: Manuel Nagel Date: 02.12.2019 Time: 4:23 PM
  */
 public class openHABInstance extends AbstractRuntimeComponentInstance {
     /**
@@ -84,15 +84,15 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     static private String hostname;
 
     /**
-     * This port will be used to access openHAB (default: 8080 for non-HTTPS,
-     * 8443 for HTTPS)
+     * This port will be used to access openHAB (default: 8080 for non-HTTPS, 8443
+     * for HTTPS)
      */
-    String port = "8443";
+    String port = "8080";
 
     /**
-     * If a authentication is configured, use this username for HTTP
-     * authentication WARNING: if the username is given, this component WILL
-     * authenticate, even if no username is necessary!
+     * If a authentication is configured, use this username for HTTP authentication
+     * WARNING: if the username is given, this component WILL authenticate, even if
+     * no username is necessary!
      */
     String username = "";
 
@@ -106,7 +106,14 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     boolean lazyCertificate = true;
 
     /** protocol to be connected with, either http or https */
-    String protocol = "https";
+    int propProtocol = 0;
+    String protocols[] = new String[] { "http", "https" };
+    // enum protocols {
+    // http,
+    // https
+    // }
+
+    // String protocol = "http";
 
     /** update rate to fetch all necessary items [ms] */
     int updateRate = 1000;
@@ -185,6 +192,9 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     // tick generator for fetching item state
     private final TickGenerator tg = new TickGenerator(this);
 
+    //
+    final String CMDSTRING="@OPENHAB";
+
     /**
      * The class constructor.
      */
@@ -194,8 +204,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Input Port.
      * 
-     * @param portID
-     *            the name of the port
+     * @param portID the name of the port
      * @return the input port or null if not found
      */
     @Override
@@ -218,14 +227,16 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
         if ("item6in".equalsIgnoreCase(portID)) {
             return ipItem6;
         }
+        if ("actionString".equalsIgnoreCase(portID)) {
+            return ipActionString;
+        }
         return null;
     }
 
     /**
      * returns an Output Port.
      * 
-     * @param portID
-     *            the name of the port
+     * @param portID the name of the port
      * @return the output port or null if not found
      */
     @Override
@@ -254,8 +265,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Event Listener Port.
      * 
-     * @param eventPortID
-     *            the name of the port
+     * @param eventPortID the name of the port
      * @return the EventListener port or null if not found
      */
     @Override
@@ -266,8 +276,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns an Event Triggerer Port.
      * 
-     * @param eventPortID
-     *            the name of the port
+     * @param eventPortID the name of the port
      * @return the EventTriggerer port or null if not found
      */
     @Override
@@ -300,8 +309,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     /**
      * returns the value of the given property.
      * 
-     * @param propertyName
-     *            the name of the property
+     * @param propertyName the name of the property
      * @return the property value or null if not found
      */
     @Override
@@ -317,7 +325,7 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
             return port;
         }
         if ("protocol".equalsIgnoreCase(propertyName)) {
-            return protocol;
+            return propProtocol;
         }
         if ("lazyCertificates".equalsIgnoreCase(propertyName)) {
             return lazyCertificate;
@@ -424,8 +432,8 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
             return oldValue;
         }
         if ("protocol".equalsIgnoreCase(propertyName)) {
-            final Object oldValue = protocol;
-            protocol = newValue.toString();
+            final Object oldValue = propProtocol;
+            propProtocol = Integer.parseInt(newValue.toString());
             return oldValue;
         }
         if ("lazyCertificates".equalsIgnoreCase(propertyName)) {
@@ -626,8 +634,30 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
     private final IRuntimeInputPort ipActionString = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
-            ConversionUtils.stringFromBytes(data);
-            AstericsErrorHandling.instance.reportError(null, "ActionString not implemented yet...");
+            if(data==null || data.length==0) return;
+
+            String fullCmd=ConversionUtils.stringFromBytes(data).trim();
+            //if it starts with an action String, split i
+            //Split after action string @OPENHAB and :
+            if(fullCmd.startsWith(CMDSTRING)) {
+                String cmdElems[]=fullCmd.split(":");
+                if(cmdElems.length>1) {    
+                    fullCmd=cmdElems[1].trim();
+                } else {
+                    return;
+                }
+            }  else if(fullCmd.startsWith("@")) {
+                //actions string not targeted to us, e.g. @IRTRANS
+                return;
+            } //if the cmd does not start with @, we also treat it as a command string.
+
+            //Split by comma: itemName,itemValue
+            String itemNameVal[]=fullCmd.split(",");
+            if(itemNameVal.length == 2) {
+                String itemName=itemNameVal[0].trim();
+                String itemVal=itemNameVal[1].trim();
+                setItemState(itemName, itemVal);
+            }
         }
 
     };
@@ -637,6 +667,9 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void start() {
+
+        String protocol = protocols[propProtocol];
+
         AstericsErrorHandling.instance.reportDebugInfo(this, "Connecting to openHAB:");
         AstericsErrorHandling.instance.reportDebugInfo(this, "Host: " + hostname + ":" + port);
         AstericsErrorHandling.instance.reportDebugInfo(this, "Username: " + username);
@@ -644,16 +677,15 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
         AstericsErrorHandling.instance.reportDebugInfo(this, "Protocol: " + protocol);
         AstericsErrorHandling.instance.reportDebugInfo(this, "Using lazyCertificates: " + lazyCertificate);
         // get all available items
-        this.items = getItems();
-
-        if (items.isEmpty()) {
+        try {
+            this.items = getItems();
+            super.start();
+            tg.start();    
+        } catch (IOException e) {
             AstericsErrorHandling.instance.reportError(this,
-                    "Could not find openHAB on host " + openHABInstance.hostname
-                            + " Please verify that openHAB is running and there is no firewall related issue");
-            return;
+            "Can't connect to openHAB at "+protocol + "://" + hostname + ":" + port+". Verify the running instance in the browser (port?, username/password?),\n message: "
+                            + e.getMessage());
         }
-        super.start();
-        tg.start();
     }
 
     /**
@@ -683,35 +715,39 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
         tg.stop();
     }
 
-    public List<String> getSitemaps() {
+    public List<String> getSitemaps() throws IOException {
+        String protocol = protocols[propProtocol];
         return getList(protocol + "://" + hostname + ":" + port, "sitemap");
     }
 
-    public List<String> getItems() {
+    public List<String> getItems() throws IOException {
+        String protocol = protocols[propProtocol];
         return getList(protocol + "://" + hostname + ":" + port, "item");
     }
 
     public String getItemState(String item) {
+
+        String protocol = protocols[propProtocol];
         try {
             AstericsErrorHandling.instance.reportDebugInfo(this, "Get item (name: " + item + ": " + protocol + "://"
                     + hostname + ":" + port + "/rest/items/" + item + "/state");
             return httpGet(protocol + "://" + hostname + ":" + port + "/rest/items/" + item + "/state");
         } catch (KeyManagementException e) {
             tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
+            AstericsErrorHandling.instance.reportDebugInfo(this,
                     "KeyManagement exception, try to use lazyCertificate option (property)");
         } catch (NoSuchAlgorithmException e) {
             tg.stop();
-            AstericsErrorHandling.instance.reportError(this, "Algortihm exception, please contact the AsTeRICS team");
+            AstericsErrorHandling.instance.reportDebugInfo(this, "Algortihm exception, please contact the AsTeRICS team");
         } catch (IOException e) {
-            tg.stop();
             // catch a wrong item name
             if (e.getMessage().equalsIgnoreCase("Not Found")) {
-                AstericsErrorHandling.instance.reportError(this,
+                tg.stop();
+                AstericsErrorHandling.instance.reportDebugInfo(this,
                         "Item name '" + item + "' not found, please update your model (HTTP 404)");
             } else {
-                AstericsErrorHandling.instance.reportError(this,
-                        "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
+                AstericsErrorHandling.instance.reportDebugInfo(this,
+                "Can't connect to openHAB at "+protocol + "://" + hostname + ":" + port+". Verify the running instance in the browser (port?, username/password?),\n message: "
                                 + e.getMessage());
             }
         }
@@ -720,76 +756,85 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
 
     public String setItemState(String item, String state) {
 
-        // http://localhost:8080/CMD?Temperature_FF_Office=12.3
+        String protocol = protocols[propProtocol];
+
+        String urlParameters = state;
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
         try {
             AstericsErrorHandling.instance.reportDebugInfo(this, "Set item (name: " + item + ",state: " + state + "):"
-                    + protocol + "://" + hostname + ":" + port + "/CMD?" + item + "=" + state);
-            return httpGet(protocol + "://" + hostname + ":" + port + "/CMD?" + item + "=" + state);
-        } catch (KeyManagementException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
-                    "KeyManagement exception, try to use lazyCertificate option (property)");
-        } catch (NoSuchAlgorithmException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportError(this, "Algortihm exception, please contact the AsTeRICS team");
+                   + protocol + "://" + hostname + ":" + port + "/rest/items/"+item + " HTTP POST");
+
+            URL url = new URL(protocol + "://" + hostname + ":" + port + "/rest/items/"+item);
+
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+            con.setDoOutput(true);
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Accept", "application/json");
+            con.setRequestProperty("Content-Type", "text/plain");
+
+            try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+
+                wr.write(postData);
+            }
+
+            StringBuilder content;
+
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()))) {
+
+                String line;
+                content = new StringBuilder();
+
+                while ((line = br.readLine()) != null) {
+                    content.append(line);
+                    content.append(System.lineSeparator());
+                }
+            }
+
+
+            AstericsErrorHandling.instance.reportDebugInfo(this, "change to :" + state);
+            return content.toString();
+            //return httpGet(protocol + "://" + hostname + ":" + port + "/CMD?" + item + "=" + state);
+
         } catch (IOException e) {
-            tg.stop();
             if (e.getMessage().equalsIgnoreCase("Not Found")) {
-                AstericsErrorHandling.instance.reportError(this,
+                tg.stop();
+                AstericsErrorHandling.instance.reportDebugInfo(this,
                         "Item name '" + item + "' not found, please update your model (HTTP 404)");
             } else {
-                AstericsErrorHandling.instance.reportError(this,
-                        "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
+                AstericsErrorHandling.instance.reportDebugInfo(this,
+                "Can't connect to openHAB at "+protocol + "://" + hostname + ":" + port+". Verify the running instance in the browser (port?, username/password?),\n message: "
                                 + e.getMessage());
             }
         }
         return "";
     }
 
-    public List<String> getList(String hostname, String type) {
+    public List<String> getList(String hostname, String type) throws IOException {
         List<String> response = new ArrayList<String>();
 
         try {
-            // create DOM object
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            // read the XML response via httpGet, REST api and determine type
-            // via parameter
             AstericsErrorHandling.instance.reportDebugInfo(this,
                     "Get list (type: " + type + ": " + hostname + "/rest/" + type + "s");
-            InputSource is = new InputSource(new StringReader(httpGet(hostname + "/rest/" + type + "s")));
-            Document doc = dBuilder.parse(is);
 
-            NodeList nodes = doc.getElementsByTagName(type);
+            //create JSON Array
+            JSONArray jsonArray = new JSONArray(httpGet(hostname + "/rest/" + type + "s"));
 
-            // parse all nodes, and extract item/sitemap name
-            for (int i = 0; i < nodes.getLength(); i++) {
-                Node item = nodes.item(i);
-                Element element = (Element) item;
-                String name = element.getElementsByTagName("name").item(0).getChildNodes().item(0).getNodeValue();
-                // add to list
+            // parse all objects, and extract name
+            for (int i=0; i<jsonArray.length();i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String name = jsonObject.getString("name");
                 response.add(name);
-            }
-        } catch (SAXException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
-                    "SAX exception, unable to parse the openHAB data, maybe a transmission error?");
-        } catch (IOException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
-                    "Can't connect/transmit to openHAB instance, please check for a running openHAB and try to use it via the browser (username/password may be wrong),\n message: "
-                            + e.getMessage());
-        } catch (ParserConfigurationException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
-                    "Parser exception, unable to parse the openHAB data, maybe a transmission error?");
+            }        
         } catch (KeyManagementException e) {
             tg.stop();
-            AstericsErrorHandling.instance.reportError(this,
+            AstericsErrorHandling.instance.reportDebugInfo(this,
                     "KeyManagement exception, try to use lazyCertificate option (property)");
         } catch (NoSuchAlgorithmException e) {
             tg.stop();
-            AstericsErrorHandling.instance.reportError(this, "Algortihm exception, please contact the AsTeRICS team");
+            AstericsErrorHandling.instance.reportDebugInfo(this, "Algortihm exception, please contact the AsTeRICS team");
         }
 
         return response;
