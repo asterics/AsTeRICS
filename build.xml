@@ -46,7 +46,17 @@
 			<fileset dir="ARE" includes="build.xml"></fileset>
 		</subant>
 	</target>
-	
+	<target name="run-debug" depends="installWebACS" description="Peforms buildAllNoClean in the ARE directory and starts the ARE with debugging at port 1044.">
+		<subant target="run-debug" failonerror="true">
+			<fileset dir="ARE" includes="build.xml"></fileset>
+		</subant>
+	</target>
+	<target name="run-quick" description="Starts the ARE without compilation">
+		<subant target="run-quick" failonerror="true">
+			<fileset dir="ARE" includes="build.xml"></fileset>
+		</subant>
+	</target>	
+
 	<target name="installWebACS" description="Downloads the WebACS release from github and installs it to the ARE document root">
 		<mkdir dir="${tmp.dir}"/>
 		<!-- Checks, if there is a local file already and if the remote file does not have a newer timestamp -->
