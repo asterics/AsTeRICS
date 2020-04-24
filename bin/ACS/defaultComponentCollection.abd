@@ -1,4 +1,6 @@
-<?xml version="1.0"?><componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"> <componentType id="asterics.AnalogOut"
+<?xml version="1.0"?><componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <componentType id="asterics.AnalogOut"
                    canonical_name="eu.asterics.component.actuator.analogout.AnalogOutInstance">
         <type subtype="Generic Control Output">actuator</type>
         <singleton>false</singleton>
@@ -3647,6 +3649,163 @@
     </componentType>
 
 
+    <componentType id="asterics.PhilipsHue"
+                   canonical_name="eu.asterics.component.actuator.philipshue.PhilipsHueInstance">
+        <type subtype="Home Control">actuator</type>
+        <singleton>false</singleton>
+        <description>Control Philips Hue devices via the RESTful API</description>
+        <ports>
+            <inputPort id="cmd">
+                <description>Set new state of defined Philips Hue device (JSON)</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+
+            <outputPort id="cmdResponse">
+                <description>Get response of the command sent via the cmd input (JSON)</description>
+                <dataType>string</dataType>
+            </outputPort>
+
+            <outputPort id="currentState">
+                <description>Current state of all Philips Hue devices (JSON)</description>
+                <dataType>string</dataType>
+            </outputPort>
+
+        </ports>
+        <events>
+            <eventListenerPort id="lightOn">
+                <description>turn defined light on</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="lightOff">
+                <description>turn defined light off</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="lightWhite">
+                <description>turn defined light white (neutral color, 100% brightness)</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="lightRed">
+                <description>turn defined light red</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="lightGreen">
+                <description>turn defined light green</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="lightBlue">
+                <description>turn defined light blue</description>
+            </eventListenerPort>
+            <eventListenerPort id="lightBriLow">
+                <description>set brightness of defined light to 10%</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="lightBriHalf">
+                <description>set brightness of defined light to 50%</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="lightBriFull">
+                <description>set brightness of defined light to 100%</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="lightSaturate">
+                <description>set saturation of defined light to 100%</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="lightDesaturate">
+                <description>set saturation of defined light to 0%</description>
+            </eventListenerPort>
+
+
+            <eventListenerPort id="allLightsOn">
+                <description>turn all lights on</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsOff">
+                <description>turn all lights off</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsWhite">
+                <description>reset all lights (neutral color, 100% brightness)</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsRed">
+                <description>turn all lights red</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsGreen">
+                <description>turn all lights green</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsBlue">
+                <description>turn all lights blue</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsColorloop">
+                <description>activate the colorloop effect for all lights</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsBriLow">
+                <description>set brightness for all lights to 10%</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsBriHalf">
+                <description>set brightness for all lights to 50%</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsBriFull">
+                <description>set brightness for all lights to 100%</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsSaturate">
+                <description>set saturation for all lights to 100%</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="allLightsDesaturate">
+                <description>set saturation for all lights to 0%</description>
+            </eventListenerPort>
+
+
+            <eventTriggererPort id="statusChanged">
+                <description>fires when any light changed its status</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="tick">
+                <description>fires for each tick (depends on updateRate variable)</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="turnedOn">
+                <description>fires if the light is turned on</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="turnedOff">
+                <description>fires if the light is turned off</description>
+            </eventTriggererPort>
+
+        </events>
+        <properties>
+            <property name="apiKey"
+                      type="string"
+                      value="0UqD9KYkjxiFzxJsQnqXyhllxXQ0-KEw4Ifbl5i2"
+                      description="Philips Hue RESTful API key"/>
+            <property name="ip"
+                      type="string"
+                      value="192.168.0.115"
+                      description="Philips Hue Bridge IP"/>
+            <property name="target"
+                      type="string"
+                      value="/lights/2"
+                      description="light to be controlled in the form /light/&lt;id&gt;"/>
+            <property name="updateRate"
+                      type="integer"
+                      value="1000"
+                      description="Update rate for Hue bridge polling in ms. Don't use rate below 500ms."/>
+
+        </properties>
+
+    </componentType>
+
+
     <componentType id="asterics.PhoneControl"
                    canonical_name="eu.asterics.component.actuator.phonecontrol.PhoneControlInstance">
         <type subtype="Phone Interface">actuator</type>
@@ -5871,6 +6030,115 @@
             <width>5000</width>
             <height>5000</height>
         </gui>
+    </componentType>
+
+
+    <componentType id="asterics.AmazonEchoControl"
+                   canonical_name="eu.asterics.component.processor.amazonechocontrol.amazonEchoControlInstance">
+        <type subtype="Home Control">processor</type>
+        <singleton>false</singleton>
+        <description>OpenHAB based Plugin to Control Amazon Echo Dot</description>
+        <ports>
+			<inputPort id="jsonCommand">
+				<description>JSON Command {"ItemSuffix":"itemname","value":"state"}</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="currentState">
+				<description>Output of currentState of the current used item</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="currentTitle">
+				<description>Output of currentTitle which is played</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="cmdResponse">
+				<description>Response with OK or ERROR</description>
+				<dataType>string</dataType>
+			</outputPort>
+		</ports>
+			<events>
+			<eventListenerPort id="playerPlay">
+				<description>turn Player on</description>
+			</eventListenerPort>
+				<eventListenerPort id="playerPause">
+					<description>turn Player off</description>
+				</eventListenerPort>
+				<eventListenerPort id="playerNext">
+					<description>Next Song</description>
+				</eventListenerPort>
+				<eventListenerPort id="playerPrevious">
+				<description>Next Song</description>
+			</eventListenerPort>
+				<eventListenerPort id="volumeMute">
+					<description>Mute Echo Dot</description>
+				</eventListenerPort>
+				<eventListenerPort id="volume30">
+					<description>volume 30%</description>
+				</eventListenerPort>
+				<eventListenerPort id="weather">
+					<description>weather</description>
+				</eventListenerPort>
+				<eventListenerPort id="tellStory">
+					<description>Tell a Story</description>
+				</eventListenerPort>
+				<eventListenerPort id="traffic">
+					<description>traffic</description>
+				</eventListenerPort>
+				<eventListenerPort id="singASong">
+					<description>sing a song</description>
+				</eventListenerPort>
+				<eventListenerPort id="flashBriefing">
+					<description>flashBriefing</description>
+				</eventListenerPort>
+
+				<eventTriggererPort id="turnedOn">
+					<description>fires if the player is turned on</description>
+				</eventTriggererPort>
+
+				<eventTriggererPort id="turnedOff">
+					<description>fires if the player is turned off</description>
+				</eventTriggererPort>
+			</events>
+
+
+        <properties>
+			<property name="updaterate"
+				type="integer"
+				value="1000"
+				description="update rate of the openHAB items (time in milliseconds)"/>
+			<property name="hostname"
+				type="string"
+				value="localhost"
+				description="Base address of the openHAB installation"/>
+			<property name="port"
+				type="string"
+				value="8080"
+				description="Port for connection (default for openHAB: 8080 for non-HTTPS, 8443 for HTTPS)"/>
+			<property name="protocol"
+				type="integer"
+				value="0"
+				combobox="http//https"
+				description="Protocol to be used for connection, either http or https"/>
+			<property name="lazyCertificates"
+				type="boolean"
+				value="false"
+				description="if true, any SSL certificate validation will be deactivated for the given hostname"/>
+			<property name="username"
+				type="string"
+				value=""
+				description="Username, if required by openHAB configuration"/>
+			<property name="password"
+				type="string"
+				value=""
+				description="Password, if required by openHAB configuration"/>
+				
+				
+
+
+        </properties>
+
     </componentType>
 
 
@@ -9652,13 +9920,13 @@
 				description="Base address of the openHAB installation"/>
 			<property name="port"
 				type="string"
-				value="8443"
+				value="8080"
 				description="Port for connection (default for openHAB: 8080 for non-HTTPS, 8443 for HTTPS)"/>
-			<!--  <property name="protocol"
+			<property name="protocol"
 				type="integer"
 				value="0"
-				combobox="https//http"
-				description="Protocol to be used for connection, either http or https"/> -->
+				combobox="http//https"
+				description="Protocol to be used for connection, either http or https"/>
 			<property name="lazyCertificates"
 				type="boolean"
 				value="false"
@@ -16955,6 +17223,73 @@
     </componentType>
 
 
+    <componentType id="asterics.PhilipsHueSensor"
+                   canonical_name="eu.asterics.component.sensor.philipshuesensor.PhilipsHueSensorInstance">
+        <type subtype="Home Control">sensor</type>
+        <singleton>false</singleton>
+        <description>Control Philips Hue devices via the RESTful API</description>
+        <ports>
+
+            <outputPort id="currentState">
+                <description>Current state of all Philips Hue devices (JSON)</description>
+                <dataType>string</dataType>
+            </outputPort>
+
+        </ports>
+        <events>
+
+            <eventTriggererPort id="statusChanged">
+                <description>fires when the configured sensor changes its status</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="tick">
+                <description>fires for each tick (depends on updateRate variable)</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="dimmerButtonOn">
+                <description>dimmer switch: fires when the first button (on) is pressed</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="dimmerButtonBrighter">
+                <description>dimmer switch: fires when the second button (brightness up) is pressed</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="dimmerButtonDarker">
+                <description>dimmer switch: fires when the third button (brightness down) is pressed</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="dimmerButtonOff">
+                <description>dimmer switch: fires when the last button (off) is pressed</description>
+            </eventTriggererPort>
+
+            <eventTriggererPort id="motionDetected">
+                <description>motion sensor: fires once, when motion is detected</description>
+            </eventTriggererPort>
+
+        </events>
+        <properties>
+            <property name="apiKey"
+                      type="string"
+                      value="Osq3VsXahrkSEJU3NzPMTnu3mdvL8T0CuTjSlUrH"
+                      description="Philips Hue RESTful API key"/>
+            <property name="ip"
+                      type="string"
+                      value="10.0.0.57"
+                      description="Philips Hue Bridge IP"/>
+            <property name="target"
+                      type="string"
+                      value="/sensors/11"
+                      description="Target device"/>
+            <property name="updateRate"
+                      type="integer"
+                      value="1000"
+                      description="Polling rate for the bridge"/>
+
+        </properties>
+
+    </componentType>
+
+
     <componentType id="asterics.PlatformAnalogIn"
                    canonical_name="eu.asterics.component.sensor.platformanalogin.PlatformAnalogInInstance">
         <type subtype="Personal Platform">sensor</type>
@@ -18350,6 +18685,5 @@
             <height>1500</height>
         </gui>
     </componentType>
-
 
 </componentTypes>
