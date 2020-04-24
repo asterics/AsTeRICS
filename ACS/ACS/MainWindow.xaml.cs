@@ -2582,7 +2582,13 @@ namespace Asterics.ACS {
 
         private String CreatePluginHelpQueryString(String compTypeValue, String id)
         {
+            if (id == null||compTypeValue==null) return "";
+
             if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length - 9); // eleminiate prefix
+            //Convert first letter to upper case, to fix the problem that some plugin names start with a small capital letter.
+            //See: https://github.com/asterics/AsTeRICS/issues/320
+            id = id.Substring(0, 1).ToUpper() + id.Substring(1, id.Length-1);
+
             return compTypeValue + "s/" + id + ".html";
         }
 
