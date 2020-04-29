@@ -11,5 +11,4 @@ Bundle-NativeCode: lib/native/windows/x86/rxtxSerial.dll;
 Export-Package: eu.asterics.mw.cimcommunication
 Require-Bundle: org.asterics.middleware
 Bundle-Activator: eu.asterics.mw.cimcommunication.CIMCommunicationBundleActivator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 DynamicImport-Package: *

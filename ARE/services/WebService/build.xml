@@ -6,22 +6,24 @@
     <property name="src.java" location="src/main/java"/>
     <property name="dist" location=".."/>
     <property name="runtime" location="../../../bin/ARE"/>
-    <property name="osgi" location="../../osgi"/>
+    <property name="osgi" location="${runtime}/org.eclipse.osgi_3.14.0.v20190517-1309.jar"/>
     <property name="middleware" location="../../middleware"/>
     <property name="services" location="../../services"/>
     <property name="classpath" location=".."/>
        <path id="asterics.classpath">
         <pathelement location="bin"/>
-        <pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
+        <pathelement location="${osgi}"/>
         <pathelement location="${middleware}/asterics.ARE.jar"/>
        	<pathelement location="${services}/grizzly-httpservice-bundle-2.3.23.jar"/>
-       	<pathelement location="${services}/org.eclipse.osgi.services_3.2.100.v20100503.jar"/>
+       	<pathelement location="${services}/org.eclipse.osgi.services_3.8.0.v20190206-2147.jar"/>
         <pathelement location="src/main/resources/lib/hk2-api-2.4.0-b06.jar"/>
        	<pathelement location="src/main/resources/lib/hk2-locator-2.4.0-b06.jar"/>
         <pathelement location="src/main/resources/lib/hk2-utils-2.4.0-b06.jar"/>
        	<pathelement location="src/main/resources/lib/javax.annotation-api-1.2.jar"/>
         <pathelement location="src/main/resources/lib/javax.inject-2.4.0-b06.jar"/>
        	<pathelement location="src/main/resources/lib/javax.ws.rs-api-2.0.1.jar"/>
+       	<pathelement location="src/main/resources/lib/javax.activation-1.2.0.jar"/>
+       	<pathelement location="src/main/resources/lib/jaxb-api-2.3.0-b170201.1204.jar"/>
         <pathelement location="src/main/resources/lib/jersey-client-2.8.jar"/>
        	<pathelement location="src/main/resources/lib/jersey-common-2.8.jar"/>
         <pathelement location="src/main/resources/lib/jersey-container-grizzly2-http-2.8.jar"/>

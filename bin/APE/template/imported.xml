@@ -327,7 +327,11 @@
     </target>	
 
 	<target name="run" depends="build-all" description="Peforms build-all (builds all dependencies) and starts the ARE.">
-		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+		<condition property="osgi" value="${build.merged.ARE}/org.eclipse.osgi_3.14.0.v20190517-1309.jar" else="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar">
+			<available file="${build.merged.ARE}/org.eclipse.osgi_3.14.0.v20190517-1309.jar"/>
+		</condition>
+
+		<java jvm="${APE.jre.bin.path}" jar="${osgi}" dir="${build.merged.ARE}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
 			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
@@ -343,7 +347,11 @@
 	</target>
 
 	<target name="run-debug" depends="build-all" description="Peforms build-all (builds all dependencies) and starts the ARE with debug options (port 1044).">
-		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+		<condition property="osgi" value="${build.merged.ARE}/org.eclipse.osgi_3.14.0.v20190517-1309.jar" else="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar">
+			<available file="${build.merged.ARE}/org.eclipse.osgi_3.14.0.v20190517-1309.jar"/>
+		</condition>
+
+		<java jvm="${APE.jre.bin.path}" jar="${osgi}" dir="${build.merged.ARE}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
 			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
@@ -361,7 +369,11 @@
 	</target>
 	
 	<target name="run-quick" depends="APE-copy" description="Copies custom files (calls APE-copy) and starts the ARE. This target is for quick testing of changes in the custom folder.">
-		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+		<condition property="osgi" value="${build.merged.ARE}/org.eclipse.osgi_3.14.0.v20190517-1309.jar" else="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar">
+			<available file="${build.merged.ARE}/org.eclipse.osgi_3.14.0.v20190517-1309.jar"/>
+		</condition>
+
+		<java jvm="${APE.jre.bin.path}" jar="${osgi}" dir="${build.merged.ARE}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
 			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
