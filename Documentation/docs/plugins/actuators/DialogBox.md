@@ -1,5 +1,3 @@
- 
-
 ---
 title: DialogBox
 ---
@@ -16,21 +14,21 @@ No special requirements.
 
 ## Input Port Description
 
-*   **setText \[string\]:** Updates the text to be displayed.
+- **setText \[string\]:** Updates the text to be displayed.
 
 ## Properties
 
-*   **caption \[string\]:** The caption of the window.
-*   **text \[string\]:** the text message of the dialog box
-*   **alwaysOnTop \[boolean\]:** if true, dialog stays on top, no matter if other windows are put to front.
-*   **messageType \[integer\]:** the message type of the dialog box, one of: plain,information,question,warning,error
-*   **buttonText\[1-5\] \[string\]:** The button text
+- **caption \[string\]:** The caption of the window.
+- **text \[string\]:** the text message of the dialog box
+- **alwaysOnTop \[boolean\]:** if true, dialog stays on top, no matter if other windows are put to front.
+- **messageType \[integer\]:** the message type of the dialog box, one of: plain,information,question,warning,error
+- **buttonText\[1-5\] \[string\]:** The button text
 
 ## Event Listener Description
 
-*   **displayBox**: Displays the dialog box.
-*   **hideBox**: Disposes the dialog box.
+- **displayBox**: Displays the dialog box.
+- **hideBox**: Disposes the dialog box.
 
 ## Event Triggerer Description
 
-*   **button\[1-5\]**: Button\[1-5\] pressed
+- **button\[1-5\]**: Button\[1-5\] pressed
