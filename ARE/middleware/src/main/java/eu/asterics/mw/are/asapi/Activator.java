@@ -33,7 +33,7 @@ import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 
 import eu.asterics.mw.are.AREProperties;
-import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.*;
 
 public class Activator implements Runnable {
     public static final String ASAPI_ACS_PORT_NUMBER_PROPKEY = "ASAPI.ACSPortNumber";
@@ -58,47 +58,54 @@ public class Activator implements Runnable {
     private Logger logger = null;
 
     public Activator() {
-        try {
-            logger = AstericsErrorHandling.instance.getLogger();
-            AsapiServerHandler handler = new AsapiServerHandler();
-            AsapiServer.Processor processor = new AsapiServer.Processor(handler);
-            int portNr = getPortNumber();
-            logger.info("Using ASAPI ACS port number: " + portNr);
-            TServerTransport serverTransport = new TServerSocket(portNr); // socket
-                                                                          // timeout
-                                                                          // after
-                                                                          // 3000ms
-                                                                          // =>
-                                                                          // TServerSocket(9090,
-                                                                          // 3000)
-            // simple server for thrift 0.5.0
-            // server = new TSimpleServer(processor, serverTransport);
-            // simple server for thrift 0.6.1
-            // server = new TSimpleServer(new
-            // TServer.Args(serverTransport).processor(processor));
+        int NR_TRIES_PORT=3;
+        int PORT_STEP_SIZE=5;
+        for(int i=0;i<NR_TRIES_PORT;i++) {
+            try {
+                logger = AstericsErrorHandling.instance.getLogger();
+                AsapiServerHandler handler = new AsapiServerHandler();
+                AsapiServer.Processor processor = new AsapiServer.Processor(handler);
+                int portNr = getPortNumber()+i*PORT_STEP_SIZE;
+                logger.info("Using ASAPI ACS port number: " + portNr);
+                TServerTransport serverTransport = new TServerSocket(portNr); // socket
+                                                                            // timeout
+                                                                            // after
+                                                                            // 3000ms
+                                                                            // =>
+                                                                            // TServerSocket(9090,
+                                                                            // 3000)
+                // simple server for thrift 0.5.0
+                // server = new TSimpleServer(processor, serverTransport);
+                // simple server for thrift 0.6.1
+                // server = new TSimpleServer(new
+                // TServer.Args(serverTransport).processor(processor));
 
-            // multithreaded server for thrift 0.5.0
-            // server = new TThreadPoolServer(processor, serverTransport);
-            // multithreaded server for thrift >= 0.6.1
-            server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
+                // multithreaded server for thrift 0.5.0
+                // server = new TThreadPoolServer(processor, serverTransport);
+                // multithreaded server for thrift >= 0.6.1
+                server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
 
-            // TThreadPoolServer.Args serverArgs = new
-            // TThreadPoolServer.Args(serverTransport);
-            // serverArgs.maxWorkerThreads(4);
-            // server = new
-            // TThreadPoolServer(serverArgs.processor(processor).protocolFactory(new
-            // TBinaryProtocol.Factory()));
+                // TThreadPoolServer.Args serverArgs = new
+                // TThreadPoolServer.Args(serverTransport);
+                // serverArgs.maxWorkerThreads(4);
+                // server = new
+                // TThreadPoolServer(serverArgs.processor(processor).protocolFactory(new
+                // TBinaryProtocol.Factory()));
 
-        } catch (Exception e) {
-            logger.warning(this.getClass().getName() + "." + "Activator: -> \n" + e.getMessage());
+                //in case of success, break the for loop
+                AREServices.instance.setACSPort(portNr);
+                break;
+            } catch (Exception e) {
+                logger.warning(this.getClass().getName() + "." + "Activator: -> \n" + e.getMessage());
+            }            
         }
-
     }
 
     @Override
     public void run() {
-        server.serve();
-
+        if(server!=null) {
+            server.serve();
+        }
     }
 
 }
