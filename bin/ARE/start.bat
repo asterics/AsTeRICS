@@ -70,7 +70,13 @@ REM The start command must have empty quotes as first parameter, so that a path 
 @IF NOT DEFINED ARE_DEBUG_STRING set START_CMD=start ""
 @IF NOT DEFINED ARE_DEBUG_STRING set SPLASH_SWITCH=-splash:images/asterics_startup.png
 
-%START_CMD% %JAVA_BIN% %ARE_DEBUG_STRING% %SPLASH_SWITCH% -Deu.asterics.mw.services.AstericsErrorHandling.consoleLogLevel=%ARE_CONSOLE_LOGLEVEL% -Dsun.java2d.d3d=true -Dorg.osgi.framework.os.name=win32 -Dosgi.clean=true -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%AUTOSTART_MODEL% -Deu.asterics.ARE.ServicesFiles="%ARE_OPTIONAL_SERVICES_INI%" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console %*
+REM Tuning of Java Garbage Collection according to
+REM https://docs.oracle.com/javase/10/gctuning/factors-affecting-garbage-collection-performance.htm#JSGCT-GUID-6635C481-AE78-485A-A184-A1709712961A
+REM Use -verbose:gc for debugging gc cycles and pause time
+REM -Xmx<size> sets the max heap size. According to tests the real memory used is about up to 2*Xmx
+
+
+%START_CMD% %JAVA_BIN% -XX:NewRatio=5 -Xmx256M %ARE_DEBUG_STRING% %SPLASH_SWITCH% -Deu.asterics.mw.services.AstericsErrorHandling.consoleLogLevel=%ARE_CONSOLE_LOGLEVEL% -Dsun.java2d.d3d=true -Dorg.osgi.framework.os.name=win32 -Dosgi.clean=true -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%AUTOSTART_MODEL% -Deu.asterics.ARE.ServicesFiles="%ARE_OPTIONAL_SERVICES_INI%" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console %*
 set ARE_CONSOLE_LOGLEVEL=
 set ARE_DEBUG_STRING=
 
