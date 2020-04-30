@@ -1,5 +1,6 @@
 ---
 title: Differentiate
+subcategory: Basic Math
 ---
 
 # Differentiate
@@ -14,12 +15,12 @@ Differentiate plugin
 
 ## Input Port Description
 
-*   **in \[double\]:** Input port for signal.
+- **in \[double\]:** Input port for signal.
 
 ## Output Port Description
 
-*   **out \[double\]:** Output of difference value.
+- **out \[double\]:** Output of difference value.
 
 ## Properties
 
-*   **resetValue \[double\]:** The value that is used in the first difference calculation after start.
+- **resetValue \[double\]:** The value that is used in the first difference calculation after start.

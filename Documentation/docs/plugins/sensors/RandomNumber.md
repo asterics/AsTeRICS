@@ -1,5 +1,6 @@
 ---
 title: RandomNumber
+subcategory: Simulation
 ---
 
 # RandomNumber
@@ -10,13 +11,13 @@ The RandomNumber component generates random numbers in a user defined area. The 
 
 ## Output Port Description
 
-*   **Number \[integer\]:** Returns random numbers in the user defined area. Default vaules: min = 0, max = 1
+- **Number \[integer\]:** Returns random numbers in the user defined area. Default vaules: min = 0, max = 1
 
 ## Event Listener Description
 
-*   **NewNumber:** Generates a new random number.
+- **NewNumber:** Generates a new random number.
 
 ## Properties
 
-*   **min \[integer\]:** Minimum value of the random number.
-*   **max \[integer\]:** Maximum value of the random number.
+- **min \[integer\]:** Minimum value of the random number.
+- **max \[integer\]:** Maximum value of the random number.

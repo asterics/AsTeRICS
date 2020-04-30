@@ -1,5 +1,6 @@
 ---
 title: EventVisualizer
+subcategory: Graphical User Interface
 ---
 
 # {{$frontmatter.title}}
@@ -22,8 +23,8 @@ This plugin does not provide input or output ports.
 
 ## Event Trigger Description
 
-*   **event\_in\_1:** incoming events will be displayed in the GUI.
+- **event_in_1:** incoming events will be displayed in the GUI.
 
 ## Properties
 
-*   **displayGUI \[boolean\]:** if selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.
+- **displayGUI \[boolean\]:** if selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.

@@ -1,5 +1,6 @@
 ---
 title: Threshold
+subcategory: Basic Math
 ---
 
 # Threshold
@@ -15,28 +16,28 @@ Threshold plugin
 
 ## Input Port Description
 
-*   **in \[double\]:** the input to be evaluated.
+- **in \[double\]:** the input to be evaluated.
 
 ## Output Port Description
 
-*   **out\[double\]:** the value that the threshold passes on for the given input.
+- **out\[double\]:** the value that the threshold passes on for the given input.
 
 ## Event Port Description
 
-*   **eventPosEdge:** This event port will trigger an event when the value crosses the thresholdHigh property from below.
-*   **eventNegEdge:** This event port will trigger an event when the value crosses the thresholdLow property from above.
+- **eventPosEdge:** This event port will trigger an event when the value crosses the thresholdHigh property from below.
+- **eventNegEdge:** This event port will trigger an event when the value crosses the thresholdLow property from above.
 
 ## Properties
 
-*   **thresholdHigh \[double\]:** The threshold that is checked for transitions from below the threshold to above.
-*   **thresholdLow \[double\]:** The threshold that is checked for transitions from above the threshold to below. Setting it to the same value as threshold\_high will remove the hysteresis from the threshold system.
-*   **outputHigh \[double\]:** The value to be sent to the output if the input is above the threshold in certain operation modes.
-*   **outputLow \[double\]:** The value to be sent to the output if the input is below the threshold in certain operation modes (see below).
-*   **operationMode \[integer\]:** There are three operation modes for the threshold component:
-    *   _binary:_ the output will only generate two different values, the value of output\_high if the input is in the range above the threshold and the value of output\_low if the input is below the threshold.
-    *   _cutoff:_ the input value will be passed through to the output as long as the value is below the threshold. If the input passes the threshold the output will take on the value set in output\_high.v
-    *   _deadzone:_ the input value will be passed through to the output as long as the value is above the threshold. If the input falls below the threshold the output will take on the value set in output\_low.
-*   **eventCondition \[integer\]:** This property declares on which types of transitions an event will be raised:
-    *   _Below->above:_ only transitions from below to above threshold raise events.
-    *   _Above->below:_ only transitions from above to below threshold raise events.
-    *   _Both:_ both types of transitions raise events.
+- **thresholdHigh \[double\]:** The threshold that is checked for transitions from below the threshold to above.
+- **thresholdLow \[double\]:** The threshold that is checked for transitions from above the threshold to below. Setting it to the same value as threshold_high will remove the hysteresis from the threshold system.
+- **outputHigh \[double\]:** The value to be sent to the output if the input is above the threshold in certain operation modes.
+- **outputLow \[double\]:** The value to be sent to the output if the input is below the threshold in certain operation modes (see below).
+- **operationMode \[integer\]:** There are three operation modes for the threshold component:
+  - _binary:_ the output will only generate two different values, the value of output_high if the input is in the range above the threshold and the value of output_low if the input is below the threshold.
+  - _cutoff:_ the input value will be passed through to the output as long as the value is below the threshold. If the input passes the threshold the output will take on the value set in output_high.v
+  - _deadzone:_ the input value will be passed through to the output as long as the value is above the threshold. If the input falls below the threshold the output will take on the value set in output_low.
+- **eventCondition \[integer\]:** This property declares on which types of transitions an event will be raised:
+  - _Below->above:_ only transitions from below to above threshold raise events.
+  - _Above->below:_ only transitions from above to below threshold raise events.
+  - _Both:_ both types of transitions raise events.

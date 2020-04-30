@@ -1,5 +1,6 @@
 ---
 title: MousecursorIcon
+subcategory: Input Device Emulation
 ---
 
 # {{$frontmatter.title}}
@@ -14,12 +15,12 @@ MousecursorIcon plugin
 
 ## Input Port Description
 
-*   **iconName \[strig\]:** This input port accepts a filename, the plugin tries to load a cursor file with this name from the local plugin working directory.
+- **iconName \[strig\]:** This input port accepts a filename, the plugin tries to load a cursor file with this name from the local plugin working directory.
 
 ## Event Listener Description:
 
-*   **setIcon1 - setIcon9:** an incoming events sets the given cursor as new system cursor.
+- **setIcon1 - setIcon9:** an incoming events sets the given cursor as new system cursor.
 
 ## Properties
 
-*   **iconName1 - iconName9 \[string\]:** 9 slots for cursor file names.
+- **iconName1 - iconName9 \[string\]:** 9 slots for cursor file names.

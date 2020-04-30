@@ -1,5 +1,6 @@
 ---
 title: MinMax
+subcategory: Basic Math
 ---
 
 # MinMax
@@ -14,18 +15,18 @@ MinMax plugin
 
 ## Input Port Description
 
-*   **in \[double\]:** Input signal for min/max calculation.
+- **in \[double\]:** Input signal for min/max calculation.
 
 ## Output Port Description
 
-*   **outMax \[double\]:** The current maximum value found in the signal.
-*   **outMin \[double\]:** The current minimum value found in the signal.
+- **outMax \[double\]:** The current maximum value found in the signal.
+- **outMin \[double\]:** The current minimum value found in the signal.
 
 ## Event Listener Description
 
-*   **reset:** An incoming event sets the current minimum and maximum to the values defined in the associated property fields defaultMin and defaultMax.
+- **reset:** An incoming event sets the current minimum and maximum to the values defined in the associated property fields defaultMin and defaultMax.
 
 ## Properties
 
-*   **defaultMin \[double\]:** This is the default minimum value which is set when the model is started or if an event comes in at the rest event listener port.
-*   **defaultMax \[double\]:** This is the default maximum value which is set when the model is started or if an event comes in at the reset event listener port.
+- **defaultMin \[double\]:** This is the default minimum value which is set when the model is started or if an event comes in at the rest event listener port.
+- **defaultMax \[double\]:** This is the default maximum value which is set when the model is started or if an event comes in at the reset event listener port.

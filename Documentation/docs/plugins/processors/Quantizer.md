@@ -1,5 +1,6 @@
 ---
 title: Quantizer
+subcategory: Basic Math
 ---
 
 # Quantizer
@@ -14,12 +15,12 @@ Quantizer plugin
 
 ## Input Port Description
 
-*   **input \[double\]:** Input port for the values to be quantized.
+- **input \[double\]:** Input port for the values to be quantized.
 
 ## Output Port Description
 
-*   **output \[****double****\]:** Output port for the quantized values.
+- **output \[\*\***double\***\*\]:** Output port for the quantized values.
 
 ## Properties
 
-*   **quantizationStep \[double\]:** The quantization step.
+- **quantizationStep \[double\]:** The quantization step.

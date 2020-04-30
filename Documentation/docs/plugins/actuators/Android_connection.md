@@ -1,5 +1,6 @@
 ---
 title: AndroidConnection
+subcategory: Phone Interface
 ---
 
 # {{$frontmatter.title}}

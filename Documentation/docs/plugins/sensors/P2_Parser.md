@@ -1,5 +1,6 @@
 ---
 title: P2 Parser
+subcategory: Bioelectric Measurement
 ---
 
 # P2Parser
@@ -18,11 +19,11 @@ This software component requires an OpenEEG compatible device connected to a COM
 
 ## Output Port Description
 
-*   **Channel1 to Channel6 \[integer\]:** Each output corresponds to the sampled data from its corresponding channel. The values range for -512 to 512. A calibration procedure to obtain the factor for calculation of microvolts must be performed with the amplifier device.
+- **Channel1 to Channel6 \[integer\]:** Each output corresponds to the sampled data from its corresponding channel. The values range for -512 to 512. A calibration procedure to obtain the factor for calculation of microvolts must be performed with the amplifier device.
 
 ## Properties
 
-*   **COMPort \[String\]:** The name of the COM port, for example COM2 or COM17.
-*   **Baudrate \[Integer\]:** The baud rate for the transmission. Standard is 57600.
+- **COMPort \[String\]:** The name of the COM port, for example COM2 or COM17.
+- **Baudrate \[Integer\]:** The baud rate for the transmission. Standard is 57600.
 
 [1]: http://openeeg.sf.net

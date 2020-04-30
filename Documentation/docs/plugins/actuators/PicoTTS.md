@@ -1,5 +1,6 @@
 ---
 title: PicoTTS
+subcategory: Audio and Voice
 ---
 
 # PicoTTS (text-to-speech)
@@ -23,8 +24,8 @@ If this plugin is not working (no speech output), please ensure, that the _aplay
 
 ## Input Port Description
 
-*   **input \[string\]:** The text sentence, which will be converted into speech.
+- **input \[string\]:** The text sentence, which will be converted into speech.
 
 ## Properties
 
-*   **language \[choice\]:** Defines the output language. Available by picoTTS: English (UK/US), German, Italian, Spanish, French
+- **language \[choice\]:** Defines the output language. Available by picoTTS: English (UK/US), German, Italian, Spanish, French

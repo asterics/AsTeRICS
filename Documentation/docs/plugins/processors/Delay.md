@@ -1,5 +1,6 @@
 ---
 title: Delay
+subcategory: Basic Math
 ---
 
 # Delay
@@ -12,15 +13,14 @@ This plugin passes received double values after a defined delay.
 
 Delay plugin
 
-## Input Port Description  
+## Input Port Description
 
-*   **in (double):** Input port for the incoming signal.  
-    
+- **in (double):** Input port for the incoming signal.
 
-## Output Port Description  
+## Output Port Description
 
-*   **out (double):** Output port for the delayed signal.
+- **out (double):** Output port for the delayed signal.
 
 ## Properties
 
-*   **delay \[integer\]:** Delay between input and output signal (in milliseconds).
+- **delay \[integer\]:** Delay between input and output signal (in milliseconds).

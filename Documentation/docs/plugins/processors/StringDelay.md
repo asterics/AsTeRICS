@@ -1,5 +1,6 @@
 ---
 title: StringDelay
+subcategory: Event and String Processing
 ---
 
 # StringDelay
@@ -14,13 +15,12 @@ StringDelay plugin
 
 ## Input Port Description
 
-*   **in (string):** Input port for the incoming string.  
-    
+- **in (string):** Input port for the incoming string.
 
-## Output Port Description  
+## Output Port Description
 
-*   **out (string):** Output port for the delayed string.
+- **out (string):** Output port for the delayed string.
 
 ## Properties
 
-*   **delay \[integer\]:** Delay between input and output of the string (in milliseconds).
+- **delay \[integer\]:** Delay between input and output of the string (in milliseconds).

@@ -1,5 +1,6 @@
 ---
 title: Osc Out Client
+subcategory: Communication
 ---
 
 # Osc Out Client
@@ -14,8 +15,8 @@ OscOutClient plugin
 
 ## Requirements
 
-*   Nothing, works sand-alone within ARE
-*   Check your firewall configuration and network settings to ensure that OSC messages are not blocked.
+- Nothing, works sand-alone within ARE
+- Check your firewall configuration and network settings to ensure that OSC messages are not blocked.
 
 ## Functional Description
 
@@ -23,17 +24,17 @@ The OscOutClient collects data form the inputs CH1-4 and assamble it to one OSC 
 
 ## Input Port Description
 
-*   **CH\[1-4\] \[double\]:** Input port for the data, eg. a oszilloscope or any other double value.
+- **CH\[1-4\] \[double\]:** Input port for the data, eg. a oszilloscope or any other double value.
 
 ## Properties
 
-*   **Port \[integer\]:** This value specifies the OscOutClient port.
-*   **PeerAddress \[string\]:** Specifies the IP where the OSC server is listening.
-*   **AddressCH1 \[string\]:** This value specifies the OSC data output address e.g. "/path/to/receiver/accxyz".
-*   **AddressStringCh \[string\]:** This value specifies the OSC string output address.
+- **Port \[integer\]:** This value specifies the OscOutClient port.
+- **PeerAddress \[string\]:** Specifies the IP where the OSC server is listening.
+- **AddressCH1 \[string\]:** This value specifies the OSC data output address e.g. "/path/to/receiver/accxyz".
+- **AddressStringCh \[string\]:** This value specifies the OSC string output address.
 
 ## Referred Plugins
 
-*   OscServer
-*   OpenVibe
-*   OscGestureFollower
+- OscServer
+- OpenVibe
+- OscGestureFollower

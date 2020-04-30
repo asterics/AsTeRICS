@@ -1,5 +1,6 @@
 ---
 title: Legacy Digital Out
+subcategory: Generic Control Output
 ---
 
 # Legacy Digital Out
@@ -22,17 +23,17 @@ Legacy GPIO CIM
 
 ## Input port Description
 
-*   **action \[string\]:** The plugin reacts to incoming action strings starting with "@GPIO:" and a command. Valid commands are "set", "clear", "toggle" and "press". The command has to be followed by a comma and the port number, for example: "@GPIO:set,1" or "@GPIO:toggle,2". The "press"-command toggles the given output port two times with a delay of 500 milliseconds. The following examples illustrate the available action strings:
-    *   _"@DIGITALOUT:set,1":_ Pin 1 of the GPIO CIM will be set
-    *   _"@DIGITALOUT:clear,2":_Pin 2 of the GPIO CIM will be cleared
-    *   _"@DIGITALOUT:toggle,1":_ Pin 1 of the GPIO CIM will be changed
-    *   _"@DIGITALOUT:press,4":_ Pin 4 of the GPIO CIM will be cleared and after 500ms it will be set again
+- **action \[string\]:** The plugin reacts to incoming action strings starting with "@GPIO:" and a command. Valid commands are "set", "clear", "toggle" and "press". The command has to be followed by a comma and the port number, for example: "@GPIO:set,1" or "@GPIO:toggle,2". The "press"-command toggles the given output port two times with a delay of 500 milliseconds. The following examples illustrate the available action strings:
+  - _"@DIGITALOUT:set,1":_ Pin 1 of the GPIO CIM will be set
+  - \_"@DIGITALOUT:clear,2":\_Pin 2 of the GPIO CIM will be cleared
+  - _"@DIGITALOUT:toggle,1":_ Pin 1 of the GPIO CIM will be changed
+  - _"@DIGITALOUT:press,4":_ Pin 4 of the GPIO CIM will be cleared and after 500ms it will be set again
 
 ## Event Listener Description
 
-*   **setOutput1 to setOutput8:** an incoming event on these ports will cause the corresponding output port on the CIM to go to the high level.
-*   **clearOutput1 to clearOutput8:** an incoming event on these ports will cause the corresponding output port on the CIM to go to the low level.
+- **setOutput1 to setOutput8:** an incoming event on these ports will cause the corresponding output port on the CIM to go to the high level.
+- **clearOutput1 to clearOutput8:** an incoming event on these ports will cause the corresponding output port on the CIM to go to the low level.
 
 ## Properties
 
-*   **pullupStateOut1 to pullupStateOut4 \[boolean\]:** These properties specify if the internal pullup resistor shall be activated on the respective open collector output channels.
+- **pullupStateOut1 to pullupStateOut4 \[boolean\]:** These properties specify if the internal pullup resistor shall be activated on the respective open collector output channels.

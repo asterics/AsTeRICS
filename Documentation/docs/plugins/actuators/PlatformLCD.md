@@ -1,5 +1,6 @@
 ---
 title: PlatformLCD
+subcategory: Personal Platform
 ---
 
 # Platform LCD
@@ -22,4 +23,4 @@ The AsteRICS Personal Platform
 
 ## Input Port Description
 
-*   **input \[string\]:** The Input of the port will be displayed on the Core CIM's display
+- **input \[string\]:** The Input of the port will be displayed on the Core CIM's display

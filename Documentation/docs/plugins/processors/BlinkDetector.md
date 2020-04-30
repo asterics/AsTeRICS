@@ -1,5 +1,6 @@
 ---
 title: Blink Detector
+subcategory: DSP and Feature Detection
 ---
 
 # Blink Detector
@@ -30,25 +31,25 @@ The input signal shall correspond to a 250-Hz sampled electro-oculogram signal, 
 
 ## Input Port Description
 
-*   **input \[integer\]:** Input values that correspond to a 250-Hz sampled electro-oculogram signal.
+- **input \[integer\]:** Input values that correspond to a 250-Hz sampled electro-oculogram signal.
 
 ## Output Port Description
 
-*   **Filtered Sample \[integer\]:** For each input sample, this output port delivers the decimated sample with a decimation factor of 11.
-*   **Differential \[integer\]:** For each input sample, this output port delivers the derivated sample (after the decimation).
+- **Filtered Sample \[integer\]:** For each input sample, this output port delivers the decimated sample with a decimation factor of 11.
+- **Differential \[integer\]:** For each input sample, this output port delivers the derivated sample (after the decimation).
 
 ## Event Trigger Description
 
-*   **BlinkDetected:** This event port fires an event if a blink is detected in the input sequence of integers.
-*   **DoubleblinkDetected:** This event port fires an event if a double blink is detected in the input sequence of integers.
+- **BlinkDetected:** This event port fires an event if a blink is detected in the input sequence of integers.
+- **DoubleblinkDetected:** This event port fires an event if a double blink is detected in the input sequence of integers.
 
 ## Properties
 
-*   **sampleRate \[integer\]:** Sample rate of the input signal in Hertz.
-*   **maxThreshold \[integer\]:** Positive threshold for a peak in the derivated signal to be considered as a potential blink (see "Double blink derivative" figure).
-*   **minThreshold \[integer\]:** Negative threshold for a peak in the derivated signal to be considered as a potential blink (see "Double blink derivative" figure).
-*   **BlinkLength \[integer\]:** Duration of one blink in miliseconds (see "Double blink derivative" figure).
-*   **DoubleBlinkSeparation \[integer\]:** Separation (in miliseconds) between two blinks that correspond to a double blink (see "Double blink derivative" figure).
+- **sampleRate \[integer\]:** Sample rate of the input signal in Hertz.
+- **maxThreshold \[integer\]:** Positive threshold for a peak in the derivated signal to be considered as a potential blink (see "Double blink derivative" figure).
+- **minThreshold \[integer\]:** Negative threshold for a peak in the derivated signal to be considered as a potential blink (see "Double blink derivative" figure).
+- **BlinkLength \[integer\]:** Duration of one blink in miliseconds (see "Double blink derivative" figure).
+- **DoubleBlinkSeparation \[integer\]:** Separation (in miliseconds) between two blinks that correspond to a double blink (see "Double blink derivative" figure).
 
 [1]: ../processors/BlinkDetectorTrainer.htm
 [2]: ../sensors/Enobio.htm
