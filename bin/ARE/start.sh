@@ -41,9 +41,12 @@ echo "ARE_CONSOLE_LOGLEVEL=$ARE_CONSOLE_LOGLEVEL"
 echo "ARE_DEBUG_STRING=$ARE_DEBUG_STRING"
 echo "ARE_OPTIONAL_SERVICES_INI=$ARE_OPTIONAL_SERVICES_INI"
 
-	
-java $ARE_DEBUG_STRING -Deu.asterics.mw.services.AstericsErrorHandling.consoleLogLevel=$ARE_CONSOLE_LOGLEVEL -Dosgi.clean=true  -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel="$ARE_AUTOSTART_MODEL" -Deu.asterics.ARE.ServicesFiles="$ARE_OPTIONAL_SERVICES_INI" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration $ARE_PROFILE_PATH -console "$@"
+# Tuning of Java Garbage Collection according to
+# https://docs.oracle.com/javase/10/gctuning/factors-affecting-garbage-collection-performance.htm#JSGCT-GUID-6635C481-AE78-485A-A184-A1709712961A
+# Use -verbose:gc for debugging gc cycles and pause time
+# -Xmx<size> sets the max heap size. According to tests the real memory used is about up to 2*Xmx
 
+java $ARE_DEBUG_STRING -XX:NewRatio=5 -Xmx256M -Deu.asterics.mw.services.AstericsErrorHandling.consoleLogLevel=$ARE_CONSOLE_LOGLEVEL -Dosgi.clean=true  -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel="$ARE_AUTOSTART_MODEL" -Deu.asterics.ARE.ServicesFiles="$ARE_OPTIONAL_SERVICES_INI" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration $ARE_PROFILE_PATH -console "$@"
 
 # workaround for muliple user support
 # delete files with user ownership, because another user would not be allowed to overwrite it

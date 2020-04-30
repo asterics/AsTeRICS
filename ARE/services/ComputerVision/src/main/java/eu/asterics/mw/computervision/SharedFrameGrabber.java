@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.bytedeco.javacpp.opencv_core.IplImage;
+import org.bytedeco.opencv.opencv_core.IplImage;
 import org.bytedeco.javacv.CameraDevice;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameConverter;
@@ -87,7 +87,7 @@ public class SharedFrameGrabber {
         // The framegrabbers are checked in the list of available ones.
         defaultGrabberList.put(OSUtils.WINDOWS, new String[] { DEFAULT_GRABBER_KEY, VIDEOINPUT_GRABBER_KEY, OPENCV_GRABBER_KEY, OPENKINECT_GRABBER_KEY,
                 REALSENSE_GRABBER_KEY, PS3Eye_GRABBER_KEY, DC1394_GRABBER_KEY, FLYCAPTURE_GRABBER_KEY, FLYCAPTURE2_GRABBER_KEY, IPCAMERA_GRABBER_KEY });
-        defaultGrabberList.put(OSUtils.LINUX, new String[] { DEFAULT_GRABBER_KEY, FFMPEG_GRABBER_KEY, OPENCV_GRABBER_KEY, OPENKINECT_GRABBER_KEY,
+        defaultGrabberList.put(OSUtils.LINUX, new String[] { DEFAULT_GRABBER_KEY, OPENCV_GRABBER_KEY, FFMPEG_GRABBER_KEY, OPENKINECT_GRABBER_KEY,
                 REALSENSE_GRABBER_KEY, PS3Eye_GRABBER_KEY, DC1394_GRABBER_KEY, FLYCAPTURE_GRABBER_KEY, FLYCAPTURE2_GRABBER_KEY, IPCAMERA_GRABBER_KEY });
         defaultGrabberList.put(OSUtils.MACOSX, new String[] { DEFAULT_GRABBER_KEY, OPENCV_GRABBER_KEY, OPENKINECT_GRABBER_KEY, REALSENSE_GRABBER_KEY,
                 PS3Eye_GRABBER_KEY, DC1394_GRABBER_KEY, FLYCAPTURE_GRABBER_KEY, FLYCAPTURE2_GRABBER_KEY, IPCAMERA_GRABBER_KEY });

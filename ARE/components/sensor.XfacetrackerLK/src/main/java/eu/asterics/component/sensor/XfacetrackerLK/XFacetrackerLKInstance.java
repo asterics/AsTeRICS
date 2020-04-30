@@ -1,4 +1,3 @@
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -26,43 +25,30 @@
 
 package eu.asterics.component.sensor.XfacetrackerLK;
 
-import static org.bytedeco.javacpp.opencv_core.CV_TERMCRIT_EPS;
-import static org.bytedeco.javacpp.opencv_core.CV_TERMCRIT_ITER;
-import static org.bytedeco.javacpp.opencv_core.FONT_HERSHEY_SIMPLEX;
-import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
-import static org.bytedeco.javacpp.opencv_core.cvFlip;
-import static org.bytedeco.javacpp.opencv_core.cvPoint;
-import static org.bytedeco.javacpp.opencv_core.cvRect;
-import static org.bytedeco.javacpp.opencv_core.cvResetImageROI;
-import static org.bytedeco.javacpp.opencv_core.cvSetImageROI;
-import static org.bytedeco.javacpp.opencv_core.cvSize;
-import static org.bytedeco.javacpp.opencv_core.cvTermCriteria;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_BGR2GRAY;
-import static org.bytedeco.javacpp.opencv_imgproc.cvCircle;
-import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
-import static org.bytedeco.javacpp.opencv_imgproc.cvFindCornerSubPix;
-import static org.bytedeco.javacpp.opencv_imgproc.cvInitFont;
-import static org.bytedeco.javacpp.opencv_imgproc.cvPutText;
-import static org.bytedeco.javacpp.opencv_video.CV_LKFLOW_PYR_A_READY;
-import static org.bytedeco.javacpp.opencv_video.cvCalcOpticalFlowPyrLK;
+import org.bytedeco.opencv.global.*;
+import org.bytedeco.opencv.opencv_core.*;
+import org.bytedeco.opencv.opencv_objdetect.*;
+import org.bytedeco.opencv.opencv_highgui.*;
+import org.bytedeco.opencv.opencv_imgproc.*;
+import org.bytedeco.opencv.opencv_tracking.*;
+import org.bytedeco.opencv.opencv_optflow.*;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
+import static org.bytedeco.opencv.global.opencv_core.*;
+import static org.bytedeco.opencv.global.opencv_imgproc.*;
+import static org.bytedeco.opencv.global.opencv_objdetect.*;
+import static org.bytedeco.opencv.global.opencv_highgui.*;
+import static org.bytedeco.opencv.global.opencv_imgcodecs.*;
+import static org.bytedeco.opencv.global.opencv_video.*;
+import static org.bytedeco.opencv.global.opencv_optflow.*;
+import static org.bytedeco.opencv.global.opencv_tracking.*;
 
-import org.bytedeco.javacpp.BytePointer;
-import org.bytedeco.javacpp.FloatPointer;
-import org.bytedeco.javacpp.IntPointer;
-import org.bytedeco.javacpp.opencv_core.CvPoint;
-import org.bytedeco.javacpp.opencv_core.CvPoint2D32f;
-import org.bytedeco.javacpp.opencv_core.CvRect;
-import org.bytedeco.javacpp.opencv_core.CvScalar;
-import org.bytedeco.javacpp.opencv_core.CvSize;
-import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.opencv_imgproc.CvFont;
-import org.bytedeco.javacpp.helper.opencv_core.AbstractIplImage;
+import org.bytedeco.javacpp.*;
+import org.bytedeco.javacpp.indexer.*;
+import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.computervision.FaceDetection;
@@ -78,6 +64,10 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
+import java.awt.Dimension;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Impelements a haardcascade combined with Lukas Kanade flow algorithm to detect face tracking. Based on FacetrackerLK from Chris Veigl.
@@ -132,7 +122,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     private String propTitleVideoFrameWindow = "";
     private Integer propFrameRate = 0;
     private boolean propDisplayGUI = true;
-    private boolean propEnableOverlaySettings=true;
+    private boolean propEnableOverlaySettings = true;
 
     private String instanceId = "XFacetrackerLK";
 
@@ -527,11 +517,11 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
                 sendPortData(points);
 
                 points[A] = points[B];
-                flags |= CV_LKFLOW_PYR_A_READY;
+                // flags |= CV_LKFLOW_PYR_A_READY;
             }
         }
 
-        //Only show fps and device name if enabled by the property.
+        // Only show fps and device name if enabled by the property.
         if (propEnableOverlaySettings) {
             // Count frames after tracking to reflect real frame rate including tracking.
             frameCount++;
@@ -598,15 +588,67 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
      * @return
      */
     public CvPoint2D32f trackOpticalFlow(IplImage[] imgGrey, IplImage[] imgPyr, CvPoint2D32f pointsA) {
-        // Call Lucas Kanade algorithm
-        BytePointer features_found = new BytePointer(MAX_POINTS);
-        FloatPointer feature_errors = new FloatPointer(MAX_POINTS);
+        Mat matPointsA= cvPoint2D32fToMat(pointsA);
+        Mat matPointsB = cvPoint2D32fToMat(new CvPoint2D32f(nrPoints.get()));
 
-        CvPoint2D32f pointsB = new CvPoint2D32f(MAX_POINTS);
-        cvCalcOpticalFlowPyrLK(imgGrey[A], imgGrey[B], imgPyr[A], imgPyr[B], pointsA, pointsB, nrPoints.get(), cvSize(winSize, winSize), 5, features_found,
-                feature_errors, cvTermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.3), flags);
+        Mat matFeaturesFound = new Mat();
+        Mat matFeaturesErrors = new Mat();
 
-        return rejectBadPoints(pointsA, pointsB, features_found, feature_errors);
+//        System.out.println("imgGrey.length: " + imgGrey.length + ", imgGrey[A]: " + imgGrey[A]);
+        Mat matImgA = new Mat(imgGrey[A].asCvMat());
+        Mat matImgB = new Mat(imgGrey[B].asCvMat());
+        Mat matImgPyrA = new Mat(imgPyr[A].asCvMat());
+        Mat matImgPyrB = new Mat(imgPyr[B].asCvMat());
+
+//        System.out.println("matImgPyrA: " + matImgPyrA + ", matImgPyrB: " + matImgPyrB);
+
+        calcOpticalFlowPyrLK(matImgA, matImgB, matPointsA, matPointsB, matFeaturesFound, matFeaturesErrors, new Size(winSize, winSize), 5,
+                new TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.3), 0, 1e-4);
+
+        // matPointsB=matPointsA;
+        // CvPoint2D32f pointsB=matTocvPoint2D32f(matPointsB);
+        // System.out.println("pointsA: "+matTocvPoint2D32f(matPointsA)+", pointsB: "+pointsB);
+        return rejectBadPoints(matTocvPoint2D32f(matPointsA), matTocvPoint2D32f(matPointsB), matFeaturesFound, matFeaturesErrors);
+    }
+
+    /**
+     * Converts a given Mat object into a CvPoint2D32f object containing several points extracted from Mat objects returned by Mat.row(i).
+     * @param points
+     * @return
+     */
+    private CvPoint2D32f matTocvPoint2D32f(Mat points) {
+        CvPoint2D32f cvPoints = new CvPoint2D32f(points.rows());
+        FloatIndexer pointsIdx = points.createIndexer();
+
+        for (int i = 0; i < points.rows(); i++) {
+            cvPoints.position(i);
+
+            CvPoint2D32f p = cvPoint2D32f(pointsIdx.get(i, 0), pointsIdx.get(i, 1));
+//            System.out.println("adding point: " + p);
+            cvPoints.put(p);
+        }
+        cvPoints.position(0);
+        return cvPoints;
+    }
+
+    /**
+     * Converts a given CvPoint2D32f object (with several points) to a Mat object of type CV_32FC2.
+     * The points are added as Mat objects (1x2,CV_32FC2) having one row per point. 
+     * 
+     * @param points2D32f
+     * @return
+     */
+    private Mat cvPoint2D32fToMat(CvPoint2D32f points2D32f) {
+        int[] pSize = { nrPoints.get(), 1 };
+        Mat matPoints = new Mat(1, pSize, CV_32FC2);
+
+        for (int i = 0; i < nrPoints.get(); i++) {
+            points2D32f.position(i);
+            Point2f p=new Point2f(points2D32f.x(),points2D32f.y());
+            matPoints.row(i).setTo(new Mat(1, 2, CV_32FC2, p));
+        }
+        points2D32f.position(0);
+        return matPoints;
     }
 
     /**
@@ -619,12 +661,19 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
      * @param feature_errors
      * @return
      */
-    private CvPoint2D32f rejectBadPoints(CvPoint2D32f pointsA, CvPoint2D32f pointsB, BytePointer features_found, FloatPointer feature_errors) {
+    private CvPoint2D32f rejectBadPoints(CvPoint2D32f pointsA, CvPoint2D32f pointsB, Mat features_found, Mat feature_errors) {
+//        System.out.println("rejectBadPoints: pointsA: " + pointsA + ", pointsB: " + pointsB);
+
         needToInit = false;
+        UByteIndexer features_found_idx = features_found.createIndexer();
+        FloatIndexer feature_errors_idx = feature_errors.createIndexer();
+//        System.out.println("features_found_idx.size(0)" + features_found_idx.size(0));
         // Make an image of the results
-        for (int i = 0; i < nrPoints.get(); i++) {
-            if (features_found.get(i) == 0 || feature_errors.get(i) > 550) {
-                System.out.println("Error is " + feature_errors.get(i) + "/n");
+        for (int i = 0; i < features_found_idx.size(0); i++) {
+//            System.out.println(
+//                    "features_found_idx.get(" + i + ")=" + features_found_idx.get(i) + ", feature_errors_idx.get(" + i + ")=" + feature_errors_idx.get(i));
+            if (features_found_idx.get(i) == 0 || feature_errors_idx.get(i) > 550) {
+                System.out.println("Error is " + feature_errors_idx.get(i) + "/n");
                 needToInit = true;
                 initCycles = 0;
                 return pointsB;
@@ -632,6 +681,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 
             pointsA.position(i);
             pointsB.position(i);
+//            System.out.println("pointsB[" + i + "](" + pointsB.x() + ", " + pointsB.y() + ")");
 
             // Ignore points lying outside ROI, actually we should try to use
             // cvSetImageROI

@@ -1,4 +1,4 @@
-<project name="asterics.${component.id}" default="jar" basedir=".">
+<project xmlns:resolver="antlib:org.apache.maven.resolver.ant" name="asterics.${component.id}" default="jar" basedir=".">
 
 	<property name="component.id" value="mw.computervision"/>
 	<!-- set global properties for this build -->
@@ -6,40 +6,44 @@
 	<property name="src.java" location="src/main/java"/>
 	<property name="dist" location=".."/>
 	<property name="runtime" location="../../../bin/ARE"/>
+	<property name="dev.libs" location="../../../lib"/>
+	<property name="biz.aQute:bnd:jar" location="${dev.libs}/biz.aQute.bnd-5.0.1.jar"/>
 	<property name="osgi" location="../../osgi"/>
 	<property name="middleware" location="../../middleware"/>
 	<property name="services" location="../../services"/>
 	<property name="resources" location="src/main/resources"/>
+	<property name="javacv.dest" location="javacv/"/>
+	<property name="javacv.version" value="1.5.2"/>
 	<!-- don't forget to also update the MANIFEST file!! -->
 	
 	<property name="jar.os.name.windows" value="windows"/>
 	<property name="jar.os.name.linux" value="linux"/>
 	<property name="jar.os.name.macosx" value="macosx"/>
 
-	<property name="javacv.target.file" location="${services}/javacv-1.3.0-full-all.jar"/>
-	<property name="javacv.windows.target.file" location="${services}/javacv-1.3.0-basic-${jar.os.name.windows}.jar"/>
-	<property name="javacv.linux.target.file" location="${services}/javacv-1.3.0-basic-${jar.os.name.linux}.jar"/>
-	<property name="javacv.macosx.target.file" location="${services}/javacv-1.3.0-basic-${jar.os.name.macosx}.jar"/>
-	<property name="javacv.ffmpeg.target.file" location="${services}/javacv-1.3.0-ffmpeg-all.jar"/>
+	<property name="javacv.target.file" location="${services}/javacv-${javacv.version}-full-all.jar"/>
+	<property name="javacv.windows.target.file" location="${services}/javacv-${javacv.version}-basic-${jar.os.name.windows}.jar"/>
+	<property name="javacv.linux.target.file" location="${services}/javacv-${javacv.version}-basic-${jar.os.name.linux}.jar"/>
+	<property name="javacv.macosx.target.file" location="${services}/javacv-${javacv.version}-basic-${jar.os.name.macosx}.jar"/>
+	<property name="javacv.ffmpeg.target.file" location="${services}/javacv-${javacv.version}-ffmpeg-all.jar"/>
 
-	<fileset id="javacv-files-windows" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/*-linux-*.jar, **/*-macosx-*.jar" includes="lib/native/*.jar">
+	<fileset id="javacv-files-windows" dir="javacv/org/bytedeco" excludes="**/ffmpeg*.jar, **/*-linux-*.jar, **/*-macosx-*.jar" includes="**/*.jar">
 	</fileset>
 
-	<fileset id="javacv-files-linux" dir="javacv/src/main/resources" excludes="**/videoinput*.jar, **/*-windows-*.jar, **/*-macosx-*.jar" includes="lib/native/*.jar">
+	<fileset id="javacv-files-linux" dir="javacv/org/bytedeco" excludes="**/videoinput*.jar, **/*-windows-*.jar, **/*-macosx-*.jar" includes="**/*.jar">
 	</fileset>
-	<fileset id="javacv-files-macosx" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/videoinput*.jar, **/*-windows-*.jar, **/*-linux-*.jar" includes="lib/native/*.jar">
+	<fileset id="javacv-files-macosx" dir="javacv/org/bytedeco" excludes="**/ffmpeg*.jar, **/videoinput*.jar, **/*-windows-*.jar, **/*-linux-*.jar" includes="**/*.jar">
 	</fileset>
 	
-	<fileset id="javacv-files-ffmpeg" dir="javacv/src/main/resources" excludes="**/opencv*.jar, **/videoinput*.jar, **/libfreenect*.jar" includes="lib/native/*.jar">
+	<fileset id="javacv-files-ffmpeg" dir="javacv/org/bytedeco" excludes="**/opencv*.jar, **/videoinput*.jar, **/libfreenect*.jar" includes="**/*.jar">
 	</fileset>
-
+	
 	<property name="classpath" location=".."/>
 	<path id="asterics.classpath">
 		<pathelement path="${classpath}"/>
 		<pathelement location="bin"/>
 		<pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
 		<pathelement location="${middleware}/asterics.ARE.jar"/>
-		<pathelement location="${javacv.windows.target.file}" />
+		<fileset refid="javacv-files-linux"/>
 	</path>
 
 	<target name="init">
@@ -48,7 +52,61 @@
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${build}"/>
 	</target>
+	
+	<!-- taskdef bnd, unfortunately it's very bad documented -->
+	<taskdef resource="aQute/bnd/ant/taskdef.properties" classpath="${biz.aQute:bnd:jar}"/>
 
+	<!-- taskdef maven-resolver-ant-tasks -->
+	<taskdef uri="antlib:org.apache.maven.resolver.ant" resource="org/apache/maven/resolver/ant/antlib.xml">
+		<classpath>
+		  <fileset dir="${dev.libs}" includes="*.jar"/>
+		</classpath>
+	</taskdef>
+
+	<!-- define repositories for maven -->
+	<resolver:localrepo dir="${javacv.dest}"/>
+	<resolver:remoterepo id="central-https" url="https://repo1.maven.org/maven2/" type="default"
+	          releases="true" snapshots="false" updates="daily" checksums="fail"/>
+	<resolver:remoterepos id="resolver.repositories">
+		<resolver:remoterepo refid="central-https"/>
+	</resolver:remoterepos>
+	
+	<!-- use javacv pom file for dependency resolving -->
+	<resolver:pom file="pom.xml" id="pom"/>
+	
+	<target name="download-javacv" description="Downloads the javacv jars">		
+		<resolver:resolve>
+			<dependencies pomRef="pom">
+				<!-- exclude all unneeded artifacts here -->
+				<exclusion coords="org.bytedeco:flycapture"/>
+				<exclusion coords="org.bytedeco:flycapture-platform"/>
+				<exclusion coords="org.bytedeco:ffmpeg"/>
+				<exclusion coords="org.bytedeco:ffmpeg-platform"/>
+				<exclusion coords="org.bytedeco:artoolkitplus"/>
+				<exclusion coords="org.bytedeco:artoolkitplus-platform"/>
+				<exclusion coords="org.bytedeco:flandmark"/>
+				<exclusion coords="org.bytedeco:flandmark-platform"/>
+				<exclusion coords="org.bytedeco:leptonica"/>
+				<exclusion coords="org.bytedeco:leptonica-platform"/>
+				<exclusion coords="org.bytedeco:libdc1394"/>
+				<exclusion coords="org.bytedeco:libdc1394-platform"/>
+				<exclusion coords="org.bytedeco:tesseract"/>
+				<exclusion coords="org.bytedeco:tesseract-platform"/>
+				<exclusion coords="org.bytedeco:librealsense"/>
+				<exclusion coords="org.bytedeco:librealsense-platform"/>		
+				<exclusion coords="org.bytedeco:librealsense2"/>
+				<exclusion coords="org.bytedeco:librealsense2-platform"/>		
+				<exclusion coords="org.bytedeco:libfreenect"/>
+				<exclusion coords="org.bytedeco:libfreenect-platform"/>		
+				<exclusion coords="org.bytedeco:libfreenect2"/>
+				<exclusion coords="org.bytedeco:libfreenect2-platform"/>				
+			</dependencies>
+			<!-- downloads the resolved artifacts and stores them at ${javacv.dest} -->
+			<files refid="api.files" dir="${javacv.dest}"
+			       layout="javacv-platform.jar"/>
+		</resolver:resolve>
+	</target>	
+			
 	<target name="compile" depends="init, merge-jars" description="compile the source ">
 		<javac source="${javac.source}" target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build}"  verbose="true" debug="${debug}" 
            classpath="${classpath}">
@@ -64,7 +122,7 @@
 	</target>
 
 	<!-- Generates the platform dependendant smaller jars for javacv -->
-	<target name="merge-jars" depends="check-merged-jar, do-merge-jars-windows, do-merge-jars-linux, do-merge-jars-macosx">
+	<target name="merge-jars" depends="download-javacv, check-merged-jar, do-merge-jars-windows, do-merge-jars-linux, do-merge-jars-macosx">
 	</target>
 	
 	<target name="check-merged-jar">
@@ -77,81 +135,31 @@
 		<available file="${javacv.macosx.target.file}" property="javacv.macosx.exists">
 		</available>
 	</target>
-
-	<!-- The full jar is not generated by default  because it is too big -->
-	<!-- If you need FFMpegFrameGrabber generate the full jar and exchange the small bundle with this one -->
-	<target name="do-merge-jars" description="Generate a merged javacv OSGI-bundle with all jars" unless="javacv.exists">
-		<jar jarfile="${javacv.target.file}"
-      	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
-			<archives>
-				<zips>
-					<fileset dir="javacv/src/main/resources" includes="lib/native/*.jar"/>
-				</zips>
-			</archives>
-		</jar>
-	</target>
-	
-	<!-- a smaller version the javacv bundle with opencv, libfreenect, and videoinput but without ffmpeg -->
-	<target name="do-merge-jars-small" description="Generate a small merged javacv OSGI-bundle (without ffmpeg,...)">
-		<jar jarfile="../javacv-1.3.0-basic-all.jar"
-	      	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
-			<archives>
-				<zips>
-					<fileset dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar" includes="lib/native/*.jar"/>
-				</zips>
-			</archives>
-		</jar>
-	</target>
-	
+		
 	<!-- A windows-only version with opencv, libfreenect, and videoInput -->
 	<target name="do-merge-jars-windows" description="Generate a merged javacv OSGI-bundle with windows-only jars" unless="javacv.windows.exists">
-		<jar jarfile="${javacv.windows.target.file}"
-      	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
-			<archives>
-				<zips>
-					<fileset refid="javacv-files-windows"/>
-				</zips>
-			</archives>
-		</jar>
+		<java jar="${biz.aQute:bnd:jar}" fork="true">
+			<arg value="bnd"/>
+			<arg value="-f"/>
+			<arg value="javacv-windows.bnd"/>
+		</java>
 	</target>
 	<!-- a linux-only version with opencv, libfreenect -->
 	<target name="do-merge-jars-linux" description="Generate a merged javacv OSGI-bundle with linux-only jars" unless="javacv.linux.exists">
-		<jar jarfile="${javacv.linux.target.file}"
-      	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
-			<archives>
-				<zips>
-					<fileset refid="javacv-files-linux"/>
-				</zips>
-			</archives>
-		</jar>
+		<java jar="${biz.aQute:bnd:jar}" fork="true">
+			<arg value="bnd"/>
+			<arg value="-f"/>
+			<arg value="javacv-linux.bnd"/>
+		</java>
 	</target>
 	<!-- a macosx-only version with opencv, libfreenect -->
 	<target name="do-merge-jars-macosx" description="Generate a merged javacv OSGI-bundle with macosx-only jars" unless="javacv.macosx.exists">
-		<jar jarfile="${javacv.macosx.target.file}"
-      	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
-			<archives>
-				<zips>
-					<fileset refid="javacv-files-macosx"/>
-				</zips>
-			</archives>
-		</jar>
+		<java jar="${biz.aQute:bnd:jar}" fork="true">
+			<arg value="bnd"/>
+			<arg value="-f"/>
+			<arg value="javacv-macosx.bnd"/>
+		</java>
 	</target>
-
-	<!-- 
-	Did not work as standalone osgi-bundle, because computervision bundle needs opencv classes for FaceDetection class.
-	So would have to add all opencv stuff again which would not bring a size reduction.
-	<target name="do-merge-jars-ffmpeg" description="Generate a merged javacv OSGI-bundle with windows-only jars" unless="javacv.exists">
-		<jar jarfile="${javacv.ffmpeg.target.file}"
-      	manifest="javacv/src/main/resources/META-INF/MANIFEST-ffmpeg.MF" filesetmanifest="merge">
-			<archives>
-				<zips>
-					<fileset refid="javacv-files-ffmpeg"/>
-				</zips>
-			</archives>
-		</jar>
-	</target>
-	-->
-
 	
 	<import file="../../imported.xml"/>
     <include file="../../included.xml"/>

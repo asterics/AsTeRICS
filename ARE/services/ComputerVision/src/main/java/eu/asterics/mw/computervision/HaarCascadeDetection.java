@@ -25,24 +25,30 @@
 
 package eu.asterics.mw.computervision;
 
-import static org.bytedeco.javacpp.helper.opencv_objdetect.cvHaarDetectObjects;
-import static org.bytedeco.javacpp.opencv_core.cvClearMemStorage;
-import static org.bytedeco.javacpp.opencv_core.cvGetSeqElem;
-import static org.bytedeco.javacpp.opencv_core.cvLoad;
-import static org.bytedeco.javacpp.opencv_core.cvResetImageROI;
-import static org.bytedeco.javacpp.opencv_core.cvSetImageROI;
-import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_DO_CANNY_PRUNING;
-import static org.bytedeco.javacpp.opencv_objdetect.CV_HAAR_FIND_BIGGEST_OBJECT;
+import org.bytedeco.opencv.global.*;
+import org.bytedeco.opencv.opencv_core.*;
+import org.bytedeco.opencv.opencv_objdetect.*;
+import org.bytedeco.opencv.opencv_highgui.*;
+import org.bytedeco.opencv.opencv_imgproc.*;
+import org.bytedeco.opencv.opencv_tracking.*;
+import org.bytedeco.opencv.opencv_optflow.*;
 
+import static org.bytedeco.opencv.global.opencv_core.*;
+import static org.bytedeco.opencv.global.opencv_imgproc.*;
+import static org.bytedeco.opencv.global.opencv_objdetect.*;
+import static org.bytedeco.opencv.global.opencv_highgui.*;
+import static org.bytedeco.opencv.global.opencv_imgcodecs.*;
+import static org.bytedeco.opencv.global.opencv_video.*;
+import static org.bytedeco.opencv.global.opencv_optflow.*;
+import static org.bytedeco.opencv.global.opencv_tracking.*;
+
+import org.bytedeco.javacpp.*;
+import org.bytedeco.javacpp.indexer.*;
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.opencv_core.CvMemStorage;
-import org.bytedeco.javacpp.opencv_core.CvRect;
-import org.bytedeco.javacpp.opencv_core.CvSeq;
-import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.opencv_core.Point;
-import org.bytedeco.javacpp.opencv_objdetect;
-import org.bytedeco.javacpp.opencv_objdetect.CvHaarClassifierCascade;
-import org.bytedeco.javacpp.helper.opencv_core.AbstractCvMemStorage;
+import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 
 public class HaarCascadeDetection {
     private static String HAAR_DIR = "";
@@ -69,39 +75,39 @@ public class HaarCascadeDetection {
      * Return the first matching feature rectangle (fRect)
      */
     {
-        Loader.load(opencv_objdetect.class);
+//        Loader.load(opencv_objdetect.class);
         String classifierName = HAAR_DIR + haarFnm;
-        CvHaarClassifierCascade classifier = null;
-        classifier = new CvHaarClassifierCascade(cvLoad(classifierName));
+        CascadeClassifier classifier = null;
+        classifier = new CascadeClassifier(classifierName);
 
         if (classifier.isNull()) {
             System.out.println("Could not load the classifier: " + haarFnm + " for " + featureName);
             return null;
         }
 
+        Mat grayFrame=cvarrToMat(im);       
+        
         // use selection rectangle to apply a ROI to the image
         if (selectRect != null) {
             cvSetImageROI(im, selectRect);
         }
 
-        CvSeq featureSeq = new CvSeq();
-        featureSeq = cvHaarDetectObjects(im, classifier, storage, 1.1, detection,
-                CV_HAAR_DO_CANNY_PRUNING | CV_HAAR_FIND_BIGGEST_OBJECT);
-
-        cvClearMemStorage(storage);
+        RectVector faces = new RectVector();
+        classifier.detectMultiScale(grayFrame, faces,
+                1.1, 3, CASCADE_FIND_BIGGEST_OBJECT | CASCADE_DO_ROUGH_SEARCH, null, null);
+        
+//        cvClearMemStorage(storage);
         cvResetImageROI(im);
 
-        int total = featureSeq.total();
-        if (total == 0) {
-            return null;
-        }
-
+        long total = faces.size();
         if (total > 1) {
             System.out.println("Multiple features detected (" + total + ") for " + featureName + "; using the first");
+            
+            Rect faceRect = faces.get(0);
+            return new CvRect(faceRect.x(),faceRect.y(),faceRect.width(),faceRect.height());
         }
 
-        CvRect fRect = new CvRect(cvGetSeqElem(featureSeq, 0));
-        return fRect;
+        return null;
     }
 
     public double detectFeatures(IplImage roiImage, CvRect roiRect, CvRect earRect, CvRect mouthRect, Boolean left) {

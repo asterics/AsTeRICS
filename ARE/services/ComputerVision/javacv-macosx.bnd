@@ -1,0 +1,17 @@
+version=1.5.2
+src=./javacv
+pkg=org/bytedeco
+-includeresource: ${src}/${pkg}/javacv/${version}/javacv-${version}.jar, ${src}/${pkg}/javacv-platform/${version}/javacv-platform-${version}.jar, ${src}/${pkg}/javacpp/${version}/javacpp-${version}.jar, ${src}/${pkg}/opencv/4.1.2-${version}/opencv-4.1.2-${version}.jar, ${src}/${pkg}/opencv/4.1.2-${version}/opencv-4.1.2-${version}-macosx-x86_64.jar, ${src}/${pkg}/opencv/4.1.2-${version}/opencv-4.1.2-${version}-macosx-x86.jar, ${src}/${pkg}/opencv-platform/4.1.2-${version}/opencv-platform-4.1.2-${version}.jar, ${src}/${pkg}/openblas-platform/0.3.7-${version}/openblas-platform-0.3.7-${version}.jar, ${src}/${pkg}/openblas/0.3.7-${version}/openblas-0.3.7-${version}.jar, ${src}/${pkg}/openblas/0.3.7-${version}/openblas-0.3.7-${version}-macosx-x86.jar, ${src}/${pkg}/openblas/0.3.7-${version}/openblas-0.3.7-${version}-macosx-x86_64.jar
+-exportcontents: org.bytedeco
+-output: ../javacv-${version}-basic-macosx.jar
+Bundle-ClassPath: ., javacv-${version}.jar, javacv-platform-${version}.jar, javacpp-${version}.jar, opencv-4.1.2-${version}.jar, opencv-4.1.2-${version}-macosx-x86_64.jar, opencv-4.1.2-${version}-macosx-x86.jar, opencv-platform-4.1.2-${version}.jar, openblas-platform-0.3.7-${version}.jar, openblas-0.3.7-${version}.jar, openblas-0.3.7-${version}-macosx-x86.jar, openblas-0.3.7-${version}-macosx-x86_64.jar
+Manifest-Version: 1.0
+Created-By: bnd
+Built-By: deinhofer
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-services.javacv
+Bundle-SymbolicName: org.bytedeco.javacv
+Bundle-Version: ${version}
+Export-Package: org.bytedeco.java*, org.bytedeco.opencv.opencv_*, org.bytedeco.*.global.*
+Import-Package: *;resolution:=optional
+DynamicImport-Package: 

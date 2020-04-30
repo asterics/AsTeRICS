@@ -9,13 +9,17 @@
     <property name="osgi" location="../../osgi"/>
     <property name="middleware" location="../../middleware"/>
     <property name="services" location="../../services"/>
+	
+	<fileset id="javacv-files" dir="${services}/ComputerVision/javacv/org/bytedeco" excludes="**/videoinput*.jar, **/*-windows-*.jar, **/*-macosx-*.jar" includes="**/*.jar">
+	</fileset>
+
     <property name="classpath" location=".."/>
        <path id="asterics.classpath">
         <pathelement location="bin"/>
         <pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
         <pathelement location="${middleware}/asterics.ARE.jar"/>
        	<pathelement location="${services}/asterics.mw.computervision.jar"/>
-       	<pathelement location="${services}/javacv-1.3.0-basic-windows.jar" />       	
+       	<fileset refid="javacv-files"/>
     </path>
     
     <property name="resources" location="src/main/resources"/>
