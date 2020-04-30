@@ -126,6 +126,7 @@
 	<target name="replaceVersion">
 		<getversionnumber text="${env.VERSION}" property="app_version_number" />
 		<echo>VERSION=${env.VERSION}</echo>
+		<replace file="./bin/ACS/asterics.ini" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
 		<replace file="./Installer/setup.iss" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
 		<replace file="./Installer/asterics-are/package/linux/control" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
 		<replace file="./Installer/asterics-are/APE.properties" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
