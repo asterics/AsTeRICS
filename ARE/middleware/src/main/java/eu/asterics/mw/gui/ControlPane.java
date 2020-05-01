@@ -274,7 +274,7 @@ public class ControlPane extends JPanel {
             globeLabel = new ControlPanelLabel(getFullURL(GLOBE_ICON_PATH), getFullURL(GLOBE_ICON_PATH_RO), "Open ARE Webserver Startpage") {
                 @Override
                 public void onMouseClick() {
-                    String url = MessageFormat.format("http://localhost:{0}/", AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
+                    String url = MessageFormat.format("http://localhost:{0}/", String.valueOf(AREServices.instance.getRESTPort()));
                     try {
                         OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
                     } catch (IOException e) {
