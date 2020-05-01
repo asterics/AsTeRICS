@@ -320,4 +320,33 @@ public class ServerRepository {
         restFunctions.addAll(createListOfRestFunctions(SseResource.class));
         return restFunctions;
     }
+
+    /**
+     * @param portREST the portREST to set
+     */
+    public void setPortREST(int portREST) {
+        this.portREST = portREST;
+    }
+
+    /**
+     * @param portWebsocket the portWebsocket to set
+     */
+    public void setPortWebsocket(int portWebsocket) {
+        this.portWebsocket = portWebsocket;
+    }
+
+    /**
+     * @param sslPortREST the sslPortREST to set
+     */
+    public void setSSLPortREST(int sslPortREST) {
+        this.sslPortREST = sslPortREST;
+    }
+
+    /**
+     * @param sslPortWebsocket the sslPortWebsocket to set
+     */
+    public void setSSLPortWebsocket(int sslPortWebsocket) {
+        this.sslPortWebsocket = sslPortWebsocket;
+    }
+
 }

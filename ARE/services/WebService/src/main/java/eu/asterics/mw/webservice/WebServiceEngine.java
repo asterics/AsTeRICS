@@ -44,7 +44,7 @@ import org.glassfish.jersey.media.sse.SseFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.osgi.framework.BundleContext;
 
-import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.*;
 import eu.asterics.mw.services.ResourceRegistry;
 import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
@@ -86,38 +86,62 @@ public class WebServiceEngine {
      * @throws URISyntaxException
      */
     public void initGrizzlyHttpService(BundleContext bc) throws IOException, URISyntaxException {
-        KEYSTORE_LOC = ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("keystore/keystore_server", RES_TYPE.PROFILE));
-        sslCon = new SSLContextConfigurator();
-        sslCon.setKeyStoreFile(KEYSTORE_LOC);
-        sslCon.setKeyStorePass(KEYSTORE_PASS);
+        int NR_TRIES_PORT=3;
+        int PORT_STEP_SIZE=5;
+        boolean success=false;
 
-        HttpServer httpServer = null;
+        for(int i=0;i<NR_TRIES_PORT && !success;i++) {        
+            int portRest=ServerRepository.getInstance().getPortREST()+i*PORT_STEP_SIZE;
+            int portRestSSL=ServerRepository.getInstance().getSSLPortREST()+i*PORT_STEP_SIZE;
+            int portWebsocket=ServerRepository.getInstance().getPortWebsocket()+i*PORT_STEP_SIZE;
 
-        if (ServerRepository.getInstance().isRESTEnabled()) {
-            httpServer = initWebAndRESTService(ServerRepository.getInstance().getBaseUriREST(), ServerRepository.getInstance().getPortREST(), false);
-            httpServer.start();
-            httpServers.add(httpServer);
+            ServerRepository.getInstance().setPortREST(portRest);
+            ServerRepository.getInstance().setSSLPortREST(portRestSSL);
+            ServerRepository.getInstance().setPortWebsocket(portWebsocket);
+
+            try{
+                KEYSTORE_LOC = ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("keystore/keystore_server", RES_TYPE.PROFILE));
+                sslCon = new SSLContextConfigurator();
+                sslCon.setKeyStoreFile(KEYSTORE_LOC);
+                sslCon.setKeyStorePass(KEYSTORE_PASS);
+
+                HttpServer httpServer = null;
+
+                if (ServerRepository.getInstance().isRESTEnabled()) {
+                    httpServer = initWebAndRESTService(ServerRepository.getInstance().getBaseUriREST(), ServerRepository.getInstance().getPortREST(), false);
+                    httpServer.start();
+                    httpServers.add(httpServer);
+                }
+
+                if (ServerRepository.getInstance().isSSLRESTEnabled()) {
+                    httpServer = initWebAndRESTService(ServerRepository.getInstance().getBaseUriSSLREST(), ServerRepository.getInstance().getSSLPortREST(), true);
+                    httpServer.start();
+                    httpServers.add(httpServer);
+                }
+
+                if (ServerRepository.getInstance().isWebsocketEnabled()) {
+                    httpServer = initWebsocketService(ServerRepository.getInstance().getBaseUriWebsocket(), ServerRepository.getInstance().getPortWebsocket(), false);
+                    httpServer.start();
+                    httpServers.add(httpServer);
+                }
+
+                // Could not get the SSL Websocket functioning, to be debugged for the next release
+                // if (ServerRepository.getInstance().isSSLWebsocketEnabled()) {
+                // httpServer = initWebsocketService(ServerRepository.getInstance().getBaseUriSSLWebsocket(), ServerRepository.getInstance().getSSLPortWebsocket(),
+                // true);
+                // httpServer.start();
+                // httpServers.add(httpServer);
+                // }
+
+                //in case of success, break the loop!!
+                success=true;
+                AREServices.instance.setRESTPort(portRest);
+
+                logger.fine("REST and Websocket ports successfully registered.");
+            }catch(Exception e) {
+                logger.fine("Port registration failed for ports ["+portRest+","+portRestSSL+","+portWebsocket+"] "+e.getMessage());
+            }
         }
-
-        if (ServerRepository.getInstance().isSSLRESTEnabled()) {
-            httpServer = initWebAndRESTService(ServerRepository.getInstance().getBaseUriSSLREST(), ServerRepository.getInstance().getSSLPortREST(), true);
-            httpServer.start();
-            httpServers.add(httpServer);
-        }
-
-        if (ServerRepository.getInstance().isWebsocketEnabled()) {
-            httpServer = initWebsocketService(ServerRepository.getInstance().getBaseUriWebsocket(), ServerRepository.getInstance().getPortWebsocket(), false);
-            httpServer.start();
-            httpServers.add(httpServer);
-        }
-
-        // Could not get the SSL Websocket functioning, to be debugged for the next release
-        // if (ServerRepository.getInstance().isSSLWebsocketEnabled()) {
-        // httpServer = initWebsocketService(ServerRepository.getInstance().getBaseUriSSLWebsocket(), ServerRepository.getInstance().getSSLPortWebsocket(),
-        // true);
-        // httpServer.start();
-        // httpServers.add(httpServer);
-        // }
     }
 
     private HttpServer initWebAndRESTService(URI baseURIREST, int portREST, boolean useSSL) throws URISyntaxException, IOException {
