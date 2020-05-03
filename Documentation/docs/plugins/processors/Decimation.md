@@ -1,5 +1,6 @@
 ---
 title: Decimation
+subcategory: Basic Math
 ---
 
 # Decimation
@@ -14,12 +15,12 @@ Decimation plugin
 
 ## Input Port Description
 
-*   **input \[double\]:** Input port for the signal to be decimated.
+- **input \[double\]:** Input port for the signal to be decimated.
 
 ## Output Port Description
 
-*   **output \[double\]:** Output port of the decimated signal.
+- **output \[double\]:** Output port of the decimated signal.
 
 ## Properties
 
-*   **DownSamplingRatio \[integer\]:** Defines the ratio between the number of samples in the input and output ports.
+- **DownSamplingRatio \[integer\]:** Defines the ratio between the number of samples in the input and output ports.

@@ -1,8 +1,9 @@
 ---
 title: ReadEDF
+subcategory: File System
 ---
 
-# EDF Reader
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: File System)
 
@@ -14,8 +15,8 @@ ReadEDF
 
 ## Output port Description
 
-*   **CH1 - CH8\[double\]:** these ports send the samples of the recorded signals.
+- **CH1 - CH8\[double\]:** these ports send the samples of the recorded signals.
 
 ## Properties
 
-*   **FileName\[string\]:** specifies the name of the file, in which the data has been recorded **Supports value suggestions from ARE (dynamic property)**
+- **FileName\[string\]:** specifies the name of the file, in which the data has been recorded **Supports value suggestions from ARE (dynamic property)**

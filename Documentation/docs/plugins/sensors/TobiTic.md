@@ -1,8 +1,9 @@
 ---
 title: TobiTic
+subcategory: Bioelectric Measurement
 ---
 
-# Tobi TiC
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Bioelectric Measurement)
 
@@ -28,11 +29,11 @@ Example TOBI iC message
 
 ## Output Port Description
 
-*   **value1 - value5 \[double\]:**these are the output ports for the Tobi class values. Up to 5 signals can be sent
+- **value1 - value5 \[double\]:**these are the output ports for the Tobi class values. Up to 5 signals can be sent
 
 ## Properties
 
-*   **tcpPort \[integer\]:** the TCP port which is opened by the AsTeRICS plugin to wait for the Tobi connection
-*   **classLabel1 - classLabel5 \[string\]:** the classLabels to extract values from the Tobi TiC messages. Values will be directed to the corresponding output ports of the plugin.
+- **tcpPort \[integer\]:** the TCP port which is opened by the AsTeRICS plugin to wait for the Tobi connection
+- **classLabel1 - classLabel5 \[string\]:** the classLabels to extract values from the Tobi TiC messages. Values will be directed to the corresponding output ports of the plugin.
 
 [1]: http://www.tobi-project.org

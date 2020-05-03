@@ -1,13 +1,13 @@
 ---
 title: AnalogOut
+subcategory: Generic Control Output
 ---
 
-# Analog Out
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Generic Control Output)
 
-This plugin communicates with the DAC CIM and operates the analog outputs of the module.
-The plugin provides four input ports which correspond to the four DAC outputs of the CIM.
+This plugin communicates with the DAC CIM and operates the analog outputs of the module. The plugin provides four input ports which correspond to the four DAC outputs of the CIM.
 
 ![Screenshot: AnalogOut plugin](./img/analogout.jpg "Screenshot: AnalogOut plugin")
 

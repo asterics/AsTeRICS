@@ -1,5 +1,6 @@
 ---
 title: OpenVibe
+subcategory: Bioelectric Measurement
 ---
 
 # OpenVibe
@@ -23,17 +24,17 @@ OpenVibe plugin
 
 ## Output Port Description
 
-*   **CH1 - CH16 \[double\]:**these are the output ports for the OpenVibe signals. Up to 16 signals can be sent
+- **CH1 - CH16 \[double\]:**these are the output ports for the OpenVibe signals. Up to 16 signals can be sent
 
 ## Event Trigger Description
 
-*   **OVTK\_StimulationId\_Label\_00 - 0C**
-***   OVTK\_StimulationId\_Letter\_0 - Z
-*   OVTK\_StimulationId\_Label\_Target
-*   OVTK\_StimulationId\_Label\_NonTarget**
+- **OVTK_StimulationId_Label_00 - 0C**
+  \*\*\* OVTK_StimulationId_Letter_0 - Z
+- OVTK_StimulationId_Label_Target
+- OVTK_StimulationId_Label_NonTarget\*\*
 
 These are the Event triggers which can be linked to the corresponding OpenVibe Stimulation IDs. In total, 56 different stimulations can be processed.
 
 ## Properties
 
-*   **Port \[integer\]:** the UPD port which is opened by the AsTeRICS plugin to wait for the OpenVibe connection
+- **Port \[integer\]:** the UPD port which is opened by the AsTeRICS plugin to wait for the OpenVibe connection

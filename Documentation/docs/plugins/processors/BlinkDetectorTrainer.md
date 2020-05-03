@@ -1,5 +1,6 @@
 ---
 title: Blink Detector Trainer
+subcategory: DSP and Feature Detection
 ---
 
 # Blink Detector Trainer
@@ -18,22 +19,22 @@ The input signal shall correspond to a 250-Hz sampled electro-oculogram signal, 
 
 ## Input Port Description
 
-*   **input \[integer\]:** Input values that correspond to a 250-Hz sampled electro-oculogram signal.
+- **input \[integer\]:** Input values that correspond to a 250-Hz sampled electro-oculogram signal.
 
 ## Output Port Description
 
-*   **Protocol \[string\]:** Actions to be performed by the user. Note that the user must perform just one blink (or double blink) each time the corresponding message is delivered through this port.
-*   **Results \[string\]:** Final parameters calculated for the specific subject. They will delivered when the protocol has finished.
+- **Protocol \[string\]:** Actions to be performed by the user. Note that the user must perform just one blink (or double blink) each time the corresponding message is delivered through this port.
+- **Results \[string\]:** Final parameters calculated for the specific subject. They will delivered when the protocol has finished.
 
 ## Event Listener Description
 
-*   **StartProtocol \[integer\]:** Starts the training protocol. The actions to be performed by the subject will be delivered through the Protocol port.
-*   **StopProtocol:** Stops the training protocol.
+- **StartProtocol \[integer\]:** Starts the training protocol. The actions to be performed by the subject will be delivered through the Protocol port.
+- **StopProtocol:** Stops the training protocol.
 
 ## Properties
 
-*   **sampleRate \[integer\]:** Sample rate of the input signal in Hertz.
-*   **language \[list\]:** Language of the messages thrown through the Protocol port while the protocol is running. The user can chose English or Spanish.
+- **sampleRate \[integer\]:** Sample rate of the input signal in Hertz.
+- **language \[list\]:** Language of the messages thrown through the Protocol port while the protocol is running. The user can chose English or Spanish.
 
 [1]: ../processors/BlinkDetector.htm
 [2]: ../processors/BlinkDetector.htm

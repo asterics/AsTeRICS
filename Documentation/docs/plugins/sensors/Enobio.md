@@ -1,5 +1,6 @@
 ---
 title: Enobio
+subcategory: Bioelectric Measurement
 ---
 
 # Enobio
@@ -22,16 +23,16 @@ Enobio device
 
 ## Output Port Description
 
-*   **Channel1 to Channel4 \[integer\]:** Each output corresponds to the sampled data from its corresponding Enobio channel. The integer represents the microvolts of the electro-physiological signal read by Enobio. The data might be pre-processed according to the value of the properties of the component.
-*   **Status \[integer\]:** This port provides information regarding both the calibration status of the four channels and the status of the wireless link. For every integer value that is available in the data output ports, another integer value is available in this port with the corresponding status information. The information is proprietary codified within a 16-bit integer. This includes information of calibration status of each channel and the status of the wireless link. This information would be kept away for the moment form the ARE programmers and provided upon request if necessary.
+- **Channel1 to Channel4 \[integer\]:** Each output corresponds to the sampled data from its corresponding Enobio channel. The integer represents the microvolts of the electro-physiological signal read by Enobio. The data might be pre-processed according to the value of the properties of the component.
+- **Status \[integer\]:** This port provides information regarding both the calibration status of the four channels and the status of the wireless link. For every integer value that is available in the data output ports, another integer value is available in this port with the corresponding status information. The information is proprietary codified within a 16-bit integer. This includes information of calibration status of each channel and the status of the wireless link. This information would be kept away for the moment form the ARE programmers and provided upon request if necessary.
 
 ## Event Trigger Description
 
-*   **externalSignalPosEdgeEvent:** This event is fired if the external signal toggles from low to high level.
-*   **externalSignalNegEdgeEvent:** This event is fired if the external signal toggles from high to low level.
+- **externalSignalPosEdgeEvent:** This event is fired if the external signal toggles from low to high level.
+- **externalSignalNegEdgeEvent:** This event is fired if the external signal toggles from high to low level.
 
 ## Properties
 
-*   **IsChannel1Activated to IsChannel4Activated \[Boolean\]:** If this property is set to true, the corresponding channel is calibrated, thus the raw data from this channel will be meaningful.
-*   **HighPassFilterInChannel1 to HighPassFilterInChannel4 \[Boolean\]:** If this property is set to true, a high pass filter is applied to the data from the corresponding channel.
-*   **LineNoiseFilter \[Boolean\]:** If this property is set to true, a 50 Hz band pass filter is applied to the data before it is passed to the output port. This filter is useful when the environmental electrical noise is present in the signal.
+- **IsChannel1Activated to IsChannel4Activated \[Boolean\]:** If this property is set to true, the corresponding channel is calibrated, thus the raw data from this channel will be meaningful.
+- **HighPassFilterInChannel1 to HighPassFilterInChannel4 \[Boolean\]:** If this property is set to true, a high pass filter is applied to the data from the corresponding channel.
+- **LineNoiseFilter \[Boolean\]:** If this property is set to true, a 50 Hz band pass filter is applied to the data before it is passed to the output port. This filter is useful when the environmental electrical noise is present in the signal.

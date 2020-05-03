@@ -1,8 +1,9 @@
 ---
-title: Enobio Display
+title: EnobioDisplay
+subcategory: Graphical User Interface
 ---
 
-# Enobio Display
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: Graphical User Interface)
 
@@ -18,5 +19,5 @@ This software component requires an Enobio receiver connected to the platform, t
 
 ## Input Port Description
 
-*   **Channel1 to Channel4 \[double\]:** Input ports for the corresponding output ports of the Enobio component.
-*   **Status \[double\]:** Input port to be connected to the status output port of the Enobio component.
+- **Channel1 to Channel4 \[double\]:** Input ports for the corresponding output ports of the Enobio component.
+- **Status \[double\]:** Input port to be connected to the status output port of the Enobio component.

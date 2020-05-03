@@ -1,8 +1,9 @@
 ---
 title: FS20Receiver
+subcategory: Home Control
 ---
 
-# FS20 Receiver
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Home Control)
 
@@ -26,19 +27,19 @@ Windows (x86,x64), Linux (x86, x64, arm(Raspberry Pi)), Mac OSX(x86, x64)
 
 ## Notes on Linux platform
 
-If you installed AsTeRICS as package, all necessary permission already set. If you built AsTeRICS on your own, please type following command on a terminal window:  
-  
-_sudo echo 'ATTRS{idProduct}=="e015", ATTRS{idVendor}=="18ef", MODE="0660", GROUP="plugdev"' > /etc/udev/rules.d/50-asterics-fs20.rules_  
-  
-Onw additional command is necessary if you work on ARM based platforms (RaspberryPi, BananaPi,...):  
-  
-_sudo ln -sf /lib/arm-linux-gnueabihf/libudev.so.1 /lib/arm-linux-gnueabihf/libudev.so.0_  
-  
+If you installed AsTeRICS as package, all necessary permission already set. If you built AsTeRICS on your own, please type following command on a terminal window:
+
+_sudo echo 'ATTRS{idProduct}=="e015", ATTRS{idVendor}=="18ef", MODE="0660", GROUP="plugdev"' > /etc/udev/rules.d/50-asterics-fs20.rules_
+
+Onw additional command is necessary if you work on ARM based platforms (RaspberryPi, BananaPi,...):
+
+_sudo ln -sf /lib/arm-linux-gnueabihf/libudev.so.1 /lib/arm-linux-gnueabihf/libudev.so.0_
+
 Afterwards, unplug and plug in the FS20 device and restart AsTeRICS.
 
 ## Output Port Description
 
-*   **fs20command \[string\]:** The received FS20 command will be send out of the plugin. The data has the following format: housecode\_sendaddress\_command, e.g. 11111111\_3343\_17
+- **fs20command \[string\]:** The received FS20 command will be send out of the plugin. The data has the following format: housecode_sendaddress_command, e.g. 11111111_3343_17
 
 ## Event Trigger Description
 
@@ -164,7 +165,7 @@ On for old level then previous state
 
 ## Properties
 
-*   **housecode \[integer\]** The housecode, the system should react on. The housecode has 8 digits, each from 1 to 4. This property influences the event triggers, but not the _fs20command_ output port.
-*   **sendaddress \[integer\]** The sendaddress, the system should react on. The sendaddress has 4 digits, each from 1 to 4. This property influences the event triggers, but not the _fs20command_ output port.
+- **housecode \[integer\]** The housecode, the system should react on. The housecode has 8 digits, each from 1 to 4. This property influences the event triggers, but not the _fs20command_ output port.
+- **sendaddress \[integer\]** The sendaddress, the system should react on. The sendaddress has 4 digits, each from 1 to 4. This property influences the event triggers, but not the _fs20command_ output port.
 
 [1]: http://www.elv.de/empfaenger-fs20-funkschaltsystem.html

@@ -1,8 +1,9 @@
 ---
 title: RazorIMU
+subcategory: Inertial Measurement
 ---
 
-# Razor IMU
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Inertial Measurement)
 
@@ -22,12 +23,12 @@ RazorIMU module
 
 ## Output Port Description
 
-*   **pitch \[double\]:** The value for the current pitch.
-*   **yaw \[double\]:** The value for the current yaw.
-*   **roll \[double\]:** The value for the current roll.
+- **pitch \[double\]:** The value for the current pitch.
+- **yaw \[double\]:** The value for the current yaw.
+- **roll \[double\]:** The value for the current roll.
 
 ## Properties
 
-*   **comPort \[String\]:** The name of the COM port the IMU is connected to.
-*   **baudRate \[integer\]:** The baud rate the IMU is transferring its data at.
-*   **operationMode \[String\]:** Designates the operation mode (currently only "PitchYawRoll" is available).
+- **comPort \[String\]:** The name of the COM port the IMU is connected to.
+- **baudRate \[integer\]:** The baud rate the IMU is transferring its data at.
+- **operationMode \[String\]:** Designates the operation mode (currently only "PitchYawRoll" is available).

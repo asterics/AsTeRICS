@@ -1,5 +1,6 @@
 ---
 title: PlatformLCD
+subcategory: Personal Platform
 ---
 
 # Platform LCD
@@ -16,10 +17,10 @@ PlatformLCD plugin
 
 This component requires the Core CIM (CIM Id: 0x0601) of the AsTeRICS Personal Platform.
 
-![The AsteRICS Personal Platform (./preliminary version)](img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
+![The AsteRICS Personal Platform (./preliminary version)]\(./img/personalplatform.jpg "The AsteRICS Personal Platform (preliminary version)")
 
 The AsteRICS Personal Platform
 
 ## Input Port Description
 
-*   **input \[string\]:** The Input of the port will be displayed on the Core CIM's display
+- **input \[string\]:** The Input of the port will be displayed on the Core CIM's display

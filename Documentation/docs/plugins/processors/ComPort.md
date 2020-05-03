@@ -1,5 +1,7 @@
 ---
 title: ComPort
+subcategory: Communication
+featured: true
 ---
 
 # ComPort
@@ -28,7 +30,7 @@ COMPort plugin
 ## Properties
 
 - **enabled \[boolean\]:** If true (default), the plugin is enabled, if false the plugin does nothing and doesn't attempt to open the given COM port.
-- **ComPort \[string\]:** Defines the COM Port of the target serial device, e.g. COM0.
+- **ComPort \[string\]:** Defines the COM Port of the target serial device. e.g. COM0
 - **BaudRate \[integer\]:** Defines the Baudrate for the communication. It must match the baudrate of the target device
 - **ReceivedDataType \[combobox selection\]:**can be used to indicate other data type like binary integer type etc. (currently, only string is supported)
 - **SendDataType \[combobox selection\]:**can be used to indicate data type for sending (currently, string is supported and a selectable termination character can be added)

@@ -1,5 +1,6 @@
 ---
 title: NexusConnector
+subcategory: Web
 ---
 
 # NexusConnector
@@ -50,30 +51,30 @@ The NexusConnector component expects the peer component within the Nexus to have
 
 The NexusConnector component has 8 generic input ports. Four each of type double and string. When a value on one of the inputs changes, that change is relayed to the Nexus and the model of the bound component is updated.
 
-*   **in1d \[double\]:** Sent to the Nexus
-*   **in2d \[double\]:** Sent to the Nexus
-*   **in3d \[double\]:** Sent to the Nexus
-*   **in4d \[double\]:** Sent to the Nexus
-*   **in5s \[string\]:** Sent to the Nexus
-*   **in6s \[string\]:** Sent to the Nexus
-*   **in7s \[string\]:** Sent to the Nexus
-*   **in8s \[string\]:** Sent to the Nexus
+- **in1d \[double\]:** Sent to the Nexus
+- **in2d \[double\]:** Sent to the Nexus
+- **in3d \[double\]:** Sent to the Nexus
+- **in4d \[double\]:** Sent to the Nexus
+- **in5s \[string\]:** Sent to the Nexus
+- **in6s \[string\]:** Sent to the Nexus
+- **in7s \[string\]:** Sent to the Nexus
+- **in8s \[string\]:** Sent to the Nexus
 
 ## Output Port Description
 
 The NexusConnector component has 8 generic output ports. Four each of type double and string. When a value, or values, change within the "outputs" section of the peer component in the Nexus, that change is relayed to the NexusConnector and the value on the NexusConnector output ports are updated accordingly.
 
-*   **out1d \[double\]:** Received from the Nexus
-*   **out2d \[double\]:** Received from the Nexus
-*   **out3d \[double\]:** Received from the Nexus
-*   **out4d \[double\]:** Received from the Nexus
-*   **out5s \[string\]:** Received from the Nexus
-*   **out6s \[string\]:** Received from the Nexus
-*   **out7s \[string\]:** Received from the Nexus
-*   **out8s \[string\]:** Received from the Nexus
+- **out1d \[double\]:** Received from the Nexus
+- **out2d \[double\]:** Received from the Nexus
+- **out3d \[double\]:** Received from the Nexus
+- **out4d \[double\]:** Received from the Nexus
+- **out5s \[string\]:** Received from the Nexus
+- **out6s \[string\]:** Received from the Nexus
+- **out7s \[string\]:** Received from the Nexus
+- **out8s \[string\]:** Received from the Nexus
 
 ## Properties
 
-*   **nexusHostname \[string\]:** The address of the machine on which the Nexus is running
-*   **nexusPort \[integer\]:** The port number on which the Nexus is listening
-*   **nexusComponentPath \[string\]:** The path of the peer component to bind to within the Nexus
+- **nexusHostname \[string\]:** The address of the machine on which the Nexus is running
+- **nexusPort \[integer\]:** The port number on which the Nexus is listening
+- **nexusComponentPath \[string\]:** The path of the peer component to bind to within the Nexus

@@ -1,8 +1,9 @@
 ---
 title: EditBox
+subcategory: Graphical User Interface
 ---
 
-# Edit Box
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Graphical User Interface)
 
@@ -14,20 +15,20 @@ EditBox plugin
 
 ## Output Port Description
 
-*   **output \[string\]:** String output port.
+- **output \[string\]:** String output port.
 
 ## Event Listener Description
 
-*   **clear:** Removes the text from the component.
-*   **send:** Send the text value to the String output port.
+- **clear:** Removes the text from the component.
+- **send:** Send the text value to the String output port.
 
 ## Properties
 
-*   **caption \[string\]:** Caption of the component.
-*   **default \[string\]:** The default text, which is set at startup.  
-    
-*   **textColor \[integer\]:** Defines color of the text.
-*   **backgroundColor \[integer\]:** Defines background color.
-*   **insertAction \[integer\]:** Defines behaviour of the component after the text has been sent to the output port. The text in the component can be selected or removed.
-*   **sendDefaultValue \[boolean\]:** When this checkbox is checked the default String value is sent to the String output port when the model gets started.
-*   **displayGUI \[boolean\]:** If selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.
+- **caption \[string\]:** Caption of the component.
+- **default \[string\]:** The default text, which is set at startup.
+
+- **textColor \[integer\]:** Defines color of the text.
+- **backgroundColor \[integer\]:** Defines background color.
+- **insertAction \[integer\]:** Defines behaviour of the component after the text has been sent to the output port. The text in the component can be selected or removed.
+- **sendDefaultValue \[boolean\]:** When this checkbox is checked the default String value is sent to the String output port when the model gets started.
+- **displayGUI \[boolean\]:** If selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.

@@ -1,39 +1,52 @@
 ---
-# layout: FrontLayout
+layout: Home
+title: Home
+sidebar: true
 ---
+
+::: slot jumbotron
+
+<Header>AsTeRICS</Header>
+<Subtitle>Create Customized Low-Cost Assistive Technologies for People with Disabilities.</Subtitle>
+
+<ActionGroup>
+<Label>Are you looking for special solutions to use a computer, control your environment or play games?</Label>
+<Actions>
+  <Action path="/solutions/">Discover Solutions</Action>
+  <Action path="/get-started/" dark>Get Started</Action>
+</Actions>
+</ActionGroup>
+:::
+
+::: slot slideshow
 
 ## Use Cases
 
-<!-- <Group>
-<ShowCase
-  link="#"
-  title="Accessible Computer Control"
-  description="Control your computer by switches, head movements or eyetracking, depending on your capabilities."
-  image="/assets/img/harry-shutterstock_213119035.jpg"
-/>
-<ShowCase left
-  link=""
-  title="Accessible Environmental Control"
-  description="Switch on/off lights or control your TV and stereo."
-  image="/assets/img/smart-home-shutterstock_304964420.jpg"
-/>
-<ShowCase
-  link=""
-  title="Alternative and Augmentative Communication"
-  description="Create your own communication grid and use it on all your devices."
-  image="/assets/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"
-/>
-<Youtube nocookie left
-  code="JwL_zS3fpnU"
-  title="Accessible Gaming &amp; Toys"
-  description="Emulate mouse, keyboard or joystick for playing games or remote control toy helicopters or cars."
-/>
-<Youtube nocookie
-  code="3_8TifCj0aU"
-  title="Accessible Music"
-  description="Generate sounds or play adapted music instruments."
-/>
-</Group> -->
+<UseCases>
+  <UseCase
+    title="Accessible Computer Control"
+    media="/assets/img/harry-shutterstock_213119035.jpg"
+  >Control your computer by switches, head movements or eyetracking, depending on your capabilities.</UseCase>
+  <UseCase
+    title="Accessible Environment Control"
+    media="/assets/img/smart-home-shutterstock_304964420.jpg"
+  >Switch on/off lights or control your TV and stereo.</UseCase>
+  <UseCase
+    title="Alternative and Augmentative Communication"
+    media="/assets/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"
+  >Create your own communication grid and use it on all your devices.</UseCase>
+  <UseCase
+    title="Accessible Gaming &amp; Toys"
+    media="https://www.youtube.com/watch?v=JwL_zS3fpnU"
+    stop
+  >Emulate mouse, keyboard or joystick for playing games or remote control toy helicopters or cars.</UseCase>
+  <UseCase
+    title="Accessible Music"
+    media="https://www.youtube.com/watch?v=3_8TifCj0aU"
+    stop
+  >Generate sounds or play adapted music instruments.</UseCase>
+</UseCases>
+:::
 
 ## Why AsTeRICS?
 
@@ -50,9 +63,40 @@ There are many Assistive Technologies available on the market, but in many cases
 
 ## Partners & Funding
 
-The AsTeRICS project was funded by international and national research grants. AsTeRICS was initiated by [KI-I Linz](https://www.ki-i.at) and the [UAS Technikum Wien](https://www.technikum-wien.at/). The creation of this web page was funded by the City of Vienna, MA23, in course of the project **StudyATHome Internationally** (Grant Nr. 22-07). In Feb. 2017 the [AsTeRICS Foundation](https://www.asterics-foundation.org) was founded to bring the project results to people with disabilities, to organize workshops and to maintain project results, see [About Us](/get-involved/About-us).
+The AsTeRICS project was funded by international and national research grants. AsTeRICS was initiated by [KI-I Linz](https://www.ki-i.at) and the [UAS Technikum Wien](https://www.technikum-wien.at/). The creation of this web page was funded by the City of Vienna, MA23, in course of the project **StudyATHome Internationally** (Grant Nr. 22-07). In Feb. 2017 the [AsTeRICS Foundation](https://www.asterics-foundation.org) was founded to bring the project results to people with disabilities, to organize workshops and to maintain project results, see [About Us](/get-involved/About-us.md).
 
-<!-- <Funding/> -->
+<Funding>
+  <Partner
+    media="https://asterics.github.io/asterics-docs/img/ma23_logo.jpg"
+    alt="MA23, City of Vienna - Logo"
+    href="#partners-funding"
+  />
+  <Partner
+    media="https://asterics.github.io/asterics-docs/img/torades_logo_mini-300x120.png"
+    alt="ToRaDes - Project Logo"
+    href="#partners-funding"
+  />
+  <Partner
+    media="https://upload.wikimedia.org/wikipedia/commons/9/9a/FH_Technikum_Wien_logo.svg"
+    alt="UAS Technikum Wien - Logo"
+    href="#partners-funding"
+  />
+  <Partner
+    media="https://ki-i.at/fileadmin/template/img/ki-i_logo.png"
+    alt="KI-I"
+    href="#partners-funding"
+  />
+  <Partner
+    media="https://embsys.technikum-wien.at/projects/studyathome-intl/studyAThome_noir.svg"
+    alt="StudyATHome Internationally - Project Logo"
+    href="#partners-funding"
+  />
+  <Partner
+    media="https://www.youtube.com/watch?v=RFvNLP8li10"
+    alt="StudyATHome Internationally - Project Logo"
+    href="#partners-funding"
+  />
+</Funding>
 
 ## AsTeRICS Project Web Page
 

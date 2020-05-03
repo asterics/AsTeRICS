@@ -1,8 +1,9 @@
 ---
 title: ModelSwitcher
+subcategory: File System
 ---
 
-# Model Switcher
+# {{$frontmatter.title}}
 
 Component Type: Actuator (Subcategory: File System)
 
@@ -14,12 +15,12 @@ ModelSwitcher plugin
 
 ## Input Port Description
 
-*   **modelName \[string\]:** The name of the model (including extension, for example "CameraMouse\_sensitive.acs". The switch is performed as soon as the model name is received. The model must exist in the ARE/models folder of the runtime environment.
+- **modelName \[string\]:** The name of the model (including extension, for example "CameraMouse_sensitive.acs". The switch is performed as soon as the model name is received. The model must exist in the ARE/models folder of the runtime environment.
 
 ## Event Listener Description
 
-*   **switchModel:** An incoming event on this port will switch to the default model.
+- **switchModel:** An incoming event on this port will switch to the default model.
 
 ## Properties
 
-*   **model\[string\]:** A fixed model name can be give here. This model must exist in the ARE/models folder of the runtime environment. The model switch is performed when the switchModel event is received.
+- **model\[string\]:** A fixed model name can be give here. This model must exist in the ARE/models folder of the runtime environment. The model switch is performed when the switchModel event is received.

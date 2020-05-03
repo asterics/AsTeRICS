@@ -1,5 +1,7 @@
 ---
 title: SerialPort
+subcategory: Communication
+featured: true
 ---
 
 # SerialPort
@@ -25,7 +27,7 @@ _Note:_ Any data sent to one of the input ports tries to open the given COM port
 
 ## Properties
 
-- **ComPort \[string\]:** Defines the COM Port of the target serial device, e.g. COM0. or /dev/ttyS0
+- **ComPort \[string\]:** Defines the COM Port of the target serial device. e.g. COM0 or /dev/ttyS0
 - **BaudRate \[integer\]:** Defines the Baudrate for the communication. It must match the baudrate of the target device
 - **sendStringTerminator \[combobox selection\]:** Append a character when sending the string, e.g. CR, LF, CR+LF, 0
 - **receiveStringTerminator \[combobox selection\]:** wait for a termination character when receiving characters (-> receive a string)

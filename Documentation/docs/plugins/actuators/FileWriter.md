@@ -1,8 +1,9 @@
 ---
-title: File Writer
+title: FileWriter
+subcategory: File System
 ---
 
-# File Writer
+# {{$frontmatter.title}}
 
 ## Component Type: Actuator (Subcategory: File System)
 
@@ -14,8 +15,8 @@ File Writer plugin
 
 ## Input Port Description
 
-*   **input \[double\]:** Input port for the values to be written to the text file.
+- **input \[double\]:** Input port for the values to be written to the text file.
 
 ## Properties
 
-*   **FileName \[string\]:** Defines the name for the file where the input values are written. A timestamp indicating year, month, day, hour, minute and second of when the file is created is appended to the file name in order to identify different recordings.
+- **FileName \[string\]:** Defines the name for the file where the input values are written. A timestamp indicating year, month, day, hour, minute and second of when the file is created is appended to the file name in order to identify different recordings.

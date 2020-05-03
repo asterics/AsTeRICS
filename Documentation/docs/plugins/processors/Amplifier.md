@@ -1,5 +1,6 @@
 ---
 title: Amplifier
+subcategory: Basic Math
 ---
 
 # Amplifier
@@ -14,12 +15,12 @@ Amplifier plugin
 
 ## Input Port Description
 
-*   **sigIn \[double\]:** The input value to be amplified.
+- **sigIn \[double\]:** The input value to be amplified.
 
 ## Output Port Description
 
-*   **sigOut \[double\]:** The amplified output value.
+- **sigOut \[double\]:** The amplified output value.
 
 ## Properties
 
-*   **factor \[double\]:** The gain factor that inputs are multiplied with.
+- **factor \[double\]:** The gain factor that inputs are multiplied with.

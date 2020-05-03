@@ -1,10 +1,11 @@
 ---
 title: Universal Remote Control
+subcategory: Microcontroller Interfaces
 ---
 
-# Universal Remote Control
+# {{$frontmatter.title}}
 
-Component Type: Processor (Subcategory:Microcontroller Interfaces)
+Component Type: Processor (Subcategory: Microcontroller Interfaces)
 
 The Universal Remote Control (RC) enables the possibility to control all electronic devices in a household which are controlled remotely through infrared (IR) commands. THe necessary IR codes can be recorded with the RC itself and stored on a database on the computer. By choosing the manufacturer, name and function the IR code is deposed in this database and can be selected in order to send the code to the universal RC and therefore control electronic devices. The universal RC can also be used as a handheld gadget due to its built in battery and user interface. THe IR code database can be stored on an SD card.
 
@@ -18,23 +19,23 @@ For the use of the universal RC with a computer, it has to be be connected to a 
 
 ## Input Port Description
 
-*   **DeviceType \[string\]:** Type of the device to be controlled via IR (e.g.: TV)
-*   **DeviceName \[string\]:** Name of the device to be controlled via IR (e.g.: Sony, Samsung, etc.)
-*   **DeviceFunction \[string\]:** Name of function of the device (e.g.: On, Off, VolumeUp, etc.)
+- **DeviceType \[string\]:** Type of the device to be controlled via IR (e.g.: TV)
+- **DeviceName \[string\]:** Name of the device to be controlled via IR (e.g.: Sony, Samsung, etc.)
+- **DeviceFunction \[string\]:** Name of function of the device (e.g.: On, Off, VolumeUp, etc.)
 
 ## Event Listener Description
 
-*   **SendIRCode:** Send an IR Code to the Universal Remote Control
-*   **RecordIRCode:** Record an IR Code through the Universal Remote Control
+- **SendIRCode:** Send an IR Code to the Universal Remote Control
+- **RecordIRCode:** Record an IR Code through the Universal Remote Control
 
 ## Event Triggerer Description
 
-*   **StartRecord:** will be triggered when Universal Remote Control is recording
-*   **StopRecord:** will be triggered when Universal Remote Control has finished recording
+- **StartRecord:** will be triggered when Universal Remote Control is recording
+- **StopRecord:** will be triggered when Universal Remote Control has finished recording
 
 ## Properties
 
-*   **IRCodeFilePath \[string\]:** Filepath to the file, where the IR Codes are stored.
+- **IRCodeFilePath \[string\]:** Filepath to the file, where the IR Codes are stored.
 
 ## IR Code Database
 
@@ -44,7 +45,7 @@ The database which contains the IR codes as well as the information about the ty
 
 The settings of the universal RC can be stored in the config.csv file. This is a comma separated value file and contains configurations such as the speed and sensibility of the rotary encoder and external buttons as well as the name of the file that contains the IR codes. The content of the default config.csv file is:
 
-			JoystickSpeed,120
-			JoystickSensibility,3
-			File,IRCODES.CSV
-			Sort,2
+    		JoystickSpeed,120
+    		JoystickSensibility,3
+    		File,IRCODES.CSV
+    		Sort,2

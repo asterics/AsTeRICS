@@ -1,5 +1,7 @@
 ---
 title: AndroidPhoneControl
+subcategory: Phone Interface
+image: /plugins/actuators/android.svg
 ---
 
 # AndroidPhoneControl

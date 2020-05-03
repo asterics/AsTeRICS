@@ -1,8 +1,9 @@
 ---
 title: AutostartEvent
+subcategory: Simulation
 ---
 
-# Autostart Event
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Simulation)
 
@@ -14,8 +15,8 @@ AutostartEvent plugin
 
 ## Event Trigger Description
 
-*   **output** The output event.
+- **output** The output event.
 
 ## Properties
 
-*   **Delay \[integer\]:** The event delay\[ms\].
+- **Delay \[integer\]:** The event delay\[ms\].

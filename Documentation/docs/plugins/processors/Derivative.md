@@ -1,5 +1,6 @@
 ---
 title: Derivative
+subcategory: Basic Math
 ---
 
 # Derivative
@@ -14,12 +15,12 @@ Derivative plugin
 
 ## Input Port Description
 
-*   **input \[double\]:** Input port for the signal to be derived.
+- **input \[double\]:** Input port for the signal to be derived.
 
 ## Output Port Description
 
-*   **output \[double\]:** Output port of the first derivative of the input signal. The output values present a delay of two samples because of the reason given in the general description.
+- **output \[double\]:** Output port of the first derivative of the input signal. The output values present a delay of two samples because of the reason given in the general description.
 
 ## Properties
 
-*   **SampleFrequency \[integer\]:** Defines the frequency which the input signal is sampled, so the distance between two consecutive samples, which is used by the component, is defined.
+- **SampleFrequency \[integer\]:** Defines the frequency which the input signal is sampled, so the distance between two consecutive samples, which is used by the component, is defined.

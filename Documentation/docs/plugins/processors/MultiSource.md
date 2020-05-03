@@ -1,5 +1,6 @@
 ---
 title: MultiSource
+subcategory: Signal Pathways
 ---
 
 # MultiSource
@@ -14,9 +15,8 @@ MultiSource plugin
 
 ## Input Port Description
 
-*   **input1...input4 \[double\]:** Input ports 1 to 4  
-    
+- **input1...input4 \[double\]:** Input ports 1 to 4
 
 ## Output Port Description
 
-*   **output \[****double****\]:** The output port where all input signals are routed.
+- **output \[\*\***double\***\*\]:** The output port where all input signals are routed.

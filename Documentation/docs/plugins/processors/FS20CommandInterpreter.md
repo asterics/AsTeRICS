@@ -1,5 +1,6 @@
 ---
 title: FS20CommandInterpreter
+subcategory: Home Control
 ---
 
 # FS20 Command Interpreter
@@ -14,7 +15,7 @@ FS20 Command Interpreter Plugin
 
 ## Input Port Description
 
-*   **command \[string\]:** The command string containing the FS20 Command. The data must have the following format: housecode\_sendaddress\_command, e.g. 11111111\_3343\_17
+- **command \[string\]:** The command string containing the FS20 Command. The data must have the following format: housecode_sendaddress_command, e.g. 11111111_3343_17
 
 ## Event Trigger Description
 
@@ -140,5 +141,5 @@ On for old level then previous state
 
 ## Properties
 
-*   **housecode \[integer\]** The housecode, the plugin should react on. The housecode has 8 digits, each from 1 to 4.
-*   **sendaddress \[integer\]** The sendaddress, the plugin should react on. The sendaddress has 4 digits, each from 1 to 4.
+- **housecode \[integer\]** The housecode, the plugin should react on. The housecode has 8 digits, each from 1 to 4.
+- **sendaddress \[integer\]** The sendaddress, the plugin should react on. The sendaddress has 4 digits, each from 1 to 4.

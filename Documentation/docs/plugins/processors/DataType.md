@@ -1,5 +1,6 @@
 ---
 title: DataType
+subcategory: Data Converters
 ---
 
 # DataType conversion
@@ -12,18 +13,18 @@ The component sends the given property value converted to the data type of the u
 
 ## Input Port Description
 
-*   **inByte \[byte\]:** Input data of type byte.
-*   **inChar \[char\]:** Input data of type char.
-*   **inInteger \[integer\]:** Input data of type integer.
-*   **inDouble \[double\]:** Input data of type double.
-*   **inString \[string\]:** Input data of type string.
-*   **inBoolean \[boolean\]:** Input data of type boolean.
+- **inByte \[byte\]:** Input data of type byte.
+- **inChar \[char\]:** Input data of type char.
+- **inInteger \[integer\]:** Input data of type integer.
+- **inDouble \[double\]:** Input data of type double.
+- **inString \[string\]:** Input data of type string.
+- **inBoolean \[boolean\]:** Input data of type boolean.
 
 ## Output Port Description
 
-*   **outByte \[byte\]:** Output data of type byte.
-*   **outChar \[char\]:** Output data of type char.
-*   **outInteger \[integer\]:** Output data of type integer.
-*   **outDouble \[double\]:** Output data of type double.
-*   **outString \[string\]:** Output data of type string.
-*   **outBoolean \[boolean\]:** Output data of type boolean.
+- **outByte \[byte\]:** Output data of type byte.
+- **outChar \[char\]:** Output data of type char.
+- **outInteger \[integer\]:** Output data of type integer.
+- **outDouble \[double\]:** Output data of type double.
+- **outString \[string\]:** Output data of type string.
+- **outBoolean \[boolean\]:** Output data of type boolean.

@@ -1,5 +1,6 @@
 ---
 title: MultiSourceString
+subcategory: Signal Pathways
 ---
 
 # MultiSourceString
@@ -14,8 +15,8 @@ MultiSourceString plugin
 
 ## Input Port Description
 
-*   **input1...input4 \[string\]:** Input ports 1 to 4.
+- **input1...input4 \[string\]:** Input ports 1 to 4.
 
 ## Output Port Description
 
-*   **output \[****string****\]:** Output port.
+- **output \[\*\***string\***\*\]:** Output port.

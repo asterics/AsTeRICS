@@ -1,8 +1,9 @@
 ---
 title: TextfieldReader
+subcategory: Graphical User Interface
 ---
 
-# Textfield Reader
+# {{$frontmatter.title}}
 
 Component Type: Sensor (Subcategory: Graphical User Interface)
 
@@ -18,14 +19,14 @@ A keyboard which generates keystrokes or a software component which injects keys
 
 ## Output Port Description
 
-*   **keys \[integer\]:** This port sends the virtual keycode of the last pressed key as an integer value.
-*   **words \[string\]:** This ports accumulates keystrokes and sends them as a string as soon as a blank separator (space key) appears in the key input stream.
+- **keys \[integer\]:** This port sends the virtual keycode of the last pressed key as an integer value.
+- **words \[string\]:** This ports accumulates keystrokes and sends them as a string as soon as a blank separator (space key) appears in the key input stream.
 
 ## Event Trigger Description
 
-*   **recognizedCommand1 - recognizedCommand7:** These event ports fire an event if one of seven command strings has been detected in the current input stream of keys.
+- **recognizedCommand1 - recognizedCommand7:** These event ports fire an event if one of seven command strings has been detected in the current input stream of keys.
 
 ## Properties
 
-*   **command1 \[string\] - command7 \[string\]:** Seven string properties to specify command strings. The component looks for these command strings in the input stream of keystrokes. If a command string matches, the corresponding event trigger port is raised. This can be useful for example to define voice commands which should trigger certain actions in other ARE plugins.
-*   **displayGUI \[boolean\]:** If selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.
+- **command1 \[string\] - command7 \[string\]:** Seven string properties to specify command strings. The component looks for these command strings in the input stream of keystrokes. If a command string matches, the corresponding event trigger port is raised. This can be useful for example to define voice commands which should trigger certain actions in other ARE plugins.
+- **displayGUI \[boolean\]:** If selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.

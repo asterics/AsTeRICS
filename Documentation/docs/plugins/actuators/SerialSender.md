@@ -1,5 +1,6 @@
 ---
 title: SerialSender
+subcategory: Serial Communication
 ---
 
 # SerialSender
@@ -18,7 +19,7 @@ SerialSender plugin
 
 ## Properties
 
-- **COMPort \[string\]:** Defines the COM Port of the target serial device, e.g. COM0.
+- **COMPort \[string\]:** Defines the COM Port of the target serial device. e.g. COM0
 - **BaudRate \[integer\]:** Defines the Baudrate for the communication. It must match the baudrate of the target device
 - **Slot\[0-15\] \[int\]:**Defines the default value of a slot. This value will be overridden if there is data available at the corresponding input slot
 - **Slot\[0-15\]Active \[boolean\]:**Activate a Slot. Whenever a send event occurs the SerialSender will iterate over all Slots beginning with slot 0 and send the data of every Active Slot
