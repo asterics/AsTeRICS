@@ -230,3 +230,6 @@ Release with major changes under the hood regarding ARE licensing and customized
 * Fixed ACS in case it is started with a file as parameter: https://github.com/asterics/AsTeRICS/issues/232
 * ARE is not dependent on JRE 8 but JRE7 was embedded in installer: https://github.com/asterics/AsTeRICS/issues/241
   
+### Newer releases
+
+see [CHANGELOG](./CHANGELOG.md)
