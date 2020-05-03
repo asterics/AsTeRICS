@@ -1,6 +1,7 @@
 ---
 title: CrosshairCursorControl
 subcategory: Input Device Emulation
+fas-icon: crosshairs
 featured: true
 ---
 

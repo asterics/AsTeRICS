@@ -1,7 +1,7 @@
 ---
 title: AndroidPhoneControl
-fab-icon: android
 subcategory: Phone Interface
+image: /plugins/actuators/android.svg
 ---
 
 # AndroidPhoneControl

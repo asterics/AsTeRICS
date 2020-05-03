@@ -1,6 +1,7 @@
 ---
 title: Pong
 subcategory: Others
+image: /plugins/actuators/pong.svg
 ---
 
 # Pong

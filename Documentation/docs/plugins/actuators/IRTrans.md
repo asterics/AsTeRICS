@@ -2,6 +2,7 @@
 title: IRTrans
 subcategory: Home Control
 featured: true
+image: /plugins/actuators/infrared.svg
 ---
 
 # {{$frontmatter.title}}

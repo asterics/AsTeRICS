@@ -1,6 +1,7 @@
 ---
 title: LipmouseIR
 subcategory: Sensor Modules
+image: /plugins/sensors/lipmouse-ir.svg
 ---
 
 # LipmouseIR

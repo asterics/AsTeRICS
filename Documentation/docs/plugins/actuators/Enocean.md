@@ -2,6 +2,7 @@
 title: EnOcean
 subcategory: Home Control
 featured: true
+image: /plugins/actuators/enocean.svg
 ---
 
 # EnOcean

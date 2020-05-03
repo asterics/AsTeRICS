@@ -1,6 +1,7 @@
 ---
 title: Lipmouse
 subcategory: Sensor Modules
+image: /plugins/sensors/lipmouse.png
 featured: true
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: RemoteKeyboard
 subcategory: Input Device Emulation
+fas-icon: keyboard
 ---
 
 # {{$frontmatter.title}}

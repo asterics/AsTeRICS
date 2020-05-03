@@ -2,6 +2,7 @@
 title: Mouse
 subcategory: Input Device Emulation
 featured: true
+fas-icon: mouse
 ---
 
 # Mouse

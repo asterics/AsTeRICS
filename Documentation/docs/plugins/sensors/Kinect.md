@@ -1,6 +1,7 @@
 ---
 title: Kinect
 subcategory: Standard Input Device
+image: /plugins/sensors/kinect.png
 ---
 
 # Kinect

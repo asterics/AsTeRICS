@@ -1,6 +1,7 @@
 ---
 title: ECMAScriptInterpreter
 subcategory: Scripting
+image: /plugins/processors/javascript.svg
 ---
 
 # ECMAScriptInterpreter
@@ -25,7 +26,6 @@ The sendData method of the output variables has to be called with a string. If n
 
     		str = new java.lang.String(in\_data);
     		output\[in\_nb\].sendData(str.getBytes());
-
 
 For more information please see a demo script in the plugin source code!
 

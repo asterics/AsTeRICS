@@ -1,7 +1,5 @@
 ---
 title: AREWindow
-fa-icon: window-restore
-image: /plugins/actuators/arewindow.jpg
 subcategory: Graphical User Interface
 ---
 

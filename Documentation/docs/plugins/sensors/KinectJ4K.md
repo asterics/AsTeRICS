@@ -1,6 +1,7 @@
 ---
 title: KinectJ4K
 subcategory: Standard Input Device
+image: /plugins/sensors/kinectj4k.png
 ---
 
 # KinectJ4K

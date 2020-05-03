@@ -1,6 +1,7 @@
 ---
 title: MousecursorIcon
 subcategory: Input Device Emulation
+fas-icon: mouse-pointer
 ---
 
 # {{$frontmatter.title}}

@@ -2,6 +2,7 @@
 title: openHAB
 subcategory: Home Control
 featured: true
+image: /plugins/processors/openhab.svg
 ---
 
 # openHAB

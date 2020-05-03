@@ -1,6 +1,7 @@
 ---
 title: Tobii4CHeadTracker
 subcategory: Computer Vision
+image: /plugins/sensors/tobi4c.png
 ---
 
 # Tobii4CHeadTracker

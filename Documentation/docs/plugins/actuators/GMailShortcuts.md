@@ -1,6 +1,7 @@
 ---
 title: GMailShortcuts
 subcategory: Others
+image: /plugins/actuators/gmail.svg
 ---
 
 # GMailShortcuts

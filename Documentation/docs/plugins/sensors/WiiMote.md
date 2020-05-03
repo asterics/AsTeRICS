@@ -1,6 +1,7 @@
 ---
 title: WiiMote
 subcategory: Standard Input Device
+image: /plugins/sensors/wiimote.png
 ---
 
 # WiiMote

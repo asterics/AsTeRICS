@@ -2,6 +2,7 @@
 title: KNX
 subcategory: Home Control
 featured: true
+image: /plugins/actuators/knx.svg
 ---
 
 # KNX

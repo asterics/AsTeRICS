@@ -1,6 +1,7 @@
 ---
 title: RemoteMouse
 subcategory: Input Device Emulation
+fas-icon: mouse
 ---
 
 # {{$frontmatter.title}}

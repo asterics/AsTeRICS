@@ -1,6 +1,7 @@
 ---
 title: Oscilloscope
 subcategory: Graphical User Interface
+image: /plugins/actuators/osci.svg
 ---
 
 # Oscilloscope

@@ -2,6 +2,7 @@
 title: Arduino
 subcategory: Microcontroller Interface
 featured: true
+image: /plugins/processors/arduino.svg
 ---
 
 # Arduino
