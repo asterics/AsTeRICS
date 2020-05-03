@@ -30,7 +30,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
@@ -48,6 +48,9 @@ import eu.asterics.mw.services.*;
 import eu.asterics.mw.services.ResourceRegistry;
 import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
+
+import eu.asterics.mw.are.*;
+import static eu.asterics.mw.are.AREProperties.*;
 
 /**
  * This class initializes the web services of the AsTeRICS framework. This includes an http-server, a REST interface and a websocket.
@@ -89,6 +92,23 @@ public class WebServiceEngine {
         int NR_TRIES_PORT=3;
         int PORT_STEP_SIZE=5;
         boolean success=false;
+
+        try {
+            AREProperties.instance.setDefaultPropertyValue(ARE_PORT_CONFLICT_NR_TRIES_KEY, String.valueOf(3),
+                    "The nr. of tries to use for automatic port resolving in case the port is already used by another program.");
+            NR_TRIES_PORT = Integer.parseInt(AREProperties.instance.getProperty(ARE_PORT_CONFLICT_NR_TRIES_KEY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+                    "Configured value for "+ARE_PORT_CONFLICT_NR_TRIES_KEY+" not numeric: " + e.getMessage(), e);
+        }
+        try {
+            AREProperties.instance.setDefaultPropertyValue(ARE_PORT_CONFLICT_STEP_SIZE_KEY, String.valueOf(5),
+                    "The port step size to use for automatic port resolving in case the port is already used by another program.");
+            PORT_STEP_SIZE = Integer.parseInt(AREProperties.instance.getProperty(ARE_PORT_CONFLICT_STEP_SIZE_KEY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+                    "Configured value for "+ARE_PORT_CONFLICT_STEP_SIZE_KEY+" not numeric: " + e.getMessage(), e);
+        }        
 
         for(int i=0;i<NR_TRIES_PORT && !success;i++) {        
             int portRest=ServerRepository.getInstance().getPortREST()+i*PORT_STEP_SIZE;

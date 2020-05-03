@@ -25,7 +25,7 @@
 
 package eu.asterics.mw.are.asapi;
 
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadPoolServer;
@@ -33,6 +33,8 @@ import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 
 import eu.asterics.mw.are.AREProperties;
+import static eu.asterics.mw.are.AREProperties.*;
+
 import eu.asterics.mw.services.*;
 
 public class Activator implements Runnable {
@@ -60,6 +62,20 @@ public class Activator implements Runnable {
     public Activator() {
         int NR_TRIES_PORT=3;
         int PORT_STEP_SIZE=5;
+
+        try {
+            NR_TRIES_PORT = Integer.parseInt(AREProperties.instance.getProperty(ARE_PORT_CONFLICT_NR_TRIES_KEY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+                    "Configured value for "+ARE_PORT_CONFLICT_NR_TRIES_KEY+" not numeric: " + e.getMessage(), e);
+        }
+        try {
+            PORT_STEP_SIZE = Integer.parseInt(AREProperties.instance.getProperty(ARE_PORT_CONFLICT_STEP_SIZE_KEY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+                    "Configured value for "+ARE_PORT_CONFLICT_STEP_SIZE_KEY+" not numeric: " + e.getMessage(), e);
+        }
+
         for(int i=0;i<NR_TRIES_PORT;i++) {
             try {
                 logger = AstericsErrorHandling.instance.getLogger();

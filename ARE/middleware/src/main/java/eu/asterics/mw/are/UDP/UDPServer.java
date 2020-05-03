@@ -30,9 +30,13 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
+
+import eu.asterics.mw.are.AREProperties;
+import static eu.asterics.mw.are.AREProperties.*;
+
 
 /**
  * This class implements the UDPServer. The UDPServer is listening to an UDP
@@ -60,6 +64,19 @@ public class UDPServer {
         int PORT_STEP_SIZE=5;
         boolean success=false;
 
+        try {
+            NR_TRIES_PORT = Integer.parseInt(AREProperties.instance.getProperty(ARE_PORT_CONFLICT_NR_TRIES_KEY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+                    "Configured value for "+ARE_PORT_CONFLICT_NR_TRIES_KEY+" not numeric: " + e.getMessage(), e);
+        }
+        try {
+            PORT_STEP_SIZE = Integer.parseInt(AREProperties.instance.getProperty(ARE_PORT_CONFLICT_STEP_SIZE_KEY));
+        } catch (NumberFormatException e) {
+            AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
+                    "Configured value for "+ARE_PORT_CONFLICT_STEP_SIZE_KEY+" not numeric: " + e.getMessage(), e);
+        }
+
         for(int i=0;i<NR_TRIES_PORT && !success;i++) {
 
             DatagramSocket udpServer = null;
@@ -73,7 +90,7 @@ public class UDPServer {
             try {
                 udpServer = new DatagramSocket(listenerPort);
                 success=true;
-                logger.fine("UDPServer is ready to receive data...");
+                logger.fine("UDPServer [:"+listenerPort+"] is ready to receive data...");
 
                 while (true) {
                     DatagramPacket receivedPacket = new DatagramPacket(receiveUdp, receiveUdp.length);
