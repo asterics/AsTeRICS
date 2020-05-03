@@ -5,7 +5,7 @@ subcategory: DSP and Feature Detection
 
 # Compute Bandpower
 
-Component Type: Processor (Subcategory: DSP and Feature Detection)
+## Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 This component computes the power that an input signal has in a specific frequency band. The plugin stores as many values as the DataLen property indicates before providing a new value in the output port. This solution is based on the FFT so only the bins corresponding to the specified band are considered. This approach removes the contribution of the out-band frequencies to the final value. This approach improves the power output of the filter plugin which uses the filtered signal for computing the output value so the frequencies out of the pass band contributes to the final value since the filter is implemented as FIR filter with a finite number of coefficients so the frequency response will not never be perfect.
 

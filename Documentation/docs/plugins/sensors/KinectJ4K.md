@@ -1,12 +1,12 @@
 ---
 title: KinectJ4K
-subcategory: Standard Input Device
+subcategory: Computer Vision
 image: /plugins/sensors/kinectj4k.png
 ---
 
 # KinectJ4K
 
-Component Type: Sensor (Subcategory: Standard Input Devices)
+Component Type: Sensor (Subcategory: Computer Visions)
 
 The Kinect component interfaces to the Microsoft Kinect v1 camera over the [J4K library][1]. It provides the skeleton data of exactly one person in front of the kinect v1 camera.
 

@@ -1,11 +1,11 @@
 ---
 title: Event Flip Flop
-subcategory: Event and Signal Processing
+subcategory: Event and String Processing
 ---
 
 # {{$frontmatter.title}}
 
-Component Type: Processor (Subcategory: Event and Signal Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 This component stores the state, driven by an event. When the event-in event is received and the internal status is 1, event-out1 is fired and the internal status set to 2. When the event-in event is received and the internal status is 2, event-out2 is fired and the internal status set to 1.
 

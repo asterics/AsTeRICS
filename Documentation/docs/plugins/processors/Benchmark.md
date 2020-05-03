@@ -1,11 +1,11 @@
 ---
 title: Benchmark
-subcategory: Others
+subcategory: Basic Math
 ---
 
 # Benchmark
 
-Component Type: Processor (Subcategory: Others)
+Component Type: Processor (Subcategory: Basic Math)
 
 This component may be used to perform benchmark of data throughput at a particular location of the model / design. It counts port activity of data and event ports per given time.
 

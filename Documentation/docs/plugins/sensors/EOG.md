@@ -1,11 +1,11 @@
 ---
 title: EOG
-subcategory: Sensor Modules
+subcategory: Bioelectric Measurement
 ---
 
 # EOG
 
-Component Type: Sensor (Subcategory: Sensor Modules)
+Component Type: Sensor (Subcategory: Bioelectric Measurement)
 
 This component provides the EOG signal (electro-oculogram) from the EOG sensor board, which has been developed in course of the Bachelor theses of Benedikt Rossboth at the UAS Technikum Wien. The EOG sensor board delivers information about eye movements and eye blinks which can be used in alternative user input setups.
 

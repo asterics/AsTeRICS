@@ -1,5 +1,6 @@
 ---
 title: AmazonEchoControl
+subcategory: Home Control
 ---
 
 # AmazonEchoControl
@@ -16,14 +17,14 @@ This component uses the provided [REST API of openHAB](https://www.openhab.org/d
 
 The plugin expects
 
-* a functional [openHAB installation](https://www.openhab.org/docs/installation/)
-* [Amazon Echo or similar device](https://www.amazon.de/b?ie=UTF8&node=14100226031)
+- a functional [openHAB installation](https://www.openhab.org/docs/installation/)
+- [Amazon Echo or similar device](https://www.amazon.de/b?ie=UTF8&node=14100226031)
 
 ### Installation
 
 To run openHAB without password authentication, start openHAB with this command:
 
-#### Linux and macOS  
+#### Linux and macOS
 
 ```sh
 ./start_debug.sh
@@ -37,7 +38,7 @@ sudo openhab-cli start
 
 #### Windows
 
-in the openHAB folder, double click on 
+in the openHAB folder, double click on
 
 ```cmd
 start_debug.bat
@@ -56,14 +57,14 @@ Before this plugin can be used, the openHAB must be initialized and the AmazonEc
 1. Select **Standard (recommended setup)**, this step can take a while
 2. Select the **PAPER UI**
 3. Go to **Add-ons** in the control panel and on Tab **BINDINGS** and search for **Amazon Echo Control Binding** and click install.
-4. Go to **Configuration** and click on **Things** and click on ```Amazon Echo Control Binding```.
-6. Click on **Amazon Account** and accept it by pressing on the tick
-![Screenshot Amazon Account Thing Creation](./img/amazonechocontrol-addthing-amazonaccount.png)
-7. After that, use this link to connect openHAB with your **Amazon Account** (http://localhost:8080/amazonechocontrol/).
-8. Back in the **Configuration** menu click on **Things**, the account should be online.
+4. Go to **Configuration** and click on **Things** and click on `Amazon Echo Control Binding`.
+5. Click on **Amazon Account** and accept it by pressing on the tick
+   ![Screenshot Amazon Account Thing Creation](./img/amazonechocontrol-addthing-amazonaccount.png)
+6. After that, use this link to connect openHAB with your **Amazon Account** (http://localhost:8080/amazonechocontrol/).
+7. Back in the **Configuration** menu click on **Things**, the account should be online.
 
 if not, follow the instruction at: [openHAB: AmazonEchoControl-Binding][5]
- 
+
 ![Screenshot: Amazon Account Online](img/amazonaccount.JPG "Screenshot: Amazon Account Online")
 
 ##### Setup Amazon Device
@@ -74,7 +75,7 @@ The Amazon device must be setup within your [amazon alexa account](https://alexa
 10. If everything worked, go to **Inbox** and accept the new **Things**.
 11. The things will show up in the **Control** area.
 12. Link all channels to make them available as items
-![Screenshot of how to link amazon echo channels](./img/amazonechocontrol-linkchannels.png)
+    ![Screenshot of how to link amazon echo channels](./img/amazonechocontrol-linkchannels.png)
 
 ## AmazonEchoControl Plugin
 
@@ -82,21 +83,19 @@ The Amazon device must be setup within your [amazon alexa account](https://alexa
 
 #### Input Port Description
 
-*   **jsonCommand \[string\]:** Set a new state of an item, e.g. ```{"ItemSuffix": "player", "value": "PLAY"}```.  
-The field itemSuffix represents the suffix (from the last ```_``` to the end of the item id) of an item only. The value represents the new state of the item. The itemsuffix has to be written lowercase and the value has to be written in uppercase. For a list of available items, see (http://localhost:8080/rest/items).
+- **jsonCommand \[string\]:** Set a new state of an item, e.g. `{"ItemSuffix": "player", "value": "PLAY"}`.  
+  The field itemSuffix represents the suffix (from the last `_` to the end of the item id) of an item only. The value represents the new state of the item. The itemsuffix has to be written lowercase and the value has to be written in uppercase. For a list of available items, see (http://localhost:8080/rest/items).
     
-    * **Examples:**
-    * ```{"ItemSuffix": "musicProviderId", "value": "SPOTIFY"}``` for changing the provider
-    * ```{"ItemSuffix": "volume", "value": "50"}``` for changing the volume
-    * ```{"ItemSuffix": "playMusicVoiceCommand", "value": "Yesterday from the Beatles"}``` for listening to a new song
-
+   _ **Examples:**
+  _ `{"ItemSuffix": "musicProviderId", "value": "SPOTIFY"}` for changing the provider
+  _ `{"ItemSuffix": "volume", "value": "50"}` for changing the volume
+  _ `{"ItemSuffix": "playMusicVoiceCommand", "value": "Yesterday from the Beatles"}` for listening to a new song
 
 #### Output Port Description
 
-*   **currentState:** The current state of the item, which was changed with the latest **jsonCommand**.
-*   **currentTitle:** The title of the current song playing.
-*   **cmdResponse:** The response of the latest **jsonCommand**. Shows **OK** if the cmd was correct or **ERROR** if it was not (plus a more detailed error message)
-
+- **currentState:** The current state of the item, which was changed with the latest **jsonCommand**.
+- **currentTitle:** The title of the current song playing.
+- **cmdResponse:** The response of the latest **jsonCommand**. Shows **OK** if the cmd was correct or **ERROR** if it was not (plus a more detailed error message)
 
 #### Event Listener Description
 
@@ -106,25 +105,25 @@ The field itemSuffix represents the suffix (from the last ```_``` to the end of 
 
 This plugin has two event triggers:
 
-* **turnedOn:** Sent, when the music starts
-* **turnedOff:** Sent, when the music is paused/stopped.
+- **turnedOn:** Sent, when the music starts
+- **turnedOff:** Sent, when the music is paused/stopped.
 
 ## Properties
 
-*   **updaterate \[integer\]:** Time in milliseconds, which will ellapse between each status update. Default: 1s (1000ms)
-*   **hostname \[string\]:** Hostname to connect to. It is possible to use a hostname, an IP adress or a FQDN
-*   **port \[string\]:** Port of the openHAB installation. Defaults: 8080 for HTTP, 8443 for HTTPS. Please take care of any blocking firewall.
-*   **protocol:** Protocol to connect to openHAB. Either http or https may be used (recommended: https).
-*   **lazyCertificates \[boolean\]:** If this property is set, any SSL related certificate check will be removed for the given hostname. This affects the hole ARE.
-*   **username \[string\]:** This property is used, if the HTTP basic authentication of openHAB is used. Provide the username here.
-*   **password \[string\]:** This property is used, if the HTTP basic authentication of openHAB is used. Provide the password here.
+- **updaterate \[integer\]:** Time in milliseconds, which will ellapse between each status update. Default: 1s (1000ms)
+- **hostname \[string\]:** Hostname to connect to. It is possible to use a hostname, an IP adress or a FQDN
+- **port \[string\]:** Port of the openHAB installation. Defaults: 8080 for HTTP, 8443 for HTTPS. Please take care of any blocking firewall.
+- **protocol:** Protocol to connect to openHAB. Either http or https may be used (recommended: https).
+- **lazyCertificates \[boolean\]:** If this property is set, any SSL related certificate check will be removed for the given hostname. This affects the hole ARE.
+- **username \[string\]:** This property is used, if the HTTP basic authentication of openHAB is used. Provide the username here.
+- **password \[string\]:** This property is used, if the HTTP basic authentication of openHAB is used. Provide the password here.
 
 ## Additional hints
 
-*   The model will stop with an error message, if one of the item names in the properties is not found.
-*   There is no feedback for checking a successful state change. E.g.: if your write to a read-only item (temperature sensor), nothing will happen
-*   Use the _lazyCertificates_ property with care, it will disable a major part of the SSL handshaking for the whole Java session. It should be limited to the given hostname only, but without warranty.
-*   The username/password combination from the properties is saved in PLAINTEXT in the model file, so handle it with care.
+- The model will stop with an error message, if one of the item names in the properties is not found.
+- There is no feedback for checking a successful state change. E.g.: if your write to a read-only item (temperature sensor), nothing will happen
+- Use the _lazyCertificates_ property with care, it will disable a major part of the SSL handshaking for the whole Java session. It should be limited to the given hostname only, but without warranty.
+- The username/password combination from the properties is saved in PLAINTEXT in the model file, so handle it with care.
 
 [1]: https://www.openhab.org/docs/
 [2]: https://github.com/openhab/openhab/wiki

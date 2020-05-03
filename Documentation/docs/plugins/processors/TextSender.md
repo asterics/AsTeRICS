@@ -5,7 +5,7 @@ subcategory: Event and String Processing
 
 # Text Sender
 
-Component Type: Processor (Subcategory: Event and String Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 This component sends the string data through the output port when it receives the trigger event.
 

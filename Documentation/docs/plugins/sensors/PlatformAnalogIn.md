@@ -1,11 +1,11 @@
 ---
 title: Platform Analog In
-subcategory: Generic Control Input
+subcategory: Personal Platform
 ---
 
 # Platform Analog In
 
-Component Type: Sensor (Subcategory: Generic Control Input)
+Component Type: Sensor (Subcategory: Personal Platform)
 
 The PlatformAnalogIn component is a sensor which is used in combination with the analog inputs of the personal platform. The component provides two output ports which correlate to the inputs IN1 and IN2 of the platform. The component can be set up to sample the inputs periodically or upon an incoming event. Both inputs can be used for voltage and resistance measurement.
 

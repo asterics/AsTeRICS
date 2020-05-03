@@ -5,7 +5,7 @@ subcategory: Event and String Processing
 
 # {{$frontmatter.title}}
 
-Component Type: Processor (Subcategory: Event and String Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 Adds the preString and postString strings to the incoming string and sends the new string to the output port.
 

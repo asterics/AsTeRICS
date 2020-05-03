@@ -1,11 +1,11 @@
 ---
 title: Universal Remote Control
-subcategory: Microcontroller Interfaces
+subcategory: Microcontroller Interface
 ---
 
 # {{$frontmatter.title}}
 
-Component Type: Processor (Subcategory: Microcontroller Interfaces)
+Component Type: Processor (Subcategory: Microcontroller Interface)
 
 The Universal Remote Control (RC) enables the possibility to control all electronic devices in a household which are controlled remotely through infrared (IR) commands. THe necessary IR codes can be recorded with the RC itself and stored on a database on the computer. By choosing the manufacturer, name and function the IR code is deposed in this database and can be selected in order to send the code to the universal RC and therefore control electronic devices. The universal RC can also be used as a handheld gadget due to its built in battery and user interface. THe IR code database can be stored on an SD card.
 

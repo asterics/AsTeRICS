@@ -5,7 +5,7 @@ subcategory: DSP and Feature Detection
 
 # Neural Network Loader
 
-Component Type: Processor (Subcategory: DSP and Feature Detection)
+## Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 This plugin uses the [Encog framework][1] (version: 3.0.1). The plugin can load a neural network configuration stored in the Encog EG file. The neural network‘s output is calculated for the input data.
 

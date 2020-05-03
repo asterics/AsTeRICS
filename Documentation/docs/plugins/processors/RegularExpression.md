@@ -5,7 +5,7 @@ subcategory: Event and String Processing
 
 # {{$frontmatter.title}}
 
-Component Type: Processor (Subcategory: Event and String Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 This component processes strings with regular expressions. It can work in two modes: match strings with the pattern or replace string parts with another string. The regular expression syntax is defined in the [Java class Pattern][1].
 

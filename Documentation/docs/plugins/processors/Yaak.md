@@ -1,11 +1,11 @@
 ---
 title: Yaak
-subcategory: Others
+subcategory: Phone Interface
 ---
 
 # Yaak
 
-Component Type: Processor
+## Component Type: Processor (Subcategory: Phone Interface)
 
 Yaak is a flexible on-screen-keyboard for the Android operating system. More information can be found in the pdf documentation in the Android/Yaak folder within the release package.
 

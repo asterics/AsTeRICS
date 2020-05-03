@@ -5,7 +5,7 @@ subcategory: Event and String Processing
 
 # Event Block
 
-Component Type: Processor (Subcategory: Event and String Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 This plugin, depending on its state, can pass or block events from the input port.
 

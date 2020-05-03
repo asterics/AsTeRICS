@@ -1,11 +1,11 @@
 ---
 title: Tooltip
-subcategory: Graphical User Interface
+subcategory: Input Device Emulation
 ---
 
 # Tooltip
 
-Component Type: Actuator (Subcategory: Graphical User Interface)
+Component Type: Actuator (Subcategory: Input Device Emulation)
 
 The Tooltip component shows tooltips on a specific position on the screen. Tooltips are semi-transparent .png images, that are representing different actions like e.g. a double-click with the mouse or specific key-combinations for the keyboard. The main purpose of this plugin is to provide additional functions it in combination with a mouse control solution like CrosshairCursorControl or AngularCursorControl, but also can be used independently of mouse control.
 

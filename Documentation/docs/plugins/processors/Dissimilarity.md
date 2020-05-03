@@ -5,7 +5,7 @@ subcategory: DSP and Feature Detection
 
 # Dissimilarity
 
-Component Type: Processor (Subcategory: DSP and Feature Detection)
+## Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 This component computes the Euclidean distance between two input vectors. The component stores the input values from both input ports until DataLen values have been received, then the computation is performed and sent to the output port.
 

@@ -1,11 +1,11 @@
 ---
 title: RFID Reader
-subcategory: Others
+subcategory: Sensor Modules
 ---
 
 # RFID Reader
 
-Component Type: Sensor (Subcategory: Others)
+Component Type: Sensor (Subcategory: Sensor Modules)
 
 The RFIDReader component provides an interface to the ID-Innovations RFID reader modules. These modules are available for example from Sparkfun electronics. The recognized ID-Tags are transferred from the module to a COM port, where the RFIDReader components reads the ID and puts it to the output port as an ASCII string. The RFIDReader can be useful to switch to a different a model (e.g. for another users or use cases) or to change parameters of a running model.
 

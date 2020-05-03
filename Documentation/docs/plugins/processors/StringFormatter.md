@@ -5,7 +5,7 @@ subcategory: Event and String Processing
 
 # StringFormatter
 
-Component Type: Processor (Subcategory: Event and String Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 The StringFormatter plugin can be used to create a printf-style formatted text with numbers or strings as input variables. The output string is formatted according to a given format string, see [Java class Formatter][1].
 

@@ -5,7 +5,7 @@ subcategory: Event and String Processing
 
 # {{$frontmatter.title}}
 
-Component Type: Processor (Subcategory: Event and String Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 Splits a string with separators in up to 16 outputports.
 

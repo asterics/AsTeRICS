@@ -1,11 +1,11 @@
 ---
 title: TuioReactivision
-subcategory: Sensor Modules
+subcategory: Computer Vision
 ---
 
 # TuioReactivision
 
-Component Type: Sensor (Subcategory: Sensor Modules)
+Component Type: Sensor (Subcategory: Computer Vision)
 
 This component integrates reacTIVision into AsTeRICS
 

@@ -5,7 +5,7 @@ subcategory: Event and String Processing
 
 # String Append
 
-Component Type: Processor (Subcategory: Event and String Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 Appends an incoming string or ASCII character to a stringbuffer, the updated stringbuffer is sent to an output port. Incoming events are available to send the final string to a dedicated output port and to clear the stringbuffer (or set it to a default value respectively).
 

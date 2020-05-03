@@ -1,11 +1,11 @@
 ---
 title: SerialSender
-subcategory: Serial Communication
+subcategory: Generic Control Output
 ---
 
 # SerialSender
 
-Component Type: Actuator (Subcategory: Serial Communication)
+Component Type: Actuator (Subcategory: Generic Control Output)
 
 The Serialsender can be used to send structured data to Serial devices. It has 16 data slots. Whenever a send event occurs the plugin sends every slot which is active to the device, beginning with slot0
 

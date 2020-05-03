@@ -5,7 +5,7 @@ subcategory: Event and String Processing
 
 # StringDelay
 
-Component Type: Processor (Subcategory: Event and String Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 This plugin passes received string values after a defined delay.
 

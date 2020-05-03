@@ -5,7 +5,7 @@ subcategory: DSP and Feature Detection
 
 # MotionAnalysis
 
-Component Type: Processor (Subcategory: DSP and Feature Detection)
+## Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 The MotionAnalysis Plugin procides a visual feedback for one or more channels. With this Plugin it is able to save a movement and compare it to later movements. To test this plugin MotionAnalysis_Example.acs can be used.
 

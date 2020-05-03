@@ -5,7 +5,7 @@ subcategory: DSP and Feature Detection
 
 # Filter
 
-Component Type: Processor (Subcategory: DSP and Feature Detection)
+## Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 This plugin implements a FIR Filter
 

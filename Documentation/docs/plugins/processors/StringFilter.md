@@ -5,7 +5,7 @@ subcategory: Event and String Processing
 
 # {{$frontmatter.title}}
 
-Component Type: Processor (Subcategory: Event and String Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 Applies a given filter text to the incoming string. It can be selected if only strings that contain the filter text are passed to the output port, and/or if the filter text shall be removed from the incoming string. Please note that the filter text is applied case sensitive.
 

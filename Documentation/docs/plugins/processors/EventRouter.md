@@ -1,11 +1,11 @@
 ---
 title: EventRouter
-subcategory: Event and Signal Processing
+subcategory: Event and String Processing
 ---
 
 # EventRouter
 
-Component Type: Processor (Subcategory: Event and Signal Processing)
+## Component Type: Processor (Subcategory: Event and String Processing)
 
 This component allows routing up to 6 incoming events to one of 8 corresponding output (trigger) event ports.
 

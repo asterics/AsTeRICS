@@ -1,12 +1,12 @@
 ---
 title: Kinect
-subcategory: Standard Input Device
+subcategory: Computer Vision
 image: /plugins/sensors/kinect.png
 ---
 
 # Kinect
 
-Component Type: Sensor (Subcategory: Standard Input Devices)
+Component Type: Sensor (Subcategory: Computer Visions)
 
 The Kinect component interfaces to the Microsoft Kinect camera over the OpenNI library. It provides the skeleton Data of exactly one person in front of the kinect camera.
 

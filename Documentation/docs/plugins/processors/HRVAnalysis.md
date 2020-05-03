@@ -1,11 +1,11 @@
 ---
 title: HRVAnalysis
-subcategory: DSP and Feature Extraction
+subcategory: DSP and Feature Detection
 ---
 
 # HRVAnalysis
 
-Component Type: Processor (Subcategory: DSP and Feature Extraction)
+## Component Type: Processor (Subcategory: DSP and Feature Detection)
 
 This component calculates various Heart Rate Variability (HRV) parameters from an incoming signal of raw ECG-data. For a detailed description of the HRV parameters and a guide how to use optical and electrical heart rate sensors see the work of Andreas Schreiber (in /documentation/DIYGuides/HRVAnalysis_Schreiber.pdf and /documentation/OpticalPulseSensor_Schreiber.pdf)
 
