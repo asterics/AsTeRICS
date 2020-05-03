@@ -115,8 +115,11 @@ import eu.asterics.mw.utils.OSUtils;
 
 public class AREServices implements IAREServices {
     public static final String WEB_ACS_EDIT_MODEL_URL_KEY = "WebACS.editModel.URL";
-    public static final String LOCAL_WEB_ACS_EDIT_MODEL_URL = "http://localhost:{0}/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
-    public static final String ONLINE_WEB_ACS_EDIT_MODEL_URL = "https://webacs.asterics.eu/index.html?autoConnect=true&autoDownloadModel=true";
+    public static final String LOCAL_WEB_ACS_EDIT_MODEL_URL = "http://localhost:{0}/WebACS/index.html?autoConnect=true&autoDownloadModel=true&areBaseURI=http://127.0.0.1:{0}";
+    public static final String ONLINE_WEB_ACS_EDIT_MODEL_URL = "https://webacs.asterics.eu/index.html?autoConnect=true&autoDownloadModel=true&areBaseURI=http://127.0.0.1:{0}";
+
+    private int acsPort=9090;
+    private int restPort=8081;
 
     private final String STORAGE_FOLDER = "storage";
     private Logger logger = null;
@@ -486,12 +489,44 @@ public class AREServices implements IAREServices {
     public void editModel() {
         String url = AREProperties.instance.getProperty(WEB_ACS_EDIT_MODEL_URL_KEY);
         // If the url value contains {0} replace it with the currently configured REST port.
-        url = MessageFormat.format(url, AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY));
+        url = MessageFormat.format(url, String.valueOf(getRESTPort()));
         try {
             OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
         } catch (IOException e) {
             logger.log(Level.SEVERE, "error opening WebACS for current model.", e);
         }
+    }
+
+    /**
+     * Sets the successfully opened ACS port.
+     * @param acsPort
+     */
+    public void setACSPort(int acsPort) {
+        this.acsPort=acsPort;
+    }
+
+    /**
+     * Returns the successfully opened ACS port.
+     * @return
+     */
+    public int getACSPort() {
+        return acsPort;
+    }
+
+    /**
+     * Sets the successfully bound REST port.
+     * @param restPort
+     */
+    public void setRESTPort(int restPort) {
+        this.restPort=restPort;
+    }
+
+    /**
+     * Gets the successfully bound REST port.
+     * @return
+     */
+    public int getRESTPort() {
+        return restPort;
     }
 
     /**

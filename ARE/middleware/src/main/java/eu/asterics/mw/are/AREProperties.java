@@ -53,6 +53,10 @@ public class AREProperties extends Properties {
     public static final String ARE_WEBSERVICE_SSL_PORT_REST_KEY = "ARE.webservice.ssl.port.REST";
     public static final String ARE_WEBSERVICE_SSL_PORT_WEBSOCKET_KEY = "ARE.webservice.ssl.port.websocket";
 
+    //Port conflict resolving
+    public static final String ARE_PORT_CONFLICT_NR_TRIES_KEY = "ARE.port.conflict.nr.tries";
+    public static final String ARE_PORT_CONFLICT_STEP_SIZE_KEY = "ARE.port.conflict.step.size";
+
     private AREProperties() {
         logger = AstericsErrorHandling.instance.getLogger();
         try {

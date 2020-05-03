@@ -5,7 +5,7 @@
 	<property name="runtime" location="bin/ARE"/>
 	<property name="web.docroot" location="${runtime}/web/"/>
 	<property name="WebACS.bin" location="${web.docroot}/WebACS"/>
-	<property name="WebACS.version" value="v1.2.0"/>
+	<property name="WebACS.version" value="v1.2.1"/>
 	<property name="tmp.dir" location="tmp"/>
 
 	<target name="clean" description="Clean the whole project">
@@ -126,6 +126,7 @@
 	<target name="replaceVersion">
 		<getversionnumber text="${env.VERSION}" property="app_version_number" />
 		<echo>VERSION=${env.VERSION}</echo>
+		<replace file="./bin/ACS/asterics.ini" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
 		<replace file="./Installer/setup.iss" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
 		<replace file="./Installer/asterics-are/package/linux/control" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>
 		<replace file="./Installer/asterics-are/APE.properties" token="#{APPLICATION_VERSION_NUMBER}#" value="${env.VERSION}"/>

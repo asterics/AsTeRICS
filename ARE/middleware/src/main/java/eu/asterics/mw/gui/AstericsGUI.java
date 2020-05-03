@@ -236,8 +236,9 @@ public class AstericsGUI implements IAREEventListener {
                 // ignore, in this case don't show name.
             }
         }
+        String portString=" [:"+AREServices.instance.getRESTPort()+",:"+AREServices.instance.getACSPort()+"]";
         String versionString = "AsTeRICS ARE " + ARE_VERSION;
-        String title = modelName != null ? modelName + " - " + versionString : versionString;
+        String title = modelName != null ? modelName + " - " + versionString+portString : versionString+portString;
         System.out.println(title);
         if (mainFrame != null) {
             mainFrame.setTitle(title);

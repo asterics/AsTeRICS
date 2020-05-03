@@ -56,10 +56,10 @@
 				<h3>Applications</h3>
 				<ul id="menu3" class="menuList mainList">
 					<li>
-							<a target="_blank" href="/WebACS/index.html">Local WebACS</a>
+							<a target="_blank" id="localWebACS" href="#">Local WebACS</a>
 					</li>		
 					<li>
-						<a target="_blank" href="https://webacs.asterics.eu/?areBaseURI=http://127.0.0.1:8081">Online WebACS</a>
+						<a target="_blank" id="onlineWebACS" href="#">Online WebACS</a>
 					</li>
 				</ul>
 
@@ -82,6 +82,11 @@
 	</div>
 	
 <!-- ****************************************************** main script ********************************************************** -->	
+
+	<script>		
+		document.getElementById('localWebACS').setAttribute('href','/WebACS/index.html?autoConnect=true&autoDownloadModel=true&areBaseURI='+window.location.origin);
+		document.getElementById('onlineWebACS').setAttribute('href','https://webacs.asterics.eu/?autoConnect=true&autoDownloadModel=true&areBaseURI='+window.location.origin);
+	</script>
     <noscript>
       <div>
         Your web browser must have JavaScript enabled
