@@ -18,35 +18,27 @@ sidebar: true
 </ActionGroup>
 :::
 
-::: slot slideshow
-
 ## Use Cases
 
-<UseCases>
-  <UseCase
-    title="Accessible Computer Control"
-    media="/assets/img/harry-shutterstock_213119035.jpg"
-  >Control your computer by switches, head movements or eyetracking, depending on your capabilities.</UseCase>
-  <UseCase
-    title="Accessible Environment Control"
-    media="/assets/img/smart-home-shutterstock_304964420.jpg"
-  >Switch on/off lights or control your TV and stereo.</UseCase>
-  <UseCase
-    title="Alternative and Augmentative Communication"
-    media="/assets/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg"
-  >Create your own communication grid and use it on all your devices.</UseCase>
-  <UseCase
-    title="Accessible Gaming &amp; Toys"
-    media="https://www.youtube.com/watch?v=JwL_zS3fpnU"
-    stop
-  >Emulate mouse, keyboard or joystick for playing games or remote control toy helicopters or cars.</UseCase>
-  <UseCase
-    title="Accessible Music"
-    media="https://www.youtube.com/watch?v=3_8TifCj0aU"
-    stop
-  >Generate sounds or play adapted music instruments.</UseCase>
-</UseCases>
-:::
+<!-- <UseCases> -->
+
+<UseCase
+  title="Accessible Computer Control"
+  media="/assets/img/harry-shutterstock_213119035.jpg">Control your computer by switches, head movements or eyetracking, depending on your capabilities.</UseCase>
+<UseCase
+  title="Accessible Environment Control"
+  media="/assets/img/smart-home-shutterstock_304964420.jpg">Switch on/off lights or control your TV and stereo.</UseCase>
+<UseCase
+  title="Alternative and Augmentative Communication"
+  media="/assets/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg">Create your own communication grid and use it on all your devices.</UseCase>
+<UseCase
+  title="Accessible Gaming &amp; Toys"
+  media="https://www.youtube.com/watch?v=JwL_zS3fpnU">Emulate mouse, keyboard or joystick for playing games or remote control toy helicopters or cars.</UseCase>
+<UseCase
+  title="Accessible Music"
+  media="https://www.youtube.com/watch?v=3_8TifCj0aU">Generate sounds or play adapted music instruments.</UseCase>
+
+<!-- </UseCases> -->
 
 ## Why AsTeRICS?
 
