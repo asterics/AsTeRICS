@@ -68,7 +68,7 @@ namespace Asterics.ACS {
 
         #region Global variables
 
-        public const String ACS_VERSION="4.1";
+        public static String ACS_VERSION="4.x";
         private double mouseMoveComponentX;
         private double mouseMoveComponentY;
 
@@ -265,6 +265,8 @@ namespace Asterics.ACS {
             //ACS.Properties.Resources.Culture = System.Threading.Thread.CurrentThread.CurrentCulture;
             InitializeComponent();
             
+            //Read ACS_VERSION string from asterics.ini first.
+            ACS_VERSION = ini.IniReadValue("Options", "ACS_VERSION");
             Title = "AsTeRICS Configuration Suite " + ACS_VERSION;
             // Remove the original default trace listener and add a new one (for logging exceptions)
             traceListener = new FileLogTraceListener();
