@@ -132,6 +132,8 @@ Please go to the [download page](https://github.com/asterics/AsTeRICS/releases/l
 
 You need a **Java Runtime Standard Edition 8**.
 
+Choose one of the installation methods below:
+
 ##### Zulu Java
 
 1. Download the [Zulu installer](https://www.azul.com/downloads/zulu-community/?version=java-8-lts&os=linux&package=jdk) for your your platform.
@@ -168,5 +170,7 @@ dpkg: dependency problems prevent configuration of asterics-are:
 
 Execute the following command to install the dependencies:
 
-`sudo apt --fix-broken install`
+```
+sudo apt --fix-broken install
+```
 
