@@ -130,20 +130,43 @@ Please go to the [download page](https://github.com/asterics/AsTeRICS/releases/l
 
 #### Install Java
 
-You must install a Java Runtime Environment first.
+You need a **Java Runtime Standard Edition 8**.
 
-The ARE runs with OpenJDK or Oracle Java, but Oracle is recommended due to better execution performance.
+##### Zulu Java
 
-``` bash
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get install oracle-java8-installer
+1. Download the [Zulu installer](https://www.azul.com/downloads/zulu-community/?version=java-8-lts&os=linux&package=jdk) for your your platform.
+2. Install it 
+
+```bash
+sudo dpkg -i $<download_dir>/<zulu_package>.deb
 ```
 
-Another possibility is to download the java package directly from oracle and install it: [Oracle Java](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
+You can also add an [APT repository](https://docs.azul.com/zulu/zuludocs/ZuluUserGuide/PrepareZuluPlatform/AttachAPTRepositoryUbuntuOrDebianSys.htm?tocpath=Zulu%20Installation%20Guide%7CPrepare%20the%20Zulu%20Installation%20Platform%7CAttach%20Azul%20Package%20Repositories%7C_____2) for it.
+
+##### OpenJDK
+
+```bash
+sudo apt-get install openjdk-8-jre
+```
+
+##### Oracle Java
+
+Download [Oracle Java 8](https://www.oracle.com/java/technologies/javase-jre8-downloads.html) and follow the instructions.
 
 #### Install AsTeRICS
 
 ```
-sudo dpkg -i asterics-are-3.0.deb
+sudo dpkg -i asterics-are-<version>.deb
 ```
+
+You will get an error message, if the dependencies had not been installed before:
+```
+dpkg: dependency problems prevent configuration of asterics-are:
+ asterics-are depends on libhidapi-libusb0; however:
+  Package libhidapi-libusb0 is not installed.
+```
+
+Execute the following command to install the dependencies:
+
+`sudo apt --fix-broken install`
+
