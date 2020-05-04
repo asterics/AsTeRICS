@@ -1,6 +1,8 @@
 ---
 title: PhilipsHueSensor
 subcategory: Home Control
+image: /plugins/sensors/philips-hue.png
+featured: true
 ---
 
 # PhilipsHueSensor

@@ -1,7 +1,6 @@
 ---
 title: KeyboardCapture
 subcategory: Standard Input Device
-featured: true
 ---
 
 # {{$frontmatter.title}}

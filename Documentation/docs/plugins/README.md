@@ -14,8 +14,10 @@ In the following sections, all the plugins available in the AsTeRICS framework w
 
 The plugins represent the functional blocks of AsTeRICS. They can be combined to tailored Assistive Technology setups via the graphical AsTeRICS Configuration Suite (ACS) software, where plugins can be selected, connected via channels, and parameterized. Thus, the ACS can be considered as a user friendly environment to arrange the plugins. The result of this configuration process is an .xml file containing the deployment model for the AsTeRICS Runtime Environment (ARE).
 
+<ClientOnly>
 <Plugins-Search/>
 
 <Plugins-Sensor/>
 <Plugins-Processor/>
 <Plugins-Actuator/>
+</ClientOnly>

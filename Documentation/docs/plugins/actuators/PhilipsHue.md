@@ -1,6 +1,8 @@
 ---
 title: PhilipsHue
 subcategory: Home Control
+image: /plugins/actuators/philips-hue.png
+featured: true
 ---
 
 # PhilipsHue
