@@ -123,6 +123,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     private Integer propFrameRate = 0;
     private boolean propDisplayGUI = true;
     private boolean propEnableOverlaySettings = true;
+    private Integer propResizeHeight = 120;
 
     private String instanceId = "XFacetrackerLK";
 
@@ -201,6 +202,8 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
             return propFrameRate;
         } else if ("enableOverlaySettings".equalsIgnoreCase(propertyName)) {
             return propEnableOverlaySettings;
+        } else if ("resizeHeight".equalsIgnoreCase(propertyName)) {
+            return propResizeHeight;
         }
 
         return "";
@@ -279,6 +282,13 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
                 propEnableOverlaySettings = false;
             }
             return oldValue;
+        } else if ("resizeHeight".equalsIgnoreCase(propertyName)) {
+            oldValue = propResizeHeight;
+            propResizeHeight = 120;
+            try {
+                propResizeHeight = Integer.parseInt((String) newValue);
+            } catch (NumberFormatException e) {
+            }
         }
 
         if (wasRunning) {
@@ -827,7 +837,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     public CvPoint2D32f findFeatures(IplImage imgA) {
 
         try {
-            faceRect = faceDetection.detectFace(imgA);
+            faceRect = faceDetection.detectFace(imgA,propResizeHeight);
             if (faceRect != null) {
                 System.out.println("\nFound face at: " + faceRect);
 
