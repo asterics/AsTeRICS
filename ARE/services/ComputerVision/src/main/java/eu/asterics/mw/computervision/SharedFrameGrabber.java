@@ -648,7 +648,8 @@ public class SharedFrameGrabber {
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                logger.warning("Could not start frame grabbing with grabber: "+grabber+", reason: "+e.getMessage());
+                logger.fine("Could not start frame grabbing with grabber: "+grabber+", reason: "+e.getMessage());
+                AstericsErrorHandling.instance.reportError(null,"Could not open camera device <"+deviceKey+">\nReason: "+e.getMessage());
             } finally {
                 if(grabber!=null) {
                     // Grabbing can be safely stopped now
