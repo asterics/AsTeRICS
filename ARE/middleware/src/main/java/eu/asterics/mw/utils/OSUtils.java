@@ -59,6 +59,8 @@ public class OSUtils {
 
         logger.fine("sun.arch.data.model: "+System.getProperty("sun.arch.data.model"));
         logger.fine("os.arch: "+System.getProperty("os.arch"));
+        logger.fine("Architecture String: "+OSUtils.getArchString());
+        logger.fine("Architecture Base String: "+OSUtils.getArchBaseString());
     }
 
     public static enum OS_NAMES {
@@ -128,7 +130,6 @@ public class OSUtils {
         if(archString.equalsIgnoreCase("amd64")) {
             archString="x86_64";
         }
-        logger.fine("Architecture String: "+archString);
         return archString;
     }
 
@@ -143,7 +144,6 @@ public class OSUtils {
             archBaseString="x86";
         }
 
-        logger.fine("Architecture Base String: "+archBaseString);
         return archBaseString;
     }
 

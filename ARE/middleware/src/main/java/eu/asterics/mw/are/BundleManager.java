@@ -14,14 +14,7 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.logging.Logger;
 
 import org.apache.commons.codec.binary.Hex;
@@ -755,6 +748,10 @@ public class BundleManager implements BundleListener, FrameworkListener {
                         continue;
                     }
                     
+                    //Trying to load architecture specific service file.
+                    path=getPlatformSpecificJarName(path);
+                    logger.fine("Using platform-specific pathname: "+path);      
+
                     try {
                         URI jarURI = ResourceRegistry.getInstance().getResource(path, RES_TYPE.JAR);
                         // bundle=installSingle(jarURI);
@@ -775,6 +772,40 @@ public class BundleManager implements BundleListener, FrameworkListener {
             }
         }
         notifyAREEventListeners(AREEvent.POST_BUNDLES_EVENT);
+    }
+
+    /**
+     * Returns a platform-specific pathname, if the tested jar exists.
+     * The tests are done in the following order:
+     * <basename>-<arch>_<bitness>.jar
+     * <basename>-<arch>.jar
+     * <basename>.jar
+     * 
+     * @param path
+     * @return
+     */
+    private String getPlatformSpecificJarName(String path) {        
+        String[] pathElems=path.split(".jar");
+        // logger.fine("path: "+path+", pathElems: "+Arrays.toString(pathElems));
+        if(pathElems.length == 1) {
+            try{
+                String testJarName=pathElems[0]+"-"+OSUtils.getArchBaseString()+"_"+OSUtils.getBitness()+".jar";
+                // logger.fine("Checking for existence of <"+testJarName+">");
+                if(ResourceRegistry.getInstance().resourceExists(ResourceRegistry.getInstance().getResource(testJarName,RES_TYPE.JAR))) {
+                    return testJarName;
+                } 
+
+                testJarName=pathElems[0]+"-"+OSUtils.getArchBaseString()+".jar";
+                // logger.fine("Checking for existence of <"+testJarName+">");
+                if(ResourceRegistry.getInstance().resourceExists(ResourceRegistry.getInstance().getResource(testJarName,RES_TYPE.JAR))) {
+                    return testJarName;
+                }
+            } catch(Exception e) {
+                logger.fine("Could not check pathname of resource: "+e.getMessage());
+            }            
+        }
+        //otherwise return the given path name.
+        return path;
     }
 
     /**
