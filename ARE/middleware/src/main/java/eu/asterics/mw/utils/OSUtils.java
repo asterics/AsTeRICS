@@ -56,6 +56,9 @@ public class OSUtils {
         AREProperties.instance.setDefaultPropertyValue(ARE_OPEN_URL_CMD_KEY_PREFIX + LINUX, "xdg-open", "Default Linux command to start a browser.");
         AREProperties.instance.setDefaultPropertyValue(ARE_OPEN_URL_CMD_KEY_PREFIX + WINDOWS, "explorer", "Default Windows command to start a browser.");
         AREProperties.instance.setDefaultPropertyValue(ARE_OPEN_URL_CMD_KEY_PREFIX + MACOSX, "open", "Default Mac OSX command to start a browser.");
+
+        logger.fine("sun.arch.data.model: "+System.getProperty("sun.arch.data.model"));
+        logger.fine("os.arch: "+System.getProperty("os.arch"));
     }
 
     public static enum OS_NAMES {
@@ -113,6 +116,45 @@ public class OSUtils {
         }
         return "unknown";
     }
+
+    /**
+     * Returns the CPU architecture string. AMD64 will be mapped to x86_64.
+     * 
+     * @return
+     */
+    public static String getArchString() {
+        String archString=System.getProperty("os.arch");
+
+        if(archString.equalsIgnoreCase("amd64")) {
+            archString="x86_64";
+        }
+        logger.fine("Architecture String: "+archString);
+        return archString;
+    }
+
+    /**
+     * Returns the CPU architecture base string. Should be arm or x86 or ppc?.
+     * 
+     * @return
+     */
+    public static String getArchBaseString() {
+        String archBaseString=getArchString();
+        if(archBaseString.startsWith("x86")) {
+            archBaseString="x86";
+        }
+
+        logger.fine("Architecture Base String: "+archBaseString);
+        return archBaseString;
+    }
+
+    /**
+     * Returns the CPU bitness: 32 or 64.
+     * 
+     * @return
+     */
+    public static String getBitness() {
+        return System.getProperty("sun.arch.data.model");
+    }    
 
     /**
      * Starts the given application using its applicationPath, arguments and workingDirectory but only if the current platform equals to executeOnPlatform or if

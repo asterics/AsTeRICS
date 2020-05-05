@@ -731,6 +731,9 @@ public class BundleManager implements BundleListener, FrameworkListener {
             return;
         }
 
+        OSUtils.getArchBaseString();
+        OSUtils.getBitness();
+
         String path;
         Bundle bundle = null;
 
@@ -751,6 +754,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
                     if (path.startsWith("#") || path.isEmpty() || !path.endsWith(".jar")) {
                         continue;
                     }
+                    
                     try {
                         URI jarURI = ResourceRegistry.getInstance().getResource(path, RES_TYPE.JAR);
                         // bundle=installSingle(jarURI);
