@@ -143,6 +143,11 @@
 			<arg value="-f"/>
 			<arg value="javacv-windows.bnd"/>
 		</java>
+		<java jar="${biz.aQute:bnd:jar}" fork="true">
+			<arg value="bnd"/>
+			<arg value="-f"/>
+			<arg value="javacv-windows-x86_64.bnd"/>
+		</java>		
 	</target>
 	<!-- a linux-only version with opencv, libfreenect -->
 	<target name="do-merge-jars-linux" description="Generate a merged javacv OSGI-bundle with linux-only jars" unless="javacv.linux.exists">
