@@ -156,6 +156,11 @@
 			<arg value="-f"/>
 			<arg value="javacv-linux.bnd"/>
 		</java>
+		<java jar="${biz.aQute:bnd:jar}" fork="true">
+			<arg value="bnd"/>
+			<arg value="-f"/>
+			<arg value="javacv-linux-arm.bnd"/>
+		</java>		
 	</target>
 	<!-- a macosx-only version with opencv, libfreenect -->
 	<target name="do-merge-jars-macosx" description="Generate a merged javacv OSGI-bundle with macosx-only jars" unless="javacv.macosx.exists">
