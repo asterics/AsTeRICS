@@ -5,5 +5,5 @@ Bundle-SymbolicName: eu.asterics.mw.computervision
 Bundle-Version: 0.2.0
 Bundle-ClassPath: .
 Export-Package: eu.asterics.mw.computervision
-Require-Bundle: org.bytedeco.javacv;bundle-version=1.5.2
+Require-Bundle: org.bytedeco.javacv;bundle-version=1.5
 DynamicImport-Package: *

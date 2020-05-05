@@ -13,7 +13,7 @@
 	<property name="services" location="../../services"/>
 	<property name="resources" location="src/main/resources"/>
 	<property name="javacv.dest" location="javacv/"/>
-	<property name="javacv.version" value="1.5.2"/>
+	<property name="javacv.version" value="1.5"/>
 	<!-- don't forget to also update the MANIFEST file!! -->
 	
 	<property name="jar.os.name.windows" value="windows"/>
