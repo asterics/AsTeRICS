@@ -57,8 +57,8 @@ public class FaceDetection {
     String classifierName = "data/service.computervision/haarcascade_frontalface_alt.xml";
     CascadeClassifier classifier = null;
     
-    //Resize image to height of 75 to speed up face detection tremendously!
-    private static final int RESIZE_HEIGHT = 75;
+    //Resize image to height of 120 to speed up face detection tremendously!
+    private static final int RESIZE_HEIGHT = 120;
     
     // Objects allocated with a create*() or clone() factory method are
     // automatically released
@@ -90,12 +90,23 @@ public class FaceDetection {
      * @throws Exception
      */
     public CvRect detectFace(IplImage grayImage) throws Exception {
+        return detectFace(grayImage,RESIZE_HEIGHT);
+    }
+
+    /**
+     * Detect the biggest face in given grayscale image.
+     * 
+     * @param grayImage
+     * @return
+     * @throws Exception
+     */
+    public CvRect detectFace(IplImage grayImage, int resizeHeight) throws Exception {
         // We already expect getting a grayscale image.
         Mat grayFrame=cvarrToMat(grayImage);
         
         //Resize frame to speed up face detection tremendously.
-        //Thanks to learnopencv and Satya Mallick for this trick!!
-        float RESIZE_SCALE=grayImage.height()/RESIZE_HEIGHT;
+        //Thanks to learnopencv and Satya Mallick for this trick!!        
+        float RESIZE_SCALE=grayImage.height()/resizeHeight;        
         Mat smallFrame=new Mat();
         resize(grayFrame, smallFrame,new Size(),1.0/RESIZE_SCALE,1.0/RESIZE_SCALE,CV_INTER_AREA);
         
@@ -126,10 +137,11 @@ public class FaceDetection {
         if (total > 0) {
 
             Rect faceRect = faces.get(0);
-            if ((faceRect.width()*RESIZE_SCALE) > MIN_FACE_WIDTH && (faceRect.height()*RESIZE_SCALE) > MIN_FACE_HEIGHT) {
+            System.out.println("scaled face width: "+faceRect.width()*RESIZE_SCALE+", orig.width: "+faceRect.width());
+            // if ((faceRect.width()*RESIZE_SCALE) > MIN_FACE_WIDTH && (faceRect.height()*RESIZE_SCALE) > MIN_FACE_HEIGHT) {
             	int x = (int)(faceRect.x()*RESIZE_SCALE), y = (int)(faceRect.y()*RESIZE_SCALE), w = (int)(faceRect.width()*RESIZE_SCALE), h = (int)(faceRect.height()*RESIZE_SCALE);
                 return new CvRect(x,y,w,h);
-            }
+            // }
             // System.out.println("ignoring face with width:
             // "+faceRect.width());
         }
