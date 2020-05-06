@@ -749,7 +749,9 @@ public class BundleManager implements BundleListener, FrameworkListener {
                     }
                     
                     //Trying to load architecture specific service file.
-                    path=getPlatformSpecificJarName(path);
+                    if(servicesFile.contains(OSUtils.getOsName().toLowerCase())) {
+                        path=getPlatformSpecificJarName(path);
+                    }
                     logger.fine("Using platform-specific pathname: "+path);      
 
                     try {
