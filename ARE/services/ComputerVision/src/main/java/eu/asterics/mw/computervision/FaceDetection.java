@@ -137,7 +137,6 @@ public class FaceDetection {
         if (total > 0) {
 
             Rect faceRect = faces.get(0);
-            System.out.println("scaled face width: "+faceRect.width()*RESIZE_SCALE+", orig.width: "+faceRect.width());
             // if ((faceRect.width()*RESIZE_SCALE) > MIN_FACE_WIDTH && (faceRect.height()*RESIZE_SCALE) > MIN_FACE_HEIGHT) {
             	int x = (int)(faceRect.x()*RESIZE_SCALE), y = (int)(faceRect.y()*RESIZE_SCALE), w = (int)(faceRect.width()*RESIZE_SCALE), h = (int)(faceRect.height()*RESIZE_SCALE);
                 return new CvRect(x,y,w,h);
