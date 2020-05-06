@@ -1,8 +1,12 @@
 # Environmental Control
 
-AsTeRICS has many plugins for environmental control....
+AsTeRICS has many plugins for environmental control like **KNX**, **enocean**, **IrTrans**, **Hue** or **OpenHAB**. Check the [Plugins](/plugins/) page and filter by ```Home Control```.
+
+On this page you will find some tutorials of how to use such plugins to control your environment and how to create and accessible user interface for it.
 
 ## OpenHAB
+
+This tutorial explains how to control an OpenHAB instance and it's configured items (Smart Home appliances) by an AsTeRICS model and how to create an accessible user interface for it using AsTeRICS Grid.
 
 1. [Install openHAB](https://www.openhab.org/docs/installation/)
 2. Start openHab
@@ -27,8 +31,11 @@ You can use AsTeRICS Grid to create an accessible UI for controlling your Smart 
 6. Test action by clicking on ```Test Action```
 7. Click ```OK``` to save the action.
 
+<!--
 ## KNX
 
-<!-- ## Enocean -->
+## Enocean
 
 ## IrTrans
+
+-->
