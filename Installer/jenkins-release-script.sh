@@ -71,8 +71,8 @@ rm -r AsTeRICS/NativeASAPIlibraries
 rm -r AsTeRICS/BNCIevaluationSuite
 rm -r AsTeRICS/Android/AsTeRICSPhoneServer
 rm AsTeRICS/ReadMe.md
-rm -rf AsTeRICS/ARE/javacv-*-linux.jar
-rm -rf AsTeRICS/ARE/javacv-*-macosx.jar
+rm -rf AsTeRICS/ARE/javacv-*-linux*.jar
+rm -rf AsTeRICS/ARE/javacv-*-macosx*.jar
 rm AsTeRICS/*.xml
 rm AsTeRICS/Documentation/ModelGuides/*.doc
 rm AsTeRICS/Documentation/DIYGuides/*.doc
