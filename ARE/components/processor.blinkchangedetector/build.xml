@@ -1,0 +1,47 @@
+<project name="asterics.${component.id}" default="jar" basedir=".">
+
+    <property name="component.id" value="processor.BlinkChangeDetector"/>
+    <!-- set global properties for this build -->
+    <property name="build" location="../out/production/${component.id}"/>
+    <property name="src.java" location="src/main/java"/>
+    <property name="dist" location=".."/>
+    <property name="runtime" location="../../../bin/ARE"/>
+    <property name="osgi" location="../../osgi"/>
+    <property name="middleware" location="../../middleware"/>
+    <property name="services" location="../../services"/>
+    <property name="classpath" location=".."/>
+       <path id="asterics.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
+        <pathelement location="${middleware}/asterics.ARE.jar"/>
+        <pathelement location="${services}/asterics.mw.systemstatechange.jar"/>
+        <pathelement location="${services}/asterics.mw.cimcommunication.jar"/>
+    </path>
+    
+    <property name="resources" location="src/main/resources"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init" description="compile the source ">
+    <javac source="${javac.source}" target="${javac.target}" includeantruntime="false" srcdir="${src.java}" destdir="${build}" verbose="true" debug="${debug}" 
+           classpath="${classpath}"> <classpath refid="asterics.classpath"/>
+     </javac>
+  </target>
+
+  <target name="jar" depends="compile" description="generate the OSGi bundle" >
+    <jar jarfile="${dist}/asterics.${component.id}.jar" basedir="${build}"
+         manifest="${resources}/META-INF/MANIFEST.MF">
+        <fileset dir="${resources}"/>
+    </jar>
+    <copy file="${dist}/asterics.${component.id}.jar" 
+          tofile="${runtime}/asterics.${component.id}.jar"/>
+  </target>
+	
+  <import file="../../imported.xml"/>
+  <include file="../../included.xml"/>
+</project>

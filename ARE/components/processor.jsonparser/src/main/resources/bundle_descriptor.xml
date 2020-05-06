@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.JsonParser"
+                   canonical_name="eu.asterics.component.processor.jsonparser.JsonParserInstance">
+        <type subtype="Data Converters">processor</type>
+        <singleton>false</singleton>
+        <description>Receives a JSON (JavaScript Object Notation) string and JSON field name as input and parses it into a JSON object to send one or more field values (several ones, 
+only if the keepParsedObject is true and other jsonFieldName input values follow). For details on which errors are handled (by event listeners) and error messages are provided for, 
+see description of the error output port and of the event triggers that cause an error port output.
+		</description>
+        <ports>
+			<inputPort id="jsonInputString">
+				<description>The JSON-formatted string to be converted into a JSON object.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="jsonFieldName">
+				<description>The key/name of the JSON object's field, of which the value shall be sent to the output port.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="keepParsedObject">
+				<description>Optional. If connected, it overwrites the keepParsedObject property.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>boolean</dataType>
+			</inputPort>
+
+			<outputPort id="jsonFieldValue">
+				<description>The value of the JSON field, identified by jsonFieldName, converted to a string (also "" is valid; an explicit null is converted to "null"). 
+In case of failure, it will be "" and the error port provides details.
+				</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="latestReadFieldName">
+				<description>The name of the field whenever an attempt of reading a field value (from the parsed JSON object) has been completed. 
+This output can only be "" if the field name was ""/null/unset, in which case the error output port provides details.
+				</description>
+				<dataType>string</dataType>
+			</outputPort>	
+			<outputPort id="error">
+				<description>Receives a value (different from "") whenever an attempt of input parsing or reading the next field fails. No matter whether it is 
+because of a missing JSON object (as needed for reading a field but not previously parsed) or missing or invalid input port values. It receives "" (= no error) 
+at the next successful parse or read. Thus it can be used for showing error messages.
+				</description>
+				<dataType>string</dataType>
+			</outputPort>
+        </ports>
+
+		<events>
+			<eventListenerPort id="parseInput">
+				<description>Uses the value at the input port for parsing and sending the desired JSON field (identified by the jsonFieldName input) value to the jsonFieldValue output port.</description>
+			</eventListenerPort>
+			<eventListenerPort id="readNextField">
+				<description>Triggers the next attempt of reading the value of the currently desired JSON field (identified by jsonFieldName) from an already parsed JSON object. 
+This event must be used after parseInput (which must be repeated if keepParsedObject is set to false). parseInput, in combination with a well-matched keepParsedObject property/port, 
+is to assure that there is already a JSON object from which values can be read when firing readNextField.
+				</description>
+			</eventListenerPort>
+			<eventListenerPort id="rejectParsedObject">
+				<description>Unsets the parsed JSON object for the case that keepParsedObject is true (via property or overwritten by input port value) or if it is false but no 
+successful reading of any JSON field has happened (see property description).
+				</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="inputParsed">
+				<description>Triggers to indicate that the plugin is done with parsing the JSON input (string) into a JSON object.</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fieldValueAvailable">
+				<description>Triggers when the value of the desired JSON field (specified by the input jsonFieldName and now identified by the output latestReadFieldName) 
+is available at the jsonFieldValue output port.
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fieldValueNotFound">
+				<description>Triggers when trying to read a field but when there is no field with the name given at the input port within the parsed JSON object (string). 
+Sends a message to the error output.
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fieldValueInvalidFormat">
+				<description>Triggers when trying to read a field but when there has been an error returning the value of the desired JSON field. 
+The value has a wrong/an invalid format but is found (i.e. the key is existent). This is the case whenever a found value cannot be parsed to a string 
+(which is the output format at the output port jsonFieldValue). Sends a message to the error output.
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="invalidInputFormat">
+				<description>Triggers when trying to parse the JSON input string but when it cannot be parsed into a JSON object (to later read values from). 
+Sends a message to the error output.
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="missingJsonInput">
+				<description>When trying to parse the JSON input string but when there has been no value at the input port jsonInputString. 
+Sends a message to the error output.
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="missingFieldName">
+				<description>Triggers when trying to read from an already parsed JSON object but when there has been no value at the input port jsonFieldName. 
+Sends a message to the error output.
+				</description>
+			</eventTriggererPort>
+		</events>			
+
+        <properties>
+			<property name="keepParsedObject"
+				type="boolean"
+				value="true"
+				description="Specifies, whether to keep the parsed JSON object (the one resulting from the latest parsing of jsonInputString) until the next value appears at the jsonInputString port - to read further fields in the meanwhile. 
+Usage Note: if a field reading attempt fails, a maybe stored parsed JSON object will never be unset, independently from the value of this property. This is to assure that each JSON input delivers at least one field value or otherwise is replaced by the next JSON input. 
+In order to force the parsed JSON object's rejection, rejectParsedObject must be triggered."/>
+        </properties>
+    </componentType>
+</componentTypes>

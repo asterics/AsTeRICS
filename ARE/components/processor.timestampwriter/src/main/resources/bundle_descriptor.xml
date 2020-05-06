@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.TimestampWriter"
+                   canonical_name="eu.asterics.component.processor.timestampwriter.TimestampWriterInstance">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>This plugin stores the time in milliseconds (ms) that passed by since the last reset (or start). 
+Outputs are the (via date string) formatted and numerical milliseconds and also a formatted absolute UNIX epoch timestamp 
+plus the absolute UNIX timestamp in ms. The time zone of the local system is used!
+		</description>
+        <ports>
+			<outputPort id="timePassedMs">
+				<description>Milliseconds (ms) since model start or last component reset.</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="timePassedFormatted">
+				<description>Milliseconds since model start or last component reset - formatted as date string.</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="timestampUnixMs">
+				<description>Unix timestamp in milliseconds (ms).</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="timestampUnixFormatted">
+				<description>Unix timestamp - absolute milliseconds formatted as date string.</description>
+				<dataType>string</dataType>
+			</outputPort>
+        </ports>
+        
+		<events>
+			<eventTriggererPort id="timestampFormatted">
+				<description>Triggers when output values (formatted and as milliseconds) are available at the output ports.</description>
+			</eventTriggererPort>
+
+			<eventListenerPort id="resetStartTimestamp">
+				<description>Resets the start timestamp for calculating the time passed by (the first timestamp is set at model start).</description>
+			</eventListenerPort>
+			<eventListenerPort id="sendOutputs">
+				<description>Formats and sends outputs, triggers the event timestampFormatted when outputs are available at the ports.</description>
+			</eventListenerPort>
+		</events>	
+				
+        <properties>
+			<property name="timestampFormat"
+				type="string"
+				value="dd.MM.yyyy-HH:mm:ss.SSS"
+				description="Format that must be valid according to java.text.SimpleDateFormat. It is used for formatting the UNIX timestamp as a date string. If it is invalid or null, the default date format is used."/>
+			<property name="diffTimeFormat"
+				type="string"
+				value="HH:mm:ss.SSS"
+				description="Format that must be valid according to java.text.SimpleDateFormat but for meaningfulness with only time components. It is used for formatting passed milliseconds (since start/reset) as a date string. If invalid or null, the default date format is used. 
+Important Usage Note: Only the format for time components shall be set, as otherwise the Unix epoch start date components (01.01.1970 at 00:00:00.000 o'clock) are added. e.g. if 5 seconds have passed by, using date components the output would look like 01.01.1970-00:00:05.000!"/>
+        </properties>
+    </componentType>
+</componentTypes>

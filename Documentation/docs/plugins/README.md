@@ -1,5 +1,7 @@
 ---
 title: AsTeRICS Plugins
+previous: false
+next: false
 ---
 
 # Plugins
