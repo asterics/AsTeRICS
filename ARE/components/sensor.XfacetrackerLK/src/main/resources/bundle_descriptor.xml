@@ -79,10 +79,10 @@
                       type="boolean"
                       value="true"                      
                       description="if selected, the video frame shows the current frame rate and device name as overlayed text."/>
-            <property name="resizeHeight"
+            <!-- <property name="resizeHeight"
                       type="integer"
                       value="120"
-                      description="The frame height for to be used for face detection. On slow platforms, decrease value, otherwise leave it."/>                        
+                      description="The frame height for to be used for face detection. On slow platforms, decrease value, otherwise leave it."/>                         -->
                       <!-- 
             <property name="cameraDisplayUpdate"
                       type="integer"
