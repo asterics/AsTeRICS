@@ -13,7 +13,7 @@ The installer for Windows (```Setup_AsTeRICS_x_y_z.exe```) contains the followin
 * ACS
 * WebACS
 * ARE
-* [AsTeRICS Packaging Environment (APE)](/develop/)
+* [AsTeRICS Packaging Environment (APE)](../develop/at-solution/)
 
 ### Download
 
@@ -83,7 +83,7 @@ On your desktop you will find the following links (short cuts):
 ![ACS Startmenu Entry](./img/quickstart07.png)
 ![ARE Startmenu Entry](./img/quickstart08.png)
 
-These short cuts can be used to start ACS and ARE. Alternaively, you can start these
+These short cuts can be used to start ACS and ARE. Alternatively, you can start these
 programs also from the Windows start menu, where additional liks to the Debug
 version of the ARE (which displays debugging information in a console window) and
 the AsTeRICS unistaller have been added:
@@ -157,20 +157,20 @@ Download [Oracle Java 8](https://www.oracle.com/java/technologies/javase-jre8-do
 
 #### Install AsTeRICS
 
-```
-sudo dpkg -i asterics-are-<version>.deb
+```bash
+sudo apt install libhidapi-libusb0 && sudo dpkg -i asterics-are-*.deb
 ```
 
-You will get an error message, if the dependencies had not been installed before:
-```
+If you get an error message, that the dependencies had not been installed before,
+```bash
 dpkg: dependency problems prevent configuration of asterics-are:
  asterics-are depends on libhidapi-libusb0; however:
   Package libhidapi-libusb0 is not installed.
 ```
 
-Execute the following command to install the dependencies:
+execute the following command to install the dependencies:
 
-```
+```bash
 sudo apt --fix-broken install
 ```
 
