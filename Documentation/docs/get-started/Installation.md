@@ -13,7 +13,7 @@ The installer for Windows (```Setup_AsTeRICS_x_y_z.exe```) contains the followin
 * ACS
 * WebACS
 * ARE
-* [AsTeRICS Packaging Environment (APE)](/develop/)
+* [AsTeRICS Packaging Environment (APE)](../develop/at-solution/)
 
 ### Download
 
@@ -83,7 +83,7 @@ On your desktop you will find the following links (short cuts):
 ![ACS Startmenu Entry](./img/quickstart07.png)
 ![ARE Startmenu Entry](./img/quickstart08.png)
 
-These short cuts can be used to start ACS and ARE. Alternaively, you can start these
+These short cuts can be used to start ACS and ARE. Alternatively, you can start these
 programs also from the Windows start menu, where additional liks to the Debug
 version of the ARE (which displays debugging information in a console window) and
 the AsTeRICS unistaller have been added:
