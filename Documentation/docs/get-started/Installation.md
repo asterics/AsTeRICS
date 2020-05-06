@@ -157,20 +157,20 @@ Download [Oracle Java 8](https://www.oracle.com/java/technologies/javase-jre8-do
 
 #### Install AsTeRICS
 
-```
-sudo dpkg -i asterics-are-<version>.deb
+```bash
+sudo apt install libhidapi-libusb0 && sudo dpkg -i asterics-are-*.deb
 ```
 
-You will get an error message, if the dependencies had not been installed before:
-```
+If you get an error message, that the dependencies had not been installed before,
+```bash
 dpkg: dependency problems prevent configuration of asterics-are:
  asterics-are depends on libhidapi-libusb0; however:
   Package libhidapi-libusb0 is not installed.
 ```
 
-Execute the following command to install the dependencies:
+execute the following command to install the dependencies:
 
-```
+```bash
 sudo apt --fix-broken install
 ```
 
