@@ -1231,172 +1231,6 @@
     </componentType>
 
 
-    <componentType id="asterics.EmulateFaultyPlugin"
-                   canonical_name="eu.asterics.component.actuator.emulatefaultyplugin.EmulateFaultyPluginInstance">
-        <type subtype="Test">actuator</type>
-        <singleton>false</singleton>
-        <description>Emulates a faulty plugin - supports throwing exceptions during method calls or hanging (unresponsive) method calls </description>
-        <ports>
-			<inputPort id="inA">
-				<description>input A</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-			<inputPort id="inB">
-				<description>input C</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-			<inputPort id="inC">
-				<description>input C</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="inD">
-				<description>input C</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-
-
-        </ports>
-		<events>
-			<eventListenerPort id="eventA">
-				<description>eventA</description>
-			</eventListenerPort>
-			<eventListenerPort id="eventB">
-				<description>eventB</description>
-			</eventListenerPort>
-			<eventListenerPort id="eventC">
-				<description>eventC</description>
-			</eventListenerPort>
-
-
-		</events>			
-        <properties>
-			<property name="instantiationException"
-				type="boolean"
-				value="false"
-				description="Produce an exception during instantion/setRuntimePropertyValue"/>        
-			<property name="startException"
-				type="boolean"
-				value="false"
-				description="Produce an exception during start method"/>
-			<property name="pauseException"
-				type="boolean"
-				value="false"
-				description="Produce an exception during pause method"/>
-			<property name="resumeException"
-				type="boolean"
-				value="false"
-				description="Produce an exception during resume method"/>
-			<property name="stopException"
-				type="boolean"
-				value="false"
-				description="Produce an exception during stop method"/>
-				
-				<!-- 
-			<property name="getInputPortException"
-				type="boolean"
-				value="false"
-				description="Produce an exception during method call"/>
-			<property name="getOutputPortException"
-				type="boolean"
-				value="false"
-				description="Produce an exception during method call"/>
-			<property name="getRuntimePropertyValueException"
-				type="boolean"
-				value="false"
-				description="Produce an exception during method call"/>
-			<property name="setRuntimePropertyValueException"
-				type="boolean"
-				value="false"
-				description="Produce an exception during method call"/>
-			<property name="getEventListenerPortException"
-				type="boolean"
-				value="false"
-				description="Produce an exception during method call"/>
-			<property name="getInputPortNullValue"
-				type="boolean"
-				value="false"
-				description="Return a null value"/>
-			<property name="getOutputPortNullValue"
-				type="boolean"
-				value="false"
-				description="Return a null value"/>
-			<property name="getRuntimePropertyNullValue"
-				type="boolean"
-				value="false"
-				description="Return a null value"/>
-			<property name="getEventListenerPortNullValue"
-				type="boolean"
-				value="false"
-				description="Return a null value"/>
-				-->
-			<property name="startDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-			<property name="pauseDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-			<property name="resumeDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-			<property name="stopDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-				<!-- 
-			<property name="getRuntimePropertyDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-			<property name="setRuntimePropertyDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-				-->
-			<property name="inADuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-			<property name="inBDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-			<property name="inCDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-			<property name="inDDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-			<property name="eventADuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-			<property name="eventBDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-			<property name="eventCDuration"
-				type="integer"
-				value="0"
-				description="Duration of hanging call in ms (-1=hangs forever)"/>
-
-        </properties>
-		<gui>
-			<width>30</width>
-			<height>20</height>
-		</gui>
-
-    </componentType>
-
-
     <componentType id="asterics.EnobioDisplay"
                    canonical_name="com.starlab.component.actuator.enobiodisplay.EnobioDisplayInstance">
         <type subtype="Graphical User Interface">actuator</type>
@@ -2821,57 +2655,6 @@
     </componentType>
 
 
-    <componentType id="asterics.LineWriter"
-                   canonical_name="eu.asterics.component.actuator.linewriter.LineWriterInstance">
-        <type subtype="File System">actuator</type>
-        <singleton>false</singleton>
-        <description>Writes single Lines into a file</description>
-        <ports>
-			<inputPort id="actLine">
-				<description>input string to be written</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-
-
-        </ports>
-		<events>
-
-
-		</events>			
-        <properties>
-			<property name="fileName"
-				type="string"
-				value="outfile"
-				description="the name and path of the output file (.txt will be added automatically)"/>
-			<property name="addTimeToFileName"
-				type="boolean"
-				value="false"
-				description="if true, the filename will be unique by adding the current time"/>
-			<property name="titleCaption"
-				type="string"
-				value=""
-				description="an optional title string which will be inserted as first line"/>
-			<property name="timestamp"
-				type="integer"
-				value="0"
-				combobox="no timestamp//milliseconds"
-				description="an optional timestamp can be added at the beginning of the each line"/>
-			<property name="lineEndMark"
-				type="integer"
-				value="0"
-				combobox="System-Default//LF (\n)//CR+LF (\r\n)"
-				description="the character(s) which mark a line end"/>
-			<property name="append"
-				type="boolean"
-				value="false"
-				description="if true, the file will be appended (not deleted)"/>
-
-        </properties>
-
-    </componentType>
-
-
     <componentType id="asterics.MediaPlayer"
                    canonical_name="eu.asterics.component.actuator.mediaplayer.MediaPlayerInstance">
         <type subtype="File System">actuator</type>
@@ -3994,6 +3777,223 @@
     </componentType>
 
 
+    <componentType id="asterics.EmulateFaultyPlugin"
+                   canonical_name="eu.asterics.component.actuator.emulatefaultyplugin.EmulateFaultyPluginInstance">
+        <type subtype="Test">actuator</type>
+        <singleton>false</singleton>
+        <description>Emulates a faulty plugin - supports throwing exceptions during method calls or hanging (unresponsive) method calls </description>
+        <ports>
+			<inputPort id="inA">
+				<description>input A</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="inB">
+				<description>input C</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="inC">
+				<description>input C</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inD">
+				<description>input C</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="eventA">
+				<description>eventA</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventB">
+				<description>eventB</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventC">
+				<description>eventC</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="instantiationException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during instantion/setRuntimePropertyValue"/>        
+			<property name="startException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during start method"/>
+			<property name="pauseException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during pause method"/>
+			<property name="resumeException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during resume method"/>
+			<property name="stopException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during stop method"/>
+				
+				<!-- 
+			<property name="getInputPortException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getOutputPortException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getRuntimePropertyValueException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="setRuntimePropertyValueException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getEventListenerPortException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getInputPortNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+			<property name="getOutputPortNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+			<property name="getRuntimePropertyNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+			<property name="getEventListenerPortNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+				-->
+			<property name="startDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="pauseDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="resumeDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="stopDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+				<!-- 
+			<property name="getRuntimePropertyDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="setRuntimePropertyDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+				-->
+			<property name="inADuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="inBDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="inCDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="inDDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="eventADuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="eventBDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="eventCDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+
+        </properties>
+		<gui>
+			<width>30</width>
+			<height>20</height>
+		</gui>
+
+    </componentType>
+
+
+    <componentType id="asterics.LineWriter"
+                   canonical_name="eu.asterics.component.actuator.linewriter.LineWriterInstance">
+        <type subtype="File System">actuator</type>
+        <singleton>false</singleton>
+        <description>Writes single Lines into a file</description>
+        <ports>
+			<inputPort id="actLine">
+				<description>input string to be written</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="fileName"
+				type="string"
+				value="outfile"
+				description="the name and path of the output file (.txt will be added automatically)"/>
+			<property name="addTimeToFileName"
+				type="boolean"
+				value="false"
+				description="if true, the filename will be unique by adding the current time"/>
+			<property name="titleCaption"
+				type="string"
+				value=""
+				description="an optional title string which will be inserted as first line"/>
+			<property name="timestamp"
+				type="integer"
+				value="0"
+				combobox="no timestamp//milliseconds"
+				description="an optional timestamp can be added at the beginning of the each line"/>
+			<property name="lineEndMark"
+				type="integer"
+				value="0"
+				combobox="System-Default//LF (\n)//CR+LF (\r\n)"
+				description="the character(s) which mark a line end"/>
+			<property name="append"
+				type="boolean"
+				value="false"
+				description="if true, the file will be appended (not deleted)"/>
+
+        </properties>
+
+    </componentType>
+
+
     <componentType id="asterics.PongGame"
                    canonical_name="eu.asterics.component.actuator.ponggame.PongGameInstance">
         <type subtype="Others">actuator</type>
@@ -4122,6 +4122,1018 @@
 			<width>3000</width>
 			<height>2000</height>
 		</gui>
+
+    </componentType>
+
+
+    <componentType id="asterics.TextDisplay"
+                   canonical_name="eu.asterics.component.actuator.textdisplay.TextDisplayInstance">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>GUI component, which displays text.</description>
+        <ports>
+			<inputPort id="input">
+				<description>Input string port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+        </ports>
+		<events>
+		    <eventListenerPort id="clear">
+                <description>clear the text</description>
+            </eventListenerPort>
+            <eventTriggererPort id="clicked">
+                <description>component clicked</description>
+            </eventTriggererPort>		
+		</events>			
+        <properties>
+        	<property name="caption"
+				type="string"
+				value="Text Display"
+				description="Caption of the component"/>
+			<property name="default"
+				type="string"
+				value=""
+				description="Defalult text"/>
+			<property name="textPosition"
+				type="integer"
+				value="1"
+				description="Position of the text"
+				combobox="left//center//right"/>
+			<property name="textColor"
+                type="integer"
+                value="0"
+                combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                description="color of text"/> 
+            <property name="backgroundColor"
+                type="integer"
+                value="11"
+                combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                description="background color"/> 
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
+        </properties>
+		<gui>
+			<width>3000</width>
+			<height>2000</height>
+		</gui>
+
+    </componentType>
+
+
+    <componentType id="asterics.Comparator"
+                   canonical_name="eu.asterics.component.processor.comparator.ComparatorInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Comparator for two inputs</description>
+        <ports>
+            <inputPort id="inA">
+                <description>Input port 1 of comparator</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="inB">
+                <description>Input port 2 of comparator</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            
+            <outputPort id="output">
+                <description>Output signal of comparator</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <events>
+
+            <eventTriggererPort id="conditionTrue">
+                <description>Event port triggers if condition becomes true</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="conditionFalse">
+                <description>Event port triggers if condition becomes false</description>
+            </eventTriggererPort>
+        </events>
+        <properties>
+            <property name="condition"
+                      type="integer"
+                      value="0"
+                      combobox="a greater b//a equals b//a lower b//a greater threshold//a equals threshold//a lower threshold//a between threshold and threshold2"
+                      description="condition for even generation"/>
+            <property name="outputMode"
+                      type="integer"
+                      value="2"
+                      combobox="output max//output min//output a if condition met"
+                      description="mode for output signal"/>
+            <property name="eventMode"
+                      type="integer"
+                      value="0"
+                      combobox="create event only if condition changes//create event on every incoming value"
+                      description="mode for event generation"/>
+            <property name="threshold"
+                      type="double"
+                      value="1"
+                      description="threshold for signal comparison with constant value"/>
+            <property name="threshold2"
+                      type="double"
+                      value="10"
+                      description="threshold2 for signal range comparison (a between threshold and threshold2)"/>
+        </properties>
+    </componentType>
+
+
+
+    <componentType id="asterics.ECMAScriptInterpreter"
+                   canonical_name="org.whitesoft.asterics.component.processor.ecmascriptinterpreter.ECMAScriptInterpreterInstance">
+        <type subtype="Scripting">processor</type>
+        <singleton>false</singleton>
+        <description>A plugin that can interpret ECMAScript files</description>
+        <ports>
+			<inputPort id="inputPort1">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort2">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort3">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort4">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort5">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort6">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort7">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+		    <inputPort id="inputPort8">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+							
+			    					
+			<outputPort id="outputPort1">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+			<outputPort id="outputPort2">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+			<outputPort id="outputPort3">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="outputPort4">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+						
+			<outputPort id="outputPort5">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="outputPort6">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="outputPort7">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="outputPort8">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+																								
+        </ports>
+		<events>
+			<eventListenerPort id="elpPort1">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort2">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort3">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort4">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort5">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort6">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort7">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort8">
+				<description>elp description</description>
+			</eventListenerPort>
+																											
+			<eventTriggererPort id="etpPort1">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort2">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort3">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort4">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort5">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort6">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort7">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort8">
+				<description>etp description</description>
+			</eventTriggererPort>
+																					
+		</events>			
+        <properties>
+			<property name="scriptname"
+				type="string"
+				value=""
+				description="the script to be executed"/>
+
+			<property name="value1"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value2"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value3"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value4"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value5"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value6"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value7"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value8"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+																		
+        </properties>
+
+    </componentType>
+
+
+    <componentType id="asterics.HRVAnalysis"
+                   canonical_name="eu.asterics.component.processor.hrvanalysis.HRVAnalysisInstance">
+        <type subtype="DSP and Feature Detection">processor</type>
+        <singleton>false</singleton>
+        <description>HRV - Analysis</description>
+        <ports>
+			<inputPort id="HRVInput">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<outputPort id="Runtime">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Pulserate">
+				<description>Pulserate of patient</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="SDNN">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="rMSSD">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="SDSD">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="pNN50">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>		
+			<outputPort id="pNN20">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="DD">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="start">
+				<description>Start HRV detection</description>
+			</eventListenerPort>
+
+		</events>	
+		<properties>		
+        <property name="samplerate"
+                      type="double"
+                      value="100"
+                      description="Samplerate of Inputsignal"/>     
+          <property name="OutlierRange"
+                      type="double"
+                      value="1.5"
+                      description="OutlierRange of peak"/>           
+        </properties>
+
+
+    </componentType>
+
+
+    <componentType id="asterics.NexusConnector"
+                   canonical_name="eu.asterics.component.processor.nexusconnector.NexusConnectorInstance">
+        <type subtype="Web">processor</type>
+        <singleton>false</singleton>
+        <description>Nexus Connector</description>
+        <ports>
+            <inputPort id="in1d">
+                <description>Input 1 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="in2d">
+                <description>Input 2 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="in3d">
+                <description>Input 3 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="in4d">
+                <description>Input 4 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="in5s">
+                <description>Input 5 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="in6s">
+                <description>Input 6 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="in7s">
+                <description>Input 7 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="in8s">
+                <description>Input 8 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <outputPort id="out1d">
+                <description>Output 1 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out2d">
+                <description>Output 2 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out3d">
+                <description>Output 3 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out4d">
+                <description>Output 4 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out5s">
+                <description>Output 5 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out6s">
+                <description>Output 6 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out7s">
+                <description>Output 7 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out8s">
+                <description>Output 8 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+        </ports>
+        <properties>
+            <property name="nexusHostname"
+                      type="string"
+                      value="localhost"
+                      description="Hostname of Nexus"/>
+            <property name="nexusPort"
+                      type="integer"
+                      value="9081"
+                      description="Port number of Nexus"/>
+            <property name="nexusComponentPath"
+                      type="string"
+                      value="nexus.asterics"
+                      description="Nexus component to bind to"/>
+        </properties>
+    </componentType>
+
+
+
+    <componentType id="asterics.Sampler"
+                   canonical_name="eu.asterics.component.processor.sampler.SamplerInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Sets the constant rate of the sampling</description>
+        <ports>
+			<inputPort id="input">
+				<description>Input port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="output">
+				<description>Output port</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="samplingRate"
+				type="double"
+				value="10"
+				description="Rate of the sampling (Hz)"/>
+			<property name="responseTime"
+				type="integer"
+				value="0"
+				description="Response time [ms]. If the time from arrival of the last input data exceeds the response time, the plugin stops sending output data."/>
+			<property name="sendNullSamples"
+				type="boolean"
+				value="false"
+				description="If this property is set and there is no input data or the response time is exceeded the plugin sends samples equal zero."/>
+
+        </properties>
+
+    </componentType>
+
+
+    <componentType id="asterics.StringPathSelector"
+                   canonical_name="eu.asterics.component.processor.stringpathselector.StringPathselectorInstance">
+        <type subtype="Signal Pathways">processor</type>
+        <singleton>false</singleton>
+        <description>StringPathselector routes signal to one of four output ports</description>
+        <ports>
+            <inputPort id="in">
+                <description>Input port</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+
+            <outputPort id="out1">
+                <description>Path 1</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out2">
+                <description>Path 2"</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out3">
+                <description>Path 3</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out4">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out5">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out6">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out7">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out8">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="select1">
+                <description>selects out-port 1</description>
+            </eventListenerPort>
+            <eventListenerPort id="select2">
+                <description>selects out-port 2</description>
+            </eventListenerPort>
+            <eventListenerPort id="select3">
+                <description>selects out-port 3</description>
+            </eventListenerPort>
+            <eventListenerPort id="select4">
+                <description>selects out-port 4</description>
+            </eventListenerPort>
+            <eventListenerPort id="select5">
+                <description>selects out-port 5</description>
+            </eventListenerPort>
+            <eventListenerPort id="select6">
+                <description>selects out-port 6</description>
+            </eventListenerPort>
+            <eventListenerPort id="select7">
+                <description>selects out-port 7</description>
+            </eventListenerPort>
+            <eventListenerPort id="select8">
+                <description>selects out-port 8</description>
+            </eventListenerPort>
+            <eventListenerPort id="selectNext">
+                <description>selects next out-port</description>
+            </eventListenerPort>
+            <eventListenerPort id="selectPrevious">
+                <description>selects previous out-port</description>
+            </eventListenerPort>
+        </events>
+        <properties>
+            <property name="activePorts"
+                      type="integer"
+                      value="1"
+                      combobox="1//2//3//4//5//6//7//8"
+                      description="number of connected (and active) ports"/>
+        </properties>
+    </componentType>
+
+
+
+    <componentType id="asterics.ButtonGrid"
+                   canonical_name="eu.asterics.component.sensor.buttongrid.ButtonGridInstance">
+        <type subtype="Graphical User Interface">sensor</type>
+        <singleton>false</singleton>
+        <description>Keyboard which sends event after button press</description> 
+        <ports>
+        </ports>
+        <events>
+            <eventTriggererPort id="button1">
+                <description>Button 1 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button2">
+                <description>Button 2 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button3">
+                <description>Button 3 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button4">
+                <description>Button 4 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button5">
+                <description>Button 5 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button6">
+                <description>Button 6 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button7">
+                <description>Button 7 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button8">
+                <description>Button 8 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button9">
+                <description>Button 9 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button10">
+                <description>Button 10 pressed</description>
+            </eventTriggererPort>      
+            <eventTriggererPort id="button11">
+                <description>Button 11 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button12">
+                <description>Button 12 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button13">
+                <description>Button 13 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button14">
+                <description>Button 14 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button15">
+                <description>Button 15 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button16">
+                <description>Button 16 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button17">
+                <description>Button 17 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button18">
+                <description>Button 18 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button19">
+                <description>Button 19 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button20">
+                <description>Button 20 pressed</description>
+            </eventTriggererPort>     
+        </events>
+        <properties>
+            <property name="caption"
+                      type="string"
+                      value="Keyboard"
+                      description="Caption of the keyboard"/>
+            <property name="horizontalOrientation"
+                      type="boolean"
+                      value="false"
+                      description="Sets keys in horizontal orientation"/> 
+			<property name="textColor"
+				type="integer"
+				value="13"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default"
+				description="Text color"/>
+			<property name="backgroundColor"
+				type="integer"
+				value="13"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default"
+				description="Background color of the button"/>
+			<property name="borderColor"
+				type="integer"
+				value="13"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default"
+				description="Color of the button frame"/>
+			<property name="borderThickness"
+				type="integer"
+				value="2"
+				description="Thickness of the button frame"/>
+			<property name="selectionFrameColor"
+				type="integer"
+				value="13"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default"
+				description="Color of the selection frame (active when hovering over the button)"/>
+			<property name="selectionFrameThickness"
+				type="integer"
+				value="4"
+				description="Thickness of the selection frame (active when hovering over the button)"/>
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
+
+            <property name="buttonCaption1"
+                      type="string"
+                      value="Button 1"
+                      description="Caption of the button 1"/>
+            <property name="buttonCaption2"
+                      type="string"
+                      value="Button 2"
+                      description="Caption of the button 2"/>
+            <property name="buttonCaption3"
+                      type="string"
+                      value=""
+                      description="Caption of the button 3"/>
+            <property name="buttonCaption4"
+                      type="string"
+                      value=""
+                      description="Caption of the button 4"/>
+            <property name="buttonCaption5"
+                      type="string"
+                      value=""
+                      description="Caption of the button 5"/>
+            <property name="buttonCaption6"
+                      type="string"
+                      value=""
+                      description="Caption of the button 6"/>
+            <property name="buttonCaption7"
+                      type="string"
+                      value=""
+                      description="Caption of the button 7"/>
+            <property name="buttonCaption8"
+                      type="string"
+                      value=""
+                      description="Caption of the button 8"/>
+            <property name="buttonCaption9"
+                      type="string"
+                      value=""
+                      description="Caption of the button 9"/>
+            <property name="buttonCaption10"
+                      type="string"
+                      value=""
+                      description="Caption of the button 10"/>
+            <property name="buttonCaption11"
+                      type="string"
+                      value=""
+                      description="Caption of the button 11"/>
+            <property name="buttonCaption12"
+                      type="string"
+                      value=""
+                      description="Caption of the button 12"/>
+            <property name="buttonCaption13"
+                      type="string"
+                      value=""
+                      description="Caption of the button 13"/>
+            <property name="buttonCaption14"
+                      type="string"
+                      value=""
+                      description="Caption of the button 14"/>
+            <property name="buttonCaption15"
+                      type="string"
+                      value=""
+                      description="Caption of the button 15"/>
+            <property name="buttonCaption16"
+                      type="string"
+                      value=""
+                      description="Caption of the button 16"/>
+            <property name="buttonCaption17"
+                      type="string"
+                      value=""
+                      description="Caption of the button 17"/>
+            <property name="buttonCaption18"
+                      type="string"
+                      value=""
+                      description="Caption of the button 18"/>
+            <property name="buttonCaption19"
+                      type="string"
+                      value=""
+                      description="Caption of the button 19"/>
+            <property name="buttonCaption20"
+                      type="string"
+                      value=""
+                      description="Caption of the button 20"/>
+
+            <property name="toolTip1"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 1"/>
+            <property name="toolTip2"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 2"/>
+            <property name="toolTip3"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 3"/>
+            <property name="toolTip4"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 4"/>
+            <property name="toolTip5"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 5"/>
+            <property name="toolTip6"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 6"/>
+            <property name="toolTip7"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 7"/>
+            <property name="toolTip8"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 8"/>
+            <property name="toolTip9"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 9"/>
+            <property name="toolTip10"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 10"/>
+            <property name="toolTip11"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 11"/>
+            <property name="toolTip12"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 12"/>
+            <property name="toolTip13"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 13"/>
+            <property name="toolTip14"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 14"/>
+            <property name="toolTip15"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 15"/>
+            <property name="toolTip16"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 16"/>
+            <property name="toolTip17"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 17"/>
+            <property name="toolTip18"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 18"/>
+            <property name="toolTip19"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 19"/>
+            <property name="toolTip20"
+                      type="string"
+                      value=""
+                      description="Tooltip text for button 20"/>                       
+        </properties>
+        <gui>
+            <width>500</width>
+            <height>2000</height>
+        </gui>
+    </componentType>
+
+
+
+    <componentType id="asterics.FourDJoystick"
+                   canonical_name="eu.asterics.component.sensor.fourdjoystick.FourDJoystickInstance">
+        <type subtype="Others">sensor</type>
+        <singleton>false</singleton>
+        <description>Plugin to interface the 4D Joystick developed by KI-I</description>
+        <ports>
+
+			<outputPort id="joyX">
+				<description>joystick x value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="joyY">
+				<description>joystick y value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="joyZ">
+				<description>joystick z value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="sipPuff">
+				<description>joystick sip/puff value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="CH5Pressed">
+				<description>channel 5 got pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="CH5Released">
+				<description>channel 5 got released</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="CH6Pressed">
+				<description>channel 6 got pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="CH6Released">
+				<description>channel 6 got released</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="comPort"
+				type="string"
+				value="COM0"
+				description="Com Port of the joystick"/>
+
+        </properties>
+
+    </componentType>
+
+
+    <componentType id="asterics.MicGPI"
+                   canonical_name="eu.asterics.component.sensor.micgpi.MicGPIInstance">
+        <type subtype="Generic Control Input">sensor</type>
+        <singleton>false</singleton>
+        <description>This plugin reads an input signal via the microphone input</description>
+        <ports>
+
+			<inputPort id="thresholdLow">
+				<description>threshold for button release</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="thresholdHigh">
+				<description>threshold for button release</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			
+		
+			<outputPort id="pressure">
+				<description>sound pressure level</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="frequency">
+				<description>the dominant frequency in the spectrum</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventTriggererPort id="inLow">
+				<description>This event gets fired if the signal goes beyond the lowThreshold</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="inHigh">
+				<description>This event gets fired if the signal goes over the highThreshold</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="samplingFrequency"
+				type="integer"
+				value="8000"
+				description="the sampling frequency setting for the audio input (min:300 Hz, max:44100 Hz)"/>
+			<property name="sampleSize"
+				type="integer"
+				value="2"
+				combobox="32//64//128//256//512//1024//2048"				
+				description="interval length (samples per calculation block)"/>
+			<property name="mode"
+				type="integer"
+				value="1"
+				combobox="average sample values//average absolute sample values//min value//max value//max absolute value"				
+				description="the calculation mode for the threshold and pressure output port (applied to the samples of the interval)"/>
+			<property name="thresholdLow"
+				type="integer"
+				value="-30"
+				description="threshold for low event"/>
+			<property name="thresholdHigh"
+				type="integer"
+				value="30"
+				description="threshold for high event"/>
+			<property name="noiseLevel"
+				type="double"
+				value="1.5"
+				description="sound below noise level will be attenuated"/>
+			<property name="calculateFrequency"
+                      type="boolean"
+                      value="false"
+                      description="if selected, the dominant frequency is calculated"/> 
+			<property name="printSpectrum"
+                      type="boolean"
+                      value="false"
+                      description="if selected, the frequency spectrum is shown in the console window"/> 
+			<property name="captureDevice"
+                type="string"
+                value="System Default"
+                getStringList="true"
+			    description="Specifies which device should be used for recording"/>
+        </properties>
 
     </componentType>
 
@@ -5327,63 +6339,6 @@
 				type="integer"
 				value="14"
 				description="the font size"/>
-			<property name="textColor"
-                type="integer"
-                value="0"
-                combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
-                description="color of text"/> 
-            <property name="backgroundColor"
-                type="integer"
-                value="11"
-                combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
-                description="background color"/> 
-            <property name="displayGUI"
-                      type="boolean"
-                      value="true"                      
-                      description="if selected, the GUI window will be shown"/>
-        </properties>
-		<gui>
-			<width>3000</width>
-			<height>2000</height>
-		</gui>
-
-    </componentType>
-
-
-    <componentType id="asterics.TextDisplay"
-                   canonical_name="eu.asterics.component.actuator.textdisplay.TextDisplayInstance">
-        <type subtype="Graphical User Interface">actuator</type>
-        <singleton>false</singleton>
-        <description>GUI component, which displays text.</description>
-        <ports>
-			<inputPort id="input">
-				<description>Input string port</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-        </ports>
-		<events>
-		    <eventListenerPort id="clear">
-                <description>clear the text</description>
-            </eventListenerPort>
-            <eventTriggererPort id="clicked">
-                <description>component clicked</description>
-            </eventTriggererPort>		
-		</events>			
-        <properties>
-        	<property name="caption"
-				type="string"
-				value="Text Display"
-				description="Caption of the component"/>
-			<property name="default"
-				type="string"
-				value=""
-				description="Defalult text"/>
-			<property name="textPosition"
-				type="integer"
-				value="1"
-				description="Position of the text"
-				combobox="left//center//right"/>
 			<property name="textColor"
                 type="integer"
                 value="0"
@@ -6657,6 +7612,185 @@
 
 
 
+    <componentType id="asterics.BlinkChangeDetector"
+                   canonical_name="eu.asterics.component.processor.blinkchangedetector.BlinkChangeDetectorInstance">
+        <type subtype="Sensor Data and Reasoning">processor</type>
+        <singleton>false</singleton>
+        <description>The plugin detects blinks, based on both eyes' simultaneous open and closed states, which are indicated by externally fired events, 
+and then calculates and outputs blink-related metrics. When firing the eyes' state events, this plugin handles itself, 
+whether the state has changed or stayed the same for a while.
+A blink's start is defined as both eyes' state having simultaneously changed from open to closed, 
+the blink's end is indicated by both eyes' being reopened again. There is an ongoing (a "current") blink as soon as a blink's start is detected.
+        
+Metrics that can be forwarded and continuously output:
+The respective "forwarding" event listeners allow recalculating and forwarding blink rate or blink duration to the output ports on demand. 
+Further, blink rate and blink duration are recalculated and sent to the output ports when the eyes' state changes, and if specified via properties, in a certain interval. 
+If the eyes' state events are detected but the state has not changed, there is only a recalculation and output when propOutputIntervalMs 
+is set and has passed by since the last state-based output. 
+        
+Note: The duration changes while the eyes are closed and is set to 0 milliseconds when the eyes' state changes to closed. 
+It is longest at the first eyesAreOrBecomeOpen event in a row and then set back to 0 milliseconds again till the next eyesAreOrBecomeClosed is detected.
+In contrast, the rate changes steadily and is unlikely to ever be 0 Hz again, independently from eyes being closed or open.
+A blink is included in the rate calculation as soon as it has started (i.e. the eyes changed to closed).
+        
+Trends:
+Changes in blink rate and blink duration are analysed at certain eyes' states respectively state changes. 
+Then the plugin fires events, if certain thresholds are exceeded respectively undercut. 
+The detectable trends (rate increase/decrease and duration prolongation/shortening) work with the same basic detection algorithm,
+described below, but using trend-specific properties.
+The rate trend is analysed, when a blink starts or the output interval leads to recalculation. 
+The duration trend is only analysed, when a blink ends (as then the final duration is clear and 
+as there cannot be a duration analysis while no blink is going on, either). 
+Trend detection is never done when there is a rate or duration recalculation and output due to forwarding events.
+        
+Basic Trend Detection Algorithm: 
+Blink duration trend detection as well as blink rate trend detection allow certain thresholds. 
+All of them are optional and specify whether only an increasing, only a decreasing, both or no trends are detectable.
+Each calculated value not undercutting the lower and not exceeding the upper threshold is "within range". 
+		
+If the most recently calculated value is passed on to trend detection, three cases are possible: 
+	1) The value exceeds the upper threshold which starts the detection algorithm for a currently ongoing increasing trend.
+	2) The value undercuts the lower threshold which starts the detection algorithm for a currently ongoing decreasing trend.
+	3) The value is within range which means an ongoing trend is not interrupted but no new trend can be detected either.
+If one of the thresholds is not set, the corresponding case cannot appear but does not influence the others. 
+If trend detection into one direction is initiated, an opposite trend is always interrupted.
+Whenever starting trend detection into one direction, the corresponding internal counter (above upper threshold or below lower threshold)  
+is set to 1, then the buffer of earlier calculated values is walked through backwards, i.e. the more recent values first. 
+Each value within the range does not affect trend detection, whereas each crossing a threshold in the same direction increases 
+the counter and in the opposite direction interrupts this turn of trend detection.
+Results:
+The algorithm terminates with firing the corresponding trend detection event, as soon as the counter exceeds howManyDurationOutliers (for a duration trend) or howManyRateOutliers (for a rate trend), respectively.
+The algorithm terminates with not firing any detection event, if the start of the buffer was reached or if it was interrupted by a value crossing the opposite threshold. 
+        </description>
+        <ports>
+			<outputPort id="blinkDurationMs">
+				<description> Outputs the currently recalculated duration in milliseconds (ms) since blink start, whenever the event forwardCurrentBlinkDuration is detected, eyes' state changed to closed, 
+or eyesAreOrBecomeOpen or eyesAreOrBecomeClosed are detected and propOutputIntervalMs passed by. 
+Outputs 0, if currently the eyes are open (no current blink - indicated by the event eyesAreOrBecomeOpened).
+				</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="blinkRateHz">
+				<description>Outputs the current recalculated blink rate (in Hertz) since the plugin's start, whenever the event forwardCurrentBlinkRate is detected, 
+or when eyesAreOrBecomeOpen or eyesAreOrBecomeClosed are detected and propOutputIntervalMs passed by.
+It is possible to make the plugin calculate it for a specified observation period, rather than since model start, this can be set by the property rateObservationPeriodMinutes.
+				</description>
+				<dataType>double</dataType>
+			</outputPort>
+        </ports>
+        
+		<events>
+			<eventTriggererPort id="blinkRateIncreased">
+				<description>Triggers when the detection of an increasing blink rate trend was positive. 
+Also, the properties rateObservationPeriodMinutes and trendsBufferSize are considered and must therefore be set meaningfully (or be disabled).
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="blinkRateDecreased">
+				<description>Triggers when the detection of a decreasing blink rate trend was positive. 
+Also, the properties rateObservationPeriodMinutes and trendsBufferSize are considered and must therefore be set meaningfully (or be disabled).
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="blinkDurationLonger">
+				<description>Triggers when the detection of an increasing blink duration trend was positive.
+Also, the property trendsBufferSize is considered and must therefore be set meaningfully (or be disabled).
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="blinkDurationShorter">
+				<description>Triggers when the detection of a decreasing blink duration trend was positive.
+Also, the property trendsBufferSize is considered and must therefore be set meaningfully (or be disabled).
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="blinkStarts">
+				<description>Triggers when a blink's start is detected during the handling of the eyesAreOrBecomeClosed event.</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="blinkEnds">
+				<description>Triggers when a blink's end is detected during the handling of the eyesAreOrBecomeOpen event.</description>
+			</eventTriggererPort>
+			
+			<eventListenerPort id="eyesAreOrBecomeClosed">
+				<description>The event represents the closed-state of the eyes and the listener handles, whether it indicates that a new blink has just 
+started or eyes have not even been opened in the meantime (no previous eyesAreOrBecomeOpen since last firing this event). 
+This listener is responsible for triggering blinkStarts.
+Considering propOutputIntervalMs and the current blink state, it recalculates blink duration, blink rate and initiates trend detection for the blink rate.
+				</description>
+			</eventListenerPort>
+			<eventListenerPort id="eyesAreOrBecomeOpen">
+				<description>The event represents the open-state of the eyes and the listener handles, whether it indicates that a blink has just 
+ended or eyes have not even been closed before (no previous eyesAreOrBecomeClosed since last firing this event). 
+This listener is responsible for triggering blinkEnds. 
+Considering propOutputIntervalMs and the current blink state, it recalculates blink duration, blink rate and initiates trend detection for the blink rate and blink duration.
+				</description>
+			</eventListenerPort>
+			<eventListenerPort id="forwardCurrentBlinkDuration">
+				<description>Sends the time that has passed by since blink start to the output port. 0, if currently not blinking (i.e. if eyes are open). It does not do any threshold evaluations (trend detection) or trigger events!</description>
+			</eventListenerPort>
+			<eventListenerPort id="forwardCurrentBlinkRate">
+				<description>Sends the recalculated blink rate, no matter whether there is currently a blink (i.e. eyes closed) going on. A possible ongoing blink is already included in the rate calculation. It does not do any threshold evaluations or trigger events!</description>
+			</eventListenerPort>
+		</events>	
+				
+        <properties>
+			<property name="outputIntervalMs"
+				type="integer"
+				value="-1"
+				description="Defines how often the blink rate and duration (also 0, if currently not blinking) are sent to the output ports without the forwarding events being fired. 
+This is only relevant, if the eyes' state has not changed as at blink end or blink start the output ports always receive data. 
+This property was introduced in order not to send values too often (e.g. in a 1ms-interval, if the source for eyes state detection such as a camera plugin would fire events that often) 
+but to adapt the outputs for visualization in an oscilloscope etc. The unit for the interval is milliseconds (ms). 
+Rate is always recalculated and sent to the output port when a blink starts, the duration, if a blink starts (0 ms) or ends. 
+If those outputs, together with output (recalculation and) forwarding events on demand is sufficient, and no continuous output is desired, it can be disabled by setting 0 or a negative value. 
+It is not possible to turn off the outputs, just described for blink starts or ends."/>
+			<property name="trendsBufferSize"
+				type="integer"
+				value="10"
+				description="Used for blink rate and blink duration trend detection: Defines how many blink rates and blink durations can be looked back for detecting blink rate and blink duration outliers in trend detection. 
+This buffer must not be lower than howManyRateOutliers and howManyDurationOutliers properties, as then the conditions to fire the corresponding events can never be fulfilled! 
+Value 0 disables the buffer (only meaningful if the needed number of outliers is 1 or disabled). Negative values are invalid and the default value is used. 
+This must not be confused with rateObservationPeriodMinutes which restricts the period for which blinks are considered when calculating the current blink rate."/>
+			<property name="threshDurationHighMs"
+				type="integer"
+				value="500"
+				description="Used for blink duration trend detection: Defines the blink duration in milliseconds (ms) above which a blink is detected as an outlier, representing a prolonged blink duration. 
+This upper threshold can be disabled by setting it to 0 or a negative value."/>
+			<property name="threshDurationLowMs"
+				type="integer"
+				value="-1"
+				description="Used for blink duration trend detection: Defines the blink duration in milliseconds below which a blink is detected as an outlier, representing a shortened blink duration. 
+This lower threshold can be disabled by setting it to 0 or a negative value. "/>
+			<property name="howManyDurationOutliers"
+				type="integer"
+				value="3"
+				description="Used for blink duration trend detection: Defines how many blink duration outliers must occur in one trend direction within the buffered durations for a duration trend to be detected. 
+If a trend shall be detected, as soon as there is one outlier, it must be set to 1, duration trend detection can be disabled by setting it to 0 or a negative value. 
+The 1-outlier option especially makes sense when no buffer is used."/>
+			<property name="threshRateHighHz"
+				type="double"
+				value="1"
+				description="Used for blink rate trend detection: Defines above which rate in Hertz (Hz) a blink rate must be, in order to count towards an increasing blink rate trend. 
+This higher threshold can be disabled by setting it to 0 or a negative value."/>
+			<property name="threshRateLowHz"
+				type="double"
+				value="-1"
+				description="Used for blink rate trend detection: Defines below which rate in Hertz (Hz) a blink rate must be, in order to count towards a decreasing blink rate trend. 
+This lower threshold can be disabled by setting it to 0 or a negative value."/>
+			<property name="howManyRateOutliers"
+				type="integer"
+				value="3"
+				description="Used for blink rate trend detection: Defines how many blink rate outliers must occur in one trend direction within the buffered rates for a rate trend to be detected. 
+If a trend shall be detected, as soon as there is one outlier, it must be set to 1, rate trend detection can be disabled by setting it to 0 or a negative value. 
+The 1-outlier option especially makes sense when no buffer is used."/>
+			<property name="rateObservationPeriodMinutes"
+				type="integer"
+				value="2"
+				description="Used for blink rate calculation and rate trend detection: Defines the length of the observation period for the blink rate in minutes, 
+e.g. if 3, the number of blinks during the last 3 minutes (sliding window) is considered when calculating the blink rate for this 3-minutes-period.
+If this property is used, no memory control is done, thus it is recommended not to use a period longer than 1 day (1440 minutes). 
+If all blinks and the whole time period since model start (memory control restricts it to several hours though) shall be considered, the observation period can be disabled by setting it to 0 or a negative number. 
+Note, that the rate for a natural blinking behavior gets steadily flatter then, as time passes by and might not be representative for trend detection."/>
+        </properties>
+    </componentType>
+
+
     <componentType id="asterics.BlinkDetector"
                    canonical_name="com.starlab.component.processor.blinkdetector.BlinkDetectorInstance">
         <type subtype="DSP and Feature Detection">processor</type>
@@ -6761,66 +7895,6 @@
 		</properties>
 
     </componentType>
-
-
-    <componentType id="asterics.Comparator"
-                   canonical_name="eu.asterics.component.processor.comparator.ComparatorInstance">
-        <type subtype="Basic Math">processor</type>
-        <singleton>false</singleton>
-        <description>Comparator for two inputs</description>
-        <ports>
-            <inputPort id="inA">
-                <description>Input port 1 of comparator</description>
-                <mustBeConnected>true</mustBeConnected>
-                <dataType>double</dataType>
-            </inputPort>
-            <inputPort id="inB">
-                <description>Input port 2 of comparator</description>
-                <mustBeConnected>false</mustBeConnected>
-                <dataType>double</dataType>
-            </inputPort>
-            
-            <outputPort id="output">
-                <description>Output signal of comparator</description>
-                <dataType>double</dataType>
-            </outputPort>
-        </ports>
-        <events>
-
-            <eventTriggererPort id="conditionTrue">
-                <description>Event port triggers if condition becomes true</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="conditionFalse">
-                <description>Event port triggers if condition becomes false</description>
-            </eventTriggererPort>
-        </events>
-        <properties>
-            <property name="condition"
-                      type="integer"
-                      value="0"
-                      combobox="a greater b//a equals b//a lower b//a greater threshold//a equals threshold//a lower threshold//a between threshold and threshold2"
-                      description="condition for even generation"/>
-            <property name="outputMode"
-                      type="integer"
-                      value="2"
-                      combobox="output max//output min//output a if condition met"
-                      description="mode for output signal"/>
-            <property name="eventMode"
-                      type="integer"
-                      value="0"
-                      combobox="create event only if condition changes//create event on every incoming value"
-                      description="mode for event generation"/>
-            <property name="threshold"
-                      type="double"
-                      value="1"
-                      description="threshold for signal comparison with constant value"/>
-            <property name="threshold2"
-                      type="double"
-                      value="10"
-                      description="threshold2 for signal range comparison (a between threshold and threshold2)"/>
-        </properties>
-    </componentType>
-
 
 
     <componentType id="asterics.ComPort"
@@ -7184,6 +8258,48 @@
     </componentType>
 
 
+    <componentType id="asterics.DateToDouble"
+                   canonical_name="eu.asterics.component.processor.datetodouble.DateToDoubleInstance">
+        <type subtype="Data Converters">processor</type>
+        <singleton>false</singleton>
+        <description>Converts a date string to a Unix epoch timestamp in milliseconds, using the default time zone and a property-defined date format.</description>
+        <ports>
+			<inputPort id="dateString">
+				<description>Date string input to be converted using the date format given by the property. 
+The event formatInput is also fired internally whenever this input port receives data.
+				</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			
+			<outputPort id="timestampUnixMs">
+				<description>The converted Unix epoch timestamp in milliseconds.</description>
+				<dataType>double</dataType>
+			</outputPort>
+        </ports>
+        
+		<events>
+			<eventTriggererPort id="dateFormatted">
+				<description>Triggers when an output value is available at the output port.</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="conversionFailed">
+				<description>Triggers when a conversion attempt failed (might happen if inputs are missing or do not fit the specified date format).</description>
+			</eventTriggererPort>
+
+			<eventListenerPort id="formatInput">
+				<description>Initiates conversion for the current input date string, triggers dateFormatted when done.</description>
+			</eventListenerPort>
+		</events>			
+		
+        <properties>
+			<property name="dateFormat"
+				type="string"
+				value="dd.MM.yyyy-HH:mm:ss.SSS"
+				description="The format of the incoming date string. It is used for conversion into a UNIX timestamp in milliseconds. If invalid (according to java.text.SimpleDateFormat) or null, the default date format is tried. If conversion fails because of missing or invalid input conversionFailed is triggered."/>
+        </properties>
+    </componentType>
+
+
     <componentType id="asterics.Deadzone"
                    canonical_name="eu.asterics.component.processor.deadzone.DeadzoneInstance">
         <type subtype="Signal Shaping">processor</type>
@@ -7420,191 +8536,6 @@
 		</events>			
         <properties>
 
-        </properties>
-
-    </componentType>
-
-
-    <componentType id="asterics.ECMAScriptInterpreter"
-                   canonical_name="org.whitesoft.asterics.component.processor.ecmascriptinterpreter.ECMAScriptInterpreterInstance">
-        <type subtype="Scripting">processor</type>
-        <singleton>false</singleton>
-        <description>A plugin that can interpret ECMAScript files</description>
-        <ports>
-			<inputPort id="inputPort1">
-				<description>input port description</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="inputPort2">
-				<description>input port description</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="inputPort3">
-				<description>input port description</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="inputPort4">
-				<description>input port description</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="inputPort5">
-				<description>input port description</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="inputPort6">
-				<description>input port description</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="inputPort7">
-				<description>input port description</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-		    <inputPort id="inputPort8">
-				<description>input port description</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-							
-			    					
-			<outputPort id="outputPort1">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-
-			<outputPort id="outputPort2">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-
-			<outputPort id="outputPort3">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-			
-			<outputPort id="outputPort4">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-						
-			<outputPort id="outputPort5">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-			
-			<outputPort id="outputPort6">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-			
-			<outputPort id="outputPort7">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-			
-			<outputPort id="outputPort8">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-																								
-        </ports>
-		<events>
-			<eventListenerPort id="elpPort1">
-				<description>elp description</description>
-			</eventListenerPort>
-			<eventListenerPort id="elpPort2">
-				<description>elp description</description>
-			</eventListenerPort>
-			<eventListenerPort id="elpPort3">
-				<description>elp description</description>
-			</eventListenerPort>
-			<eventListenerPort id="elpPort4">
-				<description>elp description</description>
-			</eventListenerPort>
-			<eventListenerPort id="elpPort5">
-				<description>elp description</description>
-			</eventListenerPort>
-			<eventListenerPort id="elpPort6">
-				<description>elp description</description>
-			</eventListenerPort>
-			<eventListenerPort id="elpPort7">
-				<description>elp description</description>
-			</eventListenerPort>
-			<eventListenerPort id="elpPort8">
-				<description>elp description</description>
-			</eventListenerPort>
-																											
-			<eventTriggererPort id="etpPort1">
-				<description>etp description</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="etpPort2">
-				<description>etp description</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="etpPort3">
-				<description>etp description</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="etpPort4">
-				<description>etp description</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="etpPort5">
-				<description>etp description</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="etpPort6">
-				<description>etp description</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="etpPort7">
-				<description>etp description</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="etpPort8">
-				<description>etp description</description>
-			</eventTriggererPort>
-																					
-		</events>			
-        <properties>
-			<property name="scriptname"
-				type="string"
-				value=""
-				description="the script to be executed"/>
-
-			<property name="value1"
-				type="string"
-				value=""
-				description="a general purpose value that can be read by the script"/>
-			<property name="value2"
-				type="string"
-				value=""
-				description="a general purpose value that can be read by the script"/>
-			<property name="value3"
-				type="string"
-				value=""
-				description="a general purpose value that can be read by the script"/>
-			<property name="value4"
-				type="string"
-				value=""
-				description="a general purpose value that can be read by the script"/>
-			<property name="value5"
-				type="string"
-				value=""
-				description="a general purpose value that can be read by the script"/>
-			<property name="value6"
-				type="string"
-				value=""
-				description="a general purpose value that can be read by the script"/>
-			<property name="value7"
-				type="string"
-				value=""
-				description="a general purpose value that can be read by the script"/>
-			<property name="value8"
-				type="string"
-				value=""
-				description="a general purpose value that can be read by the script"/>
-																		
         </properties>
 
     </componentType>
@@ -8740,71 +9671,55 @@
     </componentType>
 
 
-    <componentType id="asterics.HRVAnalysis"
-                   canonical_name="eu.asterics.component.processor.hrvanalysis.HRVAnalysisInstance">
-        <type subtype="DSP and Feature Detection">processor</type>
+    <componentType id="asterics.HRVRmssdFromRR"
+                   canonical_name="eu.asterics.component.processor.hrvrmssdfromrr.HRVRmssdFromRRInstance">
+        <type subtype="Sensor Data and Reasoning">processor</type>
         <singleton>false</singleton>
-        <description>HRV - Analysis</description>
+        <description>Calculates and outputs the Heart Rate Variability (HRV) in terms of RMSSD (Root Mean Square of Successive Differences) in milliseconds (ms) based on incoming R-R intervals (also in ms). 
+A sliding window of the x most recent R-R intervals, x being the property rmssdWindowSize, is used for the calculation, which is first started as soon as there have been x samples since the last reset (or model start).
+Calculation and collection of samples can be paused and continued via event listener ports. The output port rmssd only delivers a value, if there is an actual calculation (i.e. currently no pause and enough samples).
+		</description>
         <ports>
-			<inputPort id="HRVInput">
-				<description>input port description</description>
+			<inputPort id="rrInterval">
+				<description>R-R interval in ms, i.e. the time interval between the most significant, the highest, peaks (the R-peaks) of 2 consecutive QRS' of an ECG (electrocardiogram).</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
-			<outputPort id="Runtime">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Pulserate">
-				<description>Pulserate of patient</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="SDNN">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="rMSSD">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="SDSD">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="pNN50">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>		
-			<outputPort id="pNN20">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="DD">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			
 
-
+			<outputPort id="rmssd">
+				<description>RMSSD (Root Mean Square of Successive Differences) in ms, calculated from the collected input port signals (R-R intervals in the sliding window).</description>
+				<dataType>double</dataType>
+			</outputPort>
         </ports>
+        
 		<events>
-			<eventListenerPort id="start">
-				<description>Start HRV detection</description>
+			<eventListenerPort id="resetCalculation">
+				<description>Discards previous R-R intervals and resets the counter of intervals used for the calculation. Does not influence running or paused states, i.e. if the plugin is currently paused, it will stay paused, otherwise there is a recalculation as soon as there are (again) enough samples.</description>
 			</eventListenerPort>
-
+			<eventListenerPort id="pauseCalculation">
+				<description>From now on RMSSD is no longer recalculated and no value is sent to the output port but R-R values from the input port continue to be stored (more recent ones overwrite existing ones due to the sliding window). Can be fired in order to wait for more meaningful R-R samples before the next calculation.</description>
+			</eventListenerPort>
+			<eventListenerPort id="continueCalculation">
+				<description>Must be fired after each pauseCalculation to continue RMSSD calculation and sending the result to the output port again.</description>
+			</eventListenerPort>
+			<eventListenerPort id="pauseComponent">
+				<description>Completely pauses the component's activity, i.e. from now on no RMSSD is recalculated and sent to the output port. In addition to a pauseCalculation, no more R-R values from the input port are collected, either.</description>
+			</eventListenerPort>
+			<eventListenerPort id="continueComponent">
+				<description>To be triggered after pauseComponent in order to collect R-R values from the input port again (values aren't reset but progressively overwritten due to the sliding window) and to continue RMSSD calculation and sending the result to the output port.</description>
+			</eventListenerPort>
+			
+			<eventTriggererPort id="rmssdRecalculated">
+				<description>Triggers whenever a RMSSD calculation has been finished and the current RMSSD value is available at the output port, i.e. if rmssdWindowSize is 100 it will trigger first when 100 intervals were received and calculation has finished, then after each further interval and calculation completion.</description>
+			</eventTriggererPort>
 		</events>	
-		<properties>		
-        <property name="samplerate"
-                      type="double"
-                      value="100"
-                      description="Samplerate of Inputsignal"/>     
-          <property name="OutlierRange"
-                      type="double"
-                      value="1.5"
-                      description="OutlierRange of peak"/>           
+				
+        <properties>
+        	<property name="rmssdWindowSize"
+				type="integer"
+				value="100"
+				description="The number of R-R intervals that are used for each RMSSD calculation (sliding window). Example: If set to 100, the 100 most recent R-R intervals are taken into consideration and calculation is not started before at least 100 values have been received at the input port. Valid value must be > 1, otherwise it is replaced by the default value."/>
         </properties>
-
-
     </componentType>
 
 
@@ -9003,6 +9918,115 @@
 
         </properties>
 
+    </componentType>
+
+
+    <componentType id="asterics.JsonParser"
+                   canonical_name="eu.asterics.component.processor.jsonparser.JsonParserInstance">
+        <type subtype="Data Converters">processor</type>
+        <singleton>false</singleton>
+        <description>Receives a JSON (JavaScript Object Notation) string and JSON field name as input and parses it into a JSON object to send one or more field values (several ones, 
+only if the keepParsedObject is true and other jsonFieldName input values follow). For details on which errors are handled (by event listeners) and error messages are provided for, 
+see description of the error output port and of the event triggers that cause an error port output.
+		</description>
+        <ports>
+			<inputPort id="jsonInputString">
+				<description>The JSON-formatted string to be converted into a JSON object.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="jsonFieldName">
+				<description>The key/name of the JSON object's field, of which the value shall be sent to the output port.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="keepParsedObject">
+				<description>Optional. If connected, it overwrites the keepParsedObject property.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>boolean</dataType>
+			</inputPort>
+
+			<outputPort id="jsonFieldValue">
+				<description>The value of the JSON field, identified by jsonFieldName, converted to a string (also "" is valid; an explicit null is converted to "null"). 
+In case of failure, it will be "" and the error port provides details.
+				</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="latestReadFieldName">
+				<description>The name of the field whenever an attempt of reading a field value (from the parsed JSON object) has been completed. 
+This output can only be "" if the field name was ""/null/unset, in which case the error output port provides details.
+				</description>
+				<dataType>string</dataType>
+			</outputPort>	
+			<outputPort id="error">
+				<description>Receives a value (different from "") whenever an attempt of input parsing or reading the next field fails. No matter whether it is 
+because of a missing JSON object (as needed for reading a field but not previously parsed) or missing or invalid input port values. It receives "" (= no error) 
+at the next successful parse or read. Thus it can be used for showing error messages.
+				</description>
+				<dataType>string</dataType>
+			</outputPort>
+        </ports>
+
+		<events>
+			<eventListenerPort id="parseInput">
+				<description>Uses the value at the input port for parsing and sending the desired JSON field (identified by the jsonFieldName input) value to the jsonFieldValue output port.</description>
+			</eventListenerPort>
+			<eventListenerPort id="readNextField">
+				<description>Triggers the next attempt of reading the value of the currently desired JSON field (identified by jsonFieldName) from an already parsed JSON object. 
+This event must be used after parseInput (which must be repeated if keepParsedObject is set to false). parseInput, in combination with a well-matched keepParsedObject property/port, 
+is to assure that there is already a JSON object from which values can be read when firing readNextField.
+				</description>
+			</eventListenerPort>
+			<eventListenerPort id="rejectParsedObject">
+				<description>Unsets the parsed JSON object for the case that keepParsedObject is true (via property or overwritten by input port value) or if it is false but no 
+successful reading of any JSON field has happened (see property description).
+				</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="inputParsed">
+				<description>Triggers to indicate that the plugin is done with parsing the JSON input (string) into a JSON object.</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fieldValueAvailable">
+				<description>Triggers when the value of the desired JSON field (specified by the input jsonFieldName and now identified by the output latestReadFieldName) 
+is available at the jsonFieldValue output port.
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fieldValueNotFound">
+				<description>Triggers when trying to read a field but when there is no field with the name given at the input port within the parsed JSON object (string). 
+Sends a message to the error output.
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fieldValueInvalidFormat">
+				<description>Triggers when trying to read a field but when there has been an error returning the value of the desired JSON field. 
+The value has a wrong/an invalid format but is found (i.e. the key is existent). This is the case whenever a found value cannot be parsed to a string 
+(which is the output format at the output port jsonFieldValue). Sends a message to the error output.
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="invalidInputFormat">
+				<description>Triggers when trying to parse the JSON input string but when it cannot be parsed into a JSON object (to later read values from). 
+Sends a message to the error output.
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="missingJsonInput">
+				<description>When trying to parse the JSON input string but when there has been no value at the input port jsonInputString. 
+Sends a message to the error output.
+				</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="missingFieldName">
+				<description>Triggers when trying to read from an already parsed JSON object but when there has been no value at the input port jsonFieldName. 
+Sends a message to the error output.
+				</description>
+			</eventTriggererPort>
+		</events>			
+
+        <properties>
+			<property name="keepParsedObject"
+				type="boolean"
+				value="true"
+				description="Specifies, whether to keep the parsed JSON object (the one resulting from the latest parsing of jsonInputString) until the next value appears at the jsonInputString port - to read further fields in the meanwhile. 
+Usage Note: if a field reading attempt fails, a maybe stored parsed JSON object will never be unset, independently from the value of this property. This is to assure that each JSON input delivers at least one field value or otherwise is replaced by the next JSON input. 
+In order to force the parsed JSON object's rejection, rejectParsedObject must be triggered."/>
+        </properties>
     </componentType>
 
 
@@ -9622,103 +10646,6 @@
         </properties>
 
     </componentType>
-
-
-    <componentType id="asterics.NexusConnector"
-                   canonical_name="eu.asterics.component.processor.nexusconnector.NexusConnectorInstance">
-        <type subtype="Web">processor</type>
-        <singleton>false</singleton>
-        <description>Nexus Connector</description>
-        <ports>
-            <inputPort id="in1d">
-                <description>Input 1 sends data to the Nexus</description>
-                <mustBeConnected>false</mustBeConnected>
-                <dataType>double</dataType>
-            </inputPort>
-            <inputPort id="in2d">
-                <description>Input 2 sends data to the Nexus</description>
-                <mustBeConnected>false</mustBeConnected>
-                <dataType>double</dataType>
-            </inputPort>
-            <inputPort id="in3d">
-                <description>Input 3 sends data to the Nexus</description>
-                <mustBeConnected>false</mustBeConnected>
-                <dataType>double</dataType>
-            </inputPort>
-            <inputPort id="in4d">
-                <description>Input 4 sends data to the Nexus</description>
-                <mustBeConnected>false</mustBeConnected>
-                <dataType>double</dataType>
-            </inputPort>
-            <inputPort id="in5s">
-                <description>Input 5 sends data to the Nexus</description>
-                <mustBeConnected>false</mustBeConnected>
-                <dataType>string</dataType>
-            </inputPort>
-            <inputPort id="in6s">
-                <description>Input 6 sends data to the Nexus</description>
-                <mustBeConnected>false</mustBeConnected>
-                <dataType>string</dataType>
-            </inputPort>
-            <inputPort id="in7s">
-                <description>Input 7 sends data to the Nexus</description>
-                <mustBeConnected>false</mustBeConnected>
-                <dataType>string</dataType>
-            </inputPort>
-            <inputPort id="in8s">
-                <description>Input 8 sends data to the Nexus</description>
-                <mustBeConnected>false</mustBeConnected>
-                <dataType>string</dataType>
-            </inputPort>
-            <outputPort id="out1d">
-                <description>Output 1 receives data from the Nexus</description>
-                <dataType>double</dataType>
-            </outputPort>
-            <outputPort id="out2d">
-                <description>Output 2 receives data from the Nexus</description>
-                <dataType>double</dataType>
-            </outputPort>
-            <outputPort id="out3d">
-                <description>Output 3 receives data from the Nexus</description>
-                <dataType>double</dataType>
-            </outputPort>
-            <outputPort id="out4d">
-                <description>Output 4 receives data from the Nexus</description>
-                <dataType>double</dataType>
-            </outputPort>
-            <outputPort id="out5s">
-                <description>Output 5 receives data from the Nexus</description>
-                <dataType>string</dataType>
-            </outputPort>
-            <outputPort id="out6s">
-                <description>Output 6 receives data from the Nexus</description>
-                <dataType>string</dataType>
-            </outputPort>
-            <outputPort id="out7s">
-                <description>Output 7 receives data from the Nexus</description>
-                <dataType>string</dataType>
-            </outputPort>
-            <outputPort id="out8s">
-                <description>Output 8 receives data from the Nexus</description>
-                <dataType>string</dataType>
-            </outputPort>
-        </ports>
-        <properties>
-            <property name="nexusHostname"
-                      type="string"
-                      value="localhost"
-                      description="Hostname of Nexus"/>
-            <property name="nexusPort"
-                      type="integer"
-                      value="9081"
-                      description="Port number of Nexus"/>
-            <property name="nexusComponentPath"
-                      type="string"
-                      value="nexus.asterics"
-                      description="Nexus component to bind to"/>
-        </properties>
-    </componentType>
-
 
 
     <componentType id="asterics.OneEventManyActions"
@@ -11001,47 +11928,6 @@
 
 
 
-    <componentType id="asterics.Sampler"
-                   canonical_name="eu.asterics.component.processor.sampler.SamplerInstance">
-        <type subtype="Basic Math">processor</type>
-        <singleton>false</singleton>
-        <description>Sets the constant rate of the sampling</description>
-        <ports>
-			<inputPort id="input">
-				<description>Input port</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-
-			<outputPort id="output">
-				<description>Output port</description>
-				<dataType>double</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-
-
-		</events>			
-        <properties>
-			<property name="samplingRate"
-				type="double"
-				value="10"
-				description="Rate of the sampling (Hz)"/>
-			<property name="responseTime"
-				type="integer"
-				value="0"
-				description="Response time [ms]. If the time from arrival of the last input data exceeds the response time, the plugin stops sending output data."/>
-			<property name="sendNullSamples"
-				type="boolean"
-				value="false"
-				description="If this property is set and there is no input data or the response time is exceeded the plugin sends samples equal zero."/>
-
-        </properties>
-
-    </componentType>
-
-
     <componentType id="asterics.SerialPort"
                    canonical_name="eu.asterics.component.processor.serialport.SerialPortInstance">
         <type subtype="Communication">processor</type>
@@ -11918,6 +12804,47 @@
     </componentType>
 
 
+    <componentType id="asterics.StringExtractor"
+                   canonical_name="eu.asterics.component.processor.stringextractor.StringExtractorInstance">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>Extracts a subtext from a given input text and forwards it to the output port as soon as extraction was done based on start and end delimiter strings.
+Delimiters must be in the correct order and not overlapping. In case of several occurrences, always the first occurrence of the start and the end delimiter are used. 
+The event trigger port fires at successful extraction which is also the case for an empty extracted text (also handed to the output port).
+		</description>
+        <ports>
+			<inputPort id="inText">
+				<description>Provides the input text, from which a subtext shall be extracted and sent to the output port, based on start and end delimiter specifications.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="extractedText">
+				<description>Represents the subtext extracted from the input text based on delimiter specifications.</description>
+				<dataType>string</dataType>
+			</outputPort>
+        </ports>
+
+		<events>
+			<eventTriggererPort id="textExtracted">
+				<description>Triggers when the end delimiter was detected after the start delimiter (not, if the order is wrong or one is missing or overlapping, i.e. within the other) 
+and thus a subtext was extracted and sent to the output port. (An empty string is a valid output that also triggers!)</description>
+			</eventTriggererPort>
+		</events>		
+			
+        <properties>
+			<property name="startDelimiter"
+				type="string"
+				value="START"
+				description="The start string between which and the end string the text is extracted (no regular expression!)"/>
+			<property name="endDelimiter"
+				type="string"
+				value="END"
+				description="The end string between which and the start string the text is extracted (no regular expression!)"/>
+        </properties>
+    </componentType>
+
+
     <componentType id="asterics.StringFilter"
                    canonical_name="eu.asterics.component.processor.stringfilter.StringFilterInstance">
         <type subtype="Event and String Processing">processor</type>
@@ -12107,94 +13034,6 @@
                       type="integer"
                       value="1"
                       combobox="1//2//3//4"
-                      description="number of connected (and active) ports"/>
-        </properties>
-    </componentType>
-
-
-
-    <componentType id="asterics.StringPathSelector"
-                   canonical_name="eu.asterics.component.processor.stringpathselector.StringPathselectorInstance">
-        <type subtype="Signal Pathways">processor</type>
-        <singleton>false</singleton>
-        <description>StringPathselector routes signal to one of four output ports</description>
-        <ports>
-            <inputPort id="in">
-                <description>Input port</description>
-                <mustBeConnected>true</mustBeConnected>
-                <dataType>string</dataType>
-            </inputPort>
-
-            <outputPort id="out1">
-                <description>Path 1</description>
-                <dataType>string</dataType>
-            </outputPort>
-            <outputPort id="out2">
-                <description>Path 2"</description>
-                <dataType>string</dataType>
-            </outputPort>
-            <outputPort id="out3">
-                <description>Path 3</description>
-                <dataType>string</dataType>
-            </outputPort>
-            <outputPort id="out4">
-                <description>Path 4</description>
-                <dataType>string</dataType>
-            </outputPort>
-            <outputPort id="out5">
-                <description>Path 4</description>
-                <dataType>string</dataType>
-            </outputPort>
-            <outputPort id="out6">
-                <description>Path 4</description>
-                <dataType>string</dataType>
-            </outputPort>
-            <outputPort id="out7">
-                <description>Path 4</description>
-                <dataType>string</dataType>
-            </outputPort>
-            <outputPort id="out8">
-                <description>Path 4</description>
-                <dataType>string</dataType>
-            </outputPort>
-        </ports>
-        <events>
-            <eventListenerPort id="select1">
-                <description>selects out-port 1</description>
-            </eventListenerPort>
-            <eventListenerPort id="select2">
-                <description>selects out-port 2</description>
-            </eventListenerPort>
-            <eventListenerPort id="select3">
-                <description>selects out-port 3</description>
-            </eventListenerPort>
-            <eventListenerPort id="select4">
-                <description>selects out-port 4</description>
-            </eventListenerPort>
-            <eventListenerPort id="select5">
-                <description>selects out-port 5</description>
-            </eventListenerPort>
-            <eventListenerPort id="select6">
-                <description>selects out-port 6</description>
-            </eventListenerPort>
-            <eventListenerPort id="select7">
-                <description>selects out-port 7</description>
-            </eventListenerPort>
-            <eventListenerPort id="select8">
-                <description>selects out-port 8</description>
-            </eventListenerPort>
-            <eventListenerPort id="selectNext">
-                <description>selects next out-port</description>
-            </eventListenerPort>
-            <eventListenerPort id="selectPrevious">
-                <description>selects previous out-port</description>
-            </eventListenerPort>
-        </events>
-        <properties>
-            <property name="activePorts"
-                      type="integer"
-                      value="1"
-                      combobox="1//2//3//4//5//6//7//8"
                       description="number of connected (and active) ports"/>
         </properties>
     </componentType>
@@ -12444,6 +13283,60 @@
         </properties>
     </componentType>
 
+
+
+    <componentType id="asterics.TimestampWriter"
+                   canonical_name="eu.asterics.component.processor.timestampwriter.TimestampWriterInstance">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>This plugin stores the time in milliseconds (ms) that passed by since the last reset (or start). 
+Outputs are the (via date string) formatted and numerical milliseconds and also a formatted absolute UNIX epoch timestamp 
+plus the absolute UNIX timestamp in ms. The time zone of the local system is used!
+		</description>
+        <ports>
+			<outputPort id="timePassedMs">
+				<description>Milliseconds (ms) since model start or last component reset.</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="timePassedFormatted">
+				<description>Milliseconds since model start or last component reset - formatted as date string.</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="timestampUnixMs">
+				<description>Unix timestamp in milliseconds (ms).</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="timestampUnixFormatted">
+				<description>Unix timestamp - absolute milliseconds formatted as date string.</description>
+				<dataType>string</dataType>
+			</outputPort>
+        </ports>
+        
+		<events>
+			<eventTriggererPort id="timestampFormatted">
+				<description>Triggers when output values (formatted and as milliseconds) are available at the output ports.</description>
+			</eventTriggererPort>
+
+			<eventListenerPort id="resetStartTimestamp">
+				<description>Resets the start timestamp for calculating the time passed by (the first timestamp is set at model start).</description>
+			</eventListenerPort>
+			<eventListenerPort id="sendOutputs">
+				<description>Formats and sends outputs, triggers the event timestampFormatted when outputs are available at the ports.</description>
+			</eventListenerPort>
+		</events>	
+				
+        <properties>
+			<property name="timestampFormat"
+				type="string"
+				value="dd.MM.yyyy-HH:mm:ss.SSS"
+				description="Format that must be valid according to java.text.SimpleDateFormat. It is used for formatting the UNIX timestamp as a date string. If it is invalid or null, the default date format is used."/>
+			<property name="diffTimeFormat"
+				type="string"
+				value="HH:mm:ss.SSS"
+				description="Format that must be valid according to java.text.SimpleDateFormat but for meaningfulness with only time components. It is used for formatting passed milliseconds (since start/reset) as a date string. If invalid or null, the default date format is used. 
+Important Usage Note: Only the format for time components shall be set, as otherwise the Unix epoch start date components (01.01.1970 at 00:00:00.000 o'clock) are added. e.g. if 5 seconds have passed by, using date components the output would look like 01.01.1970-00:00:05.000!"/>
+        </properties>
+    </componentType>
 
 
     <componentType id="asterics.UniversalRemoteControl"
@@ -12797,287 +13690,6 @@
         </properties>
 
     </componentType>
-
-
-    <componentType id="asterics.ButtonGrid"
-                   canonical_name="eu.asterics.component.sensor.buttongrid.ButtonGridInstance">
-        <type subtype="Graphical User Interface">sensor</type>
-        <singleton>false</singleton>
-        <description>Keyboard which sends event after button press</description> 
-        <ports>
-        </ports>
-        <events>
-            <eventTriggererPort id="button1">
-                <description>Button 1 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button2">
-                <description>Button 2 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button3">
-                <description>Button 3 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button4">
-                <description>Button 4 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button5">
-                <description>Button 5 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button6">
-                <description>Button 6 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button7">
-                <description>Button 7 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button8">
-                <description>Button 8 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button9">
-                <description>Button 9 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button10">
-                <description>Button 10 pressed</description>
-            </eventTriggererPort>      
-            <eventTriggererPort id="button11">
-                <description>Button 11 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button12">
-                <description>Button 12 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button13">
-                <description>Button 13 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button14">
-                <description>Button 14 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button15">
-                <description>Button 15 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button16">
-                <description>Button 16 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button17">
-                <description>Button 17 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button18">
-                <description>Button 18 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button19">
-                <description>Button 19 pressed</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="button20">
-                <description>Button 20 pressed</description>
-            </eventTriggererPort>     
-        </events>
-        <properties>
-            <property name="caption"
-                      type="string"
-                      value="Keyboard"
-                      description="Caption of the keyboard"/>
-            <property name="horizontalOrientation"
-                      type="boolean"
-                      value="false"
-                      description="Sets keys in horizontal orientation"/> 
-			<property name="textColor"
-				type="integer"
-				value="13"
-				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default"
-				description="Text color"/>
-			<property name="backgroundColor"
-				type="integer"
-				value="13"
-				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default"
-				description="Background color of the button"/>
-			<property name="borderColor"
-				type="integer"
-				value="13"
-				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default"
-				description="Color of the button frame"/>
-			<property name="borderThickness"
-				type="integer"
-				value="2"
-				description="Thickness of the button frame"/>
-			<property name="selectionFrameColor"
-				type="integer"
-				value="13"
-				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default"
-				description="Color of the selection frame (active when hovering over the button)"/>
-			<property name="selectionFrameThickness"
-				type="integer"
-				value="4"
-				description="Thickness of the selection frame (active when hovering over the button)"/>
-            <property name="displayGUI"
-                      type="boolean"
-                      value="true"                      
-                      description="if selected, the GUI window will be shown"/>
-
-            <property name="buttonCaption1"
-                      type="string"
-                      value="Button 1"
-                      description="Caption of the button 1"/>
-            <property name="buttonCaption2"
-                      type="string"
-                      value="Button 2"
-                      description="Caption of the button 2"/>
-            <property name="buttonCaption3"
-                      type="string"
-                      value=""
-                      description="Caption of the button 3"/>
-            <property name="buttonCaption4"
-                      type="string"
-                      value=""
-                      description="Caption of the button 4"/>
-            <property name="buttonCaption5"
-                      type="string"
-                      value=""
-                      description="Caption of the button 5"/>
-            <property name="buttonCaption6"
-                      type="string"
-                      value=""
-                      description="Caption of the button 6"/>
-            <property name="buttonCaption7"
-                      type="string"
-                      value=""
-                      description="Caption of the button 7"/>
-            <property name="buttonCaption8"
-                      type="string"
-                      value=""
-                      description="Caption of the button 8"/>
-            <property name="buttonCaption9"
-                      type="string"
-                      value=""
-                      description="Caption of the button 9"/>
-            <property name="buttonCaption10"
-                      type="string"
-                      value=""
-                      description="Caption of the button 10"/>
-            <property name="buttonCaption11"
-                      type="string"
-                      value=""
-                      description="Caption of the button 11"/>
-            <property name="buttonCaption12"
-                      type="string"
-                      value=""
-                      description="Caption of the button 12"/>
-            <property name="buttonCaption13"
-                      type="string"
-                      value=""
-                      description="Caption of the button 13"/>
-            <property name="buttonCaption14"
-                      type="string"
-                      value=""
-                      description="Caption of the button 14"/>
-            <property name="buttonCaption15"
-                      type="string"
-                      value=""
-                      description="Caption of the button 15"/>
-            <property name="buttonCaption16"
-                      type="string"
-                      value=""
-                      description="Caption of the button 16"/>
-            <property name="buttonCaption17"
-                      type="string"
-                      value=""
-                      description="Caption of the button 17"/>
-            <property name="buttonCaption18"
-                      type="string"
-                      value=""
-                      description="Caption of the button 18"/>
-            <property name="buttonCaption19"
-                      type="string"
-                      value=""
-                      description="Caption of the button 19"/>
-            <property name="buttonCaption20"
-                      type="string"
-                      value=""
-                      description="Caption of the button 20"/>
-
-            <property name="toolTip1"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 1"/>
-            <property name="toolTip2"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 2"/>
-            <property name="toolTip3"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 3"/>
-            <property name="toolTip4"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 4"/>
-            <property name="toolTip5"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 5"/>
-            <property name="toolTip6"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 6"/>
-            <property name="toolTip7"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 7"/>
-            <property name="toolTip8"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 8"/>
-            <property name="toolTip9"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 9"/>
-            <property name="toolTip10"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 10"/>
-            <property name="toolTip11"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 11"/>
-            <property name="toolTip12"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 12"/>
-            <property name="toolTip13"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 13"/>
-            <property name="toolTip14"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 14"/>
-            <property name="toolTip15"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 15"/>
-            <property name="toolTip16"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 16"/>
-            <property name="toolTip17"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 17"/>
-            <property name="toolTip18"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 18"/>
-            <property name="toolTip19"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 19"/>
-            <property name="toolTip20"
-                      type="string"
-                      value=""
-                      description="Tooltip text for button 20"/>                       
-        </properties>
-        <gui>
-            <width>500</width>
-            <height>2000</height>
-        </gui>
-    </componentType>
-
 
 
     <componentType id="asterics.CellBoard"
@@ -14893,58 +15505,6 @@
     </componentType>
 
 
-    <componentType id="asterics.FourDJoystick"
-                   canonical_name="eu.asterics.component.sensor.fourdjoystick.FourDJoystickInstance">
-        <type subtype="Others">sensor</type>
-        <singleton>false</singleton>
-        <description>Plugin to interface the 4D Joystick developed by KI-I</description>
-        <ports>
-
-			<outputPort id="joyX">
-				<description>joystick x value</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="joyY">
-				<description>joystick y value</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="joyZ">
-				<description>joystick z value</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="sipPuff">
-				<description>joystick sip/puff value</description>
-				<dataType>integer</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-
-			<eventTriggererPort id="CH5Pressed">
-				<description>channel 5 got pressed</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="CH5Released">
-				<description>channel 5 got released</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="CH6Pressed">
-				<description>channel 6 got pressed</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="CH6Released">
-				<description>channel 6 got released</description>
-			</eventTriggererPort>
-
-		</events>			
-        <properties>
-			<property name="comPort"
-				type="string"
-				value="COM0"
-				description="Com Port of the joystick"/>
-
-        </properties>
-
-    </componentType>
-
-
     <componentType id="asterics.FS20Receiver"
                    canonical_name="eu.asterics.component.sensor.fs20receiver.FS20ReceiverInstance">
         <type subtype="Home Control">sensor</type>
@@ -16537,89 +17097,6 @@
 				value="./data/sensor.LipmouseIR/IRCodes.csv"
 				description="Filepath to the file, where the IR Codes are stored"/>
 
-        </properties>
-
-    </componentType>
-
-
-    <componentType id="asterics.MicGPI"
-                   canonical_name="eu.asterics.component.sensor.micgpi.MicGPIInstance">
-        <type subtype="Generic Control Input">sensor</type>
-        <singleton>false</singleton>
-        <description>This plugin reads an input signal via the microphone input</description>
-        <ports>
-
-			<inputPort id="thresholdLow">
-				<description>threshold for button release</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-			<inputPort id="thresholdHigh">
-				<description>threshold for button release</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-			
-		
-			<outputPort id="pressure">
-				<description>sound pressure level</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="frequency">
-				<description>the dominant frequency in the spectrum</description>
-				<dataType>integer</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-			<eventTriggererPort id="inLow">
-				<description>This event gets fired if the signal goes beyond the lowThreshold</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="inHigh">
-				<description>This event gets fired if the signal goes over the highThreshold</description>
-			</eventTriggererPort>
-
-		</events>			
-        <properties>
-			<property name="samplingFrequency"
-				type="integer"
-				value="8000"
-				description="the sampling frequency setting for the audio input (min:300 Hz, max:44100 Hz)"/>
-			<property name="sampleSize"
-				type="integer"
-				value="2"
-				combobox="32//64//128//256//512//1024//2048"				
-				description="interval length (samples per calculation block)"/>
-			<property name="mode"
-				type="integer"
-				value="1"
-				combobox="average sample values//average absolute sample values//min value//max value//max absolute value"				
-				description="the calculation mode for the threshold and pressure output port (applied to the samples of the interval)"/>
-			<property name="thresholdLow"
-				type="integer"
-				value="-30"
-				description="threshold for low event"/>
-			<property name="thresholdHigh"
-				type="integer"
-				value="30"
-				description="threshold for high event"/>
-			<property name="noiseLevel"
-				type="double"
-				value="1.5"
-				description="sound below noise level will be attenuated"/>
-			<property name="calculateFrequency"
-                      type="boolean"
-                      value="false"
-                      description="if selected, the dominant frequency is calculated"/> 
-			<property name="printSpectrum"
-                      type="boolean"
-                      value="false"
-                      description="if selected, the frequency spectrum is shown in the console window"/> 
-			<property name="captureDevice"
-                type="string"
-                value="System Default"
-                getStringList="true"
-			    description="Specifies which device should be used for recording"/>
         </properties>
 
     </componentType>
@@ -18666,7 +19143,11 @@
             <property name="enableOverlaySettings"
                       type="boolean"
                       value="true"                      
-                      description="if selected, the video frame shows the current frame rate and device name as overlayed text."/>                      
+                      description="if selected, the video frame shows the current frame rate and device name as overlayed text."/>
+            <!-- <property name="resizeHeight"
+                      type="integer"
+                      value="120"
+                      description="The frame height for to be used for face detection. On slow platforms, decrease value, otherwise leave it."/>                         -->
                       <!-- 
             <property name="cameraDisplayUpdate"
                       type="integer"
