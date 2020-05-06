@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-processors.jsonparser
+Bundle-SymbolicName: eu.asterics.component.processor.jsonparser
+Bundle-Version: 0.1.0
+DynamicImport-Package: *
+Bundle-Classpath: ., lib/json-simple-1.1.1.jar

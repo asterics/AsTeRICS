@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.DateToDouble"
+                   canonical_name="eu.asterics.component.processor.datetodouble.DateToDoubleInstance">
+        <type subtype="Data Converters">processor</type>
+        <singleton>false</singleton>
+        <description>Converts a date string to a Unix epoch timestamp in milliseconds, using the default time zone and a property-defined date format.</description>
+        <ports>
+			<inputPort id="dateString">
+				<description>Date string input to be converted using the date format given by the property. 
+The event formatInput is also fired internally whenever this input port receives data.
+				</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			
+			<outputPort id="timestampUnixMs">
+				<description>The converted Unix epoch timestamp in milliseconds.</description>
+				<dataType>double</dataType>
+			</outputPort>
+        </ports>
+        
+		<events>
+			<eventTriggererPort id="dateFormatted">
+				<description>Triggers when an output value is available at the output port.</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="conversionFailed">
+				<description>Triggers when a conversion attempt failed (might happen if inputs are missing or do not fit the specified date format).</description>
+			</eventTriggererPort>
+
+			<eventListenerPort id="formatInput">
+				<description>Initiates conversion for the current input date string, triggers dateFormatted when done.</description>
+			</eventListenerPort>
+		</events>			
+		
+        <properties>
+			<property name="dateFormat"
+				type="string"
+				value="dd.MM.yyyy-HH:mm:ss.SSS"
+				description="The format of the incoming date string. It is used for conversion into a UNIX timestamp in milliseconds. If invalid (according to java.text.SimpleDateFormat) or null, the default date format is tried. If conversion fails because of missing or invalid input conversionFailed is triggered."/>
+        </properties>
+    </componentType>
+</componentTypes>

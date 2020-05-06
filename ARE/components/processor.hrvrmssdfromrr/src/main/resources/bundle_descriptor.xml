@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.HRVRmssdFromRR"
+                   canonical_name="eu.asterics.component.processor.hrvrmssdfromrr.HRVRmssdFromRRInstance">
+        <type subtype="Sensor Data and Reasoning">processor</type>
+        <singleton>false</singleton>
+        <description>Calculates and outputs the Heart Rate Variability (HRV) in terms of RMSSD (Root Mean Square of Successive Differences) in milliseconds (ms) based on incoming R-R intervals (also in ms). 
+A sliding window of the x most recent R-R intervals, x being the property rmssdWindowSize, is used for the calculation, which is first started as soon as there have been x samples since the last reset (or model start).
+Calculation and collection of samples can be paused and continued via event listener ports. The output port rmssd only delivers a value, if there is an actual calculation (i.e. currently no pause and enough samples).
+		</description>
+        <ports>
+			<inputPort id="rrInterval">
+				<description>R-R interval in ms, i.e. the time interval between the most significant, the highest, peaks (the R-peaks) of 2 consecutive QRS' of an ECG (electrocardiogram).</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="rmssd">
+				<description>RMSSD (Root Mean Square of Successive Differences) in ms, calculated from the collected input port signals (R-R intervals in the sliding window).</description>
+				<dataType>double</dataType>
+			</outputPort>
+        </ports>
+        
+		<events>
+			<eventListenerPort id="resetCalculation">
+				<description>Discards previous R-R intervals and resets the counter of intervals used for the calculation. Does not influence running or paused states, i.e. if the plugin is currently paused, it will stay paused, otherwise there is a recalculation as soon as there are (again) enough samples.</description>
+			</eventListenerPort>
+			<eventListenerPort id="pauseCalculation">
+				<description>From now on RMSSD is no longer recalculated and no value is sent to the output port but R-R values from the input port continue to be stored (more recent ones overwrite existing ones due to the sliding window). Can be fired in order to wait for more meaningful R-R samples before the next calculation.</description>
+			</eventListenerPort>
+			<eventListenerPort id="continueCalculation">
+				<description>Must be fired after each pauseCalculation to continue RMSSD calculation and sending the result to the output port again.</description>
+			</eventListenerPort>
+			<eventListenerPort id="pauseComponent">
+				<description>Completely pauses the component's activity, i.e. from now on no RMSSD is recalculated and sent to the output port. In addition to a pauseCalculation, no more R-R values from the input port are collected, either.</description>
+			</eventListenerPort>
+			<eventListenerPort id="continueComponent">
+				<description>To be triggered after pauseComponent in order to collect R-R values from the input port again (values aren't reset but progressively overwritten due to the sliding window) and to continue RMSSD calculation and sending the result to the output port.</description>
+			</eventListenerPort>
+			
+			<eventTriggererPort id="rmssdRecalculated">
+				<description>Triggers whenever a RMSSD calculation has been finished and the current RMSSD value is available at the output port, i.e. if rmssdWindowSize is 100 it will trigger first when 100 intervals were received and calculation has finished, then after each further interval and calculation completion.</description>
+			</eventTriggererPort>
+		</events>	
+				
+        <properties>
+        	<property name="rmssdWindowSize"
+				type="integer"
+				value="100"
+				description="The number of R-R intervals that are used for each RMSSD calculation (sliding window). Example: If set to 100, the 100 most recent R-R intervals are taken into consideration and calculation is not started before at least 100 values have been received at the input port. Valid value must be > 1, otherwise it is replaced by the default value."/>
+        </properties>
+    </componentType>
+</componentTypes>
