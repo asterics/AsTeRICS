@@ -47,8 +47,3 @@ The output port rmssd only delivers a value, if there is an actual calculation (
 - **rmssdWindowSize \[integer, default: 100\]**: The number of R-R intervals that are used for each RMSSD calculation, thus the sliding window size.
   Example: If this is set to 100, the 100 most recent R-R intervals are taken into consideration and calculation is not started before at least 100 values have been received at the input port (since the start or a possible reset).
   A valid value must be > 1, otherwise it is replaced by the default value.
-
-## Prospective use in Easy Reading
-
-RMSSD was found to be a suitable indicator for a user being stressed, in terms of heart rate measurement and its analysis in the time domain.
-Thus this is one of the plugins that shall provide pre-processed input and clues for the reasoner implemented with AsTeRICS.
