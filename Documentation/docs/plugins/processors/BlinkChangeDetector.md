@@ -142,16 +142,3 @@ It is possible to make the plugin calculate it for a specified observation perio
   If this property is used, no memory control is done, thus it is recommended not to use a period longer than 1 day (1440 minutes).
   If all blinks and the whole time period since model start (memory control restricts it to several hours though) shall be considered, the observation period can be disabled by setting it to 0 or a negative number.
   Note, that the rate for a natural blinking behavior gets steadily flatter then, as time passes by and might not be representative for trend detection.
-
-## Prospective use in Easy Reading
-
-This plugin already does a little preparatory work for stress detection (in terms of cognitive load analysis) to help the reasoner, later being implemented with AsTeRICS.
-
-It was found that changes in blink rate and blink duration are significant indicators for the demand of cognitive load and thus mental stress level.
-The plugin can get information on eyes’ states (open, closed) from different sources, such as a cheap standard webcam via the AsTeRICS [FacetrackerCLM](/plugins/sensors/FacetrackerCLM.html) plugin.
-The fact that it only needs the eyes’ state and no previous blink detection or metrics such as timing measurements but does it itself, makes it highly reusable for different eye tracker sources, i.e. sensor and other processor plugins.
-
-The options of providing the calculated metrics at specified output ports on demand but also in regular intervals enables visualization, e.g. with the [Oscilloscope](/plugins/actuators/Oscilloscope.html) plugin, which helps with interpretation.
-
-It will be a main part of the AsTeRICS reasoner to find and utilize suitable threshold rates and durations that indicate cognitive load or stress level and further to combine them.
-This research part and the later implementation can be perfectly done by the huge amount of properties, interacting with each other.
