@@ -37,9 +37,13 @@ The actions that are executed by a model are implemented using actuator plugins,
 
 ### AsTeRICS Grid
 
-The AsTeRICS Grid is a web-based user interface which can be used for Augmentative and Alternative Communication (AAC). Grids can be defined in a flexible layout of cells acting as buttons. The cells show text and images/symbols and if one of them is selected a defined phrase can be spoken (text-to-speech). A grid can also be connected to a model and be used to trigger actions like switching lights on/off.
+The AsTeRICS Grid is a web-based user interface which can be used for Augmentative and Alternative Communication (AAC). It is available on [https://grid.asterics.eu](https://grid.asterics.eu). 
+
+Grids can be defined in a flexible layout of cells acting as buttons. The cells show text and images/symbols and if one of them is selected a defined phrase can be spoken (text-to-speech). A grid can also be connected to a model and be used to trigger actions like switching lights on/off.
 
 ![Grid with symbols for Alternative and Augmentative Communication](/assets/img/AsTeRICS-Ergo_Grid_en-1-768x592.jpg)
+
+For more information about how to use the AsTeRICS Grid, please read the [user manual](/manuals/asterics-grid/).
 
 ### AT Solution
 
