@@ -8,7 +8,7 @@ On this page you will find some tutorials of how to use such plugins to control 
 
 OpenHAB is an Open Source Home Automation SW that let's you control light, heating and other appliances of your Smart Home. Such appliances or devices are called **things** which are represented as **items** in a user interface. OpenHAB provides several user interfaces and means of voice control.
 
-![Screenshot: openHAB demo with different options (./light, heating, temperature, ...)](/plugins/processors/img/openhab_overview.png "Screenshot: openHAB demo with different options (light, heating, temperature, ...)")
+<!-- ![Screenshot: openHAB demo with different options (./light, heating, temperature, ...)](/plugins/processors/img/openhab_overview.png "Screenshot: openHAB demo with different options (light, heating, temperature, ...)") -->
 
 ::: tip Accessible User Interface
 This tutorial explains how to control an OpenHAB instance and it's configured items by an AsTeRICS model and how to create an **accessible user interface** for it using AsTeRICS Grid.
