@@ -63,8 +63,3 @@ For details on which errors are handled and error messages are provided for, see
 _Usage Note_: If a field reading attempt fails, a JSON object that has potentially been stored will not be unset, independently from the value of this property.
 This is to assure that each JSON input delivers at least one field value or otherwise is replaced by the next JSON input.
 In order to force the parsed JSON object's rejection, `rejectParsedObject` must be triggered.
-
-## Prospective use in Easy Reading
-
-The aim of this plugin is to use it for utilizing web page interaction information or profile information, provided by the browser plugin (both to be implemented in close cooperation with other Easy Reading partners).
-The JsonParser plugin is not in use at the current research and implementation state but will likely play an important role when implementing the (AsTeRICS) reasoner as it helps customizing the reasoner, depending on information that can not be received from (only) tracking via the hardware sensors.
