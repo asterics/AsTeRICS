@@ -1,7 +1,6 @@
 ---
 layout: Home
 title: Home
-sidebar: true
 ---
 
 ::: slot jumbotron

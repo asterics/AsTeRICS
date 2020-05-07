@@ -40,7 +40,9 @@ sudo openhab-cli start
 
 in the openHAB folder, double click on
 
-```cmd
+<!-- https://prismjs.com/#supported-languages -->
+
+```sh
 start_debug.bat
 ```
 
@@ -85,8 +87,7 @@ The Amazon device must be setup within your [amazon alexa account](https://alexa
 
 - **jsonCommand \[string\]:** Set a new state of an item, e.g. `{"ItemSuffix": "player", "value": "PLAY"}`.  
   The field itemSuffix represents the suffix (from the last `_` to the end of the item id) of an item only. The value represents the new state of the item. The itemsuffix has to be written lowercase and the value has to be written in uppercase. For a list of available items, see (http://localhost:8080/rest/items).
-    
-   _ **Examples:**
+  _ **Examples:**
   _ `{"ItemSuffix": "musicProviderId", "value": "SPOTIFY"}` for changing the provider
   _ `{"ItemSuffix": "volume", "value": "50"}` for changing the volume
   _ `{"ItemSuffix": "playMusicVoiceCommand", "value": "Yesterday from the Beatles"}` for listening to a new song
