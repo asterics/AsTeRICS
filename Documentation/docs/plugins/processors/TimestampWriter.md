@@ -42,12 +42,3 @@ None. Milliseconds are either absolute Unix epoch timestamps or relative interva
 
 _Important Usage Note_: Only the format for time components shall be set, as otherwise the Unix epoch start date components (01.01.1970 at 00:00:00.000 o’clock) are added.
 E.g. if 5 seconds have passed by, using date components the output would look like 01.01.1970-00:00:05.000!
-
-## Prospective use in Easy Reading
-
-The plugin is needed for aligning data from different tracking sources (heart rate tracker, eye tracker or webcam) to each other (i.e., “synchronizing” them).
-This is necessary as most of the sensor or communication plugins only provide raw data without a temporal reference, which the later implemented (AsTeRICS) reasoner could likely not make use of, once data was just sequentially written into text or csv files.
-
-Usefulness and recoverability of earlier tracked data from user tests (during the early research phases on generally useful metrics) for later phases such as reasoner implementation would not be given without also storing the timestamps.
-
-While mathematical methods and visualizations are likely to demand numerical milliseconds-based timestamps (maybe even relative ones, with regard to the model start), readability of text-based files will improve when (formatted) absolute date and time are printed.
