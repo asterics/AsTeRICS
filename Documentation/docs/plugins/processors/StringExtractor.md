@@ -34,12 +34,3 @@ None. (Each new `inText` is checked for the existence of start and end delimiter
 
 - **startDelimiter \[string, default: START\]**: Defines the start string between which and the end string the text is extracted (no regular expression!)
 - **endDelimiter \[string, default: END\]**: Defines the end string between which and the start string the text is extracted (no regular expression!)
-
-## Prospective use in Easy Reading
-
-This is a very important helper plugin for the Easy Reading AsTeRICS model.
-Tagged/annotated texts received via the [SerialPort](/plugins/processors/SerialPort.html) plugin, i.e. from a COM port as the receiver in a Bluetooth communication, can be easily processed to meet the requirements to serve as inputs for other plugins such as [HRVRmssdFromRR](/plugins/processors/HRVRmssdFromRR.html) (maybe after further data/type conversion steps).
-
-Also tagged error messages from Bluetooth communication can be easily detected, extracted and (if desired) shown to the Easy Reading users.
-
-Finally, different Bluetooth sources can be annotated and with the help of this plugin their data can be automatically forwarded to the desired plugins or along certain model paths accordingly.
