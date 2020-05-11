@@ -13,7 +13,7 @@ The solutions are categorized by **use case** and can be directly started from t
 
 :::
 
-If you want to customize a solution, click onto the **App** :fas-rocket: button or go to [**Customize**](/customize/) to learn how to do that. The runtime environment can be conifgured with the **Settings** :fas-cog: button. To open and edit a AsTeRICS model or grid, click onto the **Model** :fas-draw-polygon: or **Edit** :fas-pencil-alt: button.
+If you want to customize a solution, click onto the **App** :fas-rocket: button or go to [**Customize**](/customize/) to learn how to do that. The runtime environment can be configured with the **Settings** :fas-cog: button. To open and edit a AsTeRICS model or grid, click onto the **Model** :fas-draw-polygon: or **Edit** :fas-pencil-alt: button.
 
 <!-- <Solutions> -->
 
