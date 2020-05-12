@@ -2,7 +2,7 @@
 
 ## Objective
 
-Mouse control by switch input. This model demonstrates mouse cursor control via 2 switches or (alternatively) 2 keyboard keys. (There are other models for single-switch or multi-switch cursor control available in the ARE `models` folder.)
+Mouse control by switch input. This model demonstrates mouse cursor control via 2 switches or (alternatively) 2 keyboard keys. (There are other models for [single-switch](http://webacs.asterics.eu/?areBaseURI=https://127.0.0.1:8083&openFile=https://github.com/asterics/AsTeRICS/raw/master/bin/ARE/models/useCaseDemos/mouseControl/crosshairCursorControl_1key.acs) or [multi-switch](http://webacs.asterics.eu/?areBaseURI=https://127.0.0.1:8083&openFile=https://github.com/asterics/AsTeRICS/raw/master/bin/ARE/models/useCaseDemos/mouseControl/crosshairCursorControl_4keys%20_events.acs) cursor control available in the [`ARE/models`](https://github.com/asterics/AsTeRICS/tree/master/bin/ARE/models/useCaseDemos/mouseControl) folder.)
 Instead of a mouse cursor, a crosshair indicator is displayed on the screen, scanning from the top to the bottom and from the left to the right. 
 
 ## Mouse movement
