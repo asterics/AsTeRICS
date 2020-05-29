@@ -1,5 +1,6 @@
 ---
 title: SampleAndHold
+subcategory: Basic Math
 ---
 
 # Sample and Hold
@@ -14,12 +15,12 @@ SampleAndHold plugin
 
 ## Input Port Description
 
-*   **in1 - in4 \[double\]:** four input ports for double values to be captured on demand.
+- **in1 - in4 \[double\]:** four input ports for double values to be captured on demand.
 
 ## Output Port Description
 
-*   **out1 - out4 \[double\]:** last captured values.
+- **out1 - out4 \[double\]:** last captured values.
 
 ## Event Listener Description
 
-*   **sampleNow:** When an event comes in, the signal values of the input ports are captured and sent to the output ports.
+- **sampleNow:** When an event comes in, the signal values of the input ports are captured and sent to the output ports.

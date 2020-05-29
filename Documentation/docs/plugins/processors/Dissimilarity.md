@@ -1,5 +1,6 @@
 ---
 title: Dissimilarity
+subcategory: DSP and Feature Detection
 ---
 
 # Dissimilarity
@@ -14,13 +15,13 @@ Dissimilarity plugin
 
 ## Input Port Description
 
-*   **input1 \[double\]:** Input port for the first signal.
-*   **input2 \[double\]:** Input port for the second signal.
+- **input1 \[double\]:** Input port for the first signal.
+- **input2 \[double\]:** Input port for the second signal.
 
 ## Output Port Description
 
-*   **output \[double\]:** Output port for the dissimilarity computation. A value is provided every time DataLen samples arrive to the input ports.
+- **output \[double\]:** Output port for the dissimilarity computation. A value is provided every time DataLen samples arrive to the input ports.
 
 ## Properties
 
-*   **DataLen \[integer\]:** Defines the length of the signals over which the dissimilarity is computed.
+- **DataLen \[integer\]:** Defines the length of the signals over which the dissimilarity is computed.

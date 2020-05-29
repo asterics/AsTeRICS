@@ -36,7 +36,7 @@ git clone https://github.com/asterics/AsTeRICS.git
 
 You need:
 
-1. [Java Development Kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+1. **Java Development Kit 8**: [Zulu JDKs](https://www.azul.com/downloads/zulu-community/?version=java-8-lts&package=jdk) are recommended, but you can also use [OpenJDK](https://openjdk.java.net/install/) or the [Oracle JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 2. [apache ant build framework (version >= 1.9.1)](http://ant.apache.org/bindownload.cgi).
 3. Set [Environment Variables](#environment-variables).
 

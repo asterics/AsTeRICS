@@ -1,5 +1,6 @@
 ---
 title: Neural Network Loader
+subcategory: DSP and Feature Detection
 ---
 
 # Neural Network Loader
@@ -14,17 +15,16 @@ NeuralNetworkLoader plugin
 
 ## Input Port Description
 
-*   **input1...input32 \[double\]:** The Neural network inputs.
+- **input1...input32 \[double\]:** The Neural network inputs.
 
 ## Output Port Description
 
-*   **output1...output32 \[****double****\]:** The Neural network outputs.
+- **output1...output32 \[\*\***double\***\*\]:** The Neural network outputs.
 
 ## Properties
 
-*   **filePath \[string\]:** The EG file path.
+- **filePath \[string\]:** The EG file path.
 
-  
 [How to prepare example EG file for the Neural Network Loader plugin.][2]
 
 [1]: http://www.heatonresearch.com/encog

@@ -1,5 +1,6 @@
 ---
 title: RFID Reader
+subcategory: Others
 ---
 
 # RFID Reader
@@ -22,9 +23,9 @@ RFID Starter Kit
 
 ## Output Port Description
 
-*   **tagID \[string\]:** A recognized TagID is put out on this port as a sequence of 12 hexadecimal numbers in an ASCII string.
+- **tagID \[string\]:** A recognized TagID is put out on this port as a sequence of 12 hexadecimal numbers in an ASCII string.
 
 ## Properties
 
-*   **comPort \[string\]:** The COM port where the RFID reader module is connected to (e.g "COM5")
-*   **baudRate \[integer\]:** The baudrate for communication with the RFID reader module, should be 9600 for the ID Innovations modules
+- **comPort \[string\]:** The COM port where the RFID reader module is connected to (e.g "COM5")
+- **baudRate \[integer\]:** The baudrate for communication with the RFID reader module, should be 9600 for the ID Innovations modules

@@ -1,5 +1,6 @@
 ---
 title: RemoteJoystick
+subcategory: Input Device Emulation
 ---
 
 # {{$frontmatter.title}}
@@ -22,18 +23,18 @@ The HID Actuator plugs into the target computer and connects via Bluetooth wirel
 
 ## Input Port Description
 
-*   **joystickX \[integer\]:** The desired X-Position of the Joystick.
-*   **joystickY \[integer\]:** The desired Y-Position of the Joystick.
-*   **joystickZ \[integer\]:** The desired Z-Position of the Joystick.
-*   **joystickR \[integer\]:** The desired R-Position of the Joystick.
-*   **joystickPov \[integer\]:** The desired POV-angle of the Joystick.
+- **joystickX \[integer\]:** The desired X-Position of the Joystick.
+- **joystickY \[integer\]:** The desired Y-Position of the Joystick.
+- **joystickZ \[integer\]:** The desired Z-Position of the Joystick.
+- **joystickR \[integer\]:** The desired R-Position of the Joystick.
+- **joystickPov \[integer\]:** The desired POV-angle of the Joystick.
 
 ## Event Listener Description
 
-*   **pressButton1 - pressButton13:** An incoming event at this port causes the corresponding button of the Joystick to be pressed.
-*   **releaseButton1 - releaseButton13:** An incoming event at this port causes the corresponding button of the Joystick to be released.
+- **pressButton1 - pressButton13:** An incoming event at this port causes the corresponding button of the Joystick to be pressed.
+- **releaseButton1 - releaseButton13:** An incoming event at this port causes the corresponding button of the Joystick to be released.
 
 ## Properties
 
-*   **refreshInterval \[integer\]:** This property value sets a minimum time (in milliseconds) between two updates of the remote joystick device. If set to 0, no limit is given to the update rate - which should be okay unless very high update rates (>100 Hz) of the joystick angles are performed.
-*   **uniqueId:** unique number of the CIM - if more than one CIMs of the same type are used. The module flashes a LED for identification when the ID is selected. **Supports value suggestions from ARE (dynamic property)**
+- **refreshInterval \[integer\]:** This property value sets a minimum time (in milliseconds) between two updates of the remote joystick device. If set to 0, no limit is given to the update rate - which should be okay unless very high update rates (>100 Hz) of the joystick angles are performed.
+- **uniqueId:** unique number of the CIM - if more than one CIMs of the same type are used. The module flashes a LED for identification when the ID is selected. **Supports value suggestions from ARE (dynamic property)**

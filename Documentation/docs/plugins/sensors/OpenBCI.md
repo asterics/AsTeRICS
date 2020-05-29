@@ -1,5 +1,6 @@
 ---
 title: OpenBCI
+subcategory: Bioelectric Measurement
 ---
 
 # OpenBCI
@@ -18,12 +19,12 @@ This software component requires an Open BCI compatible device connected to a CO
 
 ## Output Port Description
 
-*   **Channel1 to Channel8 \[integer\]:** Each output corresponds to the sampled data from its corresponding channel. A calibration procedure to obtain the factor for calculation of microvolts must be performed with the amplifier device.
-*   **AccX, AccY, AccZ \[integer\]:** The current values of the 3 axis of the acceleration sensor.
+- **Channel1 to Channel8 \[integer\]:** Each output corresponds to the sampled data from its corresponding channel. A calibration procedure to obtain the factor for calculation of microvolts must be performed with the amplifier device.
+- **AccX, AccY, AccZ \[integer\]:** The current values of the 3 axis of the acceleration sensor.
 
 ## Properties
 
-*   **COMPort \[String\]:** The name of the COM port, for example COM2 or COM17.
-*   **Baudrate \[Integer\]:** The baud rate for the transmission. Standard is 115200.
+- **COMPort \[String\]:** The name of the COM port, for example COM2 or COM17.
+- **Baudrate \[Integer\]:** The baud rate for the transmission. Standard is 115200.
 
 [1]: http://www.openbci.com/

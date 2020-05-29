@@ -1,5 +1,7 @@
 ---
 title: KeyCapture
+subcategory: Standard Input Device
+featured: true
 ---
 
 # {{$frontmatter.title}}

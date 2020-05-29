@@ -1,5 +1,6 @@
 ---
 title: StringFilter
+subcategory: Event and String Processing
 ---
 
 # {{$frontmatter.title}}
@@ -14,16 +15,16 @@ StringFilter plugin
 
 ## Input Port Description
 
-*   **in \[string\]:** String input port.
+- **in \[string\]:** String input port.
 
 ## Output Port Description
 
-*   **out \[string\]:** String output port for processed/filtered string.
+- **out \[string\]:** String output port for processed/filtered string.
 
 ## Properties
 
-*   **filterText \[string\]:** The filter text.  
-    
-*   **passOnlyIfContains \[boolean\]:** If selected, only strings containing the filter text will be passed.  
-    
-*   **cropFilterText \[boolean\]:** If selected, the filter will be removed before the input string is passed to the output port.
+- **filterText \[string\]:** The filter text.
+
+- **passOnlyIfContains \[boolean\]:** If selected, only strings containing the filter text will be passed.
+
+- **cropFilterText \[boolean\]:** If selected, the filter will be removed before the input string is passed to the output port.

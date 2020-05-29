@@ -1,5 +1,6 @@
 ---
 title: EmulateFaultyPlugin
+subcategory: Test
 ---
 
 # EmulateFaultyPlugin
@@ -14,31 +15,31 @@ No special hardware or software required.
 
 ## Input Port Description
 
-*   **inA \[double\]:** Input data of type double.
-*   **inB \[double\]:** Input data of type double.
-*   **inC \[string\]:** Input data of type string.
-*   **inA \[integer\]:** Input data of type integer.
+- **inA \[double\]:** Input data of type double.
+- **inB \[double\]:** Input data of type double.
+- **inC \[string\]:** Input data of type string.
+- **inA \[integer\]:** Input data of type integer.
 
 ## Event Listener Description
 
-*   **eventA:** An incmonig event A.
-*   **eventB:** An incoming event B.
-*   **eventC:** An incoming event C.
+- **eventA:** An incmonig event A.
+- **eventB:** An incoming event B.
+- **eventC:** An incoming event C.
 
 ## Properties
 
-*   **startException \[boolean\]:** Throw an exception when the plugin start method is called.
-*   **pauseException \[boolean\]:** Throw an exception when the plugin pause method is called.
-*   **stopException \[boolean\]:** Throw an exception when the plugin stop method is called.
-*   **resumeException \[boolean\]:** Throw an exception when the plugin resume method is called.
-*   **startDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
-*   **pauseDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
-*   **resumeDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
-*   **stopDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
-*   **inADuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
-*   **inBDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
-*   **inCDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
-*   **inDDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
-*   **eventADuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
-*   **eventBDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
-*   **eventCDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **startException \[boolean\]:** Throw an exception when the plugin start method is called.
+- **pauseException \[boolean\]:** Throw an exception when the plugin pause method is called.
+- **stopException \[boolean\]:** Throw an exception when the plugin stop method is called.
+- **resumeException \[boolean\]:** Throw an exception when the plugin resume method is called.
+- **startDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **pauseDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **resumeDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **stopDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **inADuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **inBDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **inCDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **inDDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **eventADuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **eventBDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.
+- **eventCDuration \[integer\]:** The duration in ms of the method call. If -1 is specified the method hangs forever and produces a thread dead lock.

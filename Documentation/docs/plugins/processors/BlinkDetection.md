@@ -1,5 +1,6 @@
 ---
 title: Blink Detection
+subcategory: DSP and Feature Detection
 ---
 
 # Blink Detection
@@ -18,11 +19,11 @@ The input signal shall correspond to a 250-Hz sampled electro-oculogram signal, 
 
 ## Input Port Description
 
-*   **input \[integer\]:** Input values that correspond to a 250-Hz sampled electro-oculogram signal.
+- **input \[integer\]:** Input values that correspond to a 250-Hz sampled electro-oculogram signal.
 
 ## Event Trigger Description
 
-*   **BlinkDetected:** This event port fires an event if a blink is detected in the input sequence of integers.
-*   **DoubleblinkDetected:** This event port fires an event if a double blink is detected in the input sequence of integers.
+- **BlinkDetected:** This event port fires an event if a blink is detected in the input sequence of integers.
+- **DoubleblinkDetected:** This event port fires an event if a double blink is detected in the input sequence of integers.
 
 [1]: ../sensors/Enobio.htm

@@ -1,5 +1,6 @@
 ---
 title: Event Dispatcher
+subcategory: Event and String Processing
 ---
 
 # {{$frontmatter.title}}
@@ -14,12 +15,12 @@ EventDispatcher plugin
 
 ## Input Port Description
 
-*   **cmd \[string\]:** The incoming command string.
+- **cmd \[string\]:** The incoming command string.
 
 ## Event Trigger Description
 
-*   **recognizedCommand1 - recognizedCommand10:** the events triggered by the recognized commands
+- **recognizedCommand1 - recognizedCommand10:** the events triggered by the recognized commands
 
 ## Properties
 
-*   **command1 - command10 \[string\]:** Ten string slots for commands. If an incoming string matches one of these property values, the associated event trigger is raised.
+- **command1 - command10 \[string\]:** Ten string slots for commands. If an incoming string matches one of these property values, the associated event trigger is raised.

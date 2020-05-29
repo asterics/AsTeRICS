@@ -1,5 +1,6 @@
 ---
 title: IntToString
+subcategory: Data Converters
 ---
 
 # Int To String
@@ -14,12 +15,12 @@ IntToString plugin
 
 ## Input Port Description
 
-*   **input \[integer\]:** Input port for the integer values to be converted.
+- **input \[integer\]:** Input port for the integer values to be converted.
 
 ## Output Port Description
 
-*   **output \[string\]:** Output port for the converted string values.
+- **output \[string\]:** Output port for the converted string values.
 
 ## Properties
 
-*   **hexadecimalOutput \[boolean\]:** If this property is set, the integer is converted into a hexadecimal string.
+- **hexadecimalOutput \[boolean\]:** If this property is set, the integer is converted into a hexadecimal string.

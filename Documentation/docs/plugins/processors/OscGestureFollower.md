@@ -1,5 +1,6 @@
 ---
 title: Osc Gesture Follower
+subcategory: DSP and Feature Detection
 ---
 
 # Osc Gesture Follower
@@ -14,8 +15,8 @@ OscGestureFollower howto
 
 ## Requirements
 
-*   The plugin requires the gfOSC\_v1.exe in subfolder tools/GestureFollower, which implements the actual gesture follower algorithms.
-*   Check your firewall configuration and network settings to ensure that OSC messages are not blocked.
+- The plugin requires the gfOSC_v1.exe in subfolder tools/GestureFollower, which implements the actual gesture follower algorithms.
+- Check your firewall configuration and network settings to ensure that OSC messages are not blocked.
 
 ## Functional Principle
 
@@ -23,31 +24,31 @@ Input data is received through CH1 to CH4 e.g. from sensors like the acceleratio
 
 ## Input Port Description
 
-*   **CH1 - CH4 \[double\]:** The input port which receive data values. **These 4 input ports support synchronization**
+- **CH1 - CH4 \[double\]:** The input port which receive data values. **These 4 input ports support synchronization**
 
 ## Output Port Description
 
-*   **likeliest \[double\]:** While the gesturefollower is in 'follwing mode' the most likeliest gesture is indicated on the likeliest output port. Before it can sample the input data and recognize a gesture, some data must be teached in.
+- **likeliest \[double\]:** While the gesturefollower is in 'follwing mode' the most likeliest gesture is indicated on the likeliest output port. Before it can sample the input data and recognize a gesture, some data must be teached in.
 
 ## Properties
 
-*   **InPort \[integer\]:** This value specifies the Port where OscMessages form the gesture follower are received.
-*   **OutPort \[integer\]:** This value specifies the Port where OscMessages are send to.
-*   **filename \[string\]:** Filename for the gesture data (load or save, .mubu file stored in the ARE subfoler tools/GestureFollower/). **Supports value suggestions from ARE (dynamic property)**.
+- **InPort \[integer\]:** This value specifies the Port where OscMessages form the gesture follower are received.
+- **OutPort \[integer\]:** This value specifies the Port where OscMessages are send to.
+- **filename \[string\]:** Filename for the gesture data (load or save, .mubu file stored in the ARE subfoler tools/GestureFollower/). **Supports value suggestions from ARE (dynamic property)**.
 
 ## Event Listener Ports
 
-*   **stop:** this event stops the gesture following
-*   **stoplearn:** this event stops the gesture learning process
-*   **learn1 - learn5:** these events select gestures 1 - 5 for learning
-*   **learn1 - learn5:** these events select gestures 1 - 5 for learning
-*   **clear:** this event clears learned gestures
-*   **follow:** this event starts the gesture recognition phase
-*   **load:** this event loads gesture data from file
-*   **save:** this event saves gesture data to file
+- **stop:** this event stops the gesture following
+- **stoplearn:** this event stops the gesture learning process
+- **learn1 - learn5:** these events select gestures 1 - 5 for learning
+- **learn1 - learn5:** these events select gestures 1 - 5 for learning
+- **clear:** this event clears learned gestures
+- **follow:** this event starts the gesture recognition phase
+- **load:** this event loads gesture data from file
+- **save:** this event saves gesture data to file
 
 ## Referred Plugins
 
-*   OscOutClient
-*   OpenVibe
-*   OscServer
+- OscOutClient
+- OpenVibe
+- OscServer

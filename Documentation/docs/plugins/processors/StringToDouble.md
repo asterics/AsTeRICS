@@ -1,5 +1,6 @@
 ---
 title: StringToDouble
+subcategory: Data Converters
 ---
 
 # String To Double
@@ -14,8 +15,8 @@ StringToDouble plugin
 
 ## Input Port Description
 
-*   **input \[string\]:** Input port for the string values to be converted.
+- **input \[string\]:** Input port for the string values to be converted.
 
 ## Output Port Description
 
-*   **output \[double\]:** Output port for the converted double values.
+- **output \[double\]:** Output port for the converted double values.

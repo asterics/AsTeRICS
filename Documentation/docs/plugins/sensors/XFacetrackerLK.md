@@ -1,5 +1,7 @@
 ---
 title: XFacetrackerLK
+subcategory: Computer Vision
+featured: true
 ---
 
 # XFacetrackerLK
@@ -24,37 +26,36 @@ The plugin can be used on a Raspberry Pi 3 (tested with Raspbian Jessie) with US
 In order for the raspi cam to work, the following steps are necessary:
 
 1.  Enable the camera with
-    
+
     sudo raspi-config
-    
+
 2.  Add the v4l driver for the camera, to make it accessible as /dev/videoXX device:
-    
-    sudo modprobe bcm2835-v4l2 max\_video\_width=2592 max\_video\_height=1944
-    
+
+    sudo modprobe bcm2835-v4l2 max_video_width=2592 max_video_height=1944
 
 ## Output Port Description
 
-*   **noseX \[integer\]:** This value specifies the relative change in the x coordinate of the user's nose with respect to the previous image frame.
-*   **noseY \[integer\]:** This value specifies the relative change in the y coordinate of the user's nose with respect to the previous image frame.
-*   **chinX \[integer\]:** This value specifies the relative change in the x coordinate of the user's chin with respect to the previous image frame.
-*   **chinY \[integer\]:** This value specifies the relative change in the y coordinate of the user's chin with respect to the previous image frame.
+- **noseX \[integer\]:** This value specifies the relative change in the x coordinate of the user's nose with respect to the previous image frame.
+- **noseY \[integer\]:** This value specifies the relative change in the y coordinate of the user's nose with respect to the previous image frame.
+- **chinX \[integer\]:** This value specifies the relative change in the x coordinate of the user's chin with respect to the previous image frame.
+- **chinY \[integer\]:** This value specifies the relative change in the y coordinate of the user's chin with respect to the previous image frame.
 
 ## Event Listener Description
 
-*   **init:** if this event is triggered, the face recognition procedure is initiated. This can be useful if the correct face position has been lost due to drifting of the LK algorithm.
-*   **showCameraSettings** an incoming event displays the settings window for the camera device (only on Windows), where parameters like image brightness or contrast can be adjusted.
+- **init:** if this event is triggered, the face recognition procedure is initiated. This can be useful if the correct face position has been lost due to drifting of the LK algorithm.
+- **showCameraSettings** an incoming event displays the settings window for the camera device (only on Windows), where parameters like image brightness or contrast can be adjusted.
 
 ## Properties
 
-*   **frameGrabber\[string, combobox selection\]:**Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera).
-*   **frameGrabberFormat\[string\]:**Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'.
-*   **deviceList \[string, combobox selection\]:**List of available devices, if supported by grabber
-*   **cameraSelection \[string\]:** The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera.
-*   **cameraResolution \[string, combobox selection\]:** This selection box provides several standard camera resolutions. Changing the resolution affects accuracy and performance (CPU load of the runtime system). Provided selections include �160x120�, �320x240�, �640x480�, �800x600�, �1024x768� and �1600x1200�.
-*   **frameRate \[integer\]:**The frame rate to use for frame grabbing. In case of 0 or a negative value, the maximum frame rate will be used.
-*   **titleVideoFrameWindow \[string\]:**The title of the window showing the video frame.
-*   **displayGUI \[boolean\]:**if selected, the GUI window will be shown.
-*   **enableOverlaySettings \[boolean\]:**if selected, the video frame shows the current frame rate and device name as overlayed text.
+- **frameGrabber\[string, combobox selection\]:**Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera).
+- **frameGrabberFormat\[string\]:**Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'.
+- **deviceList \[string, combobox selection\]:**List of available devices, if supported by grabber
+- **cameraSelection \[string\]:** The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera.
+- **cameraResolution \[string, combobox selection\]:** This selection box provides several standard camera resolutions. Changing the resolution affects accuracy and performance (CPU load of the runtime system). Provided selections include �160x120�, �320x240�, �640x480�, �800x600�, �1024x768� and �1600x1200�.
+- **frameRate \[integer\]:**The frame rate to use for frame grabbing. In case of 0 or a negative value, the maximum frame rate will be used.
+- **titleVideoFrameWindow \[string\]:**The title of the window showing the video frame.
+- **displayGUI \[boolean\]:**if selected, the GUI window will be shown.
+- **enableOverlaySettings \[boolean\]:**if selected, the video frame shows the current frame rate and device name as overlayed text.
 
 ## Example Configuraitons
 
@@ -64,24 +65,24 @@ Selects the best frame grabber for the platform the ARE is running on. (Linux: F
 
 Configuration
 
-*   frameGrabber:Default
-*   cameraSelection:0
+- frameGrabber:Default
+- cameraSelection:0
 
 ### OpenCV
 
-*   frameGrabber:OpenCV
-*   cameraSelection:0
+- frameGrabber:OpenCV
+- cameraSelection:0
 
 ### VideoInput (Windows only)
 
-*   frameGrabber:VideoInput
-*   cameraSelection:0
+- frameGrabber:VideoInput
+- cameraSelection:0
 
 ### FFmpeg (Linux only)
 
-*   frameGrabber:FFmpeg
-*   frameGrabberFormat (optional): e.g. vfwcap or dshow
-*   cameraSelection (device name or device number): e.g. /dev/video0 or 0 (will be mapped to /dev/video0)
+- frameGrabber:FFmpeg
+- frameGrabberFormat (optional): e.g. vfwcap or dshow
+- cameraSelection (device name or device number): e.g. /dev/video0 or 0 (will be mapped to /dev/video0)
 
 ### MJPEG stream of SmartPhone camera
 
@@ -97,8 +98,8 @@ Set the cameraSelection property of the XFacetrackerLK plugin to this url.
 
 Configuration
 
-*   frameGrabber:IPCamera
-*   cameraSelection:http://192.168.1.100:8080/video
+- frameGrabber:IPCamera
+- cameraSelection:http://192.168.1.100:8080/video
 
 [1]: https://github.com/bytedeco/javacv
 [2]: https://www.raspberrypi.org/products/camera-module-v2/

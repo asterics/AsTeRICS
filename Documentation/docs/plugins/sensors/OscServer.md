@@ -1,5 +1,6 @@
 ---
 title: Osc Server
+subcategory: Communication
 ---
 
 # Osc Server
@@ -14,9 +15,9 @@ OscServer plugin
 
 ## Requirements
 
-*   Any OSC client software which sends data to the server e.g. ARE OscOutClient Plugin, various OSC Apps for Android and various PC software.
-*   Check your firewall configuration and network settings to ensure that OSC messages are not blocked.
-*   Exact knowledge about the structure of the OSC message, to determine the OSC message structure refere to the OSC client documentation or utilze a neworksniffer e.g. Wireshark (www.wireshark.org)
+- Any OSC client software which sends data to the server e.g. ARE OscOutClient Plugin, various OSC Apps for Android and various PC software.
+- Check your firewall configuration and network settings to ensure that OSC messages are not blocked.
+- Exact knowledge about the structure of the OSC message, to determine the OSC message structure refere to the OSC client documentation or utilze a neworksniffer e.g. Wireshark (www.wireshark.org)
 
 ## Functional Principle
 
@@ -28,17 +29,17 @@ Each time the OscServer Plugin receives a OSC message it decompose it according 
 
 ## Output Port Description
 
-*   **out 1-8 \[double\]:** Forward data form the OSC message.
-*   **out 9-12 \[string\]:** Forward strings from the OSC message
+- **out 1-8 \[double\]:** Forward data form the OSC message.
+- **out 9-12 \[string\]:** Forward strings from the OSC message
 
 ## Properties
 
-*   **Port \[integer\]:** This value specifies the OscServer port.
-*   **AddressCH\[n\] \[string\]:** This value specifies the OSC input address e.g. "/path/to/sensor/accxyz".
-*   **ArgNrCH\[n\] \[integer\]:** The Argument Number defines which single argument of an entire message is picked out and forwarded to the output. The first argument of an OSC message begins with the index value zero, e.g. the first argument has the index 0, the second the index 1 and so on.
+- **Port \[integer\]:** This value specifies the OscServer port.
+- **AddressCH\[n\] \[string\]:** This value specifies the OSC input address e.g. "/path/to/sensor/accxyz".
+- **ArgNrCH\[n\] \[integer\]:** The Argument Number defines which single argument of an entire message is picked out and forwarded to the output. The first argument of an OSC message begins with the index value zero, e.g. the first argument has the index 0, the second the index 1 and so on.
 
 ## Referred Plugins
 
-*   OscOutClient
-*   OpenVibe
-*   OscGestureFollower
+- OscOutClient
+- OpenVibe
+- OscGestureFollower

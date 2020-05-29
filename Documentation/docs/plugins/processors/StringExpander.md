@@ -1,5 +1,6 @@
 ---
 title: StringExpander
+subcategory: Event and String Processing
 ---
 
 # {{$frontmatter.title}}
@@ -14,18 +15,18 @@ StringExpander plugin
 
 ## Input Port Description
 
-*   **input \[string\]:** String input port.
-*   **preString \[string\]:** String which will be placed before the input string (as leading string).
-*   **postString \[string\]:** String which will be placed after the input string (as trailing string).
+- **input \[string\]:** String input port.
+- **preString \[string\]:** String which will be placed before the input string (as leading string).
+- **postString \[string\]:** String which will be placed after the input string (as trailing string).
 
 ## Output Port Description
 
-*   **output \[string\]:** String output port.
+- **output \[string\]:** String output port.
 
 ## Properties
 
-*   **preString \[string\]:** default leading String.  
-    
-*   **postString \[string\]:** default trailing String.  
-    
-*   **trim \[boolean\]:** if selected, all leading and trailing white-space characters will be removed from the input string.
+- **preString \[string\]:** default leading String.
+
+- **postString \[string\]:** default trailing String.
+
+- **trim \[boolean\]:** if selected, all leading and trailing white-space characters will be removed from the input string.

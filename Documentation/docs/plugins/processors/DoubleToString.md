@@ -1,5 +1,6 @@
 ---
 title: DoubleToString
+subcategory: Data Converters
 ---
 
 # Double To String
@@ -14,8 +15,8 @@ DoubleToString plugin
 
 ## Input Port Description
 
-*   **input \[double\]:** Input port for the double values to be converted.
+- **input \[double\]:** Input port for the double values to be converted.
 
 ## Output Port Description
 
-*   **output \[string\]:** Output port for the converted string values.
+- **output \[string\]:** Output port for the converted string values.
