@@ -72,11 +72,9 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         try {
             setOpacity(0.5f);
-        } catch (IllegalComponentStateException e) {
+        } catch (Exception e) {
             // prevent crash if Opacity not supported
-        } catch (UnsupportedOperationException e) {
-			// prevent crash if Opacity not supported
-		}
+        }
         setVisible(true);
     }
 
