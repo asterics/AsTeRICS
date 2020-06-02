@@ -89,11 +89,9 @@ public class GUI {
             window.setBackground(new Color(0, 0, 0, 0)); // transparent !
             try {
                 window.setOpacity(0.5f);
-            } catch (IllegalComponentStateException e) {
+            } catch (Exception e) {
                 // prevent crash if Opacity not supported
-            } catch (UnsupportedOperationException e) {
-				// prevent crash if Opacity not supported
-			}
+            }
             window.setVisible(true);
         }
 
