@@ -87,7 +87,11 @@ public class GUI {
         for (JWindow window : windows) {
             window.setAlwaysOnTop(true);
             window.setBackground(new Color(0, 0, 0, 0)); // transparent !
-            window.setOpacity(0.5f);
+            try {
+                window.setOpacity(0.5f);
+            } catch (Exception e) {
+                // prevent crash if Opacity not supported
+            }
             window.setVisible(true);
         }
 

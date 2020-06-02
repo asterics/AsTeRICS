@@ -70,7 +70,11 @@ public class GUI extends JFrame {
         setUndecorated(true);
         setBackground(new Color(0, 0, 0, 0)); // transparent !
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setOpacity(0.5f);
+        try {
+            setOpacity(0.5f);
+        } catch (Exception e) {
+            // prevent crash if Opacity not supported
+        }
         setVisible(true);
     }
 
