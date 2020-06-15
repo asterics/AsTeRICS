@@ -115,7 +115,7 @@ This plugin has two event triggers:
 - **hostname \[string\]:** Hostname to connect to. It is possible to use a hostname, an IP adress or a FQDN
 - **port \[string\]:** Port of the openHAB installation. Defaults: 8080 for HTTP, 8443 for HTTPS. Please take care of any blocking firewall.
 - **protocol:** Protocol to connect to openHAB. Either http or https may be used (recommended: https).
-- **lazyCertificates \[boolean\]:** If this property is set, any SSL related certificate check will be removed for the given hostname. This affects the hole ARE.
+- **lazyCertificates \[boolean\]:** If this property is set, any SSL related certificate check will be removed for the given hostname. This affects the whole ARE.
 - **username \[string\]:** This property is used, if the HTTP basic authentication of openHAB is used. Provide the username here.
 - **password \[string\]:** This property is used, if the HTTP basic authentication of openHAB is used. Provide the password here.
 
