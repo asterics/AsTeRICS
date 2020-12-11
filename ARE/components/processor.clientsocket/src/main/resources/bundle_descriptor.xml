@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.ClientSocket"
+                   canonical_name="eu.asterics.component.processor.clientsocket.ClientSocketInstance">
+        <type subtype="Communication">processor</type>
+        <singleton>false</singleton>
+        <description>The plugin connects to a server socket, reads the data and sends it to the output port</description>
+        <ports>
+			<inputPort id="inA">
+				<description>Data to send to the socket</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inB">
+				<description>Binary data to send to the socket  (as byte stream)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+			<outputPort id="outA">
+				<description>Data read from the socket</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="outB">
+				<description>Binary data read from the socket (as byte stream)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="connect">
+				<description>Connect to server socket</description>
+			</eventListenerPort>
+			<eventListenerPort id="disconnect">
+				<description>Disconnect from server socket</description>
+			</eventListenerPort>
+			<eventListenerPort id="reconnect">
+				<description>Disconnect/Connect to server socket</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="connected">
+				<description>The socket was connected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="disconnected">
+				<description>The socket was disconnected</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="hostname"
+				type="string"
+				value="localhost"
+				description="IP address or name of server program"/>
+			<property name="port"
+				type="integer"
+				value="1111"
+				description="Port of server program"/>
+			<property name="protocol"
+				type="integer"
+				value="0"
+				combobox="tcp//udp"
+				description="Protocol for communication"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
