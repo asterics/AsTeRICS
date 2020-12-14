@@ -314,7 +314,6 @@ public class ClientSocketInstance extends AbstractRuntimeComponentInstance
 	  
 	  private void connect() {
 			// Connect to server socket in a new thread
-
 			try {
 				clientSocket = new Socket(propHostname, propPort);
 				socketOut = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
@@ -329,21 +328,26 @@ public class ClientSocketInstance extends AbstractRuntimeComponentInstance
 						// the variable opOutA.
 						String line;
 						try {
-							while ((line = socketIn.readLine()) != null) {
+							while (!Thread.interrupted() && (line = socketIn.readLine()) != null) {
 								opOutA.sendData(ConversionUtils.stringToBytes(line));
 							}
-						} catch (IOException e) {
+						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
 				});
 			} catch (Exception e) {
 				e.printStackTrace();
+				shutdown();
 			}
 	 }
 
 	 private void shutdown() {
-			clientReader.shutdown();
+			clientReader.shutdownNow();
+			try {
+                clientReader.awaitTermination(2, TimeUnit.SECONDS);
+            } catch (InterruptedException e1) {
+            }
 
 			if (clientSocket != null) {
 				try {
@@ -354,5 +358,5 @@ public class ClientSocketInstance extends AbstractRuntimeComponentInstance
 				socketIn = null;
 				socketOut = null;
 			}
-		 }
+	}
 }
