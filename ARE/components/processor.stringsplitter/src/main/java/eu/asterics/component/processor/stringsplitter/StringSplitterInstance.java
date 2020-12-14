@@ -34,6 +34,7 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
  * 
@@ -44,6 +45,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
  * @author <your name> [<your email address>] Date: Time:
  */
 public class StringSplitterInstance extends AbstractRuntimeComponentInstance {
+    private static final int NR_OUTPUT_PORTS = 16;
     final IRuntimeOutputPort opOut1 = new DefaultRuntimeOutputPort();
     final IRuntimeOutputPort opOut2 = new DefaultRuntimeOutputPort();
     final IRuntimeOutputPort opOut3 = new DefaultRuntimeOutputPort();
@@ -66,6 +68,7 @@ public class StringSplitterInstance extends AbstractRuntimeComponentInstance {
     // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
     String propSeperator = ";";
+    int propStartIndex=0;
 
     // declare member variables here
 
@@ -190,6 +193,8 @@ public class StringSplitterInstance extends AbstractRuntimeComponentInstance {
     public Object getRuntimePropertyValue(String propertyName) {
         if ("seperator".equalsIgnoreCase(propertyName)) {
             return propSeperator;
+        } else if("startIndex".equalsIgnoreCase(propertyName)) {
+            return propStartIndex;
         }
 
         return null;
@@ -209,6 +214,10 @@ public class StringSplitterInstance extends AbstractRuntimeComponentInstance {
             final Object oldValue = propSeperator;
             propSeperator = (String) newValue;
             return oldValue;
+        } else if ("startIndex".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propStartIndex;
+            propStartIndex = Integer.parseInt((String)newValue);
+            return oldValue;
         }
 
         return null;
@@ -222,59 +231,64 @@ public class StringSplitterInstance extends AbstractRuntimeComponentInstance {
         public void receiveData(byte[] data) {
             String line = ConversionUtils.stringFromBytes(data);
             String[] stringparts = line.split(propSeperator);
-
-            for (int i = 0; i < stringparts.length; i++) {
+            
+            //AstericsErrorHandling.instance.reportDebugInfo(StringSplitterInstance.this, "stringsplitter.length: "+stringparts.length);
+            if(propStartIndex>=stringparts.length) {
+                AstericsErrorHandling.instance.reportDebugInfo(StringSplitterInstance.this, "propStartIndex="+propStartIndex+": but must be < "+stringparts.length);
+                return;
+            }
+                        
+            for (int i = 0; i < NR_OUTPUT_PORTS && (i+propStartIndex) < stringparts.length; i++) {
                 switch (i) {
                 case 0:
-                    opOut1.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut1.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 1:
-                    opOut2.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut2.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 2:
-                    opOut3.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut3.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 3:
-                    opOut4.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut4.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 4:
-                    opOut5.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut5.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 5:
-                    opOut6.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut6.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 6:
-                    opOut7.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut7.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 7:
-                    opOut8.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut8.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 8:
-                    opOut9.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut9.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 9:
-                    opOut10.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut10.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 10:
-                    opOut11.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut11.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 11:
-                    opOut12.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut12.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 12:
-                    opOut13.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut13.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 13:
-                    opOut14.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut14.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 14:
-                    opOut15.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut15.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 case 15:
-                    opOut16.sendData(ConversionUtils.stringToBytes(stringparts[i]));
+                    opOut16.sendData(ConversionUtils.stringToBytes(stringparts[i+propStartIndex]));
                     break;
                 }
-
             }
 
             // insert data reception handling here, e.g.:

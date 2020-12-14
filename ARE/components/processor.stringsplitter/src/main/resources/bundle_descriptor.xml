@@ -89,7 +89,10 @@
 				type="string"
 				value=";"
 				description="defines the seperator of the strings"/>
-
+			<property name="startIndex"
+				type="integer"
+				value="0"
+				description="Defines the index of the column to use for out1."/>
         </properties>
 
     </componentType>
