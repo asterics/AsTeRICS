@@ -1,0 +1,1471 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\dev\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\OpenFace_Pose-AUs_crosshairCursorControl_2ways.acs_2020_12_14_21_21" version="20130320">
+  <components>
+    <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
+      <description>cursor position control via crosshair movement</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationH">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="accelerationV">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enabled" value="True" />
+        <property name="absoluteValues" value="false" />
+        <property name="autoColorAxis" value="true" />
+        <property name="highlightClick" value="True" />
+        <property name="wrapAround" value="True" />
+        <property name="taskbarOffset" value="false" />
+        <property name="clickEventTime" value="0" />
+        <property name="lineWidth" value="5" />
+        <property name="baseVelocity" value="50" />
+        <property name="accelerationH" value="100" />
+        <property name="accelerationV" value="100" />
+        <property name="maxVelocity" value="500" />
+      </properties>
+      <layout>
+        <posX>674</posX>
+        <posY>227</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.KeyDown1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57424" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>195</posX>
+        <posY>223</posY>
+      </layout>
+    </component>
+    <component id="EventDispatcher.1" type_id="asterics.EventDispatcher">
+      <description>Translates incoming command strings into events</description>
+      <ports>
+        <inputPort portTypeID="cmd">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="command1" value="1" />
+        <property name="command2" value="2" />
+        <property name="command3" value="3" />
+        <property name="command4" value="4" />
+        <property name="command5" value="5" />
+        <property name="command6" value="6" />
+        <property name="command7" value="7" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+      </properties>
+      <layout>
+        <posX>973</posX>
+        <posY>231</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="true" />
+        <property name="startCentered" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>817</posX>
+        <posY>133</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.KeyRight1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57421" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>196</posX>
+        <posY>59</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="a" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>1347</posX>
+        <posY>234</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="{CTRL}c" />
+        <property name="slot2" value="{CTRL}v" />
+        <property name="slot3" value="{CTRL}x" />
+        <property name="slot4" value="{CTRL}a" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>1227</posX>
+        <posY>243</posY>
+      </layout>
+    </component>
+    <component id="EventDelay.2" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="100" />
+      </properties>
+      <layout>
+        <posX>1076</posX>
+        <posY>231</posY>
+      </layout>
+    </component>
+    <component id="EventCounter.1" type_id="asterics.EventCounter">
+      <description>Two-direction event counter</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="minValue" value="0" />
+        <property name="maxValue" value="1000" />
+        <property name="initialValue" value="0" />
+        <property name="wrapAround" value="false" />
+        <property name="sendInitialValue" value="false" />
+        <property name="autoSend" value="true" />
+      </properties>
+      <layout>
+        <posX>400</posX>
+        <posY>65</posY>
+      </layout>
+    </component>
+    <component id="EventDispatcher.2" type_id="asterics.EventDispatcher">
+      <description>Translates incoming command strings into events</description>
+      <ports>
+        <inputPort portTypeID="cmd">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="command1" value="2" />
+        <property name="command2" value="" />
+        <property name="command3" value="" />
+        <property name="command4" value="" />
+        <property name="command5" value="" />
+        <property name="command6" value="" />
+        <property name="command7" value="" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+      </properties>
+      <layout>
+        <posX>538</posX>
+        <posY>77</posY>
+      </layout>
+    </component>
+    <component id="Tooltip.1" type_id="asterics.Tooltip">
+      <description>show tooltips next to mouse pointer for triggering various actions</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="tooltip">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="initialX" value="0" />
+        <property name="initialY" value="0" />
+        <property name="selectTime" value="1000" />
+        <property name="tooltipFolder" value="pictures/tooltips" />
+        <property name="tooltipStartIndex" value="1" />
+      </properties>
+      <layout>
+        <posX>820</posX>
+        <posY>305</posY>
+      </layout>
+    </component>
+    <component id="ClientSocket.1" type_id="asterics.ClientSocket">
+      <description>The plugin connects to a server socket, reads the data and sends it to the output port</description>
+      <ports>
+        <inputPort portTypeID="inA" sync="false">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB" sync="false">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outA">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outB">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="192.168.1.185" />
+        <property name="port" value="11000" />
+        <property name="protocol" value="0" />
+      </properties>
+      <layout>
+        <posX>85</posX>
+        <posY>459</posY>
+      </layout>
+    </component>
+    <component id="StringSplitter.1" type_id="asterics.StringSplitter">
+      <description>Split the string in up to 16 strings</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out9">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out10">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out11">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out12">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out13">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out14">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out15">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out16">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Seperator" value="," />
+        <property name="startIndex" value="0" />
+      </properties>
+      <layout>
+        <posX>254</posX>
+        <posY>480</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1_yaw" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*180/3.14159+0.5" />
+      </properties>
+      <layout>
+        <posX>413</posX>
+        <posY>444</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="10" />
+        <property name="thresholdLow" value="8" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="2" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>607</posX>
+        <posY>432</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="10" />
+        <property name="thresholdLow" value="8" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="2" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>607</posX>
+        <posY>758</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1.1_roll" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*180/3.14159+0.5" />
+      </properties>
+      <layout>
+        <posX>427</posX>
+        <posY>663</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.1.1_Smile" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="1.9" />
+        <property name="thresholdLow" value="1.2" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="2" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>609</posX>
+        <posY>1109</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1000</posX>
+        <posY>741</posY>
+      </layout>
+      <gui>
+        <posX>385</posX>
+        <posY>565</posY>
+        <width>3000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.1.1.1_pitch" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*180/3.14159+0.5" />
+      </properties>
+      <layout>
+        <posX>449</posX>
+        <posY>861</posY>
+      </layout>
+    </component>
+    <component id="StringSplitter.2" type_id="asterics.StringSplitter">
+      <description>Split the string in up to 16 strings</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out9">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out10">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out11">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out12">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out13">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out14">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out15">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out16">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Seperator" value="," />
+        <property name="startIndex" value="16" />
+      </properties>
+      <layout>
+        <posX>253</posX>
+        <posY>879</posY>
+      </layout>
+    </component>
+    <component id="Notizen" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Konfiguration" />
+        <property name="default" value="16=AU7_r; 32=AU06_c; " />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>845</posX>
+        <posY>1117</posY>
+      </layout>
+      <gui>
+        <posX>385</posX>
+        <posY>2454</posY>
+        <width>3000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="StringSplitter.2.1" type_id="asterics.StringSplitter">
+      <description>Split the string in up to 16 strings</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out9">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out10">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out11">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out12">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out13">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out14">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out15">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out16">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Seperator" value="," />
+        <property name="startIndex" value="32" />
+      </properties>
+      <layout>
+        <posX>246</posX>
+        <posY>1276</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.2" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="-10" />
+        <property name="thresholdLow" value="-8" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="2" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>606</posX>
+        <posY>592</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.2.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="-10" />
+        <property name="thresholdLow" value="-8" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="2" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>627</posX>
+        <posY>932</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1.1.1.1_AU6_AU12" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a+b)/2" />
+      </properties>
+      <layout>
+        <posX>457</posX>
+        <posY>1075</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.16">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Keyboard.1" />
+        <port id="keyCodes" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="EventCounter.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="EventDispatcher.2" />
+        <port id="cmd" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="Tooltip.1" />
+        <port id="tooltip" />
+      </source>
+      <target>
+        <component id="EventDispatcher.1" />
+        <port id="cmd" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outY" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="Tooltip.1" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="CrosshairCursorControl.1" />
+        <port id="outY" />
+      </source>
+      <target>
+        <component id="Tooltip.1" />
+        <port id="y" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="ClientSocket.1" />
+        <port id="outA" />
+      </source>
+      <target>
+        <component id="StringSplitter.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.25">
+      <source>
+        <component id="MathEvaluator.1.1.1.1_AU6_AU12" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1.1.1_Smile" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="MathEvaluator.1_yaw" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.24">
+      <source>
+        <component id="StringSplitter.2" />
+        <port id="out4" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1.1.1_AU6_AU12" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.22">
+      <source>
+        <component id="MathEvaluator.1.1_roll" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1.2.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="MathEvaluator.1.1_roll" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out16" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1.1.1_AU6_AU12" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out10" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1_roll" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out9" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1_yaw" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="MathEvaluator.1_yaw" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="MathEvaluator.1_yaw" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out11" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1.1_pitch" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.23">
+      <source>
+        <component id="ClientSocket.1" />
+        <port id="outA" />
+      </source>
+      <target>
+        <component id="StringSplitter.2" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="recognizedCommand1_doubleClick">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="doubleClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_rightClick">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_dragPress">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="dragPress" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.2" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_nextClickRelease">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDelay.2" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="nextClickRelease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_increase">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyDown1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="increase" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_decrease">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyDown1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="decrease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_dispatchSlot3">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_dispatchSlot4">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_activateTooltips">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.2" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="activateTooltips" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="clickEvent_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="clickEvent" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="tooltipActivated_disablePlugin">
+      <description />
+      <sources>
+        <source>
+          <component id="Tooltip.1" />
+          <eventPort id="tooltipActivated" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="disablePlugin" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="tooltipDeactivated_enablePlugin">
+      <description />
+      <sources>
+        <source>
+          <component id="Tooltip.1" />
+          <eventPort id="tooltipDeactivated" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="enablePlugin" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_startMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyDown1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_stopMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyDown1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_increase">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyRight1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="increase" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_decrease">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyRight1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="decrease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_previousTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyDown1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="previousTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_nextTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyRight1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="nextTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_startMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyRight1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_stopMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.KeyRight1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.1.1_Smile" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_startMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_stopMoveDown">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_startMoveUp">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.2" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_stopMoveUp">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.2" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_startMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_stopMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_startMoveLeft">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveLeft" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_stopMoveLeft">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveLeft" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>260</posX>
+      <posY>422</posY>
+      <width>3375</width>
+      <height>4333</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

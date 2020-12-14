@@ -1,1 +1,239 @@
-<?xml version="1.0"?><model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="model_nr_4939260538890_created_at_2020_11_05_22_01" version="webACS_v0.1_to_be_replaced_by_proper_version_number">	<modelDescription>		<shortDescription></shortDescription>		<requirements></requirements>		<description></description>	</modelDescription>	<components>		<component id="ClientSocket.1" type_id="asterics.ClientSocket">			<description>The plugin connects to a server socket, reads the data and sends it to the output port</description>			<ports>				<inputPort portTypeID="inA" sync="false">					<properties />				</inputPort>				<inputPort portTypeID="inB" sync="false">					<properties />				</inputPort>				<outputPort portTypeID="outA">					<properties />				</outputPort>				<outputPort portTypeID="outB">					<properties />				</outputPort>			</ports>			<properties>				<property name="hostname" value="192.168.1.185" />				<property name="port" value="11000" />				<property name="protocol" value="0" />			</properties>			<layout>				<posX>141</posX>				<posY>136</posY>			</layout>		</component>		<component id="StringSplitter.1" type_id="asterics.StringSplitter">			<description>Split the string in up to 16 strings</description>			<ports>				<inputPort portTypeID="input" sync="false">					<properties />				</inputPort>				<outputPort portTypeID="out1">					<properties />				</outputPort>				<outputPort portTypeID="out2">					<properties />				</outputPort>				<outputPort portTypeID="out3">					<properties />				</outputPort>				<outputPort portTypeID="out4">					<properties />				</outputPort>				<outputPort portTypeID="out5">					<properties />				</outputPort>				<outputPort portTypeID="out6">					<properties />				</outputPort>				<outputPort portTypeID="out7">					<properties />				</outputPort>				<outputPort portTypeID="out8">					<properties />				</outputPort>				<outputPort portTypeID="out9">					<properties />				</outputPort>				<outputPort portTypeID="out10">					<properties />				</outputPort>				<outputPort portTypeID="out11">					<properties />				</outputPort>				<outputPort portTypeID="out12">					<properties />				</outputPort>				<outputPort portTypeID="out13">					<properties />				</outputPort>				<outputPort portTypeID="out14">					<properties />				</outputPort>				<outputPort portTypeID="out15">					<properties />				</outputPort>				<outputPort portTypeID="out16">					<properties />				</outputPort>			</ports>			<properties>				<property name="Seperator" value="," />			</properties>			<layout>				<posX>315</posX>				<posY>100</posY>			</layout>		</component>		<component id="TextDisplay.1" type_id="asterics.TextDisplay">			<description>GUI component, which displays text.</description>			<ports>				<inputPort portTypeID="input" sync="false">					<properties />				</inputPort>			</ports>			<properties>				<property name="caption" value="Text Display" />				<property name="default" value="" />				<property name="textPosition" value="1" />				<property name="textColor" value="0" />				<property name="backgroundColor" value="11" />				<property name="displayGUI" value="true" />			</properties>			<layout>				<posX>556</posX>				<posY>137</posY>			</layout>			<gui>				<posX>0</posX>				<posY>360</posY>				<width>3000</width>				<height>2000</height>			</gui>		</component>	</components>	<channels>		<channel id="outAATClientSocket.1_TO_inputATStringSplitter.1">			<source>				<component id="ClientSocket.1" />				<port id="outA" />			</source>			<target>				<component id="StringSplitter.1" />				<port id="input" />			</target>		</channel>		<channel id="out1ATStringSplitter.1_TO_inputATTextDisplay.1">			<source>				<component id="StringSplitter.1" />				<port id="out1" />			</source>			<target>				<component id="TextDisplay.1" />				<port id="input" />			</target>		</channel>	</channels>	<modelGUI>		<Decoration>true</Decoration>		<Fullscreen>false</Fullscreen>		<AlwaysOnTop>false</AlwaysOnTop>		<ToSystemTray>false</ToSystemTray>		<ShopControlPanel>true</ShopControlPanel>		<AREGUIWindow>			<posX>0</posX>			<posY>0</posY>			<width>10000</width>			<height>6000</height>		</AREGUIWindow>	</modelGUI></model>
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\dev\AsTeRICS\bin\ARE\models\componentTests\processors\testClientSocket.acs_2020_12_14_17_58" version="webACS_v0.1_to_be_replaced_by_proper_version_number">
+  <modelDescription>
+    <shortDescription />
+    <requirements />
+    <description />
+  </modelDescription>
+  <components>
+    <component id="ClientSocket.1" type_id="asterics.ClientSocket">
+      <description>The plugin connects to a server socket, reads the data and sends it to the output port</description>
+      <ports>
+        <inputPort portTypeID="inA" sync="false">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB" sync="false">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outA">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outB">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="192.168.1.185" />
+        <property name="port" value="11000" />
+        <property name="protocol" value="0" />
+      </properties>
+      <layout>
+        <posX>141</posX>
+        <posY>136</posY>
+      </layout>
+    </component>
+    <component id="StringSplitter.1" type_id="asterics.StringSplitter">
+      <description>Split the string in up to 16 strings</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out9">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out10">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out11">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out12">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out13">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out14">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out15">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out16">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Seperator" value="," />
+        <property name="startIndex" value="9" />
+      </properties>
+      <layout>
+        <posX>310</posX>
+        <posY>157</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input" sync="false">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>629</posX>
+        <posY>62</posY>
+      </layout>
+      <gui>
+        <posX>500</posX>
+        <posY>582</posY>
+        <width>3000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="Gervill" />
+        <property name="channel" value="1" />
+        <property name="instrument" value="Vibraphone" />
+        <property name="triggerThreshold" value="50" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="5" />
+        <property name="toneScale" value="alltones.sc" />
+        <property name="playOnlyChangingNotes" value="true" />
+        <property name="displayGUI" value="true" />
+        <property name="displayNoteNames" value="false" />
+      </properties>
+      <layout>
+        <posX>679</posX>
+        <posY>270</posY>
+      </layout>
+      <gui>
+        <posX>510</posX>
+        <posY>2676</posY>
+        <width>5000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="Quantizer.1" type_id="asterics.Quantizer">
+      <description>Performs the quantization of the input signal</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="quantizationStep" value="1" />
+      </properties>
+      <layout>
+        <posX>500</posX>
+        <posY>236</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="outAATClientSocket.1_TO_inputATStringSplitter.1">
+      <source>
+        <component id="ClientSocket.1" />
+        <port id="outA" />
+      </source>
+      <target>
+        <component id="StringSplitter.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Quantizer.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Quantizer.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="Quantizer.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>535</posX>
+      <posY>289</posY>
+      <width>4000</width>
+      <height>4667</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
