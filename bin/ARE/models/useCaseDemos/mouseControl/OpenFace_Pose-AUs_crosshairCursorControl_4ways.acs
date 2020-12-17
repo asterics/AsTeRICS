@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\dev\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\OpenFace_Pose-AUs_crosshairCursorControl_2keys.acs_2020_12_14_20_50" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\dev\AsTeRICS\bin\ARE\models\useCaseDemos\mouseControl\OpenFace_Pose-AUs_crosshairCursorControl_2ways.acs_2020_12_17_16_45" version="20130320">
   <components>
     <component id="CrosshairCursorControl.1" type_id="asterics.CrosshairCursorControl">
       <description>cursor position control via crosshair movement</description>
@@ -33,9 +33,9 @@
         <property name="clickEventTime" value="0" />
         <property name="lineWidth" value="5" />
         <property name="baseVelocity" value="50" />
-        <property name="accelerationH" value="500" />
-        <property name="accelerationV" value="500" />
-        <property name="maxVelocity" value="1000" />
+        <property name="accelerationH" value="100" />
+        <property name="accelerationV" value="100" />
+        <property name="maxVelocity" value="500" />
       </properties>
       <layout>
         <posX>674</posX>
@@ -217,8 +217,8 @@
         <property name="autoSend" value="true" />
       </properties>
       <layout>
-        <posX>400</posX>
-        <posY>65</posY>
+        <posX>377</posX>
+        <posY>53</posY>
       </layout>
     </component>
     <component id="EventDispatcher.2" type_id="asterics.EventDispatcher">
@@ -292,8 +292,8 @@
         <property name="protocol" value="0" />
       </properties>
       <layout>
-        <posX>85</posX>
-        <posY>459</posY>
+        <posX>39</posX>
+        <posY>463</posY>
       </layout>
     </component>
     <component id="StringSplitter.1" type_id="asterics.StringSplitter">
@@ -356,11 +356,11 @@
         <property name="startIndex" value="0" />
       </properties>
       <layout>
-        <posX>254</posX>
-        <posY>480</posY>
+        <posX>193</posX>
+        <posY>474</posY>
       </layout>
     </component>
-    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+    <component id="MathEvaluator.1_yaw-kopf-raufrunter" type_id="asterics.MathEvaluator">
       <description>Mathematical expression evaluator</description>
       <ports>
         <inputPort portTypeID="inA">
@@ -380,14 +380,14 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="(a+b)/2" />
+        <property name="expression" value="a*180/3.14159+0.5" />
       </properties>
       <layout>
-        <posX>413</posX>
-        <posY>444</posY>
+        <posX>477</posX>
+        <posY>429</posY>
       </layout>
     </component>
-    <component id="Threshold.1" type_id="asterics.Threshold">
+    <component id="Threshold.1-kopf-runter" type_id="asterics.Threshold">
       <description>Threshold Level Processor</description>
       <ports>
         <inputPort portTypeID="in">
@@ -398,19 +398,19 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="thresholdHigh" value="2" />
-        <property name="thresholdLow" value="1.2" />
+        <property name="thresholdHigh" value="10" />
+        <property name="thresholdLow" value="8" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="0" />
         <property name="operationMode" value="2" />
         <property name="eventCondition" value="2" />
       </properties>
       <layout>
-        <posX>560</posX>
-        <posY>451</posY>
+        <posX>597</posX>
+        <posY>433</posY>
       </layout>
     </component>
-    <component id="Threshold.1.1" type_id="asterics.Threshold">
+    <component id="Threshold.1.1-kopf-rechts" type_id="asterics.Threshold">
       <description>Threshold Level Processor</description>
       <ports>
         <inputPort portTypeID="in">
@@ -421,19 +421,19 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="thresholdHigh" value="2.3" />
-        <property name="thresholdLow" value="1.2" />
+        <property name="thresholdHigh" value="10" />
+        <property name="thresholdLow" value="8" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="0" />
         <property name="operationMode" value="2" />
         <property name="eventCondition" value="2" />
       </properties>
       <layout>
-        <posX>566</posX>
-        <posY>644</posY>
+        <posX>660</posX>
+        <posY>725</posY>
       </layout>
     </component>
-    <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
+    <component id="MathEvaluator.1.1_roll-kopf-linkrechts" type_id="asterics.MathEvaluator">
       <description>Mathematical expression evaluator</description>
       <ports>
         <inputPort portTypeID="inA">
@@ -453,14 +453,14 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="(a+b)/2" />
+        <property name="expression" value="a*180/3.14159+0.5" />
       </properties>
       <layout>
-        <posX>426</posX>
-        <posY>650</posY>
+        <posX>417</posX>
+        <posY>663</posY>
       </layout>
     </component>
-    <component id="Threshold.1.1.1" type_id="asterics.Threshold">
+    <component id="Threshold.1.1.1_Smile" type_id="asterics.Threshold">
       <description>Threshold Level Processor</description>
       <ports>
         <inputPort portTypeID="in">
@@ -479,8 +479,8 @@
         <property name="eventCondition" value="2" />
       </properties>
       <layout>
-        <posX>670</posX>
-        <posY>787</posY>
+        <posX>654</posX>
+        <posY>1312</posY>
       </layout>
     </component>
     <component id="TextDisplay.1" type_id="asterics.TextDisplay">
@@ -491,7 +491,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="caption" value="Text Display" />
+        <property name="caption" value="Brow Raise Intensity" />
         <property name="default" value="" />
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
@@ -499,8 +499,8 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>622</posX>
-        <posY>1033</posY>
+        <posX>1000</posX>
+        <posY>742</posY>
       </layout>
       <gui>
         <posX>385</posX>
@@ -509,7 +509,7 @@
         <height>2000</height>
       </gui>
     </component>
-    <component id="MathEvaluator.1.1.1" type_id="asterics.MathEvaluator">
+    <component id="MathEvaluator.1.1.1_pitch-kopf-rotation" type_id="asterics.MathEvaluator">
       <description>Mathematical expression evaluator</description>
       <ports>
         <inputPort portTypeID="inA">
@@ -529,11 +529,11 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="(a+b)/2*c*d" />
+        <property name="expression" value="a*180/3.14159+0.5" />
       </properties>
       <layout>
-        <posX>478</posX>
-        <posY>831</posY>
+        <posX>433</posX>
+        <posY>832</posY>
       </layout>
     </component>
     <component id="StringSplitter.2" type_id="asterics.StringSplitter">
@@ -596,8 +596,8 @@
         <property name="startIndex" value="16" />
       </properties>
       <layout>
-        <posX>253</posX>
-        <posY>879</posY>
+        <posX>215</posX>
+        <posY>914</posY>
       </layout>
     </component>
     <component id="Notizen" type_id="asterics.TextArea">
@@ -615,7 +615,7 @@
       </ports>
       <properties>
         <property name="caption" value="Konfiguration" />
-        <property name="default" value="16=AU7_r; 32=AU06_c; " />
+        <property name="default" value="Move Crosshair=Head up/down, left/right; Click=Smile; Next-Tooltip=Raise Browes; 16=AU7_r; 32=AU06_c; 12=AU1_r,13=AU2;" />
         <property name="editable" value="false" />
         <property name="fontSize" value="14" />
         <property name="textColor" value="0" />
@@ -623,12 +623,12 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>825</posX>
-        <posY>1017</posY>
+        <posX>1047</posX>
+        <posY>1224</posY>
       </layout>
       <gui>
         <posX>385</posX>
-        <posY>2454</posY>
+        <posY>2676</posY>
         <width>3000</width>
         <height>2000</height>
       </gui>
@@ -693,8 +693,177 @@
         <property name="startIndex" value="32" />
       </properties>
       <layout>
-        <posX>247</posX>
+        <posX>246</posX>
         <posY>1276</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.2-kopf-rauf" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="-10" />
+        <property name="thresholdLow" value="-8" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="2" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>566</posX>
+        <posY>593</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.2.1-kopf-links" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="-10" />
+        <property name="thresholdLow" value="-8" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="2" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>673</posX>
+        <posY>881</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1.1.1.1_AU6_AU12" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a+b)/2" />
+      </properties>
+      <layout>
+        <posX>514</posX>
+        <posY>1299</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1-tracking-confidence" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="0.8" />
+        <property name="thresholdLow" value="0.8" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="0" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>310</posX>
+        <posY>398</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1-browe-raise" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="2.3" />
+        <property name="thresholdLow" value="1.8" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="0" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>622</posX>
+        <posY>1092</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1.1.1.1_AU1_AU2-browe-raise" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a+b)/2" />
+      </properties>
+      <layout>
+        <posX>491</posX>
+        <posY>1088</posY>
+      </layout>
+    </component>
+    <component id="Timer.1_next-tooltip" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="2" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="750" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>805</posX>
+        <posY>1084</posY>
       </layout>
     </component>
   </components>
@@ -779,99 +948,89 @@
         <port id="input" />
       </target>
     </channel>
-    <channel id="binding.10">
+    <channel id="binding.25">
       <source>
-        <component id="StringSplitter.1" />
-        <port id="out1" />
+        <component id="MathEvaluator.1.1.1.1_AU6_AU12" />
+        <port id="out" />
       </source>
       <target>
-        <component id="MathEvaluator.1" />
-        <port id="inA" />
-      </target>
-    </channel>
-    <channel id="binding.11">
-      <source>
-        <component id="StringSplitter.1" />
-        <port id="out2" />
-      </source>
-      <target>
-        <component id="MathEvaluator.1" />
-        <port id="inB" />
+        <component id="Threshold.1.1.1_Smile" />
+        <port id="in" />
       </target>
     </channel>
     <channel id="binding.12">
       <source>
-        <component id="MathEvaluator.1" />
+        <component id="MathEvaluator.1_yaw-kopf-raufrunter" />
         <port id="out" />
       </source>
       <target>
-        <component id="Threshold.1" />
+        <component id="Threshold.1-kopf-runter" />
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.13">
+    <channel id="binding.24">
       <source>
-        <component id="StringSplitter.1" />
-        <port id="out5" />
+        <component id="StringSplitter.2" />
+        <port id="out4" />
       </source>
       <target>
-        <component id="MathEvaluator.1.1" />
-        <port id="inA" />
-      </target>
-    </channel>
-    <channel id="binding.14">
-      <source>
-        <component id="StringSplitter.1" />
-        <port id="out9" />
-      </source>
-      <target>
-        <component id="MathEvaluator.1.1" />
+        <component id="MathEvaluator.1.1.1.1_AU6_AU12" />
         <port id="inB" />
       </target>
     </channel>
-    <channel id="binding.15">
+    <channel id="binding.22">
       <source>
-        <component id="MathEvaluator.1.1" />
+        <component id="MathEvaluator.1.1_roll-kopf-linkrechts" />
         <port id="out" />
       </source>
       <target>
-        <component id="Threshold.1.1" />
+        <component id="Threshold.1.2.1-kopf-links" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="MathEvaluator.1.1_roll-kopf-linkrechts" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1.1-kopf-rechts" />
         <port id="in" />
       </target>
     </channel>
     <channel id="binding.18">
       <source>
-        <component id="MathEvaluator.1.1.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="Threshold.1.1.1" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.19">
-      <source>
-        <component id="StringSplitter.2" />
-        <port id="out15" />
-      </source>
-      <target>
-        <component id="MathEvaluator.1.1.1" />
-        <port id="inC" />
-      </target>
-    </channel>
-    <channel id="binding.20">
-      <source>
-        <component id="StringSplitter.2" />
+        <component id="StringSplitter.1" />
         <port id="out16" />
       </source>
       <target>
-        <component id="MathEvaluator.1.1.1" />
-        <port id="inD" />
+        <component id="MathEvaluator.1.1.1.1_AU6_AU12" />
+        <port id="inA" />
       </target>
     </channel>
-    <channel id="binding.24">
+    <channel id="binding.17">
       <source>
-        <component id="MathEvaluator.1.1.1" />
+        <component id="StringSplitter.1" />
+        <port id="out10" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1_roll-kopf-linkrechts" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out9" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1_yaw-kopf-raufrunter" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.30">
+      <source>
+        <component id="MathEvaluator.1.1.1.1_AU1_AU2-browe-raise" />
         <port id="out" />
       </source>
       <target>
@@ -879,24 +1038,24 @@
         <port id="input" />
       </target>
     </channel>
-    <channel id="binding.21">
+    <channel id="binding.20">
       <source>
-        <component id="StringSplitter.1" />
-        <port id="out15" />
+        <component id="MathEvaluator.1_yaw-kopf-raufrunter" />
+        <port id="out" />
       </source>
       <target>
-        <component id="MathEvaluator.1.1.1" />
-        <port id="inA" />
+        <component id="Threshold.1.2-kopf-rauf" />
+        <port id="in" />
       </target>
     </channel>
-    <channel id="binding.22">
+    <channel id="binding.19">
       <source>
         <component id="StringSplitter.1" />
-        <port id="out16" />
+        <port id="out11" />
       </source>
       <target>
-        <component id="MathEvaluator.1.1.1" />
-        <port id="inB" />
+        <component id="MathEvaluator.1.1.1_pitch-kopf-rotation" />
+        <port id="inA" />
       </target>
     </channel>
     <channel id="binding.23">
@@ -907,6 +1066,46 @@
       <target>
         <component id="StringSplitter.2" />
         <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.26">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out4" />
+      </source>
+      <target>
+        <component id="Threshold.1-tracking-confidence" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.27">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out12" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1.1.1_AU1_AU2-browe-raise" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.28">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out13" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1.1.1_AU1_AU2-browe-raise" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.29">
+      <source>
+        <component id="MathEvaluator.1.1.1.1_AU1_AU2-browe-raise" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1-browe-raise" />
+        <port id="in" />
       </target>
     </channel>
   </channels>
@@ -1256,33 +1455,18 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="eventNegEdge_stopMoveRight">
+    <eventChannel id="eventPosEdge_leftClick">
       <description />
       <sources>
         <source>
-          <component id="Threshold.1" />
-          <eventPort id="eventNegEdge" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="stopMoveRight" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="eventPosEdge_startMoveRight">
-      <description />
-      <sources>
-        <source>
-          <component id="Threshold.1" />
+          <component id="Threshold.1.1.1_Smile" />
           <eventPort id="eventPosEdge" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="CrosshairCursorControl.1" />
-          <eventPort id="startMoveRight" />
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
         </target>
       </targets>
     </eventChannel>
@@ -1290,7 +1474,7 @@
       <description />
       <sources>
         <source>
-          <component id="Threshold.1.1" />
+          <component id="Threshold.1-kopf-runter" />
           <eventPort id="eventPosEdge" />
         </source>
       </sources>
@@ -1305,7 +1489,7 @@
       <description />
       <sources>
         <source>
-          <component id="Threshold.1.1" />
+          <component id="Threshold.1-kopf-runter" />
           <eventPort id="eventNegEdge" />
         </source>
       </sources>
@@ -1316,18 +1500,213 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="eventPosEdge_leftClick">
+    <eventChannel id="eventNegEdge_startMoveUp">
       <description />
       <sources>
         <source>
-          <component id="Threshold.1.1.1" />
+          <component id="Threshold.1.2-kopf-rauf" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_stopMoveUp">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.2-kopf-rauf" />
           <eventPort id="eventPosEdge" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="Mouse.1" />
-          <eventPort id="leftClick" />
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_startMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.1-kopf-rechts" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_stopMoveRight">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.1-kopf-rechts" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_startMoveLeft">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1-kopf-links" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="startMoveLeft" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_stopMoveLeft">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.2.1-kopf-links" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="stopMoveLeft" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_enablePlugin">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1-tracking-confidence" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="enablePlugin" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_disablePlugin">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1-tracking-confidence" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CrosshairCursorControl.1" />
+          <eventPort id="disablePlugin" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_activateTooltips">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1-browe-raise" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="activateTooltips" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_start">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1-browe-raise" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1_next-tooltip" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1-browe-raise" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1_next-tooltip" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1-browe-raise" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1_next-tooltip" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_nextTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1_next-tooltip" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="nextTooltip" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_selectTooltip">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1-browe-raise" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tooltip.1" />
+          <eventPort id="selectTooltip" />
         </target>
       </targets>
     </eventChannel>
