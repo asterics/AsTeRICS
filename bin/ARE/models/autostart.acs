@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-16"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\bin\ARE\2019-12-16-eyetracking_configuration.acs_2019_12_19_16_34" version="20130320">
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\klaus\Desktop\autostart.acs_2020_9_25_13_0" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />
@@ -66,14 +66,14 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>371</posX>
-        <posY>548</posY>
+        <posX>277</posX>
+        <posY>609</posY>
       </layout>
       <gui>
-        <posX>10</posX>
-        <posY>4121</posY>
-        <width>3750</width>
-        <height>4222</height>
+        <posX>62</posX>
+        <posY>5222</posY>
+        <width>3688</width>
+        <height>3111</height>
       </gui>
     </component>
     <component id="EventBlock.1.1" type_id="asterics.EventBlock">
@@ -84,8 +84,8 @@
         <property name="blockAfterEvent" value="false" />
       </properties>
       <layout>
-        <posX>658</posX>
-        <posY>61</posY>
+        <posX>650</posX>
+        <posY>64</posY>
       </layout>
     </component>
     <component id="EventBlock.1" type_id="asterics.EventBlock">
@@ -97,7 +97,7 @@
       </properties>
       <layout>
         <posX>646</posX>
-        <posY>5</posY>
+        <posY>7</posY>
       </layout>
     </component>
     <component id="Mouse.1" type_id="asterics.Mouse">
@@ -148,9 +148,9 @@
         <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Ton ein/aus" />
         <property name="buttonCaption2" value="Maus ein/aus" />
-        <property name="buttonCaption3" value="Kalibrierung Tobii" />
+        <property name="buttonCaption3" value="Klicken ein/aus" />
         <property name="buttonCaption4" value="Kalibrierung AsTeRICS" />
-        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption5" value="Kalibrierung Tobii" />
         <property name="buttonCaption6" value="" />
         <property name="buttonCaption7" value="" />
         <property name="buttonCaption8" value="" />
@@ -188,14 +188,14 @@
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>170</posX>
-        <posY>30</posY>
+        <posX>171</posX>
+        <posY>31</posY>
       </layout>
       <gui>
         <posX>0</posX>
         <posY>444</posY>
         <width>3750</width>
-        <height>3667</height>
+        <height>4667</height>
       </gui>
     </component>
     <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
@@ -331,8 +331,8 @@
         <posY>295</posY>
       </layout>
       <gui>
-        <posX>3822</posX>
-        <posY>454</posY>
+        <posX>3812</posX>
+        <posY>5222</posY>
         <width>3562</width>
         <height>1000</height>
       </gui>
@@ -372,8 +372,8 @@
         <posY>437</posY>
       </layout>
       <gui>
-        <posX>3822</posX>
-        <posY>1454</posY>
+        <posX>3812</posX>
+        <posY>6333</posY>
         <width>3562</width>
         <height>1000</height>
       </gui>
@@ -413,13 +413,13 @@
         <posY>589</posY>
       </layout>
       <gui>
-        <posX>3822</posX>
-        <posY>2454</posY>
+        <posX>3812</posX>
+        <posY>7444</posY>
         <width>3562</width>
         <height>889</height>
       </gui>
     </component>
-    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
+    <component id="KeyCapture.M-Maus" type_id="asterics.KeyCapture">
       <description>captures key presses and releases for a single keyboard key</description>
       <ports>
         <inputPort portTypeID="keyCode">
@@ -446,7 +446,7 @@
         <posY>33</posY>
       </layout>
     </component>
-    <component id="KeyCapture.1.1" type_id="asterics.KeyCapture">
+    <component id="KeyCapture.T-Ton" type_id="asterics.KeyCapture">
       <description>captures key presses and releases for a single keyboard key</description>
       <ports>
         <inputPort portTypeID="keyCode">
@@ -462,9 +462,257 @@
         <posY>4</posY>
       </layout>
     </component>
+    <component id="TextDisplay.Ton" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="Ton ist AUS" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1096</posX>
+        <posY>338</posY>
+      </layout>
+      <gui>
+        <posX>3822</posX>
+        <posY>676</posY>
+        <width>3562</width>
+        <height>778</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.Maus" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="Maus ist AUS" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1096</posX>
+        <posY>490</posY>
+      </layout>
+      <gui>
+        <posX>3822</posX>
+        <posY>1565</posY>
+        <width>3562</width>
+        <height>778</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.Klick" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="Klicken ist AUS" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>1099</posX>
+        <posY>646</posY>
+      </layout>
+      <gui>
+        <posX>3822</posX>
+        <posY>2454</posY>
+        <width>3562</width>
+        <height>778</height>
+      </gui>
+    </component>
+    <component id="EventBlock.1.1.1" type_id="asterics.EventBlock">
+      <description>Pass or block event</description>
+      <ports />
+      <properties>
+        <property name="block" value="True" />
+        <property name="blockAfterEvent" value="false" />
+      </properties>
+      <layout>
+        <posX>484</posX>
+        <posY>501</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.K-Klick" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="37" />
+        <property name="block" value="false" />
+      </properties>
+      <layout>
+        <posX>407</posX>
+        <posY>630</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Ton ist AUS" />
+        <property name="slot2" value="Ton ist EIN" />
+        <property name="slot3" value="Maus ist AUS" />
+        <property name="slot4" value="Maus ist EIN" />
+        <property name="slot5" value="Klicken ist AUS" />
+        <property name="slot6" value="Klicken ist EIN" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>948</posX>
+        <posY>326</posY>
+      </layout>
+    </component>
+    <component id="EventFlipFlop.Maus" type_id="asterics.EventFlipFlop">
+      <description>Event Flip-flop: First event-in fires event-out1, second event-in fires event-out2, etc.</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>801</posX>
+        <posY>480</posY>
+      </layout>
+    </component>
+    <component id="EventFlipFlop.Ton" type_id="asterics.EventFlipFlop">
+      <description>Event Flip-flop: First event-in fires event-out1, second event-in fires event-out2, etc.</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>801</posX>
+        <posY>315</posY>
+      </layout>
+    </component>
+    <component id="EventFlipFlop.Klick" type_id="asterics.EventFlipFlop">
+      <description>Event Flip-flop: First event-in fires event-out1, second event-in fires event-out2, etc.</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>804</posX>
+        <posY>656</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Ton ist AUS" />
+        <property name="slot2" value="Ton ist EIN" />
+        <property name="slot3" value="Maus ist AUS" />
+        <property name="slot4" value="Maus ist EIN" />
+        <property name="slot5" value="Klicken ist AUS" />
+        <property name="slot6" value="Klicken ist EIN" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>948</posX>
+        <posY>483</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1.2" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Ton ist AUS" />
+        <property name="slot2" value="Ton ist EIN" />
+        <property name="slot3" value="Maus ist AUS" />
+        <property name="slot4" value="Maus ist EIN" />
+        <property name="slot5" value="Klicken ist AUS" />
+        <property name="slot6" value="Klicken ist EIN" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>955</posX>
+        <posY>645</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.17">
+      <description />
       <source>
         <component id="EyeX.1" />
         <port id="gazeY" />
@@ -475,6 +723,7 @@
       </target>
     </channel>
     <channel id="binding.16">
+      <description />
       <source>
         <component id="EyeX.1" />
         <port id="gazeX" />
@@ -485,6 +734,7 @@
       </target>
     </channel>
     <channel id="binding.19">
+      <description />
       <source>
         <component id="ConstantDispatcher.2" />
         <port id="output" />
@@ -495,6 +745,7 @@
       </target>
     </channel>
     <channel id="binding.20">
+      <description />
       <source>
         <component id="ConstantDispatcher.2" />
         <port id="output" />
@@ -505,6 +756,7 @@
       </target>
     </channel>
     <channel id="binding.21">
+      <description />
       <source>
         <component id="Delay.1" />
         <port id="out" />
@@ -515,6 +767,7 @@
       </target>
     </channel>
     <channel id="binding.5">
+      <description />
       <source>
         <component id="Slider.1" />
         <port id="value" />
@@ -525,6 +778,7 @@
       </target>
     </channel>
     <channel id="binding.6">
+      <description />
       <source>
         <component id="Slider.1.1" />
         <port id="value" />
@@ -535,6 +789,7 @@
       </target>
     </channel>
     <channel id="binding.7">
+      <description />
       <source>
         <component id="Slider.1.1.1" />
         <port id="value" />
@@ -544,10 +799,39 @@
         <port id="blinkMaxTime" />
       </target>
     </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.Ton" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="StringDispatcher.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.Maus" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="StringDispatcher.1.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.Klick" />
+        <port id="input" />
+      </target>
+    </channel>
   </channels>
   <eventChannels>
     <eventChannel id="blink_eventDisplay">
-      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -562,7 +846,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="longblink_eventDisplay">
-      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -576,23 +859,7 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="blink_leftClick">
-      <description />
-      <sources>
-        <source>
-          <component id="EyeX.1" />
-          <eventPort id="blink" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="leftClick" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="button1_change">
-      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -607,7 +874,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="blink_input">
-      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -622,7 +888,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="longblink_input">
-      <description />
       <sources>
         <source>
           <component id="EyeX.1" />
@@ -637,7 +902,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="button1_change">
-      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -652,7 +916,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="button2_toggle">
-      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -667,11 +930,10 @@
       </targets>
     </eventChannel>
     <eventChannel id="button3_calibrateCurrentProfile">
-      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button3" />
+          <eventPort id="button5" />
         </source>
       </sources>
       <targets>
@@ -682,7 +944,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="button4_startManualCalibration">
-      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -697,9 +958,10 @@
       </targets>
     </eventChannel>
     <eventChannel id="keyPressed_toggle">
+      <description />
       <sources>
         <source>
-          <component id="KeyCapture.1" />
+          <component id="KeyCapture.M-Maus" />
           <eventPort id="keyPressed" />
         </source>
       </sources>
@@ -711,6 +973,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="output_dispatchSlot1">
+      <description />
       <sources>
         <source>
           <component id="EventBlock.1" />
@@ -725,6 +988,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="output_dispatchSlot2">
+      <description />
       <sources>
         <source>
           <component id="EventBlock.1.1" />
@@ -739,6 +1003,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="button1_input">
+      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -753,6 +1018,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="output_input">
+      <description />
       <sources>
         <source>
           <component id="EventDelay.1" />
@@ -767,10 +1033,9 @@
       </targets>
     </eventChannel>
     <eventChannel id="keyPressed_input">
-      <description />
       <sources>
         <source>
-          <component id="KeyCapture.1.1" />
+          <component id="KeyCapture.T-Ton" />
           <eventPort id="keyPressed" />
         </source>
       </sources>
@@ -782,10 +1047,9 @@
       </targets>
     </eventChannel>
     <eventChannel id="keyPressed_change">
-      <description />
       <sources>
         <source>
-          <component id="KeyCapture.1.1" />
+          <component id="KeyCapture.T-Ton" />
           <eventPort id="keyPressed" />
         </source>
       </sources>
@@ -797,10 +1061,9 @@
       </targets>
     </eventChannel>
     <eventChannel id="keyPressed_change">
-      <description />
       <sources>
         <source>
-          <component id="KeyCapture.1.1" />
+          <component id="KeyCapture.T-Ton" />
           <eventPort id="keyPressed" />
         </source>
       </sources>
@@ -808,6 +1071,246 @@
         <target>
           <component id="EventBlock.1.1" />
           <eventPort id="change" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="blink_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EyeX.1" />
+          <eventPort id="blink" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1.1.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="EventBlock.1.1.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_change">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.K-Klick" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1.1.1" />
+          <eventPort id="change" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_change">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1.1.1" />
+          <eventPort id="change" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_event-in">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventFlipFlop.Ton" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.Ton" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out2_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.Ton" />
+          <eventPort id="event-out2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_event-in">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.T-Ton" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventFlipFlop.Ton" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_event-in">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.M-Maus" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventFlipFlop.Maus" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_event-in">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventFlipFlop.Maus" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_event-in">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.K-Klick" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventFlipFlop.Klick" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_event-in">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventFlipFlop.Klick" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_dispatchSlot4">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.Maus" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_dispatchSlot6">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.Klick" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out2_dispatchSlot5">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.Klick" />
+          <eventPort id="event-out2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out2_dispatchSlot3">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.Maus" />
+          <eventPort id="event-out2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot3" />
         </target>
       </targets>
     </eventChannel>
@@ -819,8 +1322,8 @@
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>true</ShopControlPanel>
     <AREGUIWindow>
-      <posX>0</posX>
-      <posY>0</posY>
+      <posX>10</posX>
+      <posY>-22</posY>
       <width>7938</width>
       <height>8556</height>
     </AREGUIWindow>
