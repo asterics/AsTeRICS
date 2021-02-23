@@ -58,32 +58,27 @@ The AsTeRICS project was funded by international and national research grants. A
 
 <Funding>
   <Partner
-    media="https://asterics.github.io/asterics-docs/img/ma23_logo.jpg"
+    media="/assets/img/ma23-logo.compact.svg"
     alt="MA23, City of Vienna - Logo"
     href="#partners-funding"
   />
   <Partner
-    media="https://asterics.github.io/asterics-docs/img/torades_logo_mini-300x120.png"
+    media="/assets/img/torades-logo.png"
     alt="ToRaDes - Project Logo"
     href="#partners-funding"
   />
   <Partner
-    media="https://upload.wikimedia.org/wikipedia/commons/9/9a/FH_Technikum_Wien_logo.svg"
+    media="/assets/img/fhtw-logo.svg"
     alt="UAS Technikum Wien - Logo"
     href="#partners-funding"
   />
   <Partner
-    media="https://ki-i.at/fileadmin/template/img/ki-i_logo.png"
+    media="/assets/img/ki-i-logo.png"
     alt="KI-I"
     href="#partners-funding"
   />
   <Partner
-    media="https://embsys.technikum-wien.at/projects/studyathome-intl/studyAThome_noir.svg"
-    alt="StudyATHome Internationally - Project Logo"
-    href="#partners-funding"
-  />
-  <Partner
-    media="https://www.youtube.com/watch?v=RFvNLP8li10"
+    media="/assets/img/StudyATHome-logo.svg"
     alt="StudyATHome Internationally - Project Logo"
     href="#partners-funding"
   />
