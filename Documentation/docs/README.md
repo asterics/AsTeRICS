@@ -55,21 +55,27 @@ There are many Assistive Technologies available on the market, but in many cases
 ## Partners & Funding
 
 The AsTeRICS project was funded by international and national research grants. AsTeRICS was initiated by [KI-I Linz](https://www.ki-i.at) and the [UAS Technikum Wien](https://www.technikum-wien.at/). The creation of this web page was funded by the City of Vienna, MA23, in course of the project **StudyATHome Internationally** (Grant Nr. 22-07). In Feb. 2017 the [AsTeRICS Foundation](https://www.asterics-foundation.org) was founded to bring the project results to people with disabilities, to organize workshops and to maintain project results, see [About Us](/get-involved/About-us.md).
+ 
+
 
 <Funding>
   <Partner
-    media="/assets/img/ma23-logo.compact.svg"
+    media="/assets/img/ma23-logo.svg"
     alt="MA23, City of Vienna - Logo"
-    href="#partners-funding"
-  />
-  <Partner
-    media="/assets/img/torades-logo.png"
-    alt="ToRaDes - Project Logo"
     href="#partners-funding"
   />
   <Partner
     media="/assets/img/fhtw-logo.svg"
     alt="UAS Technikum Wien - Logo"
+    href="#partners-funding"
+    scale="0.7"
+  />
+</Funding>
+
+<Funding>
+  <Partner
+    media="/assets/img/torades-logo.png"
+    alt="ToRaDes - Project Logo"
     href="#partners-funding"
   />
   <Partner
@@ -81,6 +87,7 @@ The AsTeRICS project was funded by international and national research grants. A
     media="/assets/img/StudyATHome-logo.svg"
     alt="StudyATHome Internationally - Project Logo"
     href="#partners-funding"
+    scale="0.9"
   />
 </Funding>
 
