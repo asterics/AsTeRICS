@@ -56,11 +56,6 @@ There are many more options to add or delete cells or to do automatic layout. Th
 After you have finished all changes, you must close the edit mode for being able to use the grid. You can do this by clicking on the button ```Back``` in the top menu.
 
 ## Conclusion
-   {
-      name: "AsTeRICS.wiki",
-      location: "src/external/asterics-wiki",
-      reference: getReferenceInPath(process.cwd(), "AsTeRICS.wiki")
-    },
  
 Now you know how to create a new grid it should look like in the picture below.
 
