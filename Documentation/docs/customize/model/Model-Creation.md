@@ -3,7 +3,7 @@
 ## Camera Mouse Simple
 
 A model is a collection of 1 to n components, where a component represents a plugin
-of the ARE. These components are connected via cannels (for data connections) and
+of the ARE. These components are connected via channels (for data connections) and
 event channels (representing events). The following example will illustrate the
 creation of a simple webcam mouse, using the position of the nose to control the
 cursor and opening the mouth to trigger a mouse click. This model requires a
