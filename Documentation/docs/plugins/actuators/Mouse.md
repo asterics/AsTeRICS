@@ -48,8 +48,8 @@ Mouse plugin
 - **activate:** enables all mouse actions.
 - **deactivate:** disables all mouse actions.
 - **toggle:** enables / disables all mouse actions.
-- **absolutePosition:**after this event is triggered the incoming values for mouseX and mouseY are interpreted as absolute movement information
-- **relativePosition:**after this event is triggered the incoming values for mouseX and mouseY are interpreted as relative movement information
+- **absolutePosition:** after this event is triggered the incoming values for mouseX and mouseY are interpreted as absolute movement information
+- **relativePosition:** after this event is triggered the incoming values for mouseX and mouseY are interpreted as relative movement information
 - **nextClickRight** next left click event will create a right mouse button click.
 - **nextClickDouble** next left click event will create a double click.
 - **nextClickMiddle**next left click event will create a middle button click
