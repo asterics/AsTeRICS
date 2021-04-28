@@ -14,14 +14,21 @@ OpenHAB is an Open Source Home Automation SW that let's you control light, heati
 This tutorial explains how to control an OpenHAB instance and it's configured items by an AsTeRICS model and how to create an **accessible user interface** for it using AsTeRICS Grid.
 :::
 
-1. [Install openHAB](https://www.openhab.org/docs/installation/)
-2. Start openHab
-3. [Create demo package](https://www.openhab.org/docs/configuration/packages.html#demo-package-sample-setup) at first time startup
-4. Open the model [ARE/models/componentTests/processors/openHAB_simple_test.acs](http://webacs.asterics.eu/?areBaseURI=https://127.0.0.1:8083&openFile=https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/componentTests/processors/openHAB_simple_test.acs)
-5. Upload/Start model
-6. Open [Basic UI of the Kitchen](http://localhost:8080/basicui/app?w=GF_Kitchen&sitemap=demo)
-7. In ARE GUI: Click on ```Item Light_GF_Kitchen_Ceiling ON``` or ```Item Light_GF_Kitchen_Ceiling OFF```. You should see the switching of the item in the basic UI accordingly.
-8. Change a value in the basic UI, you should get an event in the event visualizer of the ARE GUI.
+::: warning
+This tutorial is based on OpenHAB v2.5. It is not compatible with OpenHAB v3
+:::
+
+1. Read the [OpenHAB concept page](https://v2.openhab.org/v2.5/docs/concepts/)
+2. [Install OpenHAB](https://v2.openhab.org/download/)
+3. Start openHab
+4. [Create demo package](https://v2.openhab.org/v2.5/docs/configuration/packages.html#demo-package-sample-setup) at first time startup
+5. Open the model [ARE/models/componentTests/processors/openHAB_simple_test.acs](http://webacs.asterics.eu/?areBaseURI=https://127.0.0.1:8083&openFile=https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/componentTests/processors/openHAB_simple_test.acs)
+6. Upload/Start model
+7. Open [Basic UI of the Kitchen](http://localhost:8080/basicui/app?w=GF_Kitchen&sitemap=demo)
+<!-- ![Screenshot: OpenHAB Basic UI of Kitchen, showing light and roller shutter items](./img/openhab-basic-ui-kitchen.png) -->
+9. In the ARE GUI: Click on ```Item Light_GF_Kitchen_Ceiling ON``` or ```Item Light_GF_Kitchen_Ceiling OFF```. You should see the switching of the item in the basic UI accordingly.
+    ![Screenshot: OpenHAB Basic UI of Kitchen and ARE GUI with buttons to control OpenHAB items. Animation showing light and roller shutter items switched on and off and the temperature slider changing the temperature](./img/openhab-show-synced-control.gif)
+10. Change a value in the basic UI, you should get an event in the event visualizer of the ARE GUI.
 
 ### Accessible UI
 
