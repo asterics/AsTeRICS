@@ -23,7 +23,7 @@ The appropriate voice should be installed on the platform.
 
 ## Properties
 
-- **volume \[integer\]:** Defines the volume of the voice. The volume propety values should be in range from 0 to 100.
-- **speed \[integer\]:** Defines the speed of the voice. The speed propety values should be in range from -10 to 10.
+- **volume \[integer\]:** Defines the volume of the voice. The volume property values should be in range from 0 to 100.
+- **speed \[integer\]:** Defines the speed of the voice. The speed property values should be in range from -10 to 10.
 - **voice \[string\]:** Specifies the voice used for the speech synthesis.
 - **xmlTags \[boolean\]:** Defines if the XML tags in the input text will be suported.
