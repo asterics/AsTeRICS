@@ -17,8 +17,8 @@ ApplicationLauncher plugin
 
 ## Input Port Description
 
-- **filename \[string\]:** File name of executable file which shall be started without arguments. The application is started automatically, if onlyByEvent is false. See _Propterties -> defaultApplication_ description for details.
-- **arguments \[string\]:** Sets the arguments of the command. The application is started automatically, if onlyByEvent is false. See _Propterties -> arguments_ description for details.
+- **filename \[string\]:** File name of executable file which shall be started without arguments. The application is started automatically, if onlyByEvent is false. See _Properties -> defaultApplication_ description for details.
+- **arguments \[string\]:** Sets the arguments of the command. The application is started automatically, if onlyByEvent is false. See _Properties -> arguments_ description for details.
 - **stdIn \[string\]:** Sends the incoming string to the standard input stream of the started process.
 
 ## Output Port Description
