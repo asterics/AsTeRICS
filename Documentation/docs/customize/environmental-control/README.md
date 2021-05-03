@@ -19,12 +19,14 @@ This tutorial is based on OpenHAB v2.5. It is not compatible with OpenHAB v3
 :::
 
 1. Read the [OpenHAB concept page](https://v2.openhab.org/v2.5/docs/concepts/)
-2. [Install OpenHAB](https://v2.openhab.org/download/)
-3. Start openHab
-4. [Create demo package](https://v2.openhab.org/v2.5/docs/configuration/packages.html#demo-package-sample-setup) at first time startup
-5. Open the model [ARE/models/componentTests/processors/openHAB_simple_test.acs](http://webacs.asterics.eu/?areBaseURI=https://127.0.0.1:8083&openFile=https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/componentTests/processors/openHAB_simple_test.acs)
-6. Upload/Start model
-7. Open [Basic UI of the Kitchen](http://localhost:8080/basicui/app?w=GF_Kitchen&sitemap=demo)
+2. [Install OpenHAB](https://v2.openhab.org/download/) (Ensure to use Java 8)
+3. Download the [OpenHAB 2.5 add-ons archive](https://openhab.jfrog.io/artifactory/libs-release-local/org/openhab/distro/openhab-addons/2.5.12/openhab-addons-2.5.12.kar) and save the ```.kar``` file in the ```addons``` subfolder
+4. Start openHab
+5. [Create demo package](https://v2.openhab.org/v2.5/docs/configuration/packages.html#demo-package-sample-setup) at first time startup
+6. Open the model [ARE/models/componentTests/processors/openHAB_simple_test.acs](http://webacs.asterics.eu/?areBaseURI=https://127.0.0.1:8083&openFile=https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/componentTests/processors/openHAB_simple_test.acs)
+7. Start the ARE (```ARE.exe``` or ```start.bat``` or ```start.sh```)
+8. Upload/Start model
+9. Open [Basic UI of the Kitchen](http://localhost:8080/basicui/app?w=GF_Kitchen&sitemap=demo)
 <!-- ![Screenshot: OpenHAB Basic UI of Kitchen, showing light and roller shutter items](./img/openhab-basic-ui-kitchen.png) -->
 9. In the ARE GUI: Click on ```Item Light_GF_Kitchen_Ceiling ON``` or ```Item Light_GF_Kitchen_Ceiling OFF```. You should see the switching of the item in the basic UI accordingly.
     ![Screenshot: OpenHAB Basic UI of Kitchen and ARE GUI with buttons to control OpenHAB items. Animation showing light and roller shutter items switched on and off and the temperature slider changing the temperature](./img/openhab-show-synced-control.gif)
