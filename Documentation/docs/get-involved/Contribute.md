@@ -8,9 +8,11 @@ Contributions from the community are absolutely welcome and could be in form of 
 
 This web page is orchestrated in the [asterics-docs](https://github.com/asterics/asterics-docs) repository which again fetches documentation from other repositories of the AsTeRICS framework. Most of the content is documented in [AsTeRICS/Documentation/docs](https://github.com/asterics/AsTeRICS/tree/pre-3.1/Documentation/docs).
 
-If you see any typo, missing or wrong information on a page, please click onto the `Edit this page` link, which can be found on the bottom of each page- You will be autmatically redirected to the respective markdown document in the source repository. After editing please send a pull request to the respective repository.
+If you see any typo, missing or wrong information on a page, please click onto the `Edit this page on GitHub` link, which can be found on the bottom of each page.
+You will be autmatically redirected to the respective markdown document in the source repository.
+After editing please send a pull request to the respective repository.
 
-Additionally, you can find the links to the _Editors Guide_ [:fab-markdown:](/guide/editor.html) and the _AsTeRICS Docs Guide_ [:fa-info-circle:](/guide/docs.html) , next to every edit link.
+Additionally, you can find the links to the _Editors Guide_ [:fa-pencil-alt:](/guide/editor.html), the _Markdown Guide_ [:fab-markdown:](/guide/markdown.html) and the _Developer Guide_ [:fa-info-circle:](/guide/docs.html) , next to every edit link.
 
 ## Issue / Bug Report
 
