@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Gazepoint"
+                   canonical_name="eu.asterics.component.sensor.gazepoint.GazepointInstance">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>true</singleton>
+        <description>interfaces to the Gazepoint Gaze tracking system</description>
+        <ports>
+			<inputPort id="xOffset">
+				<description>offset for x gaze position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="yOffset">
+				<description>offset for y gaze position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<outputPort id="gazeX">
+				<description>eye gaze x-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="gazeY">
+				<description>eye gaze y-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="posX">
+				<description>eye x-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="posY">
+				<description>eye y-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="fixationTime">
+				<description>time user fixates a spot</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="closeTime">
+				<description>time user closes eyes</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="calibrateCurrentProfile">
+				<description>calibrates the current profile</description>
+			</eventListenerPort>
+			<eventListenerPort id="resetOffset">
+				<description>reset the x and y offset input port values to 0</description>
+			</eventListenerPort>
+			<eventListenerPort id="activate">
+				<description>activate eyetracker</description>
+			</eventListenerPort>
+			<eventListenerPort id="deactivate">
+				<description>deactivate eyetracker</description>
+			</eventListenerPort>
+			<eventTriggererPort id="blink">
+				<description>triggered when eye blink occurs</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="longblink">
+				<description>triggered when long eye blink occurs</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fixation">
+				<description>triggered when user fixates spot on screen for a particular time</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fixationEnd">
+				<description>triggered when user stops a fixation</description>
+			</eventTriggererPort>
+		</events>			
+        <properties>
+			<property name="enabled"
+				type="boolean"
+				value="true"
+				description="selects if the eyetracker is enabled at startup"/>
+			<property name="averaging"
+				type="integer"
+				value="4"
+				description="number of values for internal averaging of gazeX and gazeY outputs"/>
+			<property name="minBlinkTime"
+				type="integer"
+				value="50"
+				description="minimum eye close time (in milliseconds) for triggering an eye blink event"/>
+			<property name="midBlinkTime"
+				type="integer"
+				value="200"
+				description="eye close time (in milliseconds) to decide short/long blink event"/>
+			<property name="maxBlinkTime"
+				type="integer"
+				value="2000"
+				description="longer eye close times (in milliseconds) will not create eye blink events"/>
+			<property name="fixationTime"
+				type="integer"
+				value="700"
+				description="time for triggering a fixation event (in milliseconds)"/>
+        </properties>
+
+    </componentType>
+</componentTypes>

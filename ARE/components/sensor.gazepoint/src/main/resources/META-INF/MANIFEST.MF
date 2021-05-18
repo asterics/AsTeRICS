@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-sensors.gazepoint
+Bundle-SymbolicName: eu.asterics.component.sensor.gazepoint
+Bundle-Version: 0.1.0
+DynamicImport-Package: *
