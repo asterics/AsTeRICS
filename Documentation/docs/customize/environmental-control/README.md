@@ -18,11 +18,11 @@ This tutorial explains how to control an OpenHAB instance and it's configured it
 This tutorial is based on OpenHAB v2.5. It is not compatible with OpenHAB v3
 :::
 
-1. Read the [OpenHAB concept page](https://v2.openhab.org/v2.5/docs/concepts/)
+1. Read the [OpenHAB concept page](https://v2.openhab.org/docs/concepts/)
 2. [Install OpenHAB](https://v2.openhab.org/download/) (Ensure to use Java 8)
 3. Download the [OpenHAB 2.5 add-ons archive](https://openhab.jfrog.io/artifactory/libs-release-local/org/openhab/distro/openhab-addons/2.5.12/openhab-addons-2.5.12.kar) and save the ```.kar``` file in the ```addons``` subfolder
 4. Start openHab
-5. [Create demo package](https://v2.openhab.org/v2.5/docs/configuration/packages.html#demo-package-sample-setup) at first time startup
+5. [Create demo package](https://v2.openhab.org/docs/tutorial/1sttimesetup.html) at first time startup. You can also do this as described in this [commandline tutorial](https://docs.openhab.org/v2.1/tutorials/demo.html).
 6. [Download OpenHAB model](https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/componentTests/processors/openHAB_simple_test.acs) or [Open OpenHAB model in WebACS](http://webacs.asterics.eu/?areBaseURI=http://127.0.0.1:8081&openFile=https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/componentTests/processors/openHAB_simple_test.acs)
 7. Start the ARE (```ARE.exe``` or ```start.bat``` or ```start.sh```)
 8. Open model in ARE or Upload model from ACS
