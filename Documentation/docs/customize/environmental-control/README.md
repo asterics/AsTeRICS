@@ -14,20 +14,20 @@ OpenHAB is an Open Source Home Automation SW that let's you control light, heati
 This tutorial explains how to control an OpenHAB instance and it's configured items by an AsTeRICS model and how to create an **accessible user interface** for it using AsTeRICS Grid.
 :::
 
-::: warning
-This tutorial is based on OpenHAB v2.5. It is not compatible with OpenHAB v3
+::: tip
+This tutorial is based on OpenHAB v3.x but should also work with OpenHAB v2.x
 :::
 
-1. Read the [OpenHAB concept page](https://v2.openhab.org/docs/concepts/)
-2. [Install OpenHAB](https://v2.openhab.org/download/) (Ensure to use Java 8)
-3. Download the [OpenHAB 2.5 add-ons archive](https://openhab.jfrog.io/artifactory/libs-release-local/org/openhab/distro/openhab-addons/2.5.12/openhab-addons-2.5.12.kar) and save the ```.kar``` file in the ```addons``` subfolder
-4. Start openHab
-5. [Create demo package](https://v2.openhab.org/docs/tutorial/1sttimesetup.html) at first time startup. You can also do this as described in this [commandline tutorial](https://docs.openhab.org/v2.1/tutorials/demo.html).
-6. [Download OpenHAB model](https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/componentTests/processors/openHAB_simple_test.acs) or [Open OpenHAB model in WebACS](http://webacs.asterics.eu/?areBaseURI=http://127.0.0.1:8081&openFile=https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/componentTests/processors/openHAB_simple_test.acs)
-7. Start the ARE (```ARE.exe``` or ```start.bat``` or ```start.sh```)
-8. Open model in ARE or Upload model from ACS
-9. Start model in ARE
-10. Open [Basic UI of the Kitchen](http://localhost:8080/basicui/app?w=GF_Kitchen&sitemap=demo)
+1. Read the [OpenHAB concept page](https://www.openhab.org/docs/)
+2. [Install OpenHAB](https://www.openhab.org/download/)
+3. Download the [openhab2 demo configuration zip file](https://github.com/asterics/AsTeRICS/releases/download/v4.1.0/demo-conf-openhab2.zip).
+4. Restore the demo configuration using openhab-cli (Linux) by entering ```sudo openhab-cli restore demo-conf-openhab2.zip``` in the command line. On other systems extract the .zip file and copy the ```conf/items``` and the ```conf/sitemaps``` folder to your OpenHAB config folder.
+6. Start OpenHAB
+7. [Download OpenHAB model](https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/componentTests/processors/openHAB_simple_test.acs) or [Open OpenHAB model in WebACS](http://webacs.asterics.eu/?areBaseURI=http://127.0.0.1:8081&openFile=https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/componentTests/processors/openHAB_simple_test.acs)
+9. Start the ARE (```ARE.exe``` or ```start.bat``` or ```start.sh```)
+10. Open model in ARE or Upload model from ACS
+11. Start model in ARE
+12. Open the [OpenHAB Basic UI of the Kitchen](http://localhost:8080/basicui/app?w=GF_Kitchen&sitemap=demo)
 <!-- ![Screenshot: OpenHAB Basic UI of Kitchen, showing light and roller shutter items](./img/openhab-basic-ui-kitchen.png) -->
 11. In the ARE GUI: Click on ```Item Light_GF_Kitchen_Ceiling ON``` or ```Item Light_GF_Kitchen_Ceiling OFF```. You should see the switching of the item in the basic UI accordingly.
     ![Screenshot: OpenHAB Basic UI of Kitchen and ARE GUI with buttons to control OpenHAB items. Animation showing light and roller shutter items switched on and off and the temperature slider changing the temperature](./img/openhab-show-synced-control.gif)
