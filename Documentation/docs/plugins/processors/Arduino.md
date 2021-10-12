@@ -30,25 +30,25 @@ An Arduino UNO microcontroller board has to be connected to an USB port. The Ard
 Flash Arduino Uno
 
 ```
- C:\absolute\path\to\AsTeRICS\CIMs\Arduino\build> flash COM1
+C:\absolute\path\to\AsTeRICS\CIMs\Arduino\build> flash COM1
 ```
 
 #### Linux
 
 Install avrdude
 ```bash
-$ sudo apt-get install avrdude
+sudo apt-get install avrdude
 ```
 
 Flash Arduino Uno
 
 ```bash
- $ avrdude -pm328p         \ 
-           -P /dev/ttyACM1 \ 
-           -c stk500v1     \ 
-           -b 115200       \ 
-           -U flash:w:/absolute/path/to/AsTeRICS/CIMs/Arduino/build/Arduino.hex \ 
-           -F
+avrdude -pm328p         \ 
+        -P /dev/ttyACM1 \ 
+        -c stk500v1     \ 
+        -b 115200       \ 
+        -U flash:w:/absolute/path/to/AsTeRICS/CIMs/Arduino/build/Arduino.hex \ 
+        -F
 ```
 
 #### MAC OS X
@@ -56,18 +56,18 @@ Flash Arduino Uno
 Install avrdude
 
 ```bash
- $ brew install avrdude --with-usb
+brew install avrdude --with-usb
 ```
 
 Flash Arduino Uno
 
 ```bash
- $ avrdude -pm328p         \ 
-           -P /dev/ttyACM1 \ 
-           -c stk500v1     \ 
-           -b 115200       \ 
-           -U flash:w:/absolute/path/to/AsTeRICS/CIMs/Arduino/build/Arduino.hex \ 
-           -F
+avrdude -pm328p         \ 
+        -P /dev/ttyACM1 \ 
+        -c stk500v1     \ 
+        -b 115200       \ 
+        -U flash:w:/absolute/path/to/AsTeRICS/CIMs/Arduino/build/Arduino.hex \ 
+        -F
 ```
 
 ## Input Port Description
