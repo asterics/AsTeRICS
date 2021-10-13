@@ -27,11 +27,15 @@ In order for the raspi cam to work, the following steps are necessary:
 
 1.  Enable the camera with
 
+    ```bash
     sudo raspi-config
+    ```
 
 2.  Add the v4l driver for the camera, to make it accessible as /dev/videoXX device:
 
+    ```bash
     sudo modprobe bcm2835-v4l2 max_video_width=2592 max_video_height=1944
+    ```
 
 ## Output Port Description
 
@@ -47,15 +51,15 @@ In order for the raspi cam to work, the following steps are necessary:
 
 ## Properties
 
-- **frameGrabber\[string, combobox selection\]:**Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera).
-- **frameGrabberFormat\[string\]:**Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'.
-- **deviceList \[string, combobox selection\]:**List of available devices, if supported by grabber
+- **frameGrabber\[string, combobox selection\]:** Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera).
+- **frameGrabberFormat\[string\]:** Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'.
+- **deviceList \[string, combobox selection\]:** List of available devices, if supported by grabber
 - **cameraSelection \[string\]:** The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera.
-- **cameraResolution \[string, combobox selection\]:** This selection box provides several standard camera resolutions. Changing the resolution affects accuracy and performance (CPU load of the runtime system). Provided selections include �160x120�, �320x240�, �640x480�, �800x600�, �1024x768� and �1600x1200�.
-- **frameRate \[integer\]:**The frame rate to use for frame grabbing. In case of 0 or a negative value, the maximum frame rate will be used.
-- **titleVideoFrameWindow \[string\]:**The title of the window showing the video frame.
-- **displayGUI \[boolean\]:**if selected, the GUI window will be shown.
-- **enableOverlaySettings \[boolean\]:**if selected, the video frame shows the current frame rate and device name as overlayed text.
+- **cameraResolution \[string, combobox selection\]:** This selection box provides several standard camera resolutions. Changing the resolution affects accuracy and performance (CPU load of the runtime system). Provided selections include 160x120, 320x240, 640x480, 800x600, 1024x768 and 1600x1200.
+- **frameRate \[integer\]:** The frame rate to use for frame grabbing. In case of 0 or a negative value, the maximum frame rate will be used.
+- **titleVideoFrameWindow \[string\]:** The title of the window showing the video frame.
+- **displayGUI \[boolean\]:** if selected, the GUI window will be shown.
+- **enableOverlaySettings \[boolean\]:** if selected, the video frame shows the current frame rate and device name as overlayed text.
 
 ## Example Configuraitons
 
