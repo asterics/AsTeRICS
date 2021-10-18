@@ -16,13 +16,13 @@ Below you can see the model used for this tutorial. You can [download](https://r
 
 ![Head-Smiley-Control-Model](https://user-images.githubusercontent.com/4621810/137795484-07c6a282-25d6-44e0-912d-4bc4a37dde49.png)
 
-1. The XFacetrackerLK plugin opens the first camera device with a resolution of 320x240 pixels, tracks the head movements and sends the relative movement in x-direction to the Integrate plugin.
-2. The Integrate plugin integrates the relative movements with minimum and maximum values set to **0 and 240** respectively (same as camera resolution). ![Head-Smiley-Control-Integrate-Properties](https://user-images.githubusercontent.com/4621810/137796282-a2a080aa-d32a-4693-bfe8-af4a75dfadec.png)
-3. The SignalTranslation plugin translates the values between **0 and 240** to values between **1.00 and 4.00**. ![Head-Smiley-Control-SignalTranslator-Properties](https://user-images.githubusercontent.com/4621810/137796551-1629aea6-a031-4143-9502-7d2c2862ccbd.png)
-4. The Quantizer plugin creates a quantized (integer) number by rounding to the nearest integer number.
-5. The StringDispatcher plugin has predefined Strings (paths to image files) which are sent to the output port depending on the input number (1-4). ![Head-Smiley-Control-StringDispatcher-Properties](https://user-images.githubusercontent.com/4621810/137797248-d663214b-8529-4493-858e-2bac85f129ae.png)
-6. The TextDisplay widget shows the quantized number in a text box for debugging purposes only.
-7. The ImageBox widget shows the image which path was received at the input port.
+1. The [XFacetrackerLK](plugins/sensors/XFacetrackerLK.html) plugin opens the first camera device with a resolution of 320x240 pixels, tracks the head movements and sends the relative movement in x-direction to the Integrate plugin.
+2. The [Integrate](plugins/processors/Integrate.html) plugin integrates the relative movements with minimum and maximum values set to **0 and 240** respectively (same as camera resolution). ![Head-Smiley-Control-Integrate-Properties](https://user-images.githubusercontent.com/4621810/137796282-a2a080aa-d32a-4693-bfe8-af4a75dfadec.png)
+3. The [SignalTranslation](plugins/processors/SignalTranslation.html) plugin translates the values between **0 and 240** to values between **1.00 and 4.00**. ![Head-Smiley-Control-SignalTranslator-Properties](https://user-images.githubusercontent.com/4621810/137796551-1629aea6-a031-4143-9502-7d2c2862ccbd.png)
+4. The [Quantizer](plugins/processors/Quantizer.html) plugin creates a quantized (integer) number by rounding to the nearest integer number.
+5. The [StringDispatcher](plugins/processors/StringDispatcher.html) plugin has predefined Strings (paths to image files) which are sent to the output port depending on the input number (1-4). ![Head-Smiley-Control-StringDispatcher-Properties](https://user-images.githubusercontent.com/4621810/137797248-d663214b-8529-4493-858e-2bac85f129ae.png)
+6. The [TextDisplay](plugins/actuators/TextDisplay.html) widget shows the quantized number in a text box for debugging purposes only.
+7. The [ImageBox](plugins/actuators/ImageBox.html) widget shows the image which path was received at the input port.
 
 ## Gaming
 
