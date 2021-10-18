@@ -12,12 +12,12 @@ Later this tutorial can be used as a basis for other use cases as well, simply b
 
 ### Model Description
 
-Below you can see the model used for this tutorial. You can download and open it in the **ACS program** or directly open it in the **WebACS** web application.
+Below you can see the model used for this tutorial. You can [download](https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/tutorial/B_HeadMovement_MappedTo_SmileyImage.acs) and open it in the **ACS program** or directly [open it in the **WebACS**](http://webacs.asterics.eu/?areBaseURI=http://127.0.0.1:8081&openFile=https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/tutorial/B_HeadMovement_MappedTo_SmileyImage.acs) web application.
 
 ![Head-Smiley-Control-Model](https://user-images.githubusercontent.com/4621810/137795484-07c6a282-25d6-44e0-912d-4bc4a37dde49.png)
 
 1. The XFacetrackerLK plugin opens the first camera device with a resolution of 320x240 pixels, tracks the head movements and sends the relative movement in x-direction to the Integrate plugin.
-2. The Integrate plugin integrates the relative movements with minimum and maximum values set to 0 and 240 respectively (same as camera resolution). ![Head-Smiley-Control-Integrate-Properties](https://user-images.githubusercontent.com/4621810/137796282-a2a080aa-d32a-4693-bfe8-af4a75dfadec.png)
+2. The Integrate plugin integrates the relative movements with minimum and maximum values set to **0 and 240** respectively (same as camera resolution). ![Head-Smiley-Control-Integrate-Properties](https://user-images.githubusercontent.com/4621810/137796282-a2a080aa-d32a-4693-bfe8-af4a75dfadec.png)
 3. The SignalTranslation plugin translates the values between **0 and 240** to values between **1.00 and 4.00**. ![Head-Smiley-Control-SignalTranslator-Properties](https://user-images.githubusercontent.com/4621810/137796551-1629aea6-a031-4143-9502-7d2c2862ccbd.png)
 4. The Quantizer plugin creates a quantized (integer) number by rounding to the nearest integer number.
 5. The StringDispatcher plugin has predefined Strings (paths to image files) which are sent to the output port depending on the input number (1-4). ![Head-Smiley-Control-StringDispatcher-Properties](https://user-images.githubusercontent.com/4621810/137797248-d663214b-8529-4493-858e-2bac85f129ae.png)
