@@ -1,6 +1,6 @@
 # Gaming, Toys & Music
 
-AsTeRICS can be used to control computer games, music programs or RC toys or infrared-controlled lights and toys. The keyboard input of a game or a music program can be substituted by another input modality (e.g. head movement, eye gaze, switch press,...) which emulates a key press. Similarily a remote controlled toy can be controlled by adapting an input modality to an RC or infrared command.
+AsTeRICS can be used to control computer games, music programs or infrared-controlled lights and toys. The keyboard input of a game or a music program can be substituted by another input modality (e.g. head movement, eye gaze, switch press,...) which emulates a key press. Similarily, a toy can be controlled by adapting an input modality to an RC or infrared command.
 
 ## Head Movement to Smiley Tutorial
 
@@ -31,15 +31,18 @@ You can now use the [Head Movement to Smiley Tutorial](#head-movement-to-smiley-
 
 Simply exchange the slot Strings in the StringDispatcher plugin by the key strings or special key code strings (e.g. ```{UP}``` for a cursor up key press emulation).
 
+## Sound and Voice
+
+Instead of showing smiley images you can use the [MidiPlayer](plugins/actuators/MidiPlayer.html) to create midi tones. In this case directly send the output value of the Quantizer plugin to the input port ```pitch```.
+
+If you want to generate voice, set the slot strings of the StringDispatcher plugin to the words and sentences you would like to synthesize. You must then connect one of the voice generation plugins (e.g. [SpeechProcessor](plugins/processors/SpeechProcessor.html), [SyntheticVoice](plugins/actuators/SyntheticVoice.html), [PicoTTS](plugins/actuators/PicoTTS.html) to it.
+
+## Light
+
+If you would like to control an infrared-controlled light bulb, you can use the [IRTrans](plugins/actuators/IRTrans.html) plugin and set the slot strings of the StringDispatcher plugin to the action strings of the respective infrared commands (e.g. ```@IRTRANS: snd luminea-bulb,red```).
+
+Likewise you could use the [PhilipsHue](plugins/actuators/PhilipsHue.html) plugin to control a Hue bulb depending on the head movement by setting the respective action string (e.g. ```{"hue": 0, "sat": 254}```).
+
 ## Toys
 
 The following tutorial documents a [toy helicopter controlled with muscle signals](https://www.ki-i.at/helicopter/).
-
-<!--
-## Gaming
-
-
-
-
-
--->
