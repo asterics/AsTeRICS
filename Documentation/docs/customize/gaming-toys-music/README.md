@@ -6,7 +6,7 @@ AsTeRICS can be used to control computer games, music programs or RC toys or inf
 
 In a first tutorial, you will learn how to map up/down head movements to a discrete number between 1 and 4. The number will than be mapped to one of 4 image paths and the selected image will be shown in the ImageBox widget depending on the head movement.
 
-![Head-Smiley-Control](https://user-images.githubusercontent.com/4621810/137794267-4b207741-a95c-40ed-9237-cdd9473f159c.gif)
+![Demo showing selected smiley image (from angry to happy) depending on head movement](https://user-images.githubusercontent.com/4621810/137794267-4b207741-a95c-40ed-9237-cdd9473f159c.gif)
 
 Later this tutorial can be used as a basis for other use cases as well, simply by exchanging the input signal (e.g. Use an air pressure or sip/puff value instead of head movements) or by exchanging the action (e.g. Send cursor keys [[UP]]/[[DOWN]] or send a certain Infrared command instead of showing an image).
 
