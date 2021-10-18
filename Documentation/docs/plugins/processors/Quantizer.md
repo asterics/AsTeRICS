@@ -19,7 +19,7 @@ Quantizer plugin
 
 ## Output Port Description
 
-- **output \[\*\***double\***\*\]:** Output port for the quantized values.
+- **output \[double\]:** Output port for the quantized values.
 
 ## Properties
 
