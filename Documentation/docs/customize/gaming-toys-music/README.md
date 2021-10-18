@@ -24,8 +24,14 @@ Below you can see the model used for this tutorial. You can [download](https://r
 6. The TextDisplay widget shows the quantized number in a text box for debugging purposes only.
 7. The ImageBox widget shows the image which path was received at the input port.
 
-## Toys
+## Gaming
 
+Many games can be controlled by keyboard shortcuts e.g. [[a]],[[s]],[[d]],[[f]] or [[left]],[[right]],[[up]],[[down]].
+You can now use the [Head Movement to Smiley Tutorial](#head-movement-to-smiley-tutorial) and simply map the head up/down movement to a keyboard key by using they [Keyboard](plugins/actuators/Keyboard.html) plugin.
+
+Simply exchange the slot Strings in the StringDispatcher plugin by the key strings or special key code strings (e.g. ```{UP}``` for a cursor up key press emulation).
+
+## Toys
 
 The following tutorial documents a [toy helicopter controlled with muscle signals](https://www.ki-i.at/helicopter/).
 
