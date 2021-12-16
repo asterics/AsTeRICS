@@ -4,4 +4,4 @@ Bundle-Name: asterics-actuators.enocean
 Bundle-SymbolicName: eu.asterics.component.actuator.enocean
 Bundle-Version: 0.1.0
 DynamicImport-Package: *
-Bundle-ClassPath: . ,lib/PriscillaCore.jar, lib/log4j-1.2.17.jar
+Bundle-ClassPath: . ,lib/PriscillaCore.jar
