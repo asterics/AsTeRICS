@@ -1,4 +1,4 @@
-# Customize
+# Tutorials
 
 ::: tip Note
 If you are an **occupational therapist** or an **assistive technology professional** or simply want to **customize** or **create** new solutions, this is the right place for you.
