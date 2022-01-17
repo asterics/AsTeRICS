@@ -36,41 +36,45 @@ No special hardware or software required.
 
 ## List of supported special key code identifiers
 
-- {SHIFT}
-- {CTRL}
-- {ALT}, {LEFTALT}, {MENU}
-- {ALTGR}, {RIGHTALT}
-- {WINDOWS}
-- {LWIN}
-- {RWIN}
-- {UP}, {UPARROW}
-- {DOWN}, {DOWNARROW}
-- {LEFT}, {LEFTARROW}
-- {RIGHT}, {RIGHTARROW}
-- {RETURN}
-- {ENTER}
-- {ESCAPE}
-- {BACKSPACE}
-- {TAB}
-- {PRINT}, {PRINTSCREEN}
-- {PAUSE}
-- {INSERT}, {INS}
-- {HOME}, {POS1}
-- {END}
-- {DEL}
-- {DELETE}
-- {PAGEUP}
-- {PAGEDOWN}
-- {F1}
-- {F2}
-- {F3}
-- {F4}
-- {F5}
-- {F6}
-- {F7}
-- {F8}
-- {F9}
-- {F10}
-- {F11}
-- {F12}
-- {WAIT}
+The key codes must be surrounded with braces.
+
+```
+{SHIFT}
+{CTRL}
+{ALT}, {LEFTALT}, {MENU}
+{ALTGR}, {RIGHTALT}
+{WINDOWS}
+{LWIN}
+{RWIN}
+{UP}, {UPARROW}
+{DOWN}, {DOWNARROW}
+{LEFT}, {LEFTARROW}
+{RIGHT}, {RIGHTARROW}
+{RETURN}
+{ENTER}
+{ESCAPE}
+{BACKSPACE}
+{TAB}
+{PRINT}, {PRINTSCREEN}
+{PAUSE}
+{INSERT}, {INS}
+{HOME}, {POS1}
+{END}
+{DEL}
+{DELETE}
+{PAGEUP}
+{PAGEDOWN}
+{F1}
+{F2}
+{F3}
+{F4}
+{F5}
+{F6}
+{F7}
+{F8}
+{F9}
+{F10}
+{F11}
+{F12}
+{WAIT}
+```
