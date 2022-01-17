@@ -14,7 +14,7 @@ Later this tutorial can be used as a basis for other use cases as well, simply b
 
 Below you can see the model used for this tutorial. You can [download](https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/tutorial/B_HeadMovement_MappedTo_SmileyImage.acs) and open it in the **ACS program** or directly [open it in the **WebACS**](http://webacs.asterics.eu/?areBaseURI=http://127.0.0.1:8081&openFile=https://raw.githubusercontent.com/asterics/AsTeRICS/master/bin/ARE/models/tutorial/B_HeadMovement_MappedTo_SmileyImage.acs) web application.
 
-![Head-Smiley-Control-Model](https://user-images.githubusercontent.com/4621810/137795484-07c6a282-25d6-44e0-912d-4bc4a37dde49.png)
+![Head-Smiley-Control-Model](https://user-images.githubusercontent.com/4621810/149799674-39c65c41-7873-4fe2-ab23-e369548ed78b.png)
 
 1. The [XFacetrackerLK](/plugins/sensors/XFacetrackerLK.html) plugin opens the first camera device with a resolution of 320x240 pixels, tracks the head movements and sends the relative movement in x-direction to the Integrate plugin.
 2. The [Integrate](/plugins/processors/Integrate.html) plugin integrates the relative movements with minimum and maximum values set to **0 and 240** respectively (same as camera resolution). ![Head-Smiley-Control-Integrate-Properties](https://user-images.githubusercontent.com/4621810/137796282-a2a080aa-d32a-4693-bfe8-af4a75dfadec.png)
