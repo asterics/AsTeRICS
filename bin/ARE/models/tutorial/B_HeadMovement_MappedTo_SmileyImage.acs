@@ -1,272 +1,1 @@
-<?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="Z:\dev\AsTeRICS\bin\ARE\models\tutorial\B_HeadMovement_MappedTo_SmileyImage.acs_2021_10_18_21_59" version="20130320">
-  <components>
-    <component id="XFacetrackerLK.1" type_id="asterics.XFacetrackerLK">
-      <description>X-platform webcamera-based face tracking sensor</description>
-      <ports>
-        <outputPort portTypeID="noseX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="noseY">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="chinX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="chinY">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="frameGrabber" value="Default" />
-        <property name="frameGrabberFormat" value="" />
-        <property name="deviceList" value="" />
-        <property name="cameraSelection" value="0" />
-        <property name="cameraResolution" value="1" />
-        <property name="frameRate" value="0" />
-        <property name="titleVideoFrameWindow" value="" />
-        <property name="displayGUI" value="True" />
-        <property name="enableOverlaySettings" value="False" />
-      </properties>
-      <layout>
-        <posX>82</posX>
-        <posY>86</posY>
-      </layout>
-      <gui>
-        <posX>2010</posX>
-        <posY>232</posY>
-        <width>1500</width>
-        <height>2889</height>
-      </gui>
-    </component>
-    <component id="Integrate.1" type_id="asterics.Integrate">
-      <description>Integration with upper and lower bounds and reset</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="resetValue" value="120" />
-        <property name="upperLimit" value="240" />
-        <property name="lowerLimit" value="0" />
-        <property name="wrapAround" value="false" />
-      </properties>
-      <layout>
-        <posX>219</posX>
-        <posY>93</posY>
-      </layout>
-    </component>
-    <component id="SignalTranslation.1" type_id="asterics.SignalTranslation">
-      <description>Translates signals from a certain input range to an output range</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="setMax">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="setMin">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="inMin" value="0.0" />
-        <property name="inMax" value="240" />
-        <property name="outMin" value="1" />
-        <property name="outMax" value="4" />
-      </properties>
-      <layout>
-        <posX>348</posX>
-        <posY>95</posY>
-      </layout>
-    </component>
-    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
-      <description>GUI component, which displays text.</description>
-      <ports>
-        <inputPort portTypeID="input">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="caption" value="Quantized Number" />
-        <property name="default" value="" />
-        <property name="textPosition" value="1" />
-        <property name="textColor" value="0" />
-        <property name="backgroundColor" value="11" />
-        <property name="displayGUI" value="true" />
-      </properties>
-      <layout>
-        <posX>596</posX>
-        <posY>277</posY>
-      </layout>
-      <gui>
-        <posX>72</posX>
-        <posY>121</posY>
-        <width>1812</width>
-        <height>444</height>
-      </gui>
-    </component>
-    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
-      <description>Send text from chosen slot</description>
-      <ports>
-        <outputPort portTypeID="output">
-          <properties />
-        </outputPort>
-        <inputPort portTypeID="slotDispatch">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="delay" value="300" />
-        <property name="slot1" value="data/pictures/symbols/angry_1.png" />
-        <property name="slot2" value="data/pictures/symbols/unhappy.png" />
-        <property name="slot3" value="data/pictures/symbols/afraid.png" />
-        <property name="slot4" value="data/pictures/symbols/happy_1.png" />
-        <property name="slot5" value="" />
-        <property name="slot6" value="" />
-        <property name="slot7" value="" />
-        <property name="slot8" value="" />
-        <property name="slot9" value="" />
-        <property name="slot10" value="" />
-        <property name="slot11" value="" />
-        <property name="slot12" value="" />
-        <property name="slot13" value="" />
-        <property name="slot14" value="" />
-        <property name="slot15" value="" />
-        <property name="slot16" value="" />
-        <property name="slot17" value="" />
-        <property name="slot18" value="" />
-        <property name="slot19" value="" />
-        <property name="slot20" value="" />
-      </properties>
-      <layout>
-        <posX>595</posX>
-        <posY>104</posY>
-      </layout>
-    </component>
-    <component id="ImageBox.1" type_id="asterics.ImageBox">
-      <description>GUI component, which displays a picture.</description>
-      <ports>
-        <inputPort portTypeID="input">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="caption" value="Smiley Box" />
-        <property name="default" value="" />
-        <property name="backgroundColor" value="11" />
-        <property name="displayGUI" value="true" />
-      </properties>
-      <layout>
-        <posX>721</posX>
-        <posY>106</posY>
-      </layout>
-      <gui>
-        <posX>72</posX>
-        <posY>565</posY>
-        <width>1812</width>
-        <height>2556</height>
-      </gui>
-    </component>
-    <component id="Quantizer.1" type_id="asterics.Quantizer">
-      <description>Performs the quantization of the input signal</description>
-      <ports>
-        <inputPort portTypeID="input">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="output">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="quantizationStep" value="1" />
-      </properties>
-      <layout>
-        <posX>475</posX>
-        <posY>102</posY>
-      </layout>
-    </component>
-  </components>
-  <channels>
-    <channel id="binding.0">
-      <source>
-        <component id="XFacetrackerLK.1" />
-        <port id="noseX" />
-      </source>
-      <target>
-        <component id="Integrate.1" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.1">
-      <source>
-        <component id="Integrate.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="SignalTranslation.1" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.5">
-      <source>
-        <component id="Quantizer.1" />
-        <port id="output" />
-      </source>
-      <target>
-        <component id="StringDispatcher.1" />
-        <port id="slotDispatch" />
-      </target>
-    </channel>
-    <channel id="binding.3">
-      <source>
-        <component id="StringDispatcher.1" />
-        <port id="output" />
-      </source>
-      <target>
-        <component id="ImageBox.1" />
-        <port id="input" />
-      </target>
-    </channel>
-    <channel id="binding.4">
-      <source>
-        <component id="SignalTranslation.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="Quantizer.1" />
-        <port id="input" />
-      </target>
-    </channel>
-    <channel id="binding.6">
-      <source>
-        <component id="Quantizer.1" />
-        <port id="output" />
-      </source>
-      <target>
-        <component id="TextDisplay.1" />
-        <port id="input" />
-      </target>
-    </channel>
-  </channels>
-  <modelGUI>
-    <Decoration>false</Decoration>
-    <Fullscreen>false</Fullscreen>
-    <AlwaysOnTop>false</AlwaysOnTop>
-    <ToSystemTray>false</ToSystemTray>
-    <ShopControlPanel>true</ShopControlPanel>
-    <AREGUIWindow>
-      <posX>0</posX>
-      <posY>0</posY>
-      <width>1938</width>
-      <height>3222</height>
-    </AREGUIWindow>
-  </modelGUI>
-</model>
+<?xml version="1.0"?><model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="Z:\dev\AsTeRICS\bin\ARE\models\tutorial\B_HeadMovement_MappedTo_SmileyImage.acs_2021_10_18_21_59" version="20130320">	<modelDescription>		<shortDescription></shortDescription>		<requirements></requirements>		<description></description>	</modelDescription>	<components>		<component id="XFacetrackerLK.1" type_id="asterics.XFacetrackerLK">			<description>X-platform webcamera-based face tracking sensor</description>			<ports>				<outputPort portTypeID="noseX">					<properties />				</outputPort>				<outputPort portTypeID="noseY">					<properties />				</outputPort>				<outputPort portTypeID="chinX">					<properties />				</outputPort>				<outputPort portTypeID="chinY">					<properties />				</outputPort>			</ports>			<properties>				<property name="frameGrabber" value="Default" />				<property name="frameGrabberFormat" value="" />				<property name="deviceList" value="" />				<property name="cameraSelection" value="0" />				<property name="cameraResolution" value="1" />				<property name="frameRate" value="0" />				<property name="titleVideoFrameWindow" value="" />				<property name="displayGUI" value="True" />				<property name="enableOverlaySettings" value="False" />			</properties>			<layout>				<posX>82</posX>				<posY>86</posY>			</layout>			<gui>				<posX>2010</posX>				<posY>232</posY>				<width>1500</width>				<height>2889</height>			</gui>		</component>		<component id="Integrate.1" type_id="asterics.Integrate">			<description>Integration with upper and lower bounds and reset</description>			<ports>				<inputPort portTypeID="in" sync="false">					<properties />				</inputPort>				<outputPort portTypeID="out">					<properties />				</outputPort>			</ports>			<properties>				<property name="resetValue" value="120" />				<property name="upperLimit" value="240" />				<property name="lowerLimit" value="0" />				<property name="wrapAround" value="false" />			</properties>			<layout>				<posX>219</posX>				<posY>93</posY>			</layout>		</component>		<component id="SignalTranslation.1" type_id="asterics.SignalTranslation">			<description>Translates signals from a certain input range to an output range</description>			<ports>				<inputPort portTypeID="in" sync="false">					<properties />				</inputPort>				<inputPort portTypeID="setMax" sync="false">					<properties />				</inputPort>				<inputPort portTypeID="setMin" sync="false">					<properties />				</inputPort>				<outputPort portTypeID="out">					<properties />				</outputPort>			</ports>			<properties>				<property name="inMin" value="0.0" />				<property name="inMax" value="240" />				<property name="outMin" value="1" />				<property name="outMax" value="4" />			</properties>			<layout>				<posX>348</posX>				<posY>95</posY>			</layout>		</component>		<component id="TextDisplay.1" type_id="asterics.TextDisplay">			<description>GUI component, which displays text.</description>			<ports>				<inputPort portTypeID="input" sync="false">					<properties />				</inputPort>			</ports>			<properties>				<property name="caption" value="Quantized Number" />				<property name="default" value="" />				<property name="textPosition" value="1" />				<property name="textColor" value="0" />				<property name="backgroundColor" value="11" />				<property name="displayGUI" value="true" />			</properties>			<layout>				<posX>596</posX>				<posY>277</posY>			</layout>			<gui>				<posX>72</posX>				<posY>121</posY>				<width>1812</width>				<height>444</height>			</gui>		</component>		<component id="StringDispatcher.1" type_id="asterics.StringDispatcher">			<description>Send text from chosen slot</description>			<ports>				<inputPort portTypeID="slotDispatch" sync="false">					<properties />				</inputPort>				<outputPort portTypeID="output">					<properties />				</outputPort>			</ports>			<properties>				<property name="delay" value="300" />				<property name="slot1" value="data/pictures/symbols/angry_1.png" />				<property name="slot2" value="data/pictures/symbols/unhappy.png" />				<property name="slot3" value="data/pictures/symbols/afraid.png" />				<property name="slot4" value="data/pictures/symbols/happy_1.png" />				<property name="slot5" value="" />				<property name="slot6" value="" />				<property name="slot7" value="" />				<property name="slot8" value="" />				<property name="slot9" value="" />				<property name="slot10" value="" />				<property name="slot11" value="" />				<property name="slot12" value="" />				<property name="slot13" value="" />				<property name="slot14" value="" />				<property name="slot15" value="" />				<property name="slot16" value="" />				<property name="slot17" value="" />				<property name="slot18" value="" />				<property name="slot19" value="" />				<property name="slot20" value="" />			</properties>			<layout>				<posX>595</posX>				<posY>104</posY>			</layout>		</component>		<component id="ImageBox.1" type_id="asterics.ImageBox">			<description>GUI component, which displays a picture.</description>			<ports>				<inputPort portTypeID="input" sync="false">					<properties />				</inputPort>			</ports>			<properties>				<property name="caption" value="Smiley Box" />				<property name="default" value="" />				<property name="backgroundColor" value="11" />				<property name="displayGUI" value="true" />			</properties>			<layout>				<posX>721</posX>				<posY>106</posY>			</layout>			<gui>				<posX>72</posX>				<posY>565</posY>				<width>1812</width>				<height>2556</height>			</gui>		</component>		<component id="Quantizer.1" type_id="asterics.Quantizer">			<description>Performs the quantization of the input signal</description>			<ports>				<inputPort portTypeID="input" sync="false">					<properties />				</inputPort>				<outputPort portTypeID="output">					<properties />				</outputPort>			</ports>			<properties>				<property name="quantizationStep" value="1" />			</properties>			<layout>				<posX>475</posX>				<posY>102</posY>			</layout>		</component>	</components>	<channels>		<channel id="binding.1">			<source>				<component id="Integrate.1" />				<port id="out" />			</source>			<target>				<component id="SignalTranslation.1" />				<port id="in" />			</target>		</channel>		<channel id="binding.5">			<source>				<component id="Quantizer.1" />				<port id="output" />			</source>			<target>				<component id="StringDispatcher.1" />				<port id="slotDispatch" />			</target>		</channel>		<channel id="binding.3">			<source>				<component id="StringDispatcher.1" />				<port id="output" />			</source>			<target>				<component id="ImageBox.1" />				<port id="input" />			</target>		</channel>		<channel id="binding.4">			<source>				<component id="SignalTranslation.1" />				<port id="out" />			</source>			<target>				<component id="Quantizer.1" />				<port id="input" />			</target>		</channel>		<channel id="binding.6">			<source>				<component id="Quantizer.1" />				<port id="output" />			</source>			<target>				<component id="TextDisplay.1" />				<port id="input" />			</target>		</channel>		<channel id="noseYATXFacetrackerLK.1_TO_inATIntegrate.1">			<source>				<component id="XFacetrackerLK.1" />				<port id="noseY" />			</source>			<target>				<component id="Integrate.1" />				<port id="in" />			</target>		</channel>	</channels>	<modelGUI>		<Decoration>false</Decoration>		<Fullscreen>false</Fullscreen>		<AlwaysOnTop>false</AlwaysOnTop>		<ToSystemTray>false</ToSystemTray>		<ShopControlPanel>true</ShopControlPanel>		<AREGUIWindow>			<posX>0</posX>			<posY>0</posY>			<width>2280</width>			<height>3222</height>		</AREGUIWindow>	</modelGUI></model>
