@@ -47,7 +47,7 @@ Likewise you could use the [PhilipsHue](/plugins/actuators/PhilipsHue.html) plug
 
 The following tutorial documents a [toy helicopter controlled with muscle signals](https://www.ki-i.at/helicopter/).
 
-## Blood Pressure Cuff Sound and Toy Control (Kissenklang)
+## Blood Pressure Cuff Sound and Toy Control
 
 The [project Kissenklang](https://github.com/asterics/unikate-kissenschalter) used a consumer blood pressure cuff and the [button interface FABI](https://www.asterics-foundation.org/projects/fabi/) to create sounds according to the pressure value of the cuff or to control various items like toy robots, soap bubble machine or infrared lights.
 
