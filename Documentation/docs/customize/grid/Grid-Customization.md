@@ -2,6 +2,10 @@
 
 In this tutorial you will learn how to do simple modifications to a grid like changing the cell text or image.
 
+::: tip Note
+In case you need more detailed information, please check the **[AsTeRICS Grid user manual](https://www.asterics.eu/manuals/asterics-grid/)**.
+:::
+
 ## AsTeRICS Grid web application
 
 AsTeRICS Grid is the web application to run and manage grids for AAC.
