@@ -37,13 +37,19 @@ Instead of showing smiley images you can use the [MidiPlayer](/plugins/actuators
 
 If you want to generate voice, set the slot strings of the StringDispatcher plugin to the words and sentences you would like to synthesize. You must then connect one of the voice generation plugins (e.g. [SpeechProcessor](/plugins/processors/SpeechProcessor.html), [SyntheticVoice](/plugins/actuators/SyntheticVoice.html), [PicoTTS](/plugins/actuators/PicoTTS.html) to it.
 
+The [project kissenklang](#blood-pressure-cuff-sound-and-toy-control) uses a blood pressure cuff to create sounds using the [MidiPlayer](/plugins/actuators/MidiPlayer.html) plugin.
+
 ## Light
 
 If you would like to control an infrared-controlled light bulb, you can use the [IRTrans](/plugins/actuators/IRTrans.html) plugin and set the slot strings of the StringDispatcher plugin to the action strings of the respective infrared commands (e.g. ```@IRTRANS: snd luminea-bulb,red```).
 
 Likewise you could use the [PhilipsHue](/plugins/actuators/PhilipsHue.html) plugin to control a Hue bulb depending on the head movement by setting the respective action string (e.g. ```{"hue": 0, "sat": 254}```).
 
+The [project kissenklang](#blood-pressure-cuff-sound-and-toy-control) uses a blood pressure cuff to control a light bulb via infrared commands sent by the [IRTrans](/plugins/actuators/IRTrans.html) plugin.
+
 ## Toys
+
+The [project kissenklang](#blood-pressure-cuff-sound-and-toy-control) uses a blood pressure cuff to control a toy robot via infrared commands sent by the [IRTrans](/plugins/actuators/IRTrans.html) plugin.
 
 The following tutorial documents a [toy helicopter controlled with muscle signals](https://www.ki-i.at/helicopter/).
 
@@ -56,6 +62,8 @@ The [project Kissenklang](https://github.com/asterics/unikate-kissenschalter) us
 <!--
 ![Screenshot: Blood Pressure Cuff and a button mounted on the head support of a wheelchair to control various items like a soap bubble machine.](https://raw.githubusercontent.com/asterics/unikate-kissenschalter/main/solution-final/doc/IMG_20210701_130605160_beschriftet.jpg =800x){align="center"}
 -->
+
+#### Demovideo Kissenklang
 
 <UseCase
   title="Kissenklang Demovideo"
