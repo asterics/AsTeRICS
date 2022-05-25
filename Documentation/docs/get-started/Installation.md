@@ -110,7 +110,8 @@ Please go to the [download page](https://github.com/asterics/AsTeRICS/releases/l
 
 ### Installation Steps
 
-1. Double-click onto the `.dmg` file and follow the instructions.
+1. Press the __Control__ Key (otherwise you will get an error message).
+2. Double-click onto the `.dmg` file and follow the instructions.
 
 ## Linux
 
