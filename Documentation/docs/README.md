@@ -35,7 +35,7 @@ title: Home
   media="https://www.youtube.com/watch?v=JwL_zS3fpnU">Emulate mouse, keyboard or joystick for playing games or remote control toy helicopters or cars.</UseCase>
 <UseCase
   title="Accessible Music"
-  media="https://www.youtube.com/watch?v=3_8TifCj0aU">Generate sounds or play adapted music instruments.</UseCase>
+  media="https://www.youtube.com/watch?v=w7oz9YqMK6Q">Generate sounds or play adapted music instruments.</UseCase>
 
 <!-- </UseCases> -->
 
@@ -55,8 +55,6 @@ There are many Assistive Technologies available on the market, but in many cases
 ## Partners & Funding
 
 The AsTeRICS project was funded by international and national research grants. AsTeRICS was initiated by [KI-I Linz](https://www.ki-i.at) and the [UAS Technikum Wien](https://www.technikum-wien.at/). The creation of this web page was funded by the City of Vienna, MA23, in course of the project **StudyATHome Internationally** (Grant Nr. 22-07). In Feb. 2017 the [AsTeRICS Foundation](https://www.asterics-foundation.org) was founded to bring the project results to people with disabilities, to organize workshops and to maintain project results, see [About Us](/get-involved/About-us.md).
- 
-
 
 <Funding>
   <Partner
