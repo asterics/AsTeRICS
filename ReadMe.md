@@ -53,6 +53,10 @@ You can find more documentation and build plans for some hardware devices in [Mo
 
 If you want to contribute to the AsTeRICS project, have questions or just need help using it don't bother to create an [issue](https://github.com/asterics/AsTeRICS/issues), pull request or via the [contact page](https://www.asterics.eu/get-involved/Contact.html).  
 
+If you want to support the development of AsTeRICS you're very welcome to donate to the AsTeRICS Foundation:
+<div><a title="Support AsTeRICS Foundation on betterplace.org!" target="_blank" href="https://www.betterplace.at/development-of-open-source-assistive-technologies"><img style="border:0px" alt="" src="https://betterplace-assets.betterplace.org/static-images/projects/donation-button-en.png" width="160" height="100"></a>
+</div>
+
 
 ## License
 

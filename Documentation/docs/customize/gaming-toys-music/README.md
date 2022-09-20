@@ -16,7 +16,7 @@ Below you can see the model used for this tutorial. You can [download](https://r
 
 ![Head-Smiley-Control-Model](https://user-images.githubusercontent.com/4621810/149799674-39c65c41-7873-4fe2-ab23-e369548ed78b.png)
 
-1. The [XFacetrackerLK](/plugins/sensors/XFacetrackerLK.html) plugin opens the first camera device with a resolution of 320x240 pixels, tracks the head movements and sends the relative movement in x-direction to the Integrate plugin.
+1. The [XFacetrackerLK](/plugins/sensors/XFacetrackerLK.html) plugin opens the first camera device with a resolution of 320x240 pixels, tracks the head movements and sends the relative movement in y-direction to the Integrate plugin.
 2. The [Integrate](/plugins/processors/Integrate.html) plugin integrates the relative movements with minimum and maximum values set to **0 and 240** respectively (same as camera resolution). ![Head-Smiley-Control-Integrate-Properties](https://user-images.githubusercontent.com/4621810/137796282-a2a080aa-d32a-4693-bfe8-af4a75dfadec.png)
 3. The [SignalTranslation](/plugins/processors/SignalTranslation.html) plugin translates the values between **0 and 240** to values between **1.00 and 4.00**. ![Head-Smiley-Control-SignalTranslator-Properties](https://user-images.githubusercontent.com/4621810/137796551-1629aea6-a031-4143-9502-7d2c2862ccbd.png)
 4. The [Quantizer](/plugins/processors/Quantizer.html) plugin creates a quantized (integer) number by rounding to the nearest integer number.
