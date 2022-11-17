@@ -872,6 +872,8 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
         System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        //Bug fix openhab3 REST API: If the Accept types are not explicitly specified, the request fails with error code 400 or 401.
+        conn.setRequestProperty("Accept","text/plain,application/json");
 
         // check for an username, if given, authenticate via HTTP BASIC
         if (this.username.length() != 0) {
