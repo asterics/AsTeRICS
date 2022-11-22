@@ -15,15 +15,9 @@ Using other components, a stepswise control of x and y movement can be achieved,
 
 ![Screenshot: CrosshairCursorControl plugin](./img/crosshaircursorcontrol.jpg "Screenshot: CrosshairCursorControl plugin")
 
-CrosshairCursorControl plugin
-
 ![Screenshot: CrosshairCursorControl arrow indicator](./img/crosshaircursorcontrol_demo.jpg "Screenshot: CrosshairCursorControl arrow indicator")
 
-CrosshairCursorControl arrow indicator
-
 ![Screenshot: CrosshairCursorControl tooltip for doubleclick](./img/crosshaircursorcontrol_tooltip.jpg "Screenshot: CrosshairCursorControl tooltip for doubleclick")
-
-CrosshairCursorControl in combination with Tooltip plugin for double click
 
 **Please Note:**  
 The mouse emulation on **Windows 7/10** does not always work as expected due to User Account Control (UAC) settings. Especially when you want to use the Windows 7 On-Screen-Keyboard dragging the keyboard does not work. To troubleshoot [turn off the User Account Control (UAC)][1] - change the level to "Never notify"

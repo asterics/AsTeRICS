@@ -3,7 +3,7 @@ title: AnalogOut
 subcategory: Generic Control Output
 ---
 
-# {{$frontmatter.title}}
+# AnalogOut
 
 Component Type: Actuator (Subcategory: Generic Control Output)
 
@@ -11,15 +11,11 @@ This plugin communicates with the DAC CIM and operates the analog outputs of the
 
 ![Screenshot: AnalogOut plugin](./img/analogout.jpg "Screenshot: AnalogOut plugin")
 
-AnalogOut plugin
-
 ## Requirements
 
 This software component requires an DAC CIM (CIM ID: 0x0401) connected to an USB port.
 
 ![ADC/DAC CIM](./img/analogout_cim.jpg "ADC/DAC CIM")
-
-ADC/DAC CIM
 
 ## Input port Description
 
