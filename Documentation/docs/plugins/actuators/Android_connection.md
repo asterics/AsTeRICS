@@ -3,13 +3,11 @@ title: AndroidConnection
 subcategory: Phone Interface
 ---
 
-# {{$frontmatter.title}}
+# AndroidConnection
 
 Component Type: Actuator (Subcategory: Phone Interface)
 
 ![Android Server Application](./img/androidserverapp.jpg "Android Server Application")
-
-Android Server Application
 
 This document describes how to prepare connection between the AndroidPhoneControl component and the AsTeRICSPhoneServer application:
 

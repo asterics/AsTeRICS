@@ -15,15 +15,9 @@ The EasyHome sender must be attached to the system!
 
 ![Picture of the EasyHome sender](./img/easyhomesender.jpg "Picture of the EasyHome sender")
 
-Picture of the EasyHome sender
-
 ![Picture of the EasyHome switch](./img/funksteckschalter.jpg "Picture of the EasyHome switch")
 
-Picture of the EasyHome switch
-
 ![Picture of the EasyHome dimmer](./img/funksteckdimmer.jpg "Picture of the EasyHome dimmer")
-
-Picture of the EasyHome dimmer
 
 ## Supported OSes
 
@@ -52,19 +46,12 @@ You must run the ARE as root for being able to access the device. Alternatively 
 
 See table below for a list of all commands that can be triggered
 
-Command Mapping
+<!-- caption: Command Mapping -->
 
-Command
-
-ID
-
-OffDevice1-15
-
-0
-
-OnDevice1-15
-
-1
+| Command       | ID  |
+| ------------- | --- |
+| OffDevice1-15 | 0   |
+| OnDevice1-15  | 1   |
 
 To dim the light you have to sent an on signal when the light is already turned on.
 

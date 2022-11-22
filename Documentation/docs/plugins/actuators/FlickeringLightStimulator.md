@@ -3,7 +3,7 @@ title: FlickeringLightStimulator
 subcategory: Brain Computer Interface
 ---
 
-# {{$frontmatter.title}}
+# FlickeringLightStimulator
 
 ## Component Type: Actuator (Subcategory: Brain Computer Interface)
 
@@ -11,15 +11,11 @@ This plug-in allows the user to interact with the Flickering Light Stimulator pa
 
 ![Screenshot: Flickering Light Stimulator plugin](./img/flickeringlightstimulator.jpg "Screenshot: Flickering Light Stimulator plugin")
 
-Flickering Light Stimulator plugin
-
 ## Requirements
 
 This software component requires at least one of the four Flickering Light Stimulator panels to be connected to any available COM port. The COM port number to which the panels are connected must be configured in the properties before starting the plugin.
 
 ![Screenshot: Flickering Panels setup](./img/flickeringpanels.jpg "Screenshot: Flickering Panels setup")
-
-Flickering Panels setup
 
 ## Input Port Description
 

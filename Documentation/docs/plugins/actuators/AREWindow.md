@@ -11,8 +11,6 @@ This component allows moving the ARE window to desired locations on the screen a
 
 ![Screenshot: AREWindow plugin](./img/arewindow.jpg "Screenshot: AREWindow plugin")
 
-AREWindow plugin
-
 ## Input Port Description
 
 - **xPos \[integer\]:** The x offest value for positioning the ARE window
