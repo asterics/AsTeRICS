@@ -1,5 +1,7 @@
 name: Release
 on: workflow_dispatch
+env:
+  VERSION: v4.5
 jobs:
   linux:
     runs-on: ubuntu-latest
@@ -17,4 +19,4 @@ jobs:
       - name: Install ant
         run: sudo apt install ant -y
       - name: Build AsTeRICS
-        run: VERSION=v4.5; ant deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION
+        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION
