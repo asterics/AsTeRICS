@@ -18,5 +18,7 @@ jobs:
           check-latest: true
       - name: Download InnoSetup Tool issc.exe
         run: curl.exe -o is.exe https://jrsoftware.org/download.php/is.exe?site=2
+      - name: install InnoSetup Tool
+        run: start is.exe
       - name: Show files
         run: dir
