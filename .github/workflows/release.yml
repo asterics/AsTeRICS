@@ -12,9 +12,9 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: "8"
-          distribution: "oracle"
-          java-package: jdk
-          architecture: x64
+          distribution: "zulu"
+          java-package: "jdk+fx"
+          architecture: "x64"
           check-latest: true
       - name: Install ant
         run: sudo apt install ant -y
