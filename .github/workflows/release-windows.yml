@@ -6,6 +6,8 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
+      - name: Show Windows Version
+        run: systeminfo
       - name: Get Code
         uses: actions/checkout@v3
       - name: Install JDK
@@ -18,7 +20,7 @@ jobs:
           check-latest: true
       - name: Download InnoSetup Tool issc.exe
         run: curl.exe -o is.exe https://jrsoftware.org/download.php/is.exe?site=2
-      - name: install InnoSetup Tool
-        run: start is.exe
-      - name: Show files
-        run: dir
+      # - name: install InnoSetup Tool
+      #   run: start is.exe
+      # - name: Show files
+      #   run: dir
