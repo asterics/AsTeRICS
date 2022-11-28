@@ -16,5 +16,7 @@ jobs:
           java-package: "jdk+fx"
           architecture: "x64"
           check-latest: true
-      - name: Log JDK version
-        run: java -version
+      - name: Download InnoSetup Tool issc.exe
+        run: curl.exe -o is.exe https://jrsoftware.org/download.php/is.exe?site=2
+      - name: Show files
+        run: dir
