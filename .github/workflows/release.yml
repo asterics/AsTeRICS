@@ -20,3 +20,18 @@ jobs:
         run: sudo apt install ant -y
       - name: Build AsTeRICS
         run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
+      - name: Release .deb File
+        uses: actions/upload-artifact@v3
+        with:
+          name: AsTeRICS ${{ env.VERSION }} (linux)
+          path: Installer/asterics-are/build/deploy/bundles/asterics-are-${{ env.VERSION }}.deb
+  linux-install:
+    needs: linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Software
+        uses: actions/download-artifact@v3
+        with:
+          name: AsTeRICS ${{ env.VERSION }} (linux)
+      - name: Install Package
+        run: sudo apt install ./asterics-are-${{ env.VERSION }}.deb
