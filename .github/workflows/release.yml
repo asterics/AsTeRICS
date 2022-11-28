@@ -33,5 +33,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: AsTeRICS ${{ env.VERSION }} (linux)
+      - name: Setup Machine
+        run: sudo mkdir /usr/share/desktop-directories
       - name: Install Package
-        run: sudo apt install ./asterics-are-${{ env.VERSION }}.deb
+        run: sudo apt -oDebug::pkgProblemResolver=1 -oDebug::pkgDPkgPM=1 -oDebug::Acquire::http=1 install ./asterics-are-${{ env.VERSION }}.deb
