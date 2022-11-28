@@ -14,5 +14,7 @@ jobs:
           java-package: jdk
           architecture: x64
           check-latest: true
-      - name: Test JDK Install
-        run: java -version
+      - name: Install ant
+        run: sudo apt install ant -y
+      - name: Test ant Install
+        run: ant -version
