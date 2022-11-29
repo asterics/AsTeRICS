@@ -28,7 +28,9 @@ jobs:
       #   run: D:\a\AsTeRICS\AsTeRICS\is.exe
       # - name: Test chocolatey installation
       #   run: cinst -h
-      - name: Install InnoSetup Tool
-        run: cinst InnoSetup -y
-      - name: Run InnoSetup Tool
-        run: issc -h
+      # - name: Install InnoSetup Tool
+      #   run: cinst InnoSetup -y
+      # - name: Run InnoSetup Tool
+      #   run: issc -h
+      - name: Run help
+        run: help
