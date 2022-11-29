@@ -94,7 +94,6 @@ begin
 
   Splash.Width := BitmapImage1.Width;
   Splash.Height := BitmapImage1.Height;
-  Splash.Center;
   Splash.Show;
 
   BitmapImage1.Refresh;
