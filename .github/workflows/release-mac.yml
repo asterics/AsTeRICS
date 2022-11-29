@@ -3,7 +3,7 @@ on: workflow_dispatch
 env:
   VERSION: 4.5
 jobs:
-  linux:
+  mac:
     runs-on: macos-latest
     steps:
       - name: Get Code
@@ -16,16 +16,12 @@ jobs:
           java-package: "jdk+fx"
           architecture: "x64"
           check-latest: true
-      - name: Test java installation
-        run: java -version
-      - name: List files
-        run: ls
-      # - name: Install ant
-      #   run: sudo apt install ant -y
-      # - name: Build AsTeRICS
-      #   run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
-      # - name: Release .deb File
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: AsTeRICS ${{ env.VERSION }} (linux)
-      #     path: Installer/asterics-are/build/deploy/bundles/asterics-are-${{ env.VERSION }}.deb
+      - name: Install ant
+        run: brew install ant
+      - name: Build AsTeRICS
+        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
+      - name: Release .deb File
+        uses: actions/upload-artifact@v3
+        with:
+          name: AsTeRICS ${{ env.VERSION }} (mac)
+          path: Installer/asterics-are/build/deploy/bundles/asterics-are-${{ env.VERSION }}.dmg
