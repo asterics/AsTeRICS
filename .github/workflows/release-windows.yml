@@ -4,7 +4,7 @@ env:
   VERSION: 4.5
 jobs:
   windows:
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
       - name: Show Windows Version
         run: systeminfo
@@ -24,5 +24,7 @@ jobs:
       #   run: start is.exe
       # - name: Show files
       #   run: dir
-      - name: install InnoSetup Tool
-        run: D:\a\AsTeRICS\AsTeRICS\is.exe
+      # - name: install InnoSetup Tool
+      #   run: D:\a\AsTeRICS\AsTeRICS\is.exe
+      - name: Run InnoSetup Tool
+        run: issc.exe -h
