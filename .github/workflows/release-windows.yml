@@ -18,22 +18,6 @@ jobs:
           java-package: "jdk+fx"
           architecture: "x64"
           check-latest: true
-      # - name: Download InnoSetup Tool issc.exe
-      #   run: curl.exe -o is.exe https://jrsoftware.org/download.php/is.exe?site=2
-      # - name: install InnoSetup Tool
-      #   run: start is.exe
-      # - name: Show files
-      #   run: dir
-      # - name: install InnoSetup Tool
-      #   run: D:\a\AsTeRICS\AsTeRICS\is.exe
-      # - name: Test chocolatey installation
-      #   run: cinst -h
-      # - name: Install InnoSetup Tool
-      #   run: cinst InnoSetup -y
-      # - name: Run InnoSetup Tool
-      #   run: iscc.exe -h
-      # - name: Run help
-      #   run: help
       - name: Build AsTeRICS
         run: bash -ex ./Installer/jenkins-release-script.sh
       - name: Release .exe File
