@@ -18,13 +18,15 @@ jobs:
           java-package: "jdk+fx"
           architecture: "x64"
           check-latest: true
-      - name: Download InnoSetup Tool issc.exe
-        run: curl.exe -o is.exe https://jrsoftware.org/download.php/is.exe?site=2
+      # - name: Download InnoSetup Tool issc.exe
+      #   run: curl.exe -o is.exe https://jrsoftware.org/download.php/is.exe?site=2
       # - name: install InnoSetup Tool
       #   run: start is.exe
       # - name: Show files
       #   run: dir
       # - name: install InnoSetup Tool
       #   run: D:\a\AsTeRICS\AsTeRICS\is.exe
-      - name: Run InnoSetup Tool
-        run: issc.exe -h
+      # - name: Run InnoSetup Tool
+      #   run: issc.exe -h
+      - name: Test chocolatey installation
+        run: cinst -h
