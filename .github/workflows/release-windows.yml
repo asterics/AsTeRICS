@@ -30,7 +30,7 @@ jobs:
       #   run: cinst -h
       # - name: Install InnoSetup Tool
       #   run: cinst InnoSetup -y
-      # - name: Run InnoSetup Tool
-      #   run: issc -h
-      - name: Run help
-        run: help
+      - name: Run InnoSetup Tool
+        run: iscc.exe -h
+      # - name: Run help
+      #   run: help
