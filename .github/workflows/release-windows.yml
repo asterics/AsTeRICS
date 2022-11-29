@@ -30,7 +30,9 @@ jobs:
       #   run: cinst -h
       # - name: Install InnoSetup Tool
       #   run: cinst InnoSetup -y
-      - name: Run InnoSetup Tool
-        run: iscc.exe -h
+      # - name: Run InnoSetup Tool
+      #   run: iscc.exe -h
       # - name: Run help
       #   run: help
+      - name: Build AsTeRICS
+        run: bash -ex ./Installer/jenkins-release-script.sh
