@@ -1,4 +1,4 @@
-name: Release
+name: Release (Linux)
 on: workflow_dispatch
 env:
   VERSION: 4.5
