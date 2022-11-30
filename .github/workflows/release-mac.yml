@@ -22,8 +22,15 @@ jobs:
         run: |
           echo $JAVA_HOME
           printenv
+      - name: Show content of JAVA_HOME
+        run: |
+          ls $JAVA_HOME
+          echo "==== JAVA_HOME/bin"
+          ls $JAVA_HOME/bin
+          echo "==== JAVA_HOME/jre"
+          ls $JAVA_HOME/jre
       - name: Build AsTeRICS
-        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true -Dfx.platform.basedir=$JAVA_HOME
+        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true -Dfx.platform.basedir=$JAVA_HOME/jre
       - name: Release .dmg File
         uses: actions/upload-artifact@v3
         with:
