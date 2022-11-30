@@ -16,21 +16,31 @@ jobs:
           java-package: "jdk+fx"
           architecture: "x64"
           check-latest: true
-      - name: Install ant
-        run: brew install ant
+      # - name: Install ant
+      #   run: brew install ant
       - name: Log environment variables & JAVA_HOME
         run: |
           echo $JAVA_HOME
           printenv
+      - name: Create Contents/Home
+        run: mkdir -p $JAVA_HOME/Contents/Home
+      - name: Create link to jre Contents/Home
+        run: ln -s ../../jre $JAVA_HOME/Contents/Home/jre
       - name: Show content of JAVA_HOME
-        run: |
-          ls $JAVA_HOME
-          echo "==== JAVA_HOME/bin"
-          ls $JAVA_HOME/bin
-          echo "==== JAVA_HOME/jre"
-          ls $JAVA_HOME/jre
+        run: ls $JAVA_HOME
+      - name: Show content of JAVA_HOME/Contents
+        run: ls $JAVA_HOME/Contents
+      - name: Show content of JAVA_HOME/Contents/Home
+        run: ls $JAVA_HOME/Contents/Home
+      - name: Show content of JAVA_HOME/Contents/Home/jre
+        run: ls $JAVA_HOME/Contents/Home/jre
+      - name: Show content of JAVA_HOME/bin
+        run: ls $JAVA_HOME/bin
+      - name: Show content of JAVA_HOME/jre
+        run: ls $JAVA_HOME/jre
       - name: Build AsTeRICS
-        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true -Dfx.platform.basedir=$JAVA_HOME/jre
+        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true -Dfx.platform.basedir=$JAVA_HOME/Contents/Home
+        # run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
       - name: Release .dmg File
         uses: actions/upload-artifact@v3
         with:
