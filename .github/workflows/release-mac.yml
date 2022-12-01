@@ -1,5 +1,5 @@
 name: Release (macOS)
-on: workflow_dispatch
+on: [workflow_dispatch, workflow_call]
 env:
   VERSION: 4.5
   ARTIFACT: AsTeRICS 4.5 (macOS)
