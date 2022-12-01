@@ -14,8 +14,8 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: "8"
-          distribution: "oracle"
-          java-package: "jdk"
+          distribution: "zulu"
+          java-package: "jdk+fx"
           architecture: "x64"
           check-latest: true
       # - name: Install ant
@@ -50,12 +50,20 @@ jobs:
       #   run: mkdir -p $JAVA_HOME/Contents
       # - name: Create link jre
       #   run: ln -s $JAVA_HOME $JAVA_HOME/Contents/Home
+      - name: Move JDK
+        run: |
+          shopt -s extglob
+          mkdir -p $JAVA_HOME/Contents/Home
+          cp -r $JAVA_HOME/!(Contents) $JAVA_HOME/Contents/Home/
+        # run: mkdir $JAVA_HOME/../Home && mv $JAVA_HOME/* $JAVA_HOME/../Home/ && mkdir $JAVA_HOME/Contents && mv $JAVA_HOME/../Home $JAVA_HOME/Contents/
       - name: Build AsTeRICS
-        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true -Dfx.platform.basedir=$JAVA_HOME/Contents/Home
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_8_X64 }}/Contents/Home
+        # run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true -Dfx.platform.basedir=$JAVA_HOME/Contents/Home
         # run: JAVA_HOME=$JAVA_HOME/Contents/Home ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
-        # run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
+        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
       - name: Release .dmg File
         uses: actions/upload-artifact@v3
         with:
           name: AsTeRICS ${{ env.VERSION }} (mac)
-          path: Installer/asterics-are/build/deploy/bundles/asterics-are-${{ env.VERSION }}.dmg
+          path: Installer/asterics-are/build/deploy/bundles/asterics-are-javaembedded-${{ env.VERSION }}.dmg
