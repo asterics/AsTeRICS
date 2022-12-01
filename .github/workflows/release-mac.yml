@@ -2,7 +2,6 @@ name: Release (macOS)
 on: workflow_dispatch
 env:
   VERSION: 4.5
-  JAVA_HOME: $JAVA_HOME_8_X64/Contents/Home
 jobs:
   mac:
     runs-on: macos-latest
@@ -47,12 +46,14 @@ jobs:
       #   run: ls $JAVA_HOME/bin
       # - name: Show content of JAVA_HOME/jre
       #   run: ls $JAVA_HOME/jre
-      - name: Create Contents/Home
-        run: mkdir -p $JAVA_HOME/Contents/Home
+      - name: Create Contents
+        run: mkdir -p $JAVA_HOME/Contents
+      - name: Create link jre
+        run: ln -s $JAVA_HOME $JAVA_HOME/Contents/Home
       - name: Build AsTeRICS
-        # run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true -Dfx.platform.basedir=$JAVA_HOME/Contents/Home
+        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true -Dfx.platform.basedir=$JAVA_HOME/Contents/Home
         # run: JAVA_HOME=$JAVA_HOME/Contents/Home ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
-        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
+        # run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
       - name: Release .dmg File
         uses: actions/upload-artifact@v3
         with:
