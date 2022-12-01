@@ -14,7 +14,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: "8"
-          distribution: "zulu"
+          distribution: "oracle"
           java-package: "jdk+fx"
           architecture: "x64"
           check-latest: true
@@ -46,10 +46,10 @@ jobs:
       #   run: ls $JAVA_HOME/bin
       # - name: Show content of JAVA_HOME/jre
       #   run: ls $JAVA_HOME/jre
-      - name: Create Contents
-        run: mkdir -p $JAVA_HOME/Contents
-      - name: Create link jre
-        run: ln -s $JAVA_HOME $JAVA_HOME/Contents/Home
+      # - name: Create Contents
+      #   run: mkdir -p $JAVA_HOME/Contents
+      # - name: Create link jre
+      #   run: ln -s $JAVA_HOME $JAVA_HOME/Contents/Home
       - name: Build AsTeRICS
         run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true -Dfx.platform.basedir=$JAVA_HOME/Contents/Home
         # run: JAVA_HOME=$JAVA_HOME/Contents/Home ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
