@@ -2,8 +2,9 @@ name: Release (Windows)
 on: workflow_dispatch
 env:
   VERSION: 4.5
+  ARTIFACT: AsTeRICS 4.5 (windows)
 jobs:
-  windows:
+  build:
     runs-on: windows-latest
     steps:
       - name: Show Windows Version
@@ -23,5 +24,17 @@ jobs:
       - name: Release .exe File
         uses: actions/upload-artifact@v3
         with:
-          name: AsTeRICS ${{ env.VERSION }} (windows)
+          name: ${{ env.ARTIFACT }}
           path: Setup_AsTeRICS_${{ env.VERSION }}.exe
+  install:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Get Software
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT }}
+      - name: List directory content
+        run: dir
+      - name: Install Package
+        run: start Setup_AsTeRICS_${{ env.VERSION }}.exe
