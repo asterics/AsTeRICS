@@ -2,8 +2,9 @@ name: Release (Linux)
 on: workflow_dispatch
 env:
   VERSION: 4.5
+  ARTIFACT: AsTeRICS 4.5 (linux)
 jobs:
-  linux:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -16,23 +17,21 @@ jobs:
           java-package: "jdk+fx"
           architecture: "x64"
           check-latest: true
-      # - name: Install ant
-      #   run: sudo apt install ant -y
       - name: Build AsTeRICS
         run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
       - name: Release .deb File
         uses: actions/upload-artifact@v3
         with:
-          name: AsTeRICS ${{ env.VERSION }} (linux)
+          name: ${{ env.ARTIFACT }}
           path: Installer/asterics-are/build/deploy/bundles/asterics-are-${{ env.VERSION }}.deb
-  linux-install:
-    needs: linux
+  install:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Get Software
         uses: actions/download-artifact@v3
         with:
-          name: AsTeRICS ${{ env.VERSION }} (linux)
+          name: ${{ env.ARTIFACT }}
       - name: Setup Machine
         run: sudo mkdir /usr/share/desktop-directories
       - name: Install Package
