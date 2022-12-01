@@ -15,7 +15,7 @@ jobs:
         with:
           java-version: "8"
           distribution: "oracle"
-          java-package: "jdk+fx"
+          java-package: "jdk"
           architecture: "x64"
           check-latest: true
       # - name: Install ant
