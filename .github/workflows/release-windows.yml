@@ -1,11 +1,37 @@
 name: Release (Windows)
-on: [workflow_dispatch, workflow_call]
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        type: string
+      platform:
+        description: "Platform Type"
+        required: false
+        default: windows-latest
+        type: choice
+        options:
+          - windows-latest
+          - windows-2022
+          - windows-2019
+  workflow_call:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        type: number
+      platform:
+        description: "Platform Type"
+        default: windows-latest
+        required: true
+        type: string
 env:
-  VERSION: 4.5
-  ARTIFACT: AsTeRICS 4.5 (windows)
+  VERSION: ${{ inputs.version }}
+  ARTIFACT: AsTeRICS ${{ inputs.version }} (${{ inputs.platform }})
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ${{ inputs.platform }}
     steps:
       - name: Show Windows Version
         run: systeminfo

@@ -1,11 +1,38 @@
 name: Release (macOS)
-on: [workflow_dispatch, workflow_call]
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        type: string
+      platform:
+        description: "Platform Type"
+        required: false
+        default: macos-latest
+        type: choice
+        options:
+          - macos-latest
+          - macos-12
+          - macos-11
+          - macos-10.15
+  workflow_call:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        type: number
+      platform:
+        description: "Platform Type"
+        default: macos-latest
+        required: true
+        type: string
 env:
-  VERSION: 4.5
-  ARTIFACT: AsTeRICS 4.5 (macOS)
+  VERSION: ${{ inputs.version }}
+  ARTIFACT: AsTeRICS ${{ inputs.version }} (${{ inputs.platform }})
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ${{ inputs.platform }}
     steps:
       - name: Get Code
         uses: actions/checkout@v3
