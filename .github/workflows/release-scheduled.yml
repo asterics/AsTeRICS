@@ -1,0 +1,32 @@
+name: Release (cron)
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+env:
+  VERSION: 4.8
+jobs:
+  linux:
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04, ubuntu-18.04]
+    uses: ./.github/workflows/release-linux.yml
+    with:
+      version: 4.8
+      platform: ${{ matrix.os }}
+  windows:
+    strategy:
+      matrix:
+        os: [windows-2022, windows-2019]
+    uses: ./.github/workflows/release-windows.yml
+    with:
+      version: 4.8
+      platform: ${{ matrix.os }}
+  mac:
+    strategy:
+      matrix:
+        os: [macos-12, macos-11, macos-10.15]
+    uses: ./.github/workflows/release-mac.yml
+    with:
+      version: 4.8
+      platform: ${{ matrix.os }}
