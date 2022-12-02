@@ -1,11 +1,38 @@
 name: Release (Linux)
-on: [workflow_dispatch, workflow_call]
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        type: string
+      platform:
+        description: "Platform Type"
+        required: false
+        default: ubuntu-latest
+        type: choice
+        options:
+          - ubuntu-latest
+          - ubuntu-22.04
+          - ubuntu-20.04
+          - ubuntu-18.04
+  workflow_call:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        type: number
+      platform:
+        description: "Platform Type"
+        default: ubuntu-latest
+        required: true
+        type: string
 env:
-  VERSION: 4.5
-  ARTIFACT: AsTeRICS 4.5 (linux)
+  VERSION: ${{ inputs.version }}
+  ARTIFACT: AsTeRICS ${{ inputs.version }} (${{ inputs.platform }})
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.platform }}
     steps:
       - name: Get Code
         uses: actions/checkout@v3
