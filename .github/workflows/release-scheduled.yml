@@ -1,32 +1,56 @@
 name: Release (cron)
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version Number"
+        type: string
 env:
   VERSION: 4.8
 jobs:
-  linux:
+  version:
+    if: ${{ github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Log Version
+        run: date +'%Y%m%d-%H%M'
+      - name: Output Version
+        id: version
+        run: echo "version=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+  test:
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-20.04, ubuntu-18.04]
-    uses: ./.github/workflows/release-linux.yml
-    with:
-      version: 4.8
-      platform: ${{ matrix.os }}
-  windows:
-    strategy:
-      matrix:
-        os: [windows-2022, windows-2019]
-    uses: ./.github/workflows/release-windows.yml
-    with:
-      version: 4.8
-      platform: ${{ matrix.os }}
-  mac:
-    strategy:
-      matrix:
-        os: [macos-12, macos-11, macos-10.15]
-    uses: ./.github/workflows/release-mac.yml
-    with:
-      version: 4.8
-      platform: ${{ matrix.os }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    needs: version
+    steps:
+      - name: Log version ${{ needs.version.outputs.version }}
+        run: echo ${{ needs.version.outputs.version }}
+  # linux:
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-22.04, ubuntu-20.04, ubuntu-18.04]
+  #   uses: ./.github/workflows/release-linux.yml
+  #   with:
+  #     version: 4.8
+  #     platform: ${{ matrix.os }}
+  # windows:
+  #   strategy:
+  #     matrix:
+  #       os: [windows-2022, windows-2019]
+  #   uses: ./.github/workflows/release-windows.yml
+  #   with:
+  #     version: 4.8
+  #     platform: ${{ matrix.os }}
+  # mac:
+  #   strategy:
+  #     matrix:
+  #       os: [macos-12, macos-11, macos-10.15]
+  #   uses: ./.github/workflows/release-mac.yml
+  #   with:
+  #     version: 4.8
+  #     platform: ${{ matrix.os }}
