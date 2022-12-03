@@ -1,53 +1,57 @@
 name: Release
 on:
+  schedule:
+    - cron: "0 12 * * *"
   workflow_dispatch:
     inputs:
       version:
         description: "Version Number"
-        required: true
         type: string
-      linux:
-        description: "Linux Platform Type"
-        required: false
-        default: ubuntu-latest
-        type: choice
-        options:
-          - ubuntu-latest
-          - ubuntu-22.04
-          - ubuntu-20.04
-          - ubuntu-18.04
-      windows:
-        description: "Windows Platform Type"
-        required: false
-        default: windows-latest
-        type: choice
-        options:
-          - windows-latest
-          - windows-2022
-          - windows-2019
-      macOS:
-        description: "macOS Platform Type"
-        required: false
-        default: macos-latest
-        type: choice
-        options:
-          - macos-latest
-          - macos-12
-          - macos-11
-          - macos-10.15
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version || steps.custom.outputs.version || steps.tag.outputs.version }}
+    steps:
+      - name: Output Version
+        id: version
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.version == '' ) }}
+        run: echo "version=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+      - name: Output Custom Version
+        id: custom
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.version != '' }}
+        run: echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+      - name: Output Tag
+        id: tag
+        if: ${{ github.event_name == 'push' }}
+        run: echo "version=$(echo ${GITHUB_REF#refs/*/} | sed -e 's/v//')" >> $GITHUB_OUTPUT
   linux:
+    needs: version
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04, ubuntu-18.04]
     uses: ./.github/workflows/release-linux.yml
     with:
-      version: ${{ inputs.version }}
-      platform: ${{ inputs.linux }}
+      version: ${{ needs.version.outputs.version }}
+      platform: ${{ matrix.os }}
   windows:
+    needs: version
+    strategy:
+      matrix:
+        os: [windows-2022, windows-2019]
     uses: ./.github/workflows/release-windows.yml
     with:
-      version: ${{ inputs.version }}
-      platform: ${{ inputs.windows }}
+      version: ${{ needs.version.outputs.version }}
+      platform: ${{ matrix.os }}
   mac:
+    needs: version
+    strategy:
+      matrix:
+        os: [macos-12, macos-11, macos-10.15]
     uses: ./.github/workflows/release-mac.yml
     with:
-      version: ${{ inputs.version }}
-      platform: ${{ inputs.macOS }}
+      version: ${{ needs.version.outputs.version }}
+      platform: ${{ matrix.os }}
