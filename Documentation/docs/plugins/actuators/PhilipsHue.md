@@ -18,8 +18,6 @@ or all lights connected to the Philips Hue bridge at the same time.
 
 ![Screenshot: PhilipsHue plugin](./img/philipshue.png "Screenshot: PhilipsHue plugin")
 
-Philips Hue plugin
-
 ## Requirements
 
 - A Philips Hue hardware Bridge
@@ -65,8 +63,6 @@ Now let's create a new API key using the CLIP API debugger.
 After adding the PhilipsHue plugin in the Model Designer you can fill out those properties.
 
 ![Screenshot: PhilipsHue plugin](./img/philipshue_properties.png "Screenshot: PhilipsHue plugin")
-
-Philips Hue properties
 
 The target light ids are assigned from the bridge to the lights in order, starting with 1.
 
@@ -138,4 +134,4 @@ and the values can be used to identify the lights (by name, model or serial numb
   In that case you can use another REST API debugger (like [Postman](https://www.getpostman.com/)). You can also
   install a [Chrome extension](https://github.com/PhilGrayson/chrome-csp-disable) that disables strict XSS checking
   for specific sites.
-- If you have any other issue or need help you can drop the author a line: bmedicke@gmail.com
+- If you have any other issue or need help you can drop the author a line: [bmedicke@gmail.com](mailto:bmedicke@gmail.com)
