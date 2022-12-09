@@ -3,25 +3,28 @@ title: IrMicro
 subcategory: Home Control
 ---
 
-# {{$frontmatter.title}}
+# IrMicro
 
 ## Component Type: Processor (Subcategory: Home Control)
 
-The IRMicro plugin connects to a Microcontroller via a COM port in order to receive and sent infrared (IR-) remote control commands (raw timing values). The values are stored in (or loded from) .csv file (one file per command, given the command's name as filename.csv) in the ARE subfolder ./data/processor.IRMicro
+The IRMicro plugin connects to a Microcontroller via a COM port in order to receive and sent infrared (IR-) remote control commands (raw timing values).
+The values are stored in (or loded from) .csv file (one file per command, given the command's name as `filename.csv`) in the ARE subfolder `./data/processor.IRMicro`.
 
 ![Screenshot: IrMicro plugin](./img/irmicro.jpg "Screenshot: IrMicro plugin")
 
-IrMicro plugin
-
 ## Requirements
 
-A connection to a microcontroller running the IrMicro firmware is required. The IrMicro firmware is provided in folder /CIMS/IrMicro. This firmware is an Arduino Sketch for record/replay of infrared commands. Connect a TSOP module (e.g. TSOP4838) to pin 11 and an IR led with current-limiting resistor to send pin of a compatible microcontroller (for examle pin 3 for the Arduino Uno). For a list of compatible controllers and default send pins see: [IR-Remote Github repository][1]
+A connection to a microcontroller running the IrMicro firmware is required.
+The IrMicro firmware is provided in folder `/CIMS/IrMicro`.
+This firmware is an Arduino Sketch for record/replay of infrared commands.
+Connect a TSOP module (e.g. TSOP4838) to pin 11 and an IR led with current-limiting resistor to send pin of a compatible microcontroller (for examle pin 3 for the Arduino Uno).
+For a list of compatible controllers and default send pins see: [IR-Remote Github repository][1].
 
 ## Input Port Description
 
-- **sendName\[string\]:** A string which contains a known command name. The existing (recorded) commands are stored in .csv files in the folder ARE/data/processor.IRMicro. If the command file is found, the stored timing codes are replayed by the connected microcontroller
+- **sendName\[string\]:** A string which contains a known command name. The existing (recorded) commands are stored in .csv files in the folder `ARE/data/processor.IRMicro`. If the command file is found, the stored timing codes are replayed by the connected microcontroller
 
-- **recordName\[string\]:** A string which contains the name of a command which shall be recorded. The microcontroller is put into recording mode and waits (until a given timeout) for an IR code to be received via the TSOP module. After a command has been recorded, the codes are stored in a .csv file (filename is the command name) in the folder ARE/data/processor.IRMicro.
+- **recordName\[string\]:** A string which contains the name of a command which shall be recorded. The microcontroller is put into recording mode and waits (until a given timeout) for an IR code to be received via the TSOP module. After a command has been recorded, the codes are stored in a .csv file (filename is the command name) in the folder `ARE/data/processor.IRMicro`.
 
 ## Output Port Description
 
