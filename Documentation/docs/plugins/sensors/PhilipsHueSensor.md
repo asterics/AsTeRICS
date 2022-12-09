@@ -9,14 +9,11 @@ featured: true
 
 Component Type: Sensor (Subcategory: Home Control)
 
-The PhilipsHueSensor component provides an interface to the motion sensor and dimmer switch of the
-[Philips Hue smart lighting system](https://www2.meethue.com/en-us).
+The PhilipsHueSensor component provides an interface to the motion sensor and dimmer switch of the [Philips Hue smart lighting system](https://www2.meethue.com/en-us).
 
 One instance of this plugin can fire events for one specified Philips Hue sensor.
 
 ![Screenshot: PhilipsHue plugin](./img/philipshuesensor.png "Screenshot: PhilipsHue plugin")
-
-Philips Hue sensor plugin
 
 ## Requirements
 
