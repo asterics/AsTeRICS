@@ -5,7 +5,7 @@ featured: true
 image: /plugins/actuators/infrared.svg
 ---
 
-# {{$frontmatter.title}}
+# IRTrans
 
 ## Component Type: Actuator (Subcategory: Home Control)
 
@@ -68,6 +68,5 @@ _Comment:_ This component is exactly tailored to the IRTrans module and needs ex
 
 ## References
 
-http://www.irtrans.de
-
-http://www.irtrans.de/download/Docs/IRTrans%20TCP%20ASCII%20Interface_EN.pdf
+* [http://www.irtrans.de](http://www.irtrans.de)
+* [http://www.irtrans.de/download/Docs/IRTrans%20TCP%20ASCII%20Interface_EN.pdf](http://www.irtrans.de/download/Docs/IRTrans%20TCP%20ASCII%20Interface_EN.pdf)

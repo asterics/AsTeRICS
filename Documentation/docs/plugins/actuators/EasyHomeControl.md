@@ -21,7 +21,9 @@ The EasyHome sender must be attached to the system!
 
 ## Supported OSes
 
-Windows (x86,x64), Linux (x86, x64, arm(Raspberry Pi)), Mac OSX(x86, x64)
+* Windows (`x86`, `x64`)
+* Linux (`x86`, `x64`, `ARM` - (Raspberry Pi))
+* macOS X (`x86`, `x64`)
 
 ## Troubleshooting problems under Win8/Win8.1
 
@@ -30,9 +32,9 @@ Under Windows 8 and Windows 8.1, there can be problems concering the operation o
 - Open the Device Manager (usually can be selected by right-clicking at the bottom left corner of your windows desktop)
 - Open the device group "Human Interface Devices"
 - Locate the device which pops up when you insert or remove the EasyHome module to/from an USB port It should be a "HID compliant supplier defined device". You can distinguish different devices by right-clicking a device and looking into rider "details" and "properites" - there you can find the VID and PID values, e.g. under property "last known parent"
-- Note the VID and PID values. For example if you see a line like "USB\\VID_1B1F&PID_C00F\\EEE0000473" the values are VID:1B1F and PID:C00F
+- Note the VID and PID values. For example if you see a line like `"USB\\VID_1B1F&PID_C00F\\EEE0000473"` the values are `VID:1B1F` and `PID:C00F`
 - Press the Windows-Key and "R" to open the command window. Type "regedit" and press enter
-- Select the entry "HKEY_LOCAL_MACHINE" > "SYSTEM" > "CurrentControlSet" > "Enum" > "USB".
+- Select the entry `"HKEY_LOCAL_MACHINE" > "SYSTEM" > "CurrentControlSet" > "Enum" > "USB"`.
 - In this list, select the entry for the EasyHome device (given by VID und PID you noted)
 - Open the Subfolder "Device Paramteters" and double click the property "EnhancedPowerManagementEnabled" which appears in the right window section
 - Change the property value from 1 to 0 and commit by clicking "OK"
