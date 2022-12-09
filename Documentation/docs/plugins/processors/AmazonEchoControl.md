@@ -46,7 +46,7 @@ in the openHAB folder, double click on
 start_debug.bat
 ```
 
-After installing and running openHAB, start the browser and use https://localhost:8080 for HTTP or https://localhost:8443 for HTTPS.
+After installing and running openHAB, start the browser and use [https://localhost:8080](https://localhost:8080) for HTTP or [https://localhost:8443](https://localhost:8443) for HTTPS.
 
 See the ([openHAB installation guide][3]).
 
@@ -62,12 +62,12 @@ Before this plugin can be used, the openHAB must be initialized and the AmazonEc
 4. Go to **Configuration** and click on **Things** and click on `Amazon Echo Control Binding`.
 5. Click on **Amazon Account** and accept it by pressing on the tick
    ![Screenshot Amazon Account Thing Creation](./img/amazonechocontrol-addthing-amazonaccount.png)
-6. After that, use this link to connect openHAB with your **Amazon Account** (http://localhost:8080/amazonechocontrol/).
+6. After that, use this link to connect openHAB with your **Amazon Account** ([http://localhost:8080/amazonechocontrol/](http://localhost:8080/amazonechocontrol/)).
 7. Back in the **Configuration** menu click on **Things**, the account should be online.
 
 if not, follow the instruction at: [openHAB: AmazonEchoControl-Binding][5]
 
-![Screenshot: Amazon Account Online](img/amazonaccount.JPG "Screenshot: Amazon Account Online")
+![Screenshot: Amazon Account Online](./img/amazonaccount.JPG "Screenshot: Amazon Account Online")
 
 ##### Setup Amazon Device
 
@@ -81,7 +81,7 @@ The Amazon device must be setup within your [amazon alexa account](https://alexa
 
 ## AmazonEchoControl Plugin
 
-![Screenshot: AmazonEchoControl Plugin](img/amazonechocontrolplugin.PNG "Screenshot: AmazonEchoControl Plugin")
+![Screenshot: AmazonEchoControl Plugin](./img/amazonechocontrolplugin.PNG "Screenshot: AmazonEchoControl Plugin")
 
 #### Input Port Description
 
@@ -100,7 +100,7 @@ The Amazon device must be setup within your [amazon alexa account](https://alexa
 
 #### Event Listener Description
 
-![Screenshot: List of Eventlistener names and their meaning. The listener names are playerPlay, playerPause, playerNext, playerPrevious, volumeMute, volume30, weather, tellStory, traffic, singASong, flashBriefing](img/amazonechocontrol_eventlistener.PNG "Screenshot: AmazonEchoControl Eventlistener")
+![Screenshot: List of Eventlistener names and their meaning. The listener names are playerPlay, playerPause, playerNext, playerPrevious, volumeMute, volume30, weather, tellStory, traffic, singASong, flashBriefing](./img/amazonechocontrol_eventlistener.PNG "Screenshot: AmazonEchoControl Eventlistener")
 
 #### Event Trigger Description
 

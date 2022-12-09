@@ -9,7 +9,10 @@ image: /plugins/processors/openhab.svg
 
 Component Type: Processors (Subcategory: Home Control)
 
-The openHAB component interfaces to an openHAB instance, which is used to configure and use a home control environment. Usually, openHAB is stand-alone. Therefore it has its own GUI, many many possible interfacing solutions (called bindings) and a configuration tool (based on Eclipse). More information is available here: [openHAB][1].
+The openHAB component interfaces to an openHAB instance, which is used to configure and use a home control environment.
+Usually, openHAB is stand-alone.
+Therefore it has its own GUI, many many possible interfacing solutions (called bindings) and a configuration tool (based on Eclipse).
+More information is available here: [openHAB][1].
 
 This component uses the provided [REST API of openHAB](https://www.openhab.org/docs/configuration/restdocs.html) to read and write the state of different nodes (called items) within the openHAB system.
 
