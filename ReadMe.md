@@ -55,9 +55,13 @@ If you want to contribute to the AsTeRICS project, have questions or just need h
 
 If you want to support the development of AsTeRICS you're very welcome to donate to the AsTeRICS Foundation:
 
-<a title="Support AsTeRICS Foundation on opencollective.com" href="https://opencollective.com/asterics-foundation" target="_blank">
-  <img src="https://opencollective.com/webpack/donate/button@2x.png?color=blue" width=300 />
-</a>
+<div>
+<a title="Donate with PayPal" href="https://www.paypal.com/donate/?hosted_button_id=38AJJNS427MJ2" target="_blank" style="margin-right:3em">
+<img src="https://github.com/asterics/AsTeRICS-Grid/raw/master/app/img/donate-paypal.png" width=300/></a>
+<span>&nbsp;&nbsp;&nbsp;</span>
+<a title="Donate at opencollective.com" href="https://opencollective.com/asterics-foundation/projects/asterics-grid" target="_blank">
+<img src="https://github.com/asterics/AsTeRICS-Grid/raw/master/app/img/donate-open-collective.png" width=300/></a>
+</div>
 
 
 ## License
