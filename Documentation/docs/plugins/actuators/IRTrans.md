@@ -17,6 +17,11 @@ You can send an IR command by sending an _action string_ to the input port `acti
 
 `@IRTRANS: snd LG-TV,TvOn`.
 
+#### Send hex data
+HEX data of a stored command can be retrieved within the IrServer software at the menu entry `IR Hexcode abrufen`. This data then can be sent directly to the `action` port with the advantage that it works independently of the current IrServer database on the current device.
+
+**Important:** if the HEX data is something like `4E0100000000222...` the correct command to send to the `action` port would be `@IRTRANS: sndhex H4E0100000000222...` (note the added `H` at the beginning of the code).
+
 ### IR command by event
 
 You can send an IR command using the event listener port of the plugin. Use the property `prestring` to set the name of the remote control device containing the IR commands you need. Then you can use the properties `send<1-n>` to set the name of the IR command.
