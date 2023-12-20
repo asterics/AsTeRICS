@@ -3,7 +3,7 @@ title: ApplicationLauncher
 subcategory: File System
 ---
 
-# {{$frontmatter.title}}
+# ApplicationLauncher
 
 Component Type: Actuator (Subcategory: File System)
 
@@ -13,7 +13,6 @@ Together with the Keyboard- or RemoteKeyboard components, the ApplicationLaunche
 
 ![Screenshot: ApplicationLauncher plugin](./img/applicationlauncher.jpg "Screenshot: ApplicationLauncher plugin")
 
-ApplicationLauncher plugin
 
 ## Input Port Description
 

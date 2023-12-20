@@ -3,15 +3,13 @@ title: FileWriter
 subcategory: File System
 ---
 
-# {{$frontmatter.title}}
+# FileWriter
 
 ## Component Type: Actuator (Subcategory: File System)
 
 This component writes the input values that are received in the input port to a text file, so these values can be analysed and processed off-line.
 
 ![Screenshot: File Writer plugin](./img/filewriter.jpg "Screenshot: File Writer plugin")
-
-File Writer plugin
 
 ## Input Port Description
 

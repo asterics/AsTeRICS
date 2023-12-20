@@ -13,8 +13,6 @@ The EnOcean plugin enables the ARE to interface to EnOcean wireless sensors. Thi
 
 ![Screenshot: EnOcean plugin](./img/enocean.png "Screenshot: EnOcean plugin")
 
-EnOcean plugin
-
 ## Requirements
 
 - An EnOcean gateway (either USB or IP)

@@ -10,5 +10,5 @@ If you would like to use a solution for a dedicated person with disabilities, go
 
 ## Go to
 
-- [**Model Customization**](./Model-Customization) to learn how to modify a given model and adapt single properties.
-- [**Model Creation**](./Model-Creation) to learn how to create a new model.
+- [**Model Customization**](./model/Model-Customization) to learn how to modify a given model and adapt single properties.
+- [**Model Creation**](./model/Model-Creation) to learn how to create a new model.

@@ -29,6 +29,7 @@ package eu.asterics.component.processor.openhab;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -732,13 +733,6 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
             AstericsErrorHandling.instance.reportDebugInfo(this, "Get item (name: " + item + ": " + protocol + "://"
                     + hostname + ":" + port + "/rest/items/" + item + "/state");
             return httpGet(protocol + "://" + hostname + ":" + port + "/rest/items/" + item + "/state");
-        } catch (KeyManagementException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportDebugInfo(this,
-                    "KeyManagement exception, try to use lazyCertificate option (property)");
-        } catch (NoSuchAlgorithmException e) {
-            tg.stop();
-            AstericsErrorHandling.instance.reportDebugInfo(this, "Algortihm exception, please contact the AsTeRICS team");
         } catch (IOException e) {
             // catch a wrong item name
             if (e.getMessage().equalsIgnoreCase("Not Found")) {
@@ -769,6 +763,9 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
 
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
+            //add authentication header, if username and password is set.
+            con=addAuthenticationHeader(con);
+
             con.setDoOutput(true);
             con.setRequestMethod("POST");
             con.setRequestProperty("Accept", "application/json");
@@ -797,7 +794,6 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
             AstericsErrorHandling.instance.reportDebugInfo(this, "change to :" + state);
             return content.toString();
             //return httpGet(protocol + "://" + hostname + ":" + port + "/CMD?" + item + "=" + state);
-
         } catch (IOException e) {
             if (e.getMessage().equalsIgnoreCase("Not Found")) {
                 tg.stop();
@@ -812,22 +808,42 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
         return "";
     }
 
-    public List<String> getList(String hostname, String type) throws IOException {
-        List<String> response = new ArrayList<String>();
+    /**
+     * Adds Authentication HTTP-Header field to a given HttpURLConnection variable.
+     * @param conn
+     * @return
+     */
+    private HttpURLConnection addAuthenticationHeader(HttpURLConnection conn) {
+        // if we wan't to ignore any certificate errors (not recommended!!!!),
+        // we need to do additional stuff here
+        // Based on
+        // http://www.rgagnon.com/javadetails/java-fix-certificate-problem-in-HTTPS.html
+        try{
+            if (lazyCertificate == true) {
+                // Install the all-trusting host verifier
+                HttpsURLConnection.setDefaultHostnameVerifier(hostnameValid);
 
-        try {
-            AstericsErrorHandling.instance.reportDebugInfo(this,
-                    "Get list (type: " + type + ": " + hostname + "/rest/" + type + "s");
+                TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+                    @Override
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
 
-            //create JSON Array
-            JSONArray jsonArray = new JSONArray(httpGet(hostname + "/rest/" + type + "s"));
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                    }
 
-            // parse all objects, and extract name
-            for (int i=0; i<jsonArray.length();i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String name = jsonObject.getString("name");
-                response.add(name);
-            }        
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                    }
+
+                } };
+
+                SSLContext sc = SSLContext.getInstance("SSL");
+                sc.init(null, trustAllCerts, new java.security.SecureRandom());
+                HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            }
+            System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
         } catch (KeyManagementException e) {
             tg.stop();
             AstericsErrorHandling.instance.reportDebugInfo(this,
@@ -837,50 +853,44 @@ public class openHABInstance extends AbstractRuntimeComponentInstance {
             AstericsErrorHandling.instance.reportDebugInfo(this, "Algortihm exception, please contact the AsTeRICS team");
         }
 
-        return response;
-    }
-
-    public String httpGet(String urlStr) throws IOException, KeyManagementException, NoSuchAlgorithmException {
-        // if we wan't to ignore any certificate errors (not recommended!!!!),
-        // we need to do additional stuff here
-        // Based on
-        // http://www.rgagnon.com/javadetails/java-fix-certificate-problem-in-HTTPS.html
-        if (lazyCertificate == true) {
-            // Install the all-trusting host verifier
-            HttpsURLConnection.setDefaultHostnameVerifier(hostnameValid);
-
-            TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-                @Override
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-
-                @Override
-                public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                }
-
-                @Override
-                public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                }
-
-            } };
-
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        }
-        System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
-        URL url = new URL(urlStr);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
         // check for an username, if given, authenticate via HTTP BASIC
         if (this.username.length() != 0) {
             String userPassword = username + ":" + password;
             String passphraseEncoded = MyBase64.encode(userPassword.getBytes());
 
             conn.setRequestProperty("Authorization", "Basic " + passphraseEncoded);
-            conn.connect();
         }
+        return conn;
+    }
+
+    public List<String> getList(String hostname, String type) throws IOException {
+        List<String> response = new ArrayList<String>();
+
+        AstericsErrorHandling.instance.reportDebugInfo(this,
+                "Get list (type: " + type + ": " + hostname + "/rest/" + type + "s");
+
+        //create JSON Array
+        JSONArray jsonArray = new JSONArray(httpGet(hostname + "/rest/" + type + "s"));
+
+        // parse all objects, and extract name
+        for (int i=0; i<jsonArray.length();i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String name = jsonObject.getString("name");
+            response.add(name);
+        }
+        return response;
+    }
+
+    public String httpGet(String urlStr) throws IOException {
+        URL url = new URL(urlStr);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        //add authentication header, if username and password is set.
+        conn=addAuthenticationHeader(conn);
+
+        //Bug fix openhab3 REST API: If the Accept types are not explicitly specified, the request fails with error code 400 or 401.
+        conn.setRequestProperty("Accept","text/plain,application/json");
+        conn.connect();
 
         if (conn.getResponseCode() != 200) {
             throw new IOException(conn.getResponseMessage());

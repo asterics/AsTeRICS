@@ -5,7 +5,7 @@ featured: true
 image: /plugins/actuators/infrared.svg
 ---
 
-# {{$frontmatter.title}}
+# IRTrans
 
 ## Component Type: Actuator (Subcategory: Home Control)
 
@@ -16,6 +16,11 @@ This component sends transmission commands to an infrared-transmitter. The diffe
 You can send an IR command by sending an _action string_ to the input port `action`. The string must start with `@IRTRANS:` and contain the remote control name and the command name. For example, if the IR-Transmitter is programmed with a database called `LG-TV` and the desired command is called `TvOn`, the action string to play the IR-code is:
 
 `@IRTRANS: snd LG-TV,TvOn`.
+
+#### Send hex data
+HEX data of a stored command can be retrieved within the IrServer software at the menu entry `IR Hexcode abrufen`. This data then can be sent directly to the `action` port with the advantage that it works independently of the current IrServer database on the current device.
+
+**Important:** if the HEX data is something like `4E0100000000222...` the correct command to send to the `action` port would be `@IRTRANS: sndhex H4E0100000000222...` (note the added `H` at the beginning of the code).
 
 ### IR command by event
 
@@ -68,6 +73,5 @@ _Comment:_ This component is exactly tailored to the IRTrans module and needs ex
 
 ## References
 
-http://www.irtrans.de
-
-http://www.irtrans.de/download/Docs/IRTrans%20TCP%20ASCII%20Interface_EN.pdf
+* [http://www.irtrans.de](http://www.irtrans.de)
+* [http://www.irtrans.de/download/Docs/IRTrans%20TCP%20ASCII%20Interface_EN.pdf](http://www.irtrans.de/download/Docs/IRTrans%20TCP%20ASCII%20Interface_EN.pdf)

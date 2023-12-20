@@ -13,8 +13,6 @@ Currently this component is able to perform such action as: call a remote phone,
 
 ![Screenshot: AndroidPhoneControl plugin](./img/androidphonecontrol.jpg "Screenshot: AndroidPhoneControl plugin")
 
-AndroidPhoneControl plugin
-
 ## Requirements
 
 Android phone running AsTeRICSPhoneServer application.
