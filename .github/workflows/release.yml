@@ -32,7 +32,7 @@ jobs:
     needs: version
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-20.04, ubuntu-18.04]
+        os: [ubuntu-22.04, ubuntu-20.04]
     uses: ./.github/workflows/release-linux.yml
     with:
       version: ${{ needs.version.outputs.version }}
@@ -50,7 +50,7 @@ jobs:
     needs: version
     strategy:
       matrix:
-        os: [macos-12, macos-11, macos-10.15]
+        os: [macos-12, macos-11]
     uses: ./.github/workflows/release-mac.yml
     with:
       version: ${{ needs.version.outputs.version }}
