@@ -7,6 +7,11 @@ on:
       version:
         description: "Version Number"
         type: string
+      release:
+        description: "Create Release? (true/false)"
+        required: false
+        default: false
+        type: boolean
   push:
     tags:
       - v[0-9]+.[0-9]+.[0-9]+
@@ -55,3 +60,80 @@ jobs:
     with:
       version: ${{ needs.version.outputs.version }}
       platform: ${{ matrix.os }}
+  release:
+    needs: [version, linux, windows, mac]
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.release.outputs.upload_url }}  # Set job-level output
+    if: (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) || (github.event_name == 'workflow_dispatch' && github.event.inputs.release == 'true')
+    steps:
+      - name: Create Release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.version.outputs.version }}
+          release_name: Release ${{ needs.version.outputs.version }}
+          draft: false
+          prerelease: false
+  release-upload-linux:
+    needs: [version, linux, release]
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download .deb Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
+      - name: Upload Release Asset (Linux)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ./asterics-are-${{ needs.version.outputs.version }}.deb
+          asset_name: AsTeRICS (Linux, ${{ matrix.os }})
+          asset_content_type: application/vnd.debian.binary-package
+  release-upload-windows:
+    needs: [version, windows, release]
+    strategy:
+      matrix:
+        os: [windows-2022, windows-2019]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download .exe Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
+      - name: Upload Release Asset (Windows)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ./path/to/your/asset
+          asset_name: AsTeRICS (Windows, ${{ matrix.os }})
+          asset_content_type: application/x-msdownload
+  release-upload-mac:
+    needs: [version, mac, release]
+    strategy:
+      matrix:
+        os: [macos-12, macos-11]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download .dmg Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
+      - name: Upload Release Asset (macOS)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ./path/to/your/asset
+          asset_name: AsTeRICS (macOS, ${{ matrix.os }})
+          asset_content_type: application/x-apple-diskimage
