@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version Number"
+        description: "Version Number (x.y.z)"
         required: true
         type: string
       platform:
@@ -18,7 +18,7 @@ on:
   workflow_call:
     inputs:
       version:
-        description: "Version Number"
+        description: "Version Number (x.y.z)"
         required: true
         type: string
       platform:
