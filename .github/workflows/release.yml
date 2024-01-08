@@ -55,7 +55,7 @@ jobs:
     needs: version
     strategy:
       matrix:
-        os: [macos-13, macos-12, macos-11]
+        os: [macos-12, macos-11]
     uses: ./.github/workflows/release-mac.yml
     with:
       version: ${{ needs.version.outputs.version }}
@@ -121,7 +121,7 @@ jobs:
     needs: [version, release]
     strategy:
       matrix:
-        os: [macos-13, macos-12, macos-11]
+        os: [macos-12, macos-11]
     runs-on: ubuntu-latest
     steps:
       - name: Download .dmg Artifact
