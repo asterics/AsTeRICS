@@ -78,7 +78,7 @@ jobs:
           draft: false
           prerelease: false
   release-upload-linux:
-    needs: [version, linux, release]
+    needs: [version, release]
     strategy:
       matrix:
         os: [ubuntu-22.04, ubuntu-20.04]
@@ -88,8 +88,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
-      - name: List files in directory # Debug
-        run: ls -la
       - name: Upload Release Asset (Linux)
         uses: actions/upload-release-asset@v1
         env:
@@ -97,10 +95,10 @@ jobs:
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: ./asterics-are-${{ needs.version.outputs.version }}.deb
-          asset_name: asterics-are-${{ matrix.os }}-${{ needs.version.outputs.version }}.deb
+          asset_name: asterics-are-${{ needs.version.outputs.version }}-${{ matrix.os }}.deb
           asset_content_type: application/vnd.debian.binary-package
   release-upload-windows:
-    needs: [version, windows, release]
+    needs: [version, release]
     strategy:
       matrix:
         os: [windows-2022, windows-2019]
@@ -110,8 +108,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
-      - name: List files in directory # Debug
-        run: ls -la
       - name: Upload Release Asset (Windows)
         uses: actions/upload-release-asset@v1
         env:
@@ -119,10 +115,10 @@ jobs:
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: ./Setup_AsTeRICS_${{ needs.version.outputs.version  }}.exe
-          asset_name: Setup_AsTeRICS_${{ matrix.os }}_${{ needs.version.outputs.version }}.exe
+          asset_name: Setup_AsTeRICS_${{ needs.version.outputs.version }}_${{ matrix.os }}.exe
           asset_content_type: application/x-msdownload
   release-upload-mac:
-    needs: [version, mac, release]
+    needs: [version, release]
     strategy:
       matrix:
         os: [macos-13, macos-12, macos-11]
@@ -132,8 +128,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
-      - name: List files in directory # Debug
-        run: ls -la
       - name: Upload Release Asset (macOS)
         uses: actions/upload-release-asset@v1
         env:
@@ -141,5 +135,5 @@ jobs:
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
           asset_path: ./asterics-are-javaembedded-${{ needs.version.outputs.version }}.dmg
-          asset_name: asterics-are-javaembedded-${{ matrix.os }})-${{ needs.version.outputs.version }}.dmg
+          asset_name: asterics-are-javaembedded-${{ needs.version.outputs.version }}-${{ matrix.os }}.dmg
           asset_content_type: application/x-apple-diskimage
