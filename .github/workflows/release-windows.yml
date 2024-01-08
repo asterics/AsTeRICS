@@ -1,0 +1,64 @@
+name: Release (Windows)
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        type: string
+      platform:
+        description: "Platform Type"
+        required: false
+        default: windows-latest
+        type: choice
+        options:
+          - windows-latest
+          - windows-2022
+          - windows-2019
+  workflow_call:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        type: string
+      platform:
+        description: "Platform Type"
+        default: windows-latest
+        required: true
+        type: string
+env:
+  VERSION: ${{ inputs.version }}
+  ARTIFACT: AsTeRICS ${{ inputs.version }} (${{ inputs.platform }})
+jobs:
+  build:
+    runs-on: ${{ inputs.platform }}
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Install JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: "8"
+          distribution: "zulu"
+          java-package: "jdk+fx"
+          architecture: "x64"
+          check-latest: true
+      - name: Build AsTeRICS
+        run: bash -ex ./Installer/jenkins-release-script.sh
+      - name: Release .exe File
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: Setup_AsTeRICS_${{ env.VERSION }}.exe
+  install:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Get Software
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT }}
+      - name: List directory content
+        run: dir
+      - name: Install Package
+        run: start Setup_AsTeRICS_${{ env.VERSION }}.exe

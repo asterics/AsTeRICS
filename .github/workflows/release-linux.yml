@@ -1,0 +1,65 @@
+name: Release (Linux)
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        type: string
+      platform:
+        description: "Platform Type"
+        required: false
+        default: ubuntu-latest
+        type: choice
+        options:
+          - ubuntu-latest
+          - ubuntu-22.04
+          - ubuntu-20.04
+          - ubuntu-18.04
+  workflow_call:
+    inputs:
+      version:
+        description: "Version Number"
+        required: true
+        type: string
+      platform:
+        description: "Platform Type"
+        default: ubuntu-latest
+        required: true
+        type: string
+env:
+  VERSION: ${{ inputs.version }}
+  ARTIFACT: AsTeRICS ${{ inputs.version }} (${{ inputs.platform }})
+jobs:
+  build:
+    runs-on: ${{ inputs.platform }}
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Install JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: "8"
+          distribution: "zulu"
+          java-package: "jdk+fx"
+          architecture: "x64"
+          check-latest: true
+      - name: Build AsTeRICS
+        run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
+      - name: Release .deb File
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: Installer/asterics-are/build/deploy/bundles/asterics-are-${{ env.VERSION }}.deb
+  install:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Software
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT }}
+      - name: Setup Machine
+        run: sudo mkdir /usr/share/desktop-directories
+      - name: Install Package
+        run: sudo apt install ./asterics-are-${{ env.VERSION }}.deb

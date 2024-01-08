@@ -1,0 +1,57 @@
+name: Release
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version Number"
+        type: string
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version || steps.custom.outputs.version || steps.tag.outputs.version }}
+    steps:
+      - name: Output Version
+        id: version
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.version == '' ) }}
+        run: echo "version=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+      - name: Output Custom Version
+        id: custom
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.version != '' }}
+        run: echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+      - name: Output Tag
+        id: tag
+        if: ${{ github.event_name == 'push' }}
+        run: echo "version=$(echo ${GITHUB_REF#refs/*/} | sed -e 's/v//')" >> $GITHUB_OUTPUT
+  linux:
+    needs: version
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04]
+    uses: ./.github/workflows/release-linux.yml
+    with:
+      version: ${{ needs.version.outputs.version }}
+      platform: ${{ matrix.os }}
+  windows:
+    needs: version
+    strategy:
+      matrix:
+        os: [windows-2022, windows-2019]
+    uses: ./.github/workflows/release-windows.yml
+    with:
+      version: ${{ needs.version.outputs.version }}
+      platform: ${{ matrix.os }}
+  mac:
+    needs: version
+    strategy:
+      matrix:
+        os: [macos-12, macos-11]
+    uses: ./.github/workflows/release-mac.yml
+    with:
+      version: ${{ needs.version.outputs.version }}
+      platform: ${{ matrix.os }}
