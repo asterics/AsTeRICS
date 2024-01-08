@@ -88,15 +88,17 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
-      - name: Upload Release Asset (Linux)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./asterics-are-${{ needs.version.outputs.version }}.deb
-          asset_name: AsTeRICS (Linux, ${{ matrix.os }})
-          asset_content_type: application/vnd.debian.binary-package
+      - name: List files in directory # Debug
+        run: ls -la
+      # - name: Upload Release Asset (Linux)
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ needs.release.outputs.upload_url }}
+      #     asset_path: ./asterics-are-${{ needs.version.outputs.version }}.deb
+      #     asset_name: AsTeRICS (Linux, ${{ matrix.os }})
+      #     asset_content_type: application/vnd.debian.binary-package
   release-upload-windows:
     needs: [version, windows, release]
     strategy:
@@ -108,32 +110,36 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
-      - name: Upload Release Asset (Windows)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./path/to/your/asset
-          asset_name: AsTeRICS (Windows, ${{ matrix.os }})
-          asset_content_type: application/x-msdownload
+      - name: List files in directory # Debug
+        run: ls -la
+      # - name: Upload Release Asset (Windows)
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ needs.release.outputs.upload_url }}
+      #     asset_path: ./path/to/your/asset
+      #     asset_name: AsTeRICS (Windows, ${{ matrix.os }})
+      #     asset_content_type: application/x-msdownload
   release-upload-mac:
     needs: [version, mac, release]
     strategy:
       matrix:
-        os: [macos-12, macos-11]
+        os: [macos-13, macos-12, macos-11]
     runs-on: ubuntu-latest
     steps:
       - name: Download .dmg Artifact
         uses: actions/download-artifact@v2
         with:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
-      - name: Upload Release Asset (macOS)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: ./path/to/your/asset
-          asset_name: AsTeRICS (macOS, ${{ matrix.os }})
-          asset_content_type: application/x-apple-diskimage
+      - name: List files in directory # Debug
+        run: ls -la
+      # - name: Upload Release Asset (macOS)
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ needs.release.outputs.upload_url }}
+      #     asset_path: ./path/to/your/asset
+      #     asset_name: AsTeRICS (macOS, ${{ matrix.os }})
+      #     asset_content_type: application/x-apple-diskimage
