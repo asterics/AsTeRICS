@@ -8,7 +8,7 @@ on:
         description: "Version Number"
         type: string
       release:
-        description: "Create Release? (true/false)"
+        description: "Create Release?"
         required: false
         default: false
         type: boolean
@@ -55,7 +55,7 @@ jobs:
     needs: version
     strategy:
       matrix:
-        os: [macos-12, macos-11]
+        os: [macos-13, macos-12, macos-11]
     uses: ./.github/workflows/release-mac.yml
     with:
       version: ${{ needs.version.outputs.version }}
@@ -90,15 +90,15 @@ jobs:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
       - name: List files in directory # Debug
         run: ls -la
-      # - name: Upload Release Asset (Linux)
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ needs.release.outputs.upload_url }}
-      #     asset_path: ./asterics-are-${{ needs.version.outputs.version }}.deb
-      #     asset_name: AsTeRICS (Linux, ${{ matrix.os }})
-      #     asset_content_type: application/vnd.debian.binary-package
+      - name: Upload Release Asset (Linux)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ./asterics-are-${{ needs.version.outputs.version }}.deb
+          asset_name: asterics-are-${{ matrix.os }}-${{ needs.version.outputs.version }}.deb
+          asset_content_type: application/vnd.debian.binary-package
   release-upload-windows:
     needs: [version, windows, release]
     strategy:
@@ -112,15 +112,15 @@ jobs:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
       - name: List files in directory # Debug
         run: ls -la
-      # - name: Upload Release Asset (Windows)
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ needs.release.outputs.upload_url }}
-      #     asset_path: ./path/to/your/asset
-      #     asset_name: AsTeRICS (Windows, ${{ matrix.os }})
-      #     asset_content_type: application/x-msdownload
+      - name: Upload Release Asset (Windows)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ./Setup_AsTeRICS_${{ needs.version.outputs.version  }}.exe
+          asset_name: Setup_AsTeRICS_${{ matrix.os }}_${{ needs.version.outputs.version }}.exe
+          asset_content_type: application/x-msdownload
   release-upload-mac:
     needs: [version, mac, release]
     strategy:
@@ -134,12 +134,12 @@ jobs:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
       - name: List files in directory # Debug
         run: ls -la
-      # - name: Upload Release Asset (macOS)
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ needs.release.outputs.upload_url }}
-      #     asset_path: ./path/to/your/asset
-      #     asset_name: AsTeRICS (macOS, ${{ matrix.os }})
-      #     asset_content_type: application/x-apple-diskimage
+      - name: Upload Release Asset (macOS)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ./asterics-are-javaembedded-${{ needs.version.outputs.version }}.dmg
+          asset_name: asterics-are-javaembedded-${{ matrix.os }})-${{ needs.version.outputs.version }}.dmg
+          asset_content_type: application/x-apple-diskimage
