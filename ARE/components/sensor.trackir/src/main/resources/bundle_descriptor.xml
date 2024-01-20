@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.TrackIR"
+                   canonical_name="eu.asterics.component.sensor.trackir.TrackIRInstance">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>true</singleton>
+        <description>Interface to TrackIR5</description>
+        <ports>
+
+			<outputPort id="yaw">
+				<description>yaw angle</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="pitch">
+				<description>pitch angle</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="roll">
+				<description>roll angle</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="x">
+				<description>x position</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="y">
+				<description>y position</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="z">
+				<description>z position</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="start">
+				<description>start data transfer</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stop data transfer</description>
+			</eventListenerPort>
+			<eventListenerPort id="center">
+				<description>center position</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="autostart"
+				type="boolean"
+				value="true"
+				description="autostart data transfer"/>
+			<property name="pollingInterval"
+				type="integer"
+				value="10"
+				description="polling interval in milliseconds"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
