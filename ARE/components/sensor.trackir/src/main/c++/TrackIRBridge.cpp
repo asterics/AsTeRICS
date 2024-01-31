@@ -38,6 +38,7 @@ JavaVM * jvm = NULL;
 jobject trackObj_ms = NULL;
 HINSTANCE hLib;
 jmethodID processData = NULL;
+int dllAvailable = 0;
 
 
 extern "C" 
@@ -222,11 +223,12 @@ int start_TrackIR() {
 	result = (*stopCursor)();
 	printf("C++: TrackIR Brigde Calling NP_StartDataTransmission\n");
 	result = (*startDataTransmission)();
-
+	dllAvailable = 1;
 	return (1);
 }
 
 int stop_TrackIR() {
+	if (!dllAvailable) return(0);
 	printf("Calling NP_StopDataTransmission\n");
 	int result = (*stopDataTransmission)();
 	printf("Calling NP_StartCursor\n");
@@ -269,6 +271,7 @@ JNIEXPORT jint JNICALL Java_eu_asterics_component_sensor_trackir_jni_Bridge_getU
 (JNIEnv* env, jobject obj)
 {
 
+	if (!dllAvailable) return(0);
 	memset(&pTrackIRData, 0, sizeof(TRACKIRDATA));
 	(*getData)(&pTrackIRData);
 	//printf("C++: send test callback\n");
@@ -280,6 +283,7 @@ JNIEXPORT jint JNICALL Java_eu_asterics_component_sensor_trackir_jni_Bridge_getU
 JNIEXPORT jint JNICALL Java_eu_asterics_component_sensor_trackir_jni_Bridge_centerCoordinates
 (JNIEnv* env, jobject obj)
 {
+	if (!dllAvailable) return(0);
 	(*reCenter)();
 	return (jint)0;
 }
