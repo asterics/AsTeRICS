@@ -116,7 +116,7 @@ import eu.asterics.mw.utils.OSUtils;
 public class AREServices implements IAREServices {
     public static final String WEB_ACS_EDIT_MODEL_URL_KEY = "WebACS.editModel.URL";
     public static final String LOCAL_WEB_ACS_EDIT_MODEL_URL = "http://localhost:{0}/WebACS/index.html?autoConnect=true&autoDownloadModel=true&areBaseURI=http://127.0.0.1:{0}";
-    public static final String ONLINE_WEB_ACS_EDIT_MODEL_URL = "https://webacs.asterics.eu/index.html?autoConnect=true&autoDownloadModel=true&areBaseURI=http://127.0.0.1:{0}";
+    public static final String ONLINE_WEB_ACS_EDIT_MODEL_URL = "http://webacs.asterics.eu/index.html?autoConnect=true&autoDownloadModel=true&areBaseURI=http://127.0.0.1:{0}";
 
     private int acsPort=9090;
     private int restPort=8081;
