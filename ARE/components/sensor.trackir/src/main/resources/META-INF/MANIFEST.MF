@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-sensors.trackir
+Bundle-SymbolicName: eu.asterics.component.sensor.trackir
+Bundle-Version: 0.1.0
+Bundle-NativeCode: lib/native/windows/x86/trackirbridge.dll;
+ osname=win32;processor=x86,
+ lib/native/windows/x64/trackirbridge.dll;
+ osname=win32;processor=x86_64
+DynamicImport-Package: *
