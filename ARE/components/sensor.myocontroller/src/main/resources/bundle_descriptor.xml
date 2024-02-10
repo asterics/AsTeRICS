@@ -48,6 +48,10 @@
 				type="boolean"
 				value="false"
 				description="If true, instead of the COM-port the given file is used as datasource"/>
+			<property name="writeToFile"
+				type="boolean"
+				value="false"
+				description="If true, COM-port data is written to the given file"/>
 			<property name="filename"
 				type="string"
 				value=""

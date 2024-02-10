@@ -29,6 +29,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.File;
 
 import eu.asterics.mw.cimcommunication.CIMPortController;
 import eu.asterics.mw.cimcommunication.CIMPortManager;
@@ -51,11 +54,13 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
     String propComPort = "COM4";
     int propBaudRate = 57600;
     boolean propUseFile = false;
+    boolean propWriteToFile = false;
     String propFilename = "";
 
     // declare member variables here
     private InputStream in = null;
     private OutputStream out = null;
+    private FileOutputStream outLogFile = null;
     private Thread readerThread = null;
     private boolean running = false;
     private CIMPortController portController = null;
@@ -170,6 +175,9 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
         }
         if ("useFile".equalsIgnoreCase(propertyName)) {
             return propUseFile;
+		}			
+        if ("writeToFile".equalsIgnoreCase(propertyName)) {
+            return propWriteToFile;
         }
         if ("filename".equalsIgnoreCase(propertyName)) {
             return propFilename;
@@ -201,6 +209,11 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
         if ("useFile".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propUseFile;
             propUseFile = Boolean.parseBoolean(newValue.toString());
+            return oldValue;
+        }
+        if ("writeToFile".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propWriteToFile;
+            propWriteToFile = Boolean.parseBoolean(newValue.toString());
             return oldValue;
         }
         if ("filename".equalsIgnoreCase(propertyName)) {
@@ -261,7 +274,7 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
         }
         return null;
     }
-
+	
     private InputStream getComportInputStream() {
         if (portController == null) {
             return null;
@@ -276,6 +289,20 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
         return portController.getOutputStream();
     }
 
+    private FileOutputStream getFileOutputStream() {
+		FileOutputStream fos=null;
+		try {
+			File file = new File("data/"+propFilename);
+			fos= new FileOutputStream(file);										
+		}
+		catch (IOException e) {
+			String msg = String.format("MyoController: Could not write to log file");
+			AstericsErrorHandling.instance.getLogger().info(msg);
+		}
+        return fos;
+    }
+
+
     private void startInternal() {
         if (!propUseFile) {
 	        portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
@@ -285,9 +312,15 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
 			} else {
 				in = getComportInputStream();
 				out = getComportOutputStream();
+				if (propWriteToFile) {
+					outLogFile = getFileOutputStream();
+				} else {
+					outLogFile=null;
+				}
 			}
         } else {
             in = getFileInputStream();
+			outLogFile=null;
         }
         if (in == null) {
             return;
@@ -317,7 +350,11 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
                     try {
                         if (!propUseFile) { // COM-port
                             while (in.available() > 0) {
-                                handlePacketReceived((byte) in.read());
+								byte actByte=(byte) in.read();
+                                handlePacketReceived(actByte);
+								if (outLogFile != null) {
+									outLogFile.write(actByte);
+								}
                             }
                             Thread.sleep(10);
                         } else { // Archive File
@@ -348,6 +385,16 @@ public class MyocontrollerInstance extends AbstractRuntimeComponentInstance {
             }
             in = null;
         }
+
+        if (outLogFile != null) {
+            try {
+                outLogFile.close();
+            } catch (IOException e) {
+                AstericsErrorHandling.instance.reportInfo(this, "Error closing log file");
+            }
+			outLogFile=null;
+		}
+		
         if (portController != null) {
             CIMPortManager.getInstance().closeRawConnection(propComPort);
             portController = null;
