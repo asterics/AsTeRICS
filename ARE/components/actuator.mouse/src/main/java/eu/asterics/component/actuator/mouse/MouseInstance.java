@@ -44,6 +44,7 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
 
 /**
@@ -356,6 +357,8 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
         public void receiveData(byte[] data) {
             if ((mouseActive == 1) && (propEnableMouse)) {
                 double value = ConversionUtils.doubleFromBytes(data);
+				if (Double.isNaN(value)) return;
+										
                 if (value < 3) {
                     mouseLastStableXPos = mouseXPos;
                 }
@@ -381,6 +384,11 @@ public class MouseInstance extends AbstractRuntimeComponentInstance {
         public void receiveData(byte[] data) {
             if ((mouseActive == 1) && (propEnableMouse)) {
                 double value = ConversionUtils.doubleFromBytes(data);
+				if (Double.isNaN(value)) return;
+				
+				//String msg = String.format("MouseY: %f", value );
+				//AstericsErrorHandling.instance.getLogger().info(msg);				
+				
                 if (value < 3) {
                     mouseLastStableYPos = mouseYPos;
                 }
