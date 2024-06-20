@@ -4,17 +4,18 @@ Obligatory information according to § 25 of the Austrian Mediengesetz (media la
 
 ## Publisher and editorial responsibility
 
+```
 Verein Fachhochschule Technikum Wien
 ZVR-Zahl 074476426
-
 Geschäftsführung
 
 Höchstädtplatz 6
 1200 Wien 
 T: +43 1 333 40 77-0
-
-[E-Mail](mailto:info@technikum-wien.at)
 UID-Nummer: ATU65565658
+```
+
+Contact: [E-Mail](mailto:info@technikum-wien.at)
 
 Also see the [Impressum of the Technikum Wien webpage](https://www.technikum-wien.at/impressum/), for further information.
 
