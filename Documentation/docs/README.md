@@ -88,7 +88,7 @@ The AsTeRICS project was funded by international and national research grants. A
     scale="0.9"
   />
 </Funding>
-
+<!--
 ## Donation
 
 **We need donations** in order to continue the development and maintainance of the tools and to continuously provide the hosting of AsTeRICS grid and the consulting and assembly of Assistive solutions. The donation will go to the non-profit organization [Asterics Foundation](https://www.asterics-foundation.org/) which maintains the project results and continues development of assistive tools.
@@ -99,7 +99,7 @@ The AsTeRICS project was funded by international and national research grants. A
 <a title="Support AsTeRICS Foundation on opencollective.com" href="https://opencollective.com/asterics-foundation" target="_blank">
   <img src="https://opencollective.com/webpack/donate/button@2x.png?color=blue" width="300"/>
 </a>
-
+-->
 ## AsTeRICS Project Web Page
 
 This is a newly created web page to present AsTeRICS technologies and corresponding documentation. If you are looking for the web page of the original AsTeRICS project, please go to [https://project.asterics.eu](https://project.asterics.eu).
