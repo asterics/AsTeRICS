@@ -21,7 +21,7 @@ Also see the [Impressum of the Technikum Wien webpage](https://www.technikum-wie
 ## Responsible for Content & Webmaster
 
 Project: [StudyATHome Internationally](https://studyathome.technikum-wien.at)  
-Lead: Martin Deinhofer,[E-Mail](mailto:martin.deinhofer@technikum-wien.at)
+Lead: Martin Deinhofer,[E-Mail](mailto:studyathome@technikum-wien.at)
 
 ## Disclaimer
 
