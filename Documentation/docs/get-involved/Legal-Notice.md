@@ -1,28 +1,22 @@
 # Legal Notice
 
+Obligatory information according to § 25 of the Austrian Mediengesetz (media law) and according § 5 of the Austrian E-Commerce-Gesetz (E-commerce law).
+
 ## Publisher and editorial responsibility
 
-UAS Technikum Wien
+Verein Fachhochschule Technikum Wien
+ZVR-Zahl 074476426
 
-Mariahilfer Strasse 37-39
-1060 Vienna
+Geschäftsführung
 
-T: +43 1 588 39-0
-F: +43 1 588 39-49
+Höchstädtplatz 6
+1200 Wien 
+T: +43 1 333 40 77-0
 
 [E-Mail](mailto:info@technikum-wien.at)
+UID-Nummer: ATU65565658
 
-## Management
-
-Gabriele Költringer, EMBA (Managing Director)
-
-## Managing Comitee
-
-Dr. Ulrike Baumgartner-Gabitzer, Mag. Wilhelm Grosseibl, DI Dr. Kurt Hofstädter (vice chairman), Dr. Kari Kapsch, DI Anton Plimon, Dr. Lothar Roitner (chairman), Mag. Dr. Gerhard Riemer
-
-## Basic objective
-
-Internet presence to promote and support activities of the organization.
+Also see the [Impressum of the Technikum Wien webpage](https://www.technikum-wien.at/impressum/), for further information.
 
 ## Responsible for Content & Webmaster
 
