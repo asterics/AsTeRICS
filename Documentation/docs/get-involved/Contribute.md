@@ -7,7 +7,8 @@ Contributions from the community are absolutely welcome and could be in form of 
 ## Donation
 
 **We need donations** in order to continue the development and maintainance of the tools and to continuously provide the hosting of AsTeRICS grid and the consulting and assembly of Assistive solutions. The donation will go to the non-profit organization [Asterics Foundation](https://www.asterics-foundation.org/) which maintains the project results and continues development of assistive tools.
-
+-->
+<!--
 <div><a title="S](https://www.asterics-foundation.org/)upport AsTeRICS Foundation on betterplace.org!" target="_blank" href="https://www.betterplace.at/development-of-open-source-assistive-technologies/donate"><img style="border:0px" alt="" src="https://betterplace-assets.betterplace.org/static-images/projects/donation-button-en.png" width="160" height="100"></a>
 </div>
 -->
