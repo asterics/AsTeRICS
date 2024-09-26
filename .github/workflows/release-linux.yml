@@ -12,8 +12,6 @@ on:
         default: ubuntu-latest
         type: choice
         options:
-          - ubuntu-latest
-          - ubuntu-22.04
           - ubuntu-20.04
   workflow_call:
     inputs:
