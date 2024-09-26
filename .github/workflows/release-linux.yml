@@ -44,7 +44,7 @@ jobs:
       - name: Build AsTeRICS
         run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=deb -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
       - name: Release .deb File
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT }}
           path: Installer/asterics-are/build/deploy/bundles/asterics-are-${{ env.VERSION }}.deb
