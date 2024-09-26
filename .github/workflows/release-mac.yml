@@ -51,7 +51,7 @@ jobs:
           JAVA_HOME: ${{ env.JAVA_HOME_8_X64 }}/Contents/Home
         run: ant -buildfile Installer/asterics-are/build.xml deploy -Dfx.deploy.nativeBundles=dmg -DAPE.embedJava=true -Dfx.application.version=$VERSION -Dfx.deploy.verbose=true
       - name: Release .dmg File
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT }}
           path: Installer/asterics-are/build/deploy/bundles/asterics-are-javaembedded-${{ env.VERSION }}.dmg
