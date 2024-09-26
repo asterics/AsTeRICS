@@ -44,7 +44,7 @@ jobs:
       - name: Build AsTeRICS
         run: bash -ex ./Installer/jenkins-release-script.sh
       - name: Release .exe File
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT }}
           path: Setup_AsTeRICS_${{ env.VERSION }}.exe
