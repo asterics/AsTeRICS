@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Download .deb Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
       - name: Upload Release Asset (Linux)
@@ -105,7 +105,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Download .exe Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
       - name: Upload Release Asset (Windows)
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Download .dmg Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: AsTeRICS ${{ needs.version.outputs.version }} (${{ matrix.os }})
       - name: Upload Release Asset (macOS)
