@@ -12,8 +12,6 @@ on:
         default: windows-latest
         type: choice
         options:
-          - windows-latest
-          - windows-2022
           - windows-2019
   workflow_call:
     inputs:
