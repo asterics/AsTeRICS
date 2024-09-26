@@ -17,7 +17,7 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+
 jobs:
   version:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     outputs:
       version: ${{ steps.version.outputs.version || steps.custom.outputs.version || steps.tag.outputs.version }}
     steps:
@@ -37,7 +37,7 @@ jobs:
     needs: version
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-20.04]
+        os: [ubuntu-20.04]
     uses: ./.github/workflows/release-linux.yml
     with:
       version: ${{ needs.version.outputs.version }}
@@ -46,7 +46,7 @@ jobs:
     needs: version
     strategy:
       matrix:
-        os: [windows-2022, windows-2019]
+        os: [windows-2019]
     uses: ./.github/workflows/release-windows.yml
     with:
       version: ${{ needs.version.outputs.version }}
@@ -55,14 +55,14 @@ jobs:
     needs: version
     strategy:
       matrix:
-        os: [macos-12, macos-11]
+        os: [macos-12]
     uses: ./.github/workflows/release-mac.yml
     with:
       version: ${{ needs.version.outputs.version }}
       platform: ${{ matrix.os }}
   release:
     needs: [version, linux, windows, mac]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     outputs:
       upload_url: ${{ steps.release.outputs.upload_url }}  # Set job-level output
     if: (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) || (github.event_name == 'workflow_dispatch' && github.event.inputs.release == 'true')
@@ -81,8 +81,8 @@ jobs:
     needs: [version, release]
     strategy:
       matrix:
-        os: [ubuntu-22.04, ubuntu-20.04]
-    runs-on: ubuntu-latest
+        os: [ubuntu-20.04]
+    runs-on: ubuntu-20.04
     steps:
       - name: Download .deb Artifact
         uses: actions/download-artifact@v2
@@ -101,8 +101,8 @@ jobs:
     needs: [version, release]
     strategy:
       matrix:
-        os: [windows-2022, windows-2019]
-    runs-on: ubuntu-latest
+        os: [windows-2019]
+    runs-on: ubuntu-20.04
     steps:
       - name: Download .exe Artifact
         uses: actions/download-artifact@v2
@@ -121,8 +121,8 @@ jobs:
     needs: [version, release]
     strategy:
       matrix:
-        os: [macos-12, macos-11]
-    runs-on: ubuntu-latest
+        os: [macos-12]
+    runs-on: ubuntu-20.04
     steps:
       - name: Download .dmg Artifact
         uses: actions/download-artifact@v2
