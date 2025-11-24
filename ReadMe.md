@@ -25,7 +25,7 @@ To clone and compile the AsTeRICS framework, please execute the following steps:
   ```
   git clone https://github.com/asterics/AsTeRICS.git
   ```
-2. Install the [**Java Development Kit (JDK, 32bit preferred) >= 8**](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+2. Install the [**Java Development Kit (JDK, 32bit preferred) = 8**](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
   * Ensure to set ```JAVA_HOME``` to the folder where you installed the Java JDK and add the JDK bin path to the  Environment Variable ```Path```
 3. [apache ant build framework (version >= 1.9.1)](http://ant.apache.org/bindownload.cgi)
   * Ensure to set ```ANT_HOME``` to the folder where you installed ant and add the ant bin path to the Environment Variable ```Path```
